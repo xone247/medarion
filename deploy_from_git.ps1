@@ -57,13 +57,22 @@ try {
     if ($LASTEXITCODE -eq 0) {
         Write-Host "   ✅ Frontend built successfully" -ForegroundColor Green
         
-        if (Test-Path "dist/index.html") {
-            $distFiles = Get-ChildItem -Path "dist" -Recurse -File | Measure-Object
-            $distSize = (Get-ChildItem -Path "dist" -Recurse -File | Measure-Object -Property Length -Sum).Sum / 1MB
-            Write-Host "   📁 Output: dist/ folder" -ForegroundColor Gray
+        # Check for build output in either dist/ or medarion-dist/
+        $buildDir = $null
+        if (Test-Path "medarion-dist/index.html") {
+            $buildDir = "medarion-dist"
+        } elseif (Test-Path "dist/index.html") {
+            $buildDir = "dist"
+        }
+        
+        if ($buildDir) {
+            $distFiles = Get-ChildItem -Path $buildDir -Recurse -File | Measure-Object
+            $distSize = (Get-ChildItem -Path $buildDir -Recurse -File | Measure-Object -Property Length -Sum).Sum / 1MB
+            Write-Host "   📁 Output: $buildDir/ folder" -ForegroundColor Gray
             Write-Host "   📊 Files: $($distFiles.Count) files, $([math]::Round($distSize, 2)) MB" -ForegroundColor Gray
         } else {
-            Write-Host "   ❌ dist/index.html not found!" -ForegroundColor Red
+            Write-Host "   ❌ Build output not found in dist/ or medarion-dist/!" -ForegroundColor Red
+            Write-Host "   Please check your vite.config.ts build output directory" -ForegroundColor Yellow
             exit 1
         }
     } else {
@@ -112,10 +121,13 @@ $sshPort = $config.ssh.port
 Write-Host "`n[Step 4/6] Uploading Frontend to cPanel" -ForegroundColor Yellow
 Write-Host "-" * 70 -ForegroundColor Gray
 
-Write-Host "   📤 Uploading dist/ to /home/medasnnc/public_html/" -ForegroundColor Cyan
+# Determine build directory
+$buildDir = if (Test-Path "medarion-dist/index.html") { "medarion-dist" } else { "dist" }
+
+Write-Host "   📤 Uploading $buildDir/ to /home/medasnnc/public_html/" -ForegroundColor Cyan
 Write-Host "   This may take a moment..." -ForegroundColor Gray
 
-& $pscp -P $sshPort -r "dist\*" "${sshUser}@${sshHost}:/home/medasnnc/public_html/"
+& $pscp -P $sshPort -r "${buildDir}\*" "${sshUser}@${sshHost}:/home/medasnnc/public_html/"
 
 if ($LASTEXITCODE -eq 0) {
     Write-Host "   ✅ Frontend uploaded successfully" -ForegroundColor Green
