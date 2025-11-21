@@ -65,8 +65,16 @@ Write-Host "   📤 Uploading to cPanel..." -ForegroundColor Cyan
 
 if ($LASTEXITCODE -eq 0) {
     Write-Host "   ✅ Frontend deployed!" -ForegroundColor Green
-    Write-Host "`n🌐 View changes: https://medarion.africa" -ForegroundColor Cyan
-    Write-Host "   (Hard refresh: Ctrl+F5 to see changes)" -ForegroundColor Gray
+    
+    # Generate cache-busting URL
+    $cacheBuster = [DateTimeOffset]::Now.ToUnixTimeMilliseconds()
+    $freshUrl = "https://medarion.africa?v=$cacheBuster&_t=$(Get-Date -Format 'yyyyMMddHHmmss')"
+    
+    Write-Host "`n🌐 Opening fresh version (no cache):" -ForegroundColor Cyan
+    Write-Host "   $freshUrl" -ForegroundColor Gray
+    Start-Process $freshUrl
+    
+    Write-Host "`n💡 Tip: Use Ctrl+F5 for hard refresh if needed" -ForegroundColor Yellow
 } else {
     Write-Host "   ❌ Deployment failed" -ForegroundColor Red
     exit 1

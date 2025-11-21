@@ -48,6 +48,7 @@ if ($LASTEXITCODE -eq 0) {
     Write-Host "   • Use -Watch for auto-deploy on changes" -ForegroundColor White
     Write-Host "   • Use -Build to just build locally" -ForegroundColor White
     Write-Host "   • Use -Deploy to deploy existing build" -ForegroundColor White
+    Write-Host "   • Site opens automatically with cache-busting" -ForegroundColor White
     Write-Host "`n📝 Example:" -ForegroundColor Cyan
     Write-Host "   .\quick_frontend_iteration.ps1 -Watch" -ForegroundColor Yellow
 }
