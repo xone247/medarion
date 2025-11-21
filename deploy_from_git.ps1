@@ -162,6 +162,7 @@ foreach ($file in $backendFiles) {
 if ($hasBackendChanges) {
     Write-Host "   📤 Uploading backend files..." -ForegroundColor Cyan
     
+    $uploadErrors = @()
     foreach ($file in $backendFiles) {
         if (Test-Path $file) {
             $fileName = Split-Path $file -Leaf
@@ -171,7 +172,30 @@ if ($hasBackendChanges) {
             }
             
             Write-Host "   📄 Uploading: $file" -ForegroundColor Gray
-            & $pscp -P $sshPort $file "${sshUser}@${sshHost}:$remotePath"
+            & $pscp -P $sshPort $file "${sshUser}@${sshHost}:$remotePath" 2>&1 | Out-Null
+            if ($LASTEXITCODE -ne 0) {
+                $uploadErrors += $file
+                Write-Host "   ⚠️  Failed to upload: $file (will retry)" -ForegroundColor Yellow
+            }
+        }
+    }
+    
+    # Retry failed uploads
+    if ($uploadErrors.Count -gt 0) {
+        Write-Host "   🔄 Retrying failed uploads..." -ForegroundColor Cyan
+        Start-Sleep -Seconds 2
+        foreach ($file in $uploadErrors) {
+            $fileName = Split-Path $file -Leaf
+            $remotePath = "/home/medasnnc/api.medarion.africa/routes/$fileName"
+            if ($file -eq "server/server.js") {
+                $remotePath = "/home/medasnnc/api.medarion.africa/server.js"
+            }
+            & $pscp -P $sshPort $file "${sshUser}@${sshHost}:$remotePath" 2>&1 | Out-Null
+            if ($LASTEXITCODE -eq 0) {
+                Write-Host "   ✅ Retry successful: $file" -ForegroundColor Green
+            } else {
+                Write-Host "   ❌ Still failed: $file" -ForegroundColor Red
+            }
         }
     }
     
