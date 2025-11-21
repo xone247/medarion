@@ -10,43 +10,56 @@ A comprehensive healthcare platform built with React/TypeScript frontend and Nod
    ```powershell
    .\setup_git_github.ps1
    ```
-   This script will:
-   - Check Git installation
-   - Initialize Git repository
-   - Help you authenticate with GitHub
-   - Guide you through creating/connecting a GitHub repository
 
-2. **Install dependencies:**
+2. **Set up fast development workflow:**
+   ```powershell
+   .\setup_fast_workflow.ps1
+   ```
+   This creates shortcuts and optimizes your workflow.
+
+3. **Install dependencies:**
    ```bash
    npm run install:all
    ```
 
-3. **Setup database:**
+4. **Setup database:**
    ```bash
    npm run setup:db
    ```
 
-4. **Start development:**
+5. **Start development:**
    ```bash
    npm start
    ```
+
+### ⚡ Fast Development Workflow
+
+**One-command deployment:**
+```powershell
+# Commit, push, and deploy to cPanel
+.\qd.ps1 -Message "Your changes" -Deploy
+```
+
+**Quick Git commands** (after loading `git_quick_commands.ps1`):
+```powershell
+git-status          # Quick status
+git-save "message"  # Add and commit
+git-push "message"  # Add, commit, push
+git-pull            # Pull latest
+```
+
+**See `QUICK_WORKFLOW.md` for complete quick reference!**
 
 ### Git Workflow
 
 After initial setup, your typical workflow:
 
-```bash
-# Check status
-git status
+```powershell
+# Quick save
+git-save "Description of changes"
 
-# Stage changes
-git add .
-
-# Commit changes
-git commit -m "Description of changes"
-
-# Push to GitHub
-git push origin main
+# Or full workflow
+.\qd.ps1 -Message "Description" -Deploy
 ```
 
 **Important:** Sensitive files (`.env`, `cpanel-config.json`, SSH keys) are automatically excluded from Git via `.gitignore`.
