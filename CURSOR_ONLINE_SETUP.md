@@ -185,3 +185,4 @@ Every script you created works in Cursor Online:
 
 **You're all set!** Work from anywhere with Cursor Online! 🚀
 
+

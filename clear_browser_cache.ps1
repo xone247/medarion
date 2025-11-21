@@ -22,3 +22,4 @@ Write-Host "`n✅ Site opened with cache-busting parameters" -ForegroundColor Gr
 Write-Host "   The browser should load fresh content" -ForegroundColor Gray
 Write-Host "`n💡 Tip: Use Ctrl+F5 in browser for hard refresh" -ForegroundColor Cyan
 
+
