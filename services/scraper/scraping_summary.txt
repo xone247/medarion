@@ -1,0 +1,50 @@
+SCRAPING STATUS SUMMARY
+==================================================
+
+Total targets in main file: 283
+Completed targets: 183
+New targets to scrape: 96
+Completion rate: 64.7%
+
+NEW TARGETS BY CATEGORY:
+------------------------------
+
+Investment Platforms: 9 targets
+  - Kenya Dealroom Dashboard: https://kenya.dealroom.co/dashboard?dashboardChartType=vc_investment
+  - Www_P1_Ventures: https://www.p1.ventures/
+  - African Investment Group: https://www.africaninvestmentgroup.com
+  - African Investment Exchange: https://www.africaninvestmentexchange.com
+  - Africa Investment Summit: https://africainvestmentsummit.com
+    ... and 4 more
+
+Government/International: 29 targets
+  - Gavi Vaccine Alliance: https://www.gavi.org
+  - The Pandemic Fund: https://www.thepandemicfund.org
+  - OPEC Fund: https://opecfund.org
+  - The Global Fund: https://www.theglobalfund.org/en/
+  - Www_Africaglobalfunds: https://www.africaglobalfunds.com/news/private-equity/fundraising/p1-ventures-closes-50m-fund/
+    ... and 24 more
+
+Other: 21 targets
+  - LeapFrog Investments: https://leapfroginvest.com
+  - English_Elpais_Com: https://english.elpais.com/news/hospital-la-paz/
+  - Impact_Investor_Com: https://impact-investor.com/inspired-evolution-closes-energy-fund-at-238m-as-institutional-investors-pile-in/
+  - Www_Mckesson_Com: https://www.mckesson.com/
+  - Www_F6S_Com: https://www.f6s.com/
+    ... and 16 more
+
+Healthcare: 33 targets
+  - Www_Who: https://www.who.int/news-room/fact-sheets/detail/essential-medicines
+  - Www_Cardinalhealth: https://www.cardinalhealth.com/
+  - Www_Who: https://www.who.int/news-room/fact-sheets/detail/health-information-systems
+  - Www_Who: https://www.who.int/news-room/fact-sheets/detail/universal-health-coverage-%28uhc%29
+  - Www_Who: https://www.who.int
+    ... and 28 more
+
+News Media: 3 targets
+  - Www_Thetimes_Co: https://www.thetimes.co.uk/article/nhs-plan-live-latest-news-labour-9wqmsdkvj
+  - Www_Thetimes_Co: https://www.thetimes.co.uk/article/nhs-will-pay-diet-apps-who-help-to-slim-patients-with-weight-loss-drugs-jjwpr7jkt
+  - News_Cision_Com: https://news.cision.com/implantica/r/implantica-announces-onboarding-of-the-world-leading-la-paz-university-hospital--spain,c4101461
+
+Financial Institutions: 1 targets
+  - Dabafinance_Com: https://dabafinance.com/en/news/p1-ventures-closes-50m-fund-to-expand-african-startup-investments

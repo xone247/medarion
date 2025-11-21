@@ -1,0 +1,544 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Ensure responsive behavior */
+@layer base {
+  * {
+    box-sizing: border-box;
+  }
+
+  html, body, #root {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+  }
+}
+
+@layer base {
+  :root {
+    /* Cursor.com style - Pure black and white theme */
+    /* Primary & Accent Colors - Monochrome only */
+    --color-primary-teal: #000000;      /* Black - primary */
+    --color-primary-light: #1F1F1F;     /* Dark gray */
+    --color-secondary-gold: #4A4A4A;     /* Medium gray */
+
+    /* Functional & Accent Colors - Grayscale only */
+    --color-accent-sky: #000000;        /* Black */
+    --color-success: #000000;           /* Black */
+    --color-error: #000000;             /* Black */
+    --color-warning: #4A4A4A;           /* Gray */
+    --color-info: #000000;              /* Black */
+
+    /* Text Colors */
+    --color-text-primary: #000000;      /* Pure black */
+    --color-text-secondary: #6B6B6B;    /* Medium gray */
+
+    /* Neutral & Background Colors - Pure white like cursor.com */
+    --color-neutral-taupe: #F5F5F5;     /* Very light gray */
+    --color-divider-gray: #E5E5E5;      /* Light gray divider */
+    --color-background-default: #FFFFFF; /* Pure white */
+    --color-background-surface: #FAFAFA; /* Very light gray surface */
+  }
+
+  .dark {
+    /* Cursor.com style - Pure black and white theme */
+    /* Primary & Accent Colors - Monochrome only */
+    --color-primary-teal: #FFFFFF;      /* White - primary */
+    --color-primary-light: #E5E5E5;     /* Light gray */
+    --color-secondary-gold: #B5B5B5;    /* Medium gray */
+
+    /* Functional - Grayscale only */
+    --color-accent-sky: #FFFFFF;        /* White */
+    --color-success: #FFFFFF;           /* White */
+    --color-error: #FFFFFF;             /* White */
+    --color-warning: #B5B5B5;           /* Gray */
+    --color-info: #FFFFFF;              /* White */
+
+    /* Text */
+    --color-text-primary: #FFFFFF;      /* Pure white */
+    --color-text-secondary: #9A9A9A;    /* Medium gray */
+
+    /* Neutrals / Surfaces - Pure black like cursor.com */
+    --color-neutral-taupe: #1A1A1A;     /* Very dark gray */
+    --color-divider-gray: #2A2A2A;      /* Dark gray divider */
+    --color-background-default: #000000; /* Pure black */
+    --color-background-surface: #0A0A0A; /* Very dark gray surface */
+  }
+
+  /* Theme Presets (Light) - switch by adding class to <html> or <body> */
+  .theme-teal {
+    --color-primary-teal: #00665C;
+    --color-primary-light: #9BEAE0;
+    --color-accent-sky: #38BDF8;
+  }
+  .theme-indigo {
+    --color-primary-teal: #4F46E5;      /* Indigo 600 */
+    --color-primary-light: #A5B4FC;     /* Indigo 300 */
+    --color-accent-sky: #60A5FA;        /* Blue 400 */
+  }
+  .theme-emerald {
+    --color-primary-teal: #00665C;      /* Lead Green */
+    --color-primary-light: #9BEAE0;     /* Light Teal */
+    --color-accent-sky: #38BDF8;        /* Sky */
+  }
+  .theme-rose {
+    --color-primary-teal: #E11D48;      /* Rose 600 */
+    --color-primary-light: #FCA5A5;     /* Rose 300 */
+    --color-accent-sky: #FB7185;        /* Rose 400 */
+  }
+
+  /* Theme Presets (Dark) */
+  .dark.theme-indigo {
+    --color-primary-teal: #818CF8;      /* Indigo 400 */
+    --color-primary-light: #C7D2FE;     /* Indigo 200 */
+    --color-accent-sky: #93C5FD;        /* Blue 300 */
+  }
+  .dark.theme-emerald {
+    --color-primary-teal: #00665C;      /* Lead Green (same as light mode) */
+    --color-primary-light: #9BEAE0;     /* Light Teal */
+    --color-accent-sky: #38BDF8;        /* Sky */
+  }
+  .dark.theme-rose {
+    --color-primary-teal: #FB7185;      /* Rose 400 */
+    --color-primary-light: #FCA5A5;     /* Rose 300 */
+    --color-accent-sky: #FDA4AF;        /* Rose 300 */
+  }
+
+  /* Base element theming */
+  body {
+    background-color: var(--color-background-default);
+    color: var(--color-text-primary);
+    scroll-behavior: smooth;
+    font-family: 'Inter', system-ui, sans-serif;
+    font-size: 16px;
+    line-height: 24px;
+  }
+
+  /* Neutral default link color; only highlight on hover */
+  a {
+    color: var(--color-text-secondary);
+    text-decoration: none;
+  }
+  a:hover {
+    color: var(--color-primary-teal);
+  }
+  /* Explicit .link class can opt-in to brand color */
+  .link {
+    color: var(--color-primary-teal);
+  }
+  .link:hover {
+    color: var(--color-primary-light);
+  }
+
+  /* Modern base typography - Matching ImagineAI.me */
+  h1 { 
+    font-size: 64px;
+    font-weight: 400;
+    line-height: 70.4px;
+    letter-spacing: -1.92px;
+    @apply tracking-tight;
+  }
+  h2 { 
+    font-size: 36px;
+    font-weight: 400;
+    line-height: 54px;
+    @apply tracking-tight;
+  }
+  h3 { 
+    font-size: 24px;
+    font-weight: 400;
+    line-height: 28.8px;
+  }
+  h4 { 
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 30px;
+  }
+  p { 
+    font-size: 20px;
+    line-height: 30px;
+  }
+  
+  /* Responsive typography */
+  @media (max-width: 768px) {
+    h1 {
+      font-size: 40px;
+      line-height: 44px;
+      letter-spacing: -1.2px;
+    }
+    h2 {
+      font-size: 28px;
+      line-height: 42px;
+    }
+    h3 {
+      font-size: 20px;
+      line-height: 24px;
+    }
+    h4 {
+      font-size: 18px;
+      line-height: 27px;
+    }
+    p {
+      font-size: 18px;
+      line-height: 27px;
+    }
+  }
+
+  /* Selection & scrollbar */
+  ::selection { background: var(--color-primary-light); color: var(--color-text-primary); }
+  .dark ::selection { background: color-mix(in srgb, var(--color-primary-teal), white 20%); color: var(--color-background-default); }
+  ::-webkit-scrollbar { width: 10px; height: 10px; }
+  ::-webkit-scrollbar-track { background: var(--color-background-default); }
+  ::-webkit-scrollbar-thumb { background: var(--color-neutral-taupe); border-radius: 9999px; border: 2px solid var(--color-background-default); }
+
+  /* Accessible focus ring */
+  :focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-primary-light), transparent 30%);
+    border-radius: 8px;
+  }
+}
+
+/* Custom utility classes for the new color system */
+@layer components {
+  .btn-primary {
+    @apply bg-[var(--color-primary-teal)] text-white border border-[var(--color-primary-teal)] hover:opacity-90 transition-opacity;
+  }
+  
+  .btn-secondary {
+    @apply border border-[var(--color-secondary-gold)] text-[var(--color-secondary-gold)] bg-transparent transition-colors;
+  }
+  .btn-secondary:hover { background-color: color-mix(in srgb, var(--color-secondary-gold), transparent 90%); }
+  
+  .btn-outline {
+    /* Stronger visible outline across modes */
+    @apply border border-[var(--color-divider-gray)] text-[var(--color-text-primary)] bg-[var(--color-background-surface)] transition-colors;
+    /* Light mode hover gets a faint brand tint so white-on-white is avoided */
+    background-color: var(--color-background-surface);
+  }
+  .btn-outline:hover {
+    background-color: color-mix(in srgb, var(--color-primary-teal), white 92%);
+  }
+  .dark .btn-outline:hover {
+    background-color: color-mix(in srgb, var(--color-primary-teal), black 85%);
+  }
+  .btn-outline:active {
+    background-color: color-mix(in srgb, var(--color-primary-teal), white 86%);
+  }
+  .dark .btn-outline:active {
+    background-color: color-mix(in srgb, var(--color-primary-teal), black 80%);
+  }
+  .btn-outline.active, .btn-outline[aria-pressed="true"] {
+    background-color: color-mix(in srgb, var(--color-primary-teal), white 85%);
+    border-color: var(--color-primary-teal);
+    color: var(--color-text-primary);
+  }
+  .dark .btn-outline.active, .dark .btn-outline[aria-pressed="true"] {
+    background-color: color-mix(in srgb, var(--color-primary-teal), black 75%);
+    border-color: var(--color-primary-teal);
+    color: #FFFFFF;
+  }
+
+  /* Ghost, size variants, and elevated primary */
+  .btn-ghost { @apply bg-transparent text-[var(--color-text-primary)] border border-transparent; }
+  .btn-ghost:hover { background-color: color-mix(in srgb, var(--color-primary-teal), white 94%); }
+  .btn-lg { @apply px-5 py-3 rounded-lg text-base; }
+  .btn-sm { @apply px-2.5 py-1.5 rounded-md text-xs; }
+  /* Flat primary (no gradients) */
+  .btn-primary-elevated { 
+    @apply text-white shadow-md hover:shadow-lg border; 
+    background-color: var(--color-primary-teal) !important; 
+    border-color: var(--color-primary-teal) !important; 
+  }
+  .dark .btn-primary-elevated {
+    background-color: var(--color-primary-teal) !important;
+    border-color: var(--color-primary-teal) !important;
+    color: #FFFFFF !important;
+  }
+  
+  /* Compact action chips (good contrast in dark/light) */
+  .btn-chip { @apply inline-flex items-center gap-1 px-2 py-1 rounded-md text-xs font-medium transition-colors; }
+  .btn-chip:hover { @apply opacity-90; }
+  .btn-chip-primary { @apply bg-[var(--color-primary-teal)] text-white; }
+  .btn-chip-info { @apply bg-[var(--color-accent-sky)] text-white; }
+  .btn-chip-danger { @apply bg-[var(--color-error)] text-white; }
+  .btn-chip-warning { @apply bg-[var(--color-warning)] text-white; }
+  .btn-chip-muted { @apply bg-[var(--color-neutral-taupe)] text-[var(--color-text-primary)]; }
+  
+  /* Layered surfaces for contrast (inspired by the palette) */
+  .surface { @apply bg-[var(--color-background-surface)] rounded-xl border border-[var(--color-divider-gray)]; box-shadow: 0 1px 0 0 rgba(0,0,0,0.03); }
+  .surface-2 { @apply rounded-xl border border-[var(--color-divider-gray)] shadow-card; background: var(--color-background-surface); }
+  .dark .surface-2 { background: var(--color-background-surface); }
+  .surface-3 { @apply rounded-xl border border-[var(--color-divider-gray)] shadow-card-elevated; background: var(--color-background-surface); }
+  .dark .surface-3 { background: var(--color-background-surface); }
+
+  .card { @apply bg-[var(--color-background-surface)] border border-[var(--color-divider-gray)] rounded-lg shadow-sm; }
+  .card-hover { @apply transition-transform hover:-translate-y-0.5 hover:shadow-card; }
+  .panel { @apply border border-[var(--color-divider-gray)] rounded-xl shadow-sm; background-color: var(--color-background-surface); backdrop-filter: none; -webkit-backdrop-filter: none; }
+  .section { @apply py-10 md:py-14; }
+  .toolbar { @apply bg-[var(--color-background-surface)] border border-[var(--color-divider-gray)] rounded-lg px-3 py-2 flex flex-wrap items-center gap-2; }
+  
+  .text-success { @apply text-[var(--color-success)]; }
+  .text-error { @apply text-[var(--color-error)]; }
+  .text-accent { @apply text-[var(--color-accent-sky)]; }
+  .text-warning { @apply text-[var(--color-warning)]; }
+  .text-info { @apply text-[var(--color-info)]; }
+
+  /* Highlight chips for dark mode with better contrast */
+  .highlight { @apply bg-[var(--color-primary-light)] text-[var(--color-primary-teal)] px-1 rounded border border-transparent; }
+  .dark .highlight { background: color-mix(in srgb, var(--color-primary-teal), white 18%); color: #0f2f2c; border-color: color-mix(in srgb, var(--color-primary-teal), black 30%); }
+
+  /* Badges & chips */
+  .badge { @apply inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium border border-[var(--color-divider-gray)] bg-[var(--color-background-surface)]; }
+  .chip  { @apply inline-flex items-center gap-1 px-2 py-1 rounded-lg text-xs bg-[var(--color-background-default)] border border-[var(--color-divider-gray)] text-[var(--color-text-primary)]; }
+  /* Improve badge visibility on light backgrounds */
+  .badge { background-color: color-mix(in srgb, var(--color-neutral-taupe), white 70%); border-color: color-mix(in srgb, var(--color-neutral-taupe), black 10%); }
+  .chip  { background-color: color-mix(in srgb, var(--color-neutral-taupe), white 80%); }
+
+  /* Reusable input style */
+  .input { @apply w-full px-3 py-2 border rounded-lg bg-[var(--color-background-surface)] text-[var(--color-text-primary)] focus:ring-2 focus:ring-[var(--color-primary-teal)] focus:border-transparent border-[var(--color-divider-gray)]; }
+  /* Ensure inputs and selects have visible text in dark mode */
+  .dark .input,
+  .dark input,
+  .dark select,
+  .dark textarea {
+    color: #FFFFFF !important;
+  }
+  .dark .input::placeholder,
+  .dark input::placeholder,
+  .dark textarea::placeholder {
+    color: #9CA3AF !important;
+  }
+  .dark select option {
+    background-color: var(--color-background-surface) !important;
+    color: #FFFFFF !important;
+  }
+  /* Ensure select elements are visible in dark mode */
+  .dark select {
+    background-color: var(--color-background-surface) !important;
+    color: #FFFFFF !important;
+    border-color: var(--color-divider-gray) !important;
+  }
+
+  /* Surface containers */
+  .surface { @apply bg-[var(--color-background-surface)] rounded-xl border border-[var(--color-divider-gray)]; }
+
+  /* Responsive page container and grids */
+  .page-container { @apply w-full px-4; }
+  .section-grid { @apply grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6; }
+
+  /* Consistent tiles for charts/maps */
+  .tile { @apply card; }
+  .tile-header { @apply p-4 border-b border-[var(--color-divider-gray)]; }
+  .tile-body { @apply p-2; }
+
+  /* Icon utilities for consistent coloring across pages */
+  .icon-primary { color: var(--color-primary-teal) !important; }
+  .icon-muted { color: var(--color-text-secondary) !important; }
+
+  /* Table visibility improvements (headers, hover) */
+  table thead th { 
+    background: color-mix(in srgb, var(--color-primary-teal), white 96%); 
+    color: var(--color-text-primary);
+  }
+  table tbody tr:hover {
+    background: color-mix(in srgb, var(--color-primary-teal), white 98%);
+  }
+
+  /* Contextual icon defaults */
+  .tile-header .lucide { color: var(--color-primary-teal) !important; }
+  .toolbar .lucide { color: var(--color-primary-teal) !important; }
+  .btn-primary .lucide { color: var(--color-background-surface) !important; }
+}
+
+@layer utilities {
+  /* Override Tailwind default font sizes to match ImagineAI */
+  .text-xs { font-size: 12px !important; line-height: 18px !important; }
+  .text-sm { font-size: 14px !important; line-height: 21px !important; }
+  .text-base { font-size: 16px !important; line-height: 24px !important; }
+  .text-lg { font-size: 18px !important; line-height: 27px !important; }
+  .text-xl { font-size: 20px !important; line-height: 30px !important; }
+  .text-2xl { font-size: 24px !important; line-height: 28.8px !important; font-weight: 400 !important; }
+  .text-3xl { font-size: 36px !important; line-height: 54px !important; font-weight: 400 !important; }
+  .text-4xl { font-size: 40px !important; line-height: 44px !important; font-weight: 400 !important; letter-spacing: -1.2px !important; }
+  .text-5xl { font-size: 48px !important; line-height: 52.8px !important; font-weight: 400 !important; letter-spacing: -1.44px !important; }
+  .text-6xl { font-size: 64px !important; line-height: 70.4px !important; font-weight: 400 !important; letter-spacing: -1.92px !important; }
+  .text-7xl { font-size: 64px !important; line-height: 70.4px !important; font-weight: 400 !important; letter-spacing: -1.92px !important; }
+  
+  /* Override font weights to match ImagineAI (400 for headings) */
+  .font-normal { font-weight: 400 !important; }
+  .font-medium { font-weight: 500 !important; }
+  .font-semibold { font-weight: 500 !important; }
+  .font-bold { font-weight: 600 !important; }
+  
+  /* Responsive font size overrides */
+  @media (max-width: 768px) {
+    .text-4xl { font-size: 40px !important; line-height: 44px !important; letter-spacing: -1.2px !important; }
+    .text-5xl { font-size: 40px !important; line-height: 44px !important; letter-spacing: -1.2px !important; }
+    .text-6xl { font-size: 40px !important; line-height: 44px !important; letter-spacing: -1.2px !important; }
+    .text-7xl { font-size: 40px !important; line-height: 44px !important; letter-spacing: -1.2px !important; }
+    .text-3xl { font-size: 28px !important; line-height: 42px !important; }
+    .text-2xl { font-size: 20px !important; line-height: 24px !important; }
+    .text-xl { font-size: 18px !important; line-height: 27px !important; }
+  }
+  
+  /* Hide scrollbar for scrolling tags */
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+  
+  /* Map common semantic color utilities to theme tokens */
+  /* Text colors */
+  .text-green-600, .text-green-500, .text-emerald-600, .text-emerald-500 { color: var(--color-success) !important; }
+  .text-red-600, .text-red-500 { color: var(--color-error) !important; }
+  .text-amber-600, .text-amber-500, .text-yellow-600, .text-yellow-500, .text-orange-600, .text-orange-500 { color: var(--color-warning) !important; }
+  .text-blue-600, .text-blue-500, .text-sky-600, .text-sky-500 { color: var(--color-info) !important; }
+  .text-teal-600, .text-teal-500 { color: var(--color-primary-teal) !important; }
+
+  /* Background fills (light variants) */
+  .bg-green-100 { background-color: color-mix(in srgb, var(--color-success), white 85%) !important; }
+  .bg-red-100 { background-color: color-mix(in srgb, var(--color-error), white 85%) !important; }
+  .bg-amber-100, .bg-yellow-100 { background-color: color-mix(in srgb, var(--color-warning), white 85%) !important; }
+  .bg-blue-100, .bg-sky-100 { background-color: color-mix(in srgb, var(--color-info), white 85%) !important; }
+
+  /* Background fills (dark variants) */
+  .dark .bg-green-900 { background-color: color-mix(in srgb, var(--color-success), black 85%) !important; }
+  .dark .bg-red-900 { background-color: color-mix(in srgb, var(--color-error), black 85%) !important; }
+  .dark .bg-amber-900, .dark .bg-yellow-900 { background-color: color-mix(in srgb, var(--color-warning), black 85%) !important; }
+  .dark .bg-blue-900, .dark .bg-sky-900 { background-color: color-mix(in srgb, var(--color-info), black 85%) !important; }
+
+  /* Borders */
+  .border-green-200, .border-green-300 { border-color: var(--color-success) !important; }
+  .border-red-200, .border-red-300 { border-color: var(--color-error) !important; }
+  .border-amber-200, .border-yellow-200 { border-color: var(--color-warning) !important; }
+  .border-blue-200, .border-sky-200 { border-color: var(--color-info) !important; }
+
+  /* Remove gradient utilities globally (force flat backgrounds) */
+  .bg-gradient-to-r,
+  .bg-gradient-to-l,
+  .bg-gradient-to-t,
+  .bg-gradient-to-b,
+  .bg-gradient-to-tr,
+  .bg-gradient-to-tl,
+  .bg-gradient-to-br,
+  .bg-gradient-to-bl {
+    background-image: none !important;
+    background-color: transparent !important;
+  }
+  /* Map common Tailwind gray/white utilities to theme variables for consistency */
+  /* Backgrounds */
+  .bg-white { background-color: var(--color-background-surface) !important; }
+  .bg-gray-50 { background-color: var(--color-background-default) !important; }
+  .bg-gray-100 { background-color: var(--color-background-default) !important; }
+  .dark .bg-gray-800 { background-color: var(--color-background-surface) !important; }
+  .dark .bg-gray-900 { background-color: var(--color-background-default) !important; }
+
+  /* Borders - stronger visibility */
+  .border-gray-200 { border-color: var(--color-divider-gray) !important; }
+  .border-gray-300 { border-color: var(--color-divider-gray) !important; }
+  .dark .border-gray-600 { border-color: var(--color-divider-gray) !important; }
+  .dark .border-gray-700 { border-color: var(--color-divider-gray) !important; }
+  .dark .border-gray-800 { border-color: var(--color-divider-gray) !important; }
+  .hover\:border-accent:hover { border-color: var(--color-primary-light) !important; }
+
+  /* Text */
+  .text-gray-900, .text-gray-800, .text-gray-700 { color: var(--color-text-primary) !important; }
+  .text-gray-600, .text-gray-500 { color: var(--color-text-secondary) !important; }
+  /* Keep white text actually white in dark mode for better contrast, especially on colored backgrounds */
+  .dark .text-white {
+    color: #FFFFFF !important;
+  }
+  /* Specifically for sidebar and primary teal backgrounds */
+  .dark .bg-\[var\(--color-primary-teal\)\] .text-white,
+  .dark [class*="bg-[var(--color-primary-teal)]"] .text-white,
+  .dark button.bg-\[var\(--color-primary-teal\)\] .text-white,
+  .dark button[class*="bg-[var(--color-primary-teal)]"] .text-white {
+    color: #FFFFFF !important;
+  }
+  .dark .text-gray-300, .dark .text-gray-400 { color: var(--color-text-secondary) !important; }
+
+  /* Inputs often use gray backgrounds in dark mode */
+  .dark .bg-gray-700 { background-color: var(--color-background-surface) !important; }
+
+  /* Subtle hover backgrounds to theme default */
+  .hover\:bg-gray-50:hover { background-color: var(--color-background-default) !important; }
+  .dark .hover\:bg-gray-700:hover { background-color: color-mix(in srgb, var(--color-background-surface), black 5%) !important; }
+
+  /* Hide scrollbars for horizontally scrollable tab bars on mobile */
+  .no-scrollbar::-webkit-scrollbar { display: none; }
+  .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+}
+
+.**REMOVE_BLOG_THEME_MARKER** {}
+/* Glassmorphism helpers (Apple-like) */
+.glass-soft {
+  background: color-mix(in srgb, var(--color-background-surface) 55%, transparent);
+  backdrop-filter: saturate(140%) blur(14px);
+  -webkit-backdrop-filter: saturate(140%) blur(14px);
+  border: 1px solid color-mix(in srgb, var(--color-background-surface) 70%, white 20%);
+  border-radius: 14px;
+}
+
+.glass-strong {
+  background: color-mix(in srgb, var(--color-background-surface) 60%, transparent);
+  backdrop-filter: saturate(160%) blur(18px);
+  -webkit-backdrop-filter: saturate(160%) blur(18px);
+  border: 1px solid color-mix(in srgb, var(--color-background-surface) 80%, white 20%);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.dark .glass-strong {
+  background: color-mix(in srgb, var(--color-background-surface) 40%, transparent);
+  border: 1px solid color-mix(in srgb, var(--color-background-surface) 65%, white 25%);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
+}
+
+.hairline {
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.06), inset 0 -1px 0 rgba(0,0,0,0.10);
+}
+
+.shadow-soft { box-shadow: 0 10px 30px rgba(0,0,0,0.08), 0 2px 8px rgba(0,0,0,0.04); }
+.shadow-elevated { box-shadow: 0 18px 50px rgba(0,0,0,0.12), 0 8px 20px rgba(0,0,0,0.06); }
+
+.sheen { position: relative; }
+.sheen::before {
+  content: "";
+  position: absolute;
+  top: -20%;
+  left: -10%;
+  width: 60%;
+  height: 60%;
+  pointer-events: none;
+  background: radial-gradient( circle at 30% 30%, rgba(255,255,255,0.16), rgba(255,255,255,0.02) 60% );
+  filter: blur(8px);
+}
+
+.noise-overlay { position: relative; }
+.noise-overlay::after {
+  content: "";
+  position: absolute; inset: 0; opacity: 0.04; pointer-events: none;
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="2" stitchTiles="stitch"/></filter><rect width="100%" height="100%" filter="url(%23n)" opacity="0.35"/></svg>');
+  background-repeat: repeat;
+}
+
+.card-glass {
+  border-radius: 16px; overflow: hidden;
+  background: var(--color-background-surface);
+  border: 1px solid var(--color-divider-gray);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.08), 0 1px 2px -1px rgba(0, 0, 0, 0.04);
+}
+
+.dark .card-glass {
+  background: var(--color-background-surface);
+  border: 1px solid var(--color-divider-gray);
+  box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.3), 0 1px 2px -1px rgba(0, 0, 0, 0.2);
+}

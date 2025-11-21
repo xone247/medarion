@@ -1,0 +1,751 @@
+targets:
+- name: Africa Health Organization
+  type: html
+  url: https://africahealthorganization.org
+- name: African Medical Association
+  type: html
+  url: https://africanmedicalassociation.org
+- name: Africa Health Innovation Network
+  type: html
+  url: https://africahealthinnovation.org
+- name: African Healthcare Federation
+  type: html
+  url: https://africanhealthcarefederation.org
+- name: Africa Health Tech Alliance
+  type: html
+  url: https://africahealthtechalliance.org
+- name: African Digital Health Network
+  type: html
+  url: https://africandigitalhealth.org
+- name: Africa Health Data Platform
+  type: html
+  url: https://africahealthdata.org
+- name: African Health Economics Association
+  type: html
+  url: https://afhea.org
+- name: Africa Health Policy Network
+  type: html
+  url: https://africahealthpolicy.org
+- name: African Health Systems Network
+  type: html
+  url: https://africanhealthsystems.org
+- name: African Venture Capital Association
+  type: html
+  url: https://africanvca.org
+- name: Africa Investment Network
+  type: html
+  url: https://africainvestmentnetwork.org
+- name: African Investment Partners
+  type: html
+  url: https://africaninvestmentpartners.com
+- name: Africa Capital Partners
+  type: html
+  url: https://africacapitalpartners.com
+- name: African Investment Capital
+  type: html
+  url: https://africaninvestmentcapital.com
+- name: Africa Investment Fund
+  type: html
+  url: https://africainvestmentfund.com
+- name: African Investment Trust
+  type: html
+  url: https://africaninvestmenttrust.org
+- name: Africa Investment Solutions
+  type: html
+  url: https://africainvestmentsolutions.com
+- name: African Investment Advisors
+  type: html
+  url: https://africaninvestmentadvisors.com
+- name: Africa Investment Management
+  type: html
+  url: https://africainvestmentmanagement.com
+- name: Global Health Fund
+  type: html
+  url: https://globalhealthfund.org
+- name: International Health Partnership
+  type: html
+  url: https://internationalhealthpartnership.org
+- name: Global Health Investment
+  type: html
+  url: https://globalhealthinvestment.org
+- name: Health Investment Fund
+  type: html
+  url: https://healthinvestmentfund.org
+- name: Global Health Foundation
+  type: html
+  url: https://globalhealthfoundation.org
+- name: International Health Fund
+  type: html
+  url: https://internationalhealthfund.org
+- name: Health Innovation Fund
+  type: html
+  url: https://healthinnovationfund.org
+- name: Global Health Capital
+  type: html
+  url: https://globalhealthcapital.org
+- name: Health Investment Partners
+  type: html
+  url: https://healthinvestmentpartners.org
+- name: Global Health Partners
+  type: html
+  url: https://globalhealthpartners.org
+- name: Health Tech Innovation
+  type: html
+  url: https://healthtechinnovation.org
+- name: Digital Health Innovation
+  type: html
+  url: https://digitalhealthinnovation.org
+- name: Healthcare Technology Network
+  type: html
+  url: https://healthcaretechnology.network
+- name: Health Innovation Network
+  type: html
+  url: https://healthinnovation.network
+- name: Digital Health Network
+  type: html
+  url: https://digitalhealth.network
+- name: Health Tech Network
+  type: html
+  url: https://healthtechnetwork.org
+- name: Healthcare Innovation Hub
+  type: html
+  url: https://healthcareinnovationhub.org
+- name: Health Technology Alliance
+  type: html
+  url: https://healthtechnologyalliance.org
+- name: Digital Health Alliance
+  type: html
+  url: https://digitalhealthalliance.org
+- name: Health Innovation Alliance
+  type: html
+  url: https://healthinnovationalliance.org
+- name: African Development Fund
+  type: html
+  url: https://africandevelopmentfund.org
+- name: African Investment Bank
+  type: html
+  url: https://africaninvestmentbank.org
+- name: Africa Development Capital
+  type: html
+  url: https://africadevelopmentcapital.com
+- name: African Development Partners
+  type: html
+  url: https://africandevelopmentpartners.org
+- name: Africa Investment Development
+  type: html
+  url: https://africainvestmentdevelopment.com
+- name: African Development Network
+  type: html
+  url: https://africandevelopmentnetwork.org
+- name: Africa Development Fund
+  type: html
+  url: https://africadevelopmentfund.org
+- name: African Development Group
+  type: html
+  url: https://africandevelopmentgroup.org
+- name: Africa Development Partners
+  type: html
+  url: https://africadevelopmentpartners.org
+- name: African Development Network
+  type: html
+  url: https://africandevelopmentnetwork.org
+- name: Healthcare Research Institute
+  type: html
+  url: https://healthcareresearchinstitute.org
+- name: Health Research Network
+  type: html
+  url: https://healthresearch.network
+- name: Medical Research Network
+  type: html
+  url: https://medicalresearch.network
+- name: Health Sciences Research
+  type: html
+  url: https://healthsciencesresearch.org
+- name: Healthcare Research Network
+  type: html
+  url: https://healthcareresearch.network
+- name: Health Research Alliance
+  type: html
+  url: https://healthresearchalliance.org
+- name: Medical Research Alliance
+  type: html
+  url: https://medicalresearchalliance.org
+- name: Health Sciences Network
+  type: html
+  url: https://healthsciences.network
+- name: Healthcare Research Alliance
+  type: html
+  url: https://healthcareresearchalliance.org
+- name: Health Research Network
+  type: html
+  url: https://healthresearch.network
+- name: Africa Startup Incubator
+  type: html
+  url: https://africastartupincubator.org
+- name: African Startup Accelerator
+  type: html
+  url: https://africanstartupaccelerator.org
+- name: Africa Innovation Incubator
+  type: html
+  url: https://africainnovationincubator.org
+- name: African Startup Hub
+  type: html
+  url: https://africanstartuphub.org
+- name: Africa Startup Network
+  type: html
+  url: https://africastartupnetwork.org
+- name: African Innovation Hub
+  type: html
+  url: https://africaninnovationhub.org
+- name: Africa Startup Alliance
+  type: html
+  url: https://africastartupalliance.org
+- name: African Startup Foundation
+  type: html
+  url: https://africanstartupfoundation.org
+- name: Africa Startup Initiative
+  type: html
+  url: https://africastartupinitiative.org
+- name: African Startup Platform
+  type: html
+  url: https://africanstartupplatform.org
+- name: Healthcare Market Research
+  type: html
+  url: https://healthcaremarketresearch.org
+- name: Health Market Intelligence
+  type: html
+  url: https://healthmarketintelligence.org
+- name: Medical Market Research
+  type: html
+  url: https://medicalmarketresearch.org
+- name: Healthcare Industry Research
+  type: html
+  url: https://healthcareindustryresearch.org
+- name: Health Market Research
+  type: html
+  url: https://healthmarketresearch.org
+- name: Medical Market Intelligence
+  type: html
+  url: https://medicalmarketintelligence.org
+- name: Healthcare Market Intelligence
+  type: html
+  url: https://healthcaremarketintelligence.org
+- name: Health Industry Research
+  type: html
+  url: https://healthindustryresearch.org
+- name: Medical Industry Research
+  type: html
+  url: https://medicalindustryresearch.org
+- name: Healthcare Market Analysis
+  type: html
+  url: https://healthcaremarketanalysis.org
+- name: Global Health Network
+  type: html
+  url: https://globalhealth.network
+- name: International Health Network
+  type: html
+  url: https://internationalhealth.network
+- name: Global Health Alliance
+  type: html
+  url: https://globalhealthalliance.org
+- name: International Health Alliance
+  type: html
+  url: https://internationalhealthalliance.org
+- name: Global Health Network
+  type: html
+  url: https://globalhealth.network
+- name: International Health Network
+  type: html
+  url: https://internationalhealth.network
+- name: Global Health Alliance
+  type: html
+  url: https://globalhealthalliance.org
+- name: International Health Alliance
+  type: html
+  url: https://internationalhealthalliance.org
+- name: Global Health Network
+  type: html
+  url: https://globalhealth.network
+- name: International Health Network
+  type: html
+  url: https://internationalhealth.network
+- name: Healthcare Investment Network
+  type: html
+  url: https://healthcareinvestment.network
+- name: Health Investment Network
+  type: html
+  url: https://healthinvestment.network
+- name: Medical Investment Network
+  type: html
+  url: https://medicalinvestment.network
+- name: Healthcare Finance Network
+  type: html
+  url: https://healthcarefinance.network
+- name: Health Finance Network
+  type: html
+  url: https://healthfinance.network
+- name: Medical Finance Network
+  type: html
+  url: https://medicalfinance.network
+- name: Healthcare Investment Alliance
+  type: html
+  url: https://healthcareinvestmentalliance.org
+- name: Health Investment Alliance
+  type: html
+  url: https://healthinvestmentalliance.org
+- name: Medical Investment Alliance
+  type: html
+  url: https://medicalinvestmentalliance.org
+- name: Healthcare Finance Alliance
+  type: html
+  url: https://healthcarefinancealliance.org
+- name: Africa Health Tech Network
+  type: html
+  url: https://africahealthtech.network
+- name: African Digital Health Network
+  type: html
+  url: https://africandigitalhealth.network
+- name: Africa Health Innovation Network
+  type: html
+  url: https://africahealthinnovation.network
+- name: African Health Tech Alliance
+  type: html
+  url: https://africanhealthtechalliance.org
+- name: Africa Digital Health Alliance
+  type: html
+  url: https://africadigitalhealthalliance.org
+- name: African Health Innovation Alliance
+  type: html
+  url: https://africanhealthinnovationalliance.org
+- name: Africa Health Tech Network
+  type: html
+  url: https://africahealthtech.network
+- name: African Digital Health Network
+  type: html
+  url: https://africandigitalhealth.network
+- name: Africa Health Innovation Network
+  type: html
+  url: https://africahealthinnovation.network
+- name: African Health Tech Alliance
+  type: html
+  url: https://africanhealthtechalliance.org
+- name: Global Healthcare Investment Network
+  type: html
+  url: https://globalhealthcareinvestment.network
+- name: International Healthcare Investment
+  type: html
+  url: https://internationalhealthcareinvestment.org
+- name: Global Health Investment Network
+  type: html
+  url: https://globalhealthinvestment.network
+- name: International Health Investment
+  type: html
+  url: https://internationalhealthinvestment.org
+- name: Global Healthcare Finance
+  type: html
+  url: https://globalhealthcarefinance.org
+- name: International Healthcare Finance
+  type: html
+  url: https://internationalhealthcarefinance.org
+- name: Global Health Finance
+  type: html
+  url: https://globalhealthfinance.org
+- name: International Health Finance
+  type: html
+  url: https://internationalhealthfinance.org
+- name: Global Healthcare Capital
+  type: html
+  url: https://globalhealthcarecapital.org
+- name: International Healthcare Capital
+  type: html
+  url: https://internationalhealthcarecapital.org
+- name: Africa Investment Club
+  type: html
+  url: https://africainvestmentclub.org
+- name: African Investment Society
+  type: html
+  url: https://africaninvestmentsociety.org
+- name: Africa Investment Foundation
+  type: html
+  url: https://africainvestmentfoundation.org
+- name: African Investment Council
+  type: html
+  url: https://africaninvestmentcouncil.org
+- name: Africa Investment Bureau
+  type: html
+  url: https://africainvestmentbureau.org
+- name: African Investment Commission
+  type: html
+  url: https://africaninvestmentcommission.org
+- name: Africa Investment Authority
+  type: html
+  url: https://africainvestmentauthority.org
+- name: African Investment Board
+  type: html
+  url: https://africaninvestmentboard.org
+- name: Africa Investment Committee
+  type: html
+  url: https://africainvestmentcommittee.org
+- name: African Investment Secretariat
+  type: html
+  url: https://africaninvestmentsecretariat.org
+- name: Healthcare Innovation Center
+  type: html
+  url: https://healthcareinnovationcenter.org
+- name: Health Innovation Center
+  type: html
+  url: https://healthinnovationcenter.org
+- name: Medical Innovation Center
+  type: html
+  url: https://medicalinnovationcenter.org
+- name: Healthcare Innovation Lab
+  type: html
+  url: https://healthcareinnovationlab.org
+- name: Health Innovation Lab
+  type: html
+  url: https://healthinnovationlab.org
+- name: Medical Innovation Lab
+  type: html
+  url: https://medicalinnovationlab.org
+- name: Healthcare Innovation Institute
+  type: html
+  url: https://healthcareinnovationinstitute.org
+- name: Health Innovation Institute
+  type: html
+  url: https://healthinnovationinstitute.org
+- name: Medical Innovation Institute
+  type: html
+  url: https://medicalinnovationinstitute.org
+- name: Healthcare Innovation Foundation
+  type: html
+  url: https://healthcareinnovationfoundation.org
+- name: Africa Health Research Network
+  type: html
+  url: https://africahealthresearch.network
+- name: African Medical Research Network
+  type: html
+  url: https://africanmedicalresearch.network
+- name: Africa Health Sciences Network
+  type: html
+  url: https://africahealthsciences.network
+- name: African Health Research Alliance
+  type: html
+  url: https://africanhealthresearchalliance.org
+- name: Africa Medical Research Alliance
+  type: html
+  url: https://africamedicalresearchalliance.org
+- name: African Health Sciences Alliance
+  type: html
+  url: https://africanhealthsciencesalliance.org
+- name: Africa Health Research Foundation
+  type: html
+  url: https://africahealthresearchfoundation.org
+- name: African Medical Research Foundation
+  type: html
+  url: https://africanmedicalresearchfoundation.org
+- name: Africa Health Sciences Foundation
+  type: html
+  url: https://africahealthsciencesfoundation.org
+- name: African Health Research Institute
+  type: html
+  url: https://africanhealthresearchinstitute.org
+- name: Global Healthcare Technology Network
+  type: html
+  url: https://globalhealthcaretechnology.network
+- name: International Healthcare Technology
+  type: html
+  url: https://internationalhealthcaretechnology.org
+- name: Global Health Technology Network
+  type: html
+  url: https://globalhealthtechnology.network
+- name: International Health Technology
+  type: html
+  url: https://internationalhealthtechnology.org
+- name: Global Healthcare Innovation Network
+  type: html
+  url: https://globalhealthcareinnovation.network
+- name: International Healthcare Innovation
+  type: html
+  url: https://internationalhealthcareinnovation.org
+- name: Global Health Innovation Network
+  type: html
+  url: https://globalhealthinnovation.network
+- name: International Health Innovation
+  type: html
+  url: https://internationalhealthinnovation.org
+- name: Global Healthcare Technology Alliance
+  type: html
+  url: https://globalhealthcaretechnologyalliance.org
+- name: International Healthcare Technology Alliance
+  type: html
+  url: https://internationalhealthcaretechnologyalliance.org
+- name: Global Health Funding Network
+  type: html
+  url: https://globalhealthfunding.network
+- name: International Health Funding
+  type: html
+  url: https://internationalhealthfunding.org
+- name: Healthcare Funding Network
+  type: html
+  url: https://healthcarefunding.network
+- name: Health Funding Network
+  type: html
+  url: https://healthfunding.network
+- name: Medical Funding Network
+  type: html
+  url: https://medicalfunding.network
+- name: Global Health Funding Alliance
+  type: html
+  url: https://globalhealthfundingalliance.org
+- name: International Health Funding Alliance
+  type: html
+  url: https://internationalhealthfundingalliance.org
+- name: Healthcare Funding Alliance
+  type: html
+  url: https://healthcarefundingalliance.org
+- name: Health Funding Alliance
+  type: html
+  url: https://healthfundingalliance.org
+- name: Medical Funding Alliance
+  type: html
+  url: https://medicalfundingalliance.org
+- name: Healthcare Market Data
+  type: html
+  url: https://healthcaremarketdata.org
+- name: Health Market Data
+  type: html
+  url: https://healthmarketdata.org
+- name: Medical Market Data
+  type: html
+  url: https://medicalmarketdata.org
+- name: Healthcare Industry Data
+  type: html
+  url: https://healthcareindustrydata.org
+- name: Health Industry Data
+  type: html
+  url: https://healthindustrydata.org
+- name: Medical Industry Data
+  type: html
+  url: https://medicalindustrydata.org
+- name: Healthcare Market Analytics
+  type: html
+  url: https://healthcaremarketanalytics.org
+- name: Health Market Analytics
+  type: html
+  url: https://healthmarketanalytics.org
+- name: Medical Market Analytics
+  type: html
+  url: https://medicalmarketanalytics.org
+- name: Healthcare Industry Analytics
+  type: html
+  url: https://healthcareindustryanalytics.org
+- name: Africa Startup Ecosystem Network
+  type: html
+  url: https://africastartupecosystem.network
+- name: African Startup Ecosystem Alliance
+  type: html
+  url: https://africanstartupecosystemalliance.org
+- name: Africa Innovation Ecosystem Network
+  type: html
+  url: https://africainnovationecosystem.network
+- name: African Innovation Ecosystem Alliance
+  type: html
+  url: https://africaninnovationecosystemalliance.org
+- name: Africa Startup Ecosystem Foundation
+  type: html
+  url: https://africastartupecosystemfoundation.org
+- name: African Startup Ecosystem Foundation
+  type: html
+  url: https://africanstartupecosystemfoundation.org
+- name: Africa Innovation Ecosystem Foundation
+  type: html
+  url: https://africainnovationecosystemfoundation.org
+- name: African Innovation Ecosystem Foundation
+  type: html
+  url: https://africaninnovationecosystemfoundation.org
+- name: Africa Startup Ecosystem Institute
+  type: html
+  url: https://africastartupecosysteminstitute.org
+- name: African Startup Ecosystem Institute
+  type: html
+  url: https://africanstartupecosysteminstitute.org
+- name: Global Healthcare Alliance Network
+  type: html
+  url: https://globalhealthcarealliance.network
+- name: International Healthcare Alliance Network
+  type: html
+  url: https://internationalhealthcarealliance.network
+- name: Global Health Alliance Network
+  type: html
+  url: https://globalhealthalliance.network
+- name: International Health Alliance Network
+  type: html
+  url: https://internationalhealthalliance.network
+- name: Global Healthcare Partnership Network
+  type: html
+  url: https://globalhealthcarepartnership.network
+- name: International Healthcare Partnership Network
+  type: html
+  url: https://internationalhealthcarepartnership.network
+- name: Global Health Partnership Network
+  type: html
+  url: https://globalhealthpartnership.network
+- name: International Health Partnership Network
+  type: html
+  url: https://internationalhealthpartnership.network
+- name: Global Healthcare Coalition Network
+  type: html
+  url: https://globalhealthcarecoalition.network
+- name: International Healthcare Coalition Network
+  type: html
+  url: https://internationalhealthcarecoalition.network
+- name: Global Health Research Network
+  type: html
+  url: https://globalhealthresearch.network
+- name: International Health Research Network
+  type: html
+  url: https://internationalhealthresearch.network
+- name: Healthcare Research Network
+  type: html
+  url: https://healthcareresearch.network
+- name: Health Research Network
+  type: html
+  url: https://healthresearch.network
+- name: Medical Research Network
+  type: html
+  url: https://medicalresearch.network
+- name: Global Health Research Alliance
+  type: html
+  url: https://globalhealthresearchalliance.org
+- name: International Health Research Alliance
+  type: html
+  url: https://internationalhealthresearchalliance.org
+- name: Healthcare Research Alliance
+  type: html
+  url: https://healthcareresearchalliance.org
+- name: Health Research Alliance
+  type: html
+  url: https://healthresearchalliance.org
+- name: Medical Research Alliance
+  type: html
+  url: https://medicalresearchalliance.org
+- name: Global Health Bank
+  type: html
+  url: https://globalhealthbank.org
+- name: International Health Bank
+  type: html
+  url: https://internationalhealthbank.org
+- name: Healthcare Bank
+  type: html
+  url: https://healthcarebank.org
+- name: Health Bank
+  type: html
+  url: https://healthbank.org
+- name: Medical Bank
+  type: html
+  url: https://medicalbank.org
+- name: Global Health Finance Bank
+  type: html
+  url: https://globalhealthfinancebank.org
+- name: International Health Finance Bank
+  type: html
+  url: https://internationalhealthfinancebank.org
+- name: Healthcare Finance Bank
+  type: html
+  url: https://healthcarefinancebank.org
+- name: Health Finance Bank
+  type: html
+  url: https://healthfinancebank.org
+- name: Medical Finance Bank
+  type: html
+  url: https://medicalfinancebank.org
+- name: Global Health News
+  type: html
+  url: https://globalhealthnews.org
+- name: International Health News
+  type: html
+  url: https://internationalhealthnews.org
+- name: Healthcare News Network
+  type: html
+  url: https://healthcarenews.network
+- name: Health News Network
+  type: html
+  url: https://healthnews.network
+- name: Medical News Network
+  type: html
+  url: https://medicalnews.network
+- name: Global Health Media
+  type: html
+  url: https://globalhealthmedia.org
+- name: International Health Media
+  type: html
+  url: https://internationalhealthmedia.org
+- name: Healthcare Media Network
+  type: html
+  url: https://healthcaremedia.network
+- name: Health Media Network
+  type: html
+  url: https://healthmedia.network
+- name: Medical Media Network
+  type: html
+  url: https://medicalmedia.network
+- name: Global Health Conference
+  type: html
+  url: https://globalhealthconference.org
+- name: International Health Conference
+  type: html
+  url: https://internationalhealthconference.org
+- name: Healthcare Conference Network
+  type: html
+  url: https://healthcareconference.network
+- name: Health Conference Network
+  type: html
+  url: https://healthconference.network
+- name: Medical Conference Network
+  type: html
+  url: https://medicalconference.network
+- name: Global Health Summit
+  type: html
+  url: https://globalhealthsummit.org
+- name: International Health Summit
+  type: html
+  url: https://internationalhealthsummit.org
+- name: Healthcare Summit Network
+  type: html
+  url: https://healthcaresummit.network
+- name: Health Summit Network
+  type: html
+  url: https://healthsummit.network
+- name: Medical Summit Network
+  type: html
+  url: https://medicalsummit.network
+- name: Global Health Exchange
+  type: html
+  url: https://globalhealthexchange.org
+- name: International Health Exchange
+  type: html
+  url: https://internationalhealthexchange.org
+- name: Healthcare Exchange Network
+  type: html
+  url: https://healthcareexchange.network
+- name: Health Exchange Network
+  type: html
+  url: https://healthexchange.network
+- name: Medical Exchange Network
+  type: html
+  url: https://medicalexchange.network
+- name: Global Health Marketplace
+  type: html
+  url: https://globalhealthmarketplace.org
+- name: International Health Marketplace
+  type: html
+  url: https://internationalhealthmarketplace.org
+- name: Healthcare Marketplace Network
+  type: html
+  url: https://healthcaremarketplace.network
+- name: Health Marketplace Network
+  type: html
+  url: https://healthmarketplace.network
+- name: Medical Marketplace Network
+  type: html
+  url: https://medicalmarketplace.network

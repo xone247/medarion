@@ -1,0 +1,21 @@
+# Fresh Vast.ai Instance - Copy/Paste Commands for Jupyter Terminal
+# =================================================================
+
+# Step 1: Create workspace directory
+mkdir -p /workspace/model_api
+cd /workspace/model_api
+
+# Step 2: Install all dependencies
+pip install --quiet --root-user-action=ignore torch transformers flask flask-cors transformers accelerate tqdm boto3
+
+# Step 3: Upload run_api_on_vast.py via Jupyter file uploader
+# (Drag and drop the file into /workspace/model_api/)
+
+# Step 4: Run the script (it will download, extract, and start everything)
+python3 run_api_on_vast.py
+
+# =================================================================
+# ALL-IN-ONE COMMAND (after uploading the script):
+# =================================================================
+# cd /workspace/model_api && pip install --quiet --root-user-action=ignore torch transformers flask flask-cors transformers accelerate tqdm boto3 && python3 run_api_on_vast.py
+

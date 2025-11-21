@@ -1,0 +1,20 @@
+# Enforce HTTPS and SPA routing for Vite build on cPanel
+
+# Turn off MultiViews to avoid directory/file name conflicts
+Options -MultiViews
+
+RewriteEngine On
+
+# 1) Force HTTPS (handle direct and proxied requests without loops)
+# Redirect only if BOTH: Apache says not HTTPS AND X-Forwarded-Proto is not https
+RewriteCond %{HTTPS} !=on
+RewriteCond %{HTTP:X-Forwarded-Proto} !https
+RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+# 2) Serve existing files and directories as-is
+RewriteCond %{REQUEST_FILENAME} -f [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^ - [L]
+
+# 3) SPA fallback: send everything else to index.html
+RewriteRule . /index.html [L] 

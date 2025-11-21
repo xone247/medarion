@@ -1,0 +1,38 @@
+# Commands to Run in Jupyter Terminal
+
+## Step 1: Stop Current API
+kill 2193
+# Or: pkill -f 'run_api_on_vast.py'
+
+## Step 2: Verify Stopped
+ps aux | grep 'run_api_on_vast.py' | grep -v grep
+
+## Step 3: Navigate to Workspace
+cd /workspace
+
+## Step 4: Check Current File
+ls -lh run_api_on_vast.py
+head -30 run_api_on_vast.py | grep 'Extract only the generated tokens'
+
+## Step 5: After Upload (from your PC), Verify File Updated
+ls -lh /workspace/run_api_on_vast.py
+head -30 run_api_on_vast.py | grep 'Extract only the generated tokens'
+
+## Step 6: Start New API
+cd /workspace
+nohup python3 run_api_on_vast.py > api.log 2>&1 &
+
+## Step 7: Check if Running
+ps aux | grep 'run_api_on_vast.py' | grep -v grep
+
+## Step 8: Monitor Logs
+tail -f api.log
+# Press Ctrl+C to stop watching
+
+## Step 9: Check for Errors
+tail -50 api.log | grep -i error
+
+## Step 10: Test API
+# From your PC:
+# Invoke-WebRequest -Uri "http://localhost:8081/health"
+

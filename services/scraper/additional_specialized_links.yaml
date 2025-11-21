@@ -1,0 +1,493 @@
+targets:
+- name: World Economic Forum Health
+  type: html
+  url: https://www.weforum.org/agenda/health
+- name: McKinsey Healthcare Insights
+  type: html
+  url: https://www.mckinsey.com/industries/healthcare
+- name: BCG Healthcare Practice
+  type: html
+  url: https://www.bcg.com/industries/healthcare
+- name: Bain Healthcare Practice
+  type: html
+  url: https://www.bain.com/industries/healthcare
+- name: Deloitte Healthcare
+  type: html
+  url: https://www2.deloitte.com/global/en/industries/life-sciences-health-care.html
+- name: PwC Healthcare
+  type: html
+  url: https://www.pwc.com/gx/en/industries/healthcare.html
+- name: KPMG Healthcare
+  type: html
+  url: https://home.kpmg/xx/en/home/industries/healthcare.html
+- name: EY Healthcare
+  type: html
+  url: https://www.ey.com/en_gl/industries/health
+- name: HealthTech Capital
+  type: html
+  url: https://healthtechcapital.com
+- name: Digital Health Network
+  type: html
+  url: https://digitalhealth.network
+- name: Health Innovation Hub
+  type: html
+  url: https://healthinnovationhub.org
+- name: Global Health Innovation
+  type: html
+  url: https://globalhealthinnovation.org
+- name: Healthcare Investment Partners
+  type: html
+  url: https://healthcareinvestmentpartners.com
+- name: Health Care Investment Group
+  type: html
+  url: https://healthcareinvestmentgroup.com
+- name: Global Healthcare Investment
+  type: html
+  url: https://globalhealthcareinvestment.com
+- name: Healthcare Capital Partners
+  type: html
+  url: https://healthcarecapitalpartners.com
+- name: African Development Bank Group
+  type: html
+  url: https://www.afdb.org
+- name: African Export-Import Bank
+  type: html
+  url: https://www.afreximbank.com
+- name: African Finance Corporation
+  type: html
+  url: https://www.africafc.org
+- name: African Guarantee Fund
+  type: html
+  url: https://www.africanguaranteefund.com
+- name: Africa Health Research Institute
+  type: html
+  url: https://www.ahri.org.za
+- name: African Population and Health Research Center
+  type: html
+  url: https://aphrc.org
+- name: African Medical Research Foundation
+  type: html
+  url: https://amref.org
+- name: African Institute for Development Policy
+  type: html
+  url: https://afidep.org
+- name: African Investment Exchange
+  type: html
+  url: https://www.africaninvestmentexchange.com
+- name: Africa Investment Summit
+  type: html
+  url: https://africainvestmentsummit.com
+- name: African Investment Forum
+  type: html
+  url: https://africainvestmentforum.com
+- name: Africa Investment Report
+  type: html
+  url: https://africainvestmentreport.com
+- name: Africa Health Tech
+  type: html
+  url: https://africahealthtech.com
+- name: Digital Health Africa
+  type: html
+  url: https://digitalhealthafrica.org
+- name: Health Tech Africa
+  type: html
+  url: https://healthtechafrica.com
+- name: Africa Health Innovation
+  type: html
+  url: https://africahealthinnovation.org
+- name: Global Health Council
+  type: html
+  url: https://globalhealth.org
+- name: Global Health Technologies Coalition
+  type: html
+  url: https://www.ghtcoalition.org
+- name: Global Health Investment Fund
+  type: html
+  url: https://ghif.com
+- name: Global Health Innovation Alliance
+  type: html
+  url: https://ghia.org
+- name: Africa Startup Ecosystem
+  type: html
+  url: https://africastartupecosystem.com
+- name: African Startup Network
+  type: html
+  url: https://africanstartupnetwork.org
+- name: Startup Africa
+  type: html
+  url: https://startupafrica.com
+- name: Africa Innovation Hub
+  type: html
+  url: https://africainnovationhub.org
+- name: Healthcare Market Research
+  type: html
+  url: https://healthcaremarketresearch.com
+- name: Global Healthcare Market
+  type: html
+  url: https://globalhealthcaremarket.com
+- name: Healthcare Industry Analysis
+  type: html
+  url: https://healthcareindustryanalysis.com
+- name: Healthcare Market Intelligence
+  type: html
+  url: https://healthcaremarketintelligence.com
+- name: Harvard Global Health Institute
+  type: html
+  url: https://globalhealth.harvard.edu
+- name: Johns Hopkins Global Health
+  type: html
+  url: https://globalhealth.jhu.edu
+- name: Stanford Global Health
+  type: html
+  url: https://globalhealth.stanford.edu
+- name: Yale Global Health
+  type: html
+  url: https://globalhealth.yale.edu
+- name: Columbia Global Health
+  type: html
+  url: https://globalhealth.columbia.edu
+- name: Duke Global Health Institute
+  type: html
+  url: https://globalhealth.duke.edu
+- name: UCLA Global Health
+  type: html
+  url: https://globalhealth.ucla.edu
+- name: UC Berkeley Global Health
+  type: html
+  url: https://globalhealth.berkeley.edu
+- name: UNICEF Health
+  type: html
+  url: https://www.unicef.org/health
+- name: UNFPA Health
+  type: html
+  url: https://www.unfpa.org/health
+- name: World Bank Health
+  type: html
+  url: https://www.worldbank.org/en/topic/health
+- name: IMF Health
+  type: html
+  url: https://www.imf.org/en/topics/health
+- name: OECD Health
+  type: html
+  url: https://www.oecd.org/health
+- name: European Commission Health
+  type: html
+  url: https://ec.europa.eu/health
+- name: USAID Global Health
+  type: html
+  url: https://www.usaid.gov/global-health
+- name: DFID Global Health
+  type: html
+  url: https://www.gov.uk/government/organisations/department-for-international-development
+- name: Sequoia Capital Healthcare
+  type: html
+  url: https://www.sequoiacap.com/healthcare
+- name: Andreessen Horowitz Healthcare
+  type: html
+  url: https://a16z.com/healthcare
+- name: Kleiner Perkins Healthcare
+  type: html
+  url: https://www.kleinerperkins.com/healthcare
+- name: Bessemer Venture Partners Healthcare
+  type: html
+  url: https://www.bvp.com/healthcare
+- name: New Enterprise Associates Healthcare
+  type: html
+  url: https://www.nea.com/healthcare
+- name: Accel Healthcare
+  type: html
+  url: https://www.accel.com/healthcare
+- name: Index Ventures Healthcare
+  type: html
+  url: https://www.indexventures.com/healthcare
+- name: Balderton Capital Healthcare
+  type: html
+  url: https://www.balderton.com/healthcare
+- name: TLcom Capital
+  type: html
+  url: https://tlcomcapital.com
+- name: Novastar Ventures
+  type: html
+  url: https://novastarventures.com
+- name: 4Di Capital
+  type: html
+  url: https://4di.co.za
+- name: Knife Capital
+  type: html
+  url: https://knifecapital.co.za
+- name: Savannah Fund
+  type: html
+  url: https://savannah.vc
+- name: Venture Garden Group
+  type: html
+  url: https://venturegardengroup.com
+- name: GreenTec Capital Partners
+  type: html
+  url: https://greentec-capital.com
+- name: Goodwell Investments
+  type: html
+  url: https://goodwell.nl
+- name: Y Combinator Healthcare
+  type: html
+  url: https://www.ycombinator.com/healthcare
+- name: Techstars Healthcare
+  type: html
+  url: https://www.techstars.com/healthcare
+- name: 500 Startups Healthcare
+  type: html
+  url: https://500.co/healthcare
+- name: Plug and Play Healthcare
+  type: html
+  url: https://www.plugandplaytechcenter.com/healthcare
+- name: MassChallenge Healthcare
+  type: html
+  url: https://masschallenge.org/healthcare
+- name: StartX Healthcare
+  type: html
+  url: https://startx.com/healthcare
+- name: Dreamit Healthcare
+  type: html
+  url: https://dreamit.com/healthcare
+- name: Blueprint Health
+  type: html
+  url: https://blueprinthealth.org
+- name: IQVIA
+  type: html
+  url: https://www.iqvia.com
+- name: Evaluate
+  type: html
+  url: https://www.evaluate.com
+- name: Clarivate Healthcare
+  type: html
+  url: https://clarivate.com/healthcare
+- name: Thomson Reuters Healthcare
+  type: html
+  url: https://www.thomsonreuters.com/healthcare
+- name: S&P Global Healthcare
+  type: html
+  url: https://www.spglobal.com/healthcare
+- name: Moody's Healthcare
+  type: html
+  url: https://www.moodys.com/healthcare
+- name: Fitch Healthcare
+  type: html
+  url: https://www.fitchratings.com/healthcare
+- name: Bloomberg Healthcare
+  type: html
+  url: https://www.bloomberg.com/healthcare
+- name: Health Data Consortium
+  type: html
+  url: https://healthdataconsortium.org
+- name: Global Health Data Exchange
+  type: html
+  url: https://ghdx.healthdata.org
+- name: Health Metrics and Evaluation
+  type: html
+  url: https://www.healthdata.org
+- name: Global Burden of Disease
+  type: html
+  url: https://www.healthdata.org/gbd
+- name: Institute for Health Metrics
+  type: html
+  url: https://www.healthdata.org
+- name: Health Data Initiative
+  type: html
+  url: https://www.healthdata.gov
+- name: Open Health Data
+  type: html
+  url: https://openhealthdata.org
+- name: Health Data Standards
+  type: html
+  url: https://www.hl7.org
+- name: HIMSS Global Health Conference
+  type: html
+  url: https://www.himss.org/conferences
+- name: JPMorgan Healthcare Conference
+  type: html
+  url: https://www.jpmorgan.com/healthcare-conference
+- name: BIO International Convention
+  type: html
+  url: https://convention.bio.org
+- name: ASCO Annual Meeting
+  type: html
+  url: https://meetings.asco.org
+- name: ESMO Congress
+  type: html
+  url: https://www.esmo.org/meetings
+- name: AACR Annual Meeting
+  type: html
+  url: https://www.aacr.org/meeting
+- name: ASH Annual Meeting
+  type: html
+  url: https://www.hematology.org/meeting
+- name: ADA Scientific Sessions
+  type: html
+  url: https://professional.diabetes.org/meeting
+- name: Africa Health Exhibition
+  type: html
+  url: https://www.africahealthexhibition.com
+- name: Africa Health Tech Summit
+  type: html
+  url: https://africahealthtechsummit.com
+- name: Africa Health Business
+  type: html
+  url: https://africahealthbusiness.com
+- name: Africa Health Forum
+  type: html
+  url: https://www.africahealthforum.com
+- name: African Healthcare Federation
+  type: html
+  url: https://africanhealthcarefederation.org
+- name: Africa Health Tech Alliance
+  type: html
+  url: https://africahealthtechalliance.org
+- name: African Digital Health Network
+  type: html
+  url: https://africandigitalhealth.org
+- name: Africa Health Data Platform
+  type: html
+  url: https://africahealthdata.org
+- name: Global Fund to Fight AIDS
+  type: html
+  url: https://www.theglobalfund.org
+- name: Gavi Vaccine Alliance
+  type: html
+  url: https://www.gavi.org
+- name: The Pandemic Fund
+  type: html
+  url: https://www.thepandemicfund.org
+- name: OPEC Fund
+  type: html
+  url: https://opecfund.org
+- name: Wellcome Trust
+  type: html
+  url: https://wellcome.org
+- name: Rockefeller Foundation
+  type: html
+  url: https://www.rockefellerfoundation.org
+- name: Bill & Melinda Gates Foundation
+  type: html
+  url: https://www.gatesfoundation.org
+- name: Clinton Health Access Initiative
+  type: html
+  url: https://www.clintonhealthaccess.org
+- name: Dealroom
+  type: html
+  url: https://dealroom.co
+- name: Crunchbase
+  type: html
+  url: https://www.crunchbase.com
+- name: PitchBook
+  type: html
+  url: https://pitchbook.com
+- name: CB Insights
+  type: html
+  url: https://www.cbinsights.com
+- name: Tracxn
+  type: html
+  url: https://tracxn.com
+- name: AngelList
+  type: html
+  url: https://angel.co
+- name: F6S
+  type: html
+  url: https://www.f6s.com
+- name: VC4A
+  type: html
+  url: https://vc4a.com
+- name: Fierce Healthcare
+  type: html
+  url: https://www.fiercehealthcare.com
+- name: Healthcare Dive
+  type: html
+  url: https://www.healthcaredive.com
+- name: Modern Healthcare
+  type: html
+  url: https://www.modernhealthcare.com
+- name: Healthcare Finance News
+  type: html
+  url: https://www.healthcarefinancenews.com
+- name: Health Affairs
+  type: html
+  url: https://www.healthaffairs.org
+- name: JAMA Network
+  type: html
+  url: https://jamanetwork.com
+- name: The Lancet
+  type: html
+  url: https://www.thelancet.com
+- name: Nature Medicine
+  type: html
+  url: https://www.nature.com/nm
+- name: PubMed
+  type: html
+  url: https://pubmed.ncbi.nlm.nih.gov
+- name: Google Scholar
+  type: html
+  url: https://scholar.google.com
+- name: ResearchGate
+  type: html
+  url: https://www.researchgate.net
+- name: Academia.edu
+  type: html
+  url: https://www.academia.edu
+- name: arXiv
+  type: html
+  url: https://arxiv.org
+- name: SSRN
+  type: html
+  url: https://www.ssrn.com
+- name: Microsoft Academic
+  type: html
+  url: https://academic.microsoft.com
+- name: Web of Science
+  type: html
+  url: https://www.webofscience.com
+- name: FDA
+  type: html
+  url: https://www.fda.gov
+- name: EMA
+  type: html
+  url: https://www.ema.europa.eu
+- name: Health Canada
+  type: html
+  url: https://www.canada.ca/en/health-canada
+- name: TGA Australia
+  type: html
+  url: https://www.tga.gov.au
+- name: PMDA Japan
+  type: html
+  url: https://www.pmda.go.jp
+- name: MHRA UK
+  type: html
+  url: https://www.gov.uk/government/organisations/medicines-and-healthcare-products-regulatory-agency
+- name: ANVISA Brazil
+  type: html
+  url: https://www.gov.br/anvisa
+- name: CDSCO India
+  type: html
+  url: https://cdsco.gov.in
+- name: USPTO
+  type: html
+  url: https://www.uspto.gov
+- name: EPO
+  type: html
+  url: https://www.epo.org
+- name: WIPO
+  type: html
+  url: https://www.wipo.int
+- name: Google Patents
+  type: html
+  url: https://patents.google.com
+- name: Espacenet
+  type: html
+  url: https://worldwide.espacenet.com
+- name: Patentscope
+  type: html
+  url: https://patentscope.wipo.int
+- name: Patent Lens
+  type: html
+  url: https://www.patentlens.net
+- name: FreePatentsOnline
+  type: html
+  url: https://www.freepatentsonline.com

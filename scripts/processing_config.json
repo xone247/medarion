@@ -1,0 +1,73 @@
+{
+  "configurations": {
+    "default": {
+      "description": "Standard processing with balanced quality and quantity",
+      "max_content_length": 8000,
+      "min_content_length": 100,
+      "shard_size_gb": 2.0,
+      "quality_threshold": 0.3,
+      "cleanup_files": true
+    },
+    "high_quality": {
+      "description": "High quality processing - stricter filtering",
+      "max_content_length": 5000,
+      "min_content_length": 200,
+      "shard_size_gb": 1.0,
+      "quality_threshold": 0.7,
+      "cleanup_files": true
+    },
+    "bulk_processing": {
+      "description": "Bulk processing - keep more data, lower quality threshold",
+      "max_content_length": 12000,
+      "min_content_length": 50,
+      "shard_size_gb": 4.0,
+      "quality_threshold": 0.2,
+      "cleanup_files": true
+    },
+    "training_ready": {
+      "description": "Optimized for ML training datasets",
+      "max_content_length": 6000,
+      "min_content_length": 150,
+      "shard_size_gb": 1.5,
+      "quality_threshold": 0.5,
+      "cleanup_files": true
+    }
+  },
+  "file_types": {
+    "allowed_extensions": [
+      ".html", ".htm", ".txt", ".csv", ".json", ".jsonl",
+      ".xml", ".md", ".rst", ".log", ".yaml", ".yml"
+    ],
+    "delete_extensions": [
+      ".png", ".jpg", ".jpeg", ".gif", ".bmp", ".tiff", ".webp",
+      ".css", ".js", ".woff", ".woff2", ".ttf", ".otf", ".eot",
+      ".ico", ".pdf", ".zip", ".tar", ".gz", ".rar", ".7z",
+      ".mp4", ".avi", ".mov", ".wmv", ".flv", ".webm",
+      ".mp3", ".wav", ".flac", ".aac", ".ogg"
+    ]
+  },
+  "text_cleaning": {
+    "patterns": [
+      {
+        "pattern": "<script[^>]*>.*?</script>",
+        "replacement": "",
+        "flags": "DOTALL|IGNORECASE"
+      },
+      {
+        "pattern": "<style[^>]*>.*?</style>",
+        "replacement": "",
+        "flags": "DOTALL|IGNORECASE"
+      },
+      {
+        "pattern": "<[^>]+>",
+        "replacement": "",
+        "flags": "IGNORECASE"
+      },
+      {
+        "pattern": "\\s+",
+        "replacement": " ",
+        "flags": "MULTILINE"
+      }
+    ]
+  }
+}

@@ -1,0 +1,44 @@
+At C:\xampp\htdocs\medarion\clean_fresh_deploy.ps1:100 char:26
++ pm2 stop all 2>/dev/null || true
++                          ~~
+The token '||' is not a valid statement separator in this version.
+At C:\xampp\htdocs\medarion\clean_fresh_deploy.ps1:101 char:28
++ pm2 delete all 2>/dev/null || true
++                            ~~
+The token '||' is not a valid statement separator in this version.
+At C:\xampp\htdocs\medarion\clean_fresh_deploy.ps1:102 char:40
++ pkill -f 'node.*server.js' 2>/dev/null || true
++                                        ~~
+The token '||' is not a valid statement separator in this version.
+At C:\xampp\htdocs\medarion\clean_fresh_deploy.ps1:103 char:49
++ rm -rf /home/medasnnc/public_html/* 2>/dev/null || true
++                                                 ~~
+The token '||' is not a valid statement separator in this version.
+At C:\xampp\htdocs\medarion\clean_fresh_deploy.ps1:104 char:50
++ rm -rf /home/medasnnc/public_html/.* 2>/dev/null || true
++                                                  ~~
+The token '||' is not a valid statement separator in this version.
+At C:\xampp\htdocs\medarion\clean_fresh_deploy.ps1:105 char:53
++ rm -rf /home/medasnnc/nodevenv/medarion 2>/dev/null || true
++                                                     ~~
+The token '||' is not a valid statement separator in this version.
+At C:\xampp\htdocs\medarion\clean_fresh_deploy.ps1:106 char:44
++ rm -rf /home/medasnnc/medarion 2>/dev/null || true
++                                            ~~
+The token '||' is not a valid statement separator in this version.
+At C:\xampp\htdocs\medarion\clean_fresh_deploy.ps1:107 char:78
++ ... snnc -name '*medarion*' -type d -exec rm -rf {} + 2>/dev/null || true
++                                                                   ~~
+The token '||' is not a valid statement separator in this version.
+At C:\xampp\htdocs\medarion\clean_fresh_deploy.ps1:108 char:68
++ ... /home/medasnnc -name '*medarion*' -type f -delete 2>/dev/null || true
++                                                                   ~~
+The token '||' is not a valid statement separator in this version.
+At C:\xampp\htdocs\medarion\clean_fresh_deploy.ps1:109 char:401
++ ... REPARE stmt; END IF; SET FOREIGN_KEY_CHECKS = 1;" 2>/dev/null || true
++                                                                   ~~
+The token '||' is not a valid statement separator in this version.
+Not all parse errors were reported.  Correct the reported errors and try again.
+    + CategoryInfo          : ParserError: (:) [], ParentContainsErrorRecordException
+    + FullyQualifiedErrorId : InvalidEndOfLine
+ 

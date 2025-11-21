@@ -1,0 +1,10 @@
+# Node.js Application Configuration
+# This file helps route requests to your Node.js app
+
+RewriteEngine On
+RewriteBase /
+
+# Proxy requests to Node.js app
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ http://localhost:3001/ [P,L]

@@ -1,0 +1,25 @@
+# Create Cloudflare Tunnel for API (Port 44047)
+# Run in Jupyter Terminal
+
+# Option 1: Create tunnel via Vast.ai Dashboard
+# 1. Go to your Vast.ai instance dashboard
+# 2. Find "Tunnels" section
+# 3. Click "Create New Tunnel"
+# 4. Enter: localhost:44047
+# 5. Copy the generated URL
+
+# Option 2: Create tunnel via command line
+cloudflared tunnel --url http://localhost:44047
+
+# This will output a URL like:
+# https://random-name.trycloudflare.com
+
+# Run in background:
+nohup cloudflared tunnel --url http://localhost:44047 > /tmp/api_tunnel.log 2>&1 &
+
+# Get the URL:
+sleep 3
+cat /tmp/api_tunnel.log | grep trycloudflare
+
+# Your API will be accessible at the Cloudflare URL!
+

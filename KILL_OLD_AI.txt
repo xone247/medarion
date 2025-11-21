@@ -1,0 +1,27 @@
+# Kill Previous AI Process - Run in Jupyter Terminal
+
+# Option 1: Kill by process name (most reliable)
+pkill -f 'python3.*run_api_on_vast.py'
+
+# Option 2: Kill by process name (alternative)
+pkill -f 'run_api_on_vast'
+
+# Option 3: Find and kill manually
+ps aux | grep 'python3.*run_api_on_vast.py' | grep -v grep | awk '{print $2}' | xargs kill -9
+
+# Option 4: Kill all Python processes (use with caution!)
+# pkill -9 python3
+
+# Option 5: Kill process on specific port (if you know the port)
+# fuser -k 44047/tcp
+# OR
+# lsof -ti :44047 | xargs kill -9
+
+# Wait a moment after killing
+sleep 2
+
+# Verify it's stopped
+ps aux | grep 'python3.*run_api_on_vast.py' | grep -v grep
+
+# If nothing shows, it's stopped!
+

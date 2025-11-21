@@ -1,0 +1,14 @@
+# API Subdomain .htaccess - Single Configuration
+# This file proxies ALL requests to Node.js backend on port 3001
+# Node.js handles all CORS headers - do not add CORS headers here
+
+RewriteEngine On
+
+# Disable directory listing
+Options -Indexes
+
+# CRITICAL: Proxy ALL requests (including OPTIONS) to Node.js
+# This must be the ONLY rule - no file checks, no conditions
+# The [P] flag enables proxy, [L] stops further processing
+# This proxies: https://api.medarion.africa/api/admin/modules -> http://localhost:3001/api/admin/modules
+RewriteRule ^(.*)$ http://localhost:3001/$1 [P,L]

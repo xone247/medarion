@@ -1,0 +1,293 @@
+#!/usr/bin/env python3
+"""
+Ollama Medarion Training - Ultra Conservative for 5th gen Intel CPU, 4 cores, 8GB RAM
+"""
+
+import os
+import json
+import requests
+from pathlib import Path
+from datetime import datetime
+import logging
+import time
+
+# Configure logging
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(levelname)s - %(message)s',
+    handlers=[
+        logging.FileHandler('logs/ollama_ultra_conservative_training.log'),
+        logging.StreamHandler()
+    ]
+)
+logger = logging.getLogger(__name__)
+
+class OllamaUltraConservativeTrainer:
+    def __init__(self, ollama_url: str = "http://192.168.137.68:8080"):
+        self.ollama_url = ollama_url
+        self.training_data_dir = Path('training_data')
+        self.session = requests.Session()
+        
+        # Ultra conservative settings for 5th gen Intel CPU, 4 cores, 8GB RAM
+        self.timeout = 240  # 4 minutes timeout (based on response time test)
+        self.delay_between_requests = 90  # 90 seconds between requests
+        self.successful_requests = 0
+        self.failed_requests = 0
+        
+    def test_connection(self):
+        """Test connection to Ollama"""
+        try:
+            logger.info("Testing connection to Ollama...")
+            response = self.session.get(f"{self.ollama_url}/", timeout=30)
+            if response.status_code == 200:
+                logger.info(f"Connected to Ollama at {self.ollama_url}")
+                return True
+        except Exception as e:
+            logger.error(f"Failed to connect: {e}")
+            return False
+    
+    def send_ultra_conservative_request(self, message, request_id):
+        """Send a request with ultra conservative settings"""
+        try:
+            logger.info(f"Sending request {request_id} (timeout: {self.timeout}s)...")
+            
+            payload = {
+                "model": "mistral",
+                "prompt": message,
+                "stream": False
+            }
+            
+            start_time = time.time()
+            response = self.session.post(
+                f"{self.ollama_url}/api/generate",
+                json=payload,
+                headers={'Content-Type': 'application/json'},
+                timeout=self.timeout
+            )
+            end_time = time.time()
+            
+            if response.status_code == 200:
+                result = response.json()
+                response_text = result.get('response', 'No response')
+                duration = end_time - start_time
+                
+                self.successful_requests += 1
+                logger.info(f"SUCCESS - Request {request_id} completed in {duration:.2f}s")
+                logger.info(f"Response: {response_text[:30]}...")
+                return True
+            else:
+                logger.warning(f"Request {request_id} failed with status {response.status_code}")
+                self.failed_requests += 1
+                return False
+                
+        except requests.exceptions.Timeout:
+            logger.warning(f"Request {request_id} timed out after {self.timeout} seconds")
+            self.failed_requests += 1
+            return False
+        except Exception as e:
+            logger.error(f"Request {request_id} failed: {e}")
+            self.failed_requests += 1
+            return False
+    
+    def train_medarion_identity_minimal(self):
+        """Train Medarion identity with minimal messages"""
+        logger.info("Training Medarion identity (minimal mode)...")
+        
+        # Only 5 essential identity messages
+        identity_messages = [
+            "You are Medarion.",
+            "Your name is Medarion.",
+            "You are an AI assistant.",
+            "You help with healthcare and finance.",
+            "Always say you are Medarion."
+        ]
+        
+        for i, message in enumerate(identity_messages):
+            request_id = f"identity_{i+1:02d}"
+            
+            success = self.send_ultra_conservative_request(message, request_id)
+            
+            if success:
+                logger.info(f"Identity training {i+1}/{len(identity_messages)} completed")
+            else:
+                logger.warning(f"Identity training {i+1}/{len(identity_messages)} failed")
+            
+            # Long wait between requests
+            if i < len(identity_messages) - 1:
+                logger.info(f"Waiting {self.delay_between_requests} seconds before next request...")
+                time.sleep(self.delay_between_requests)
+    
+    def load_training_data(self):
+        """Load all training data"""
+        logger.info("Loading training data...")
+        training_files = [
+            'comprehensive_medarion_data.json',
+            'healthcare_expertise.json',
+            'finance_expertise.json', 
+            'investment_expertise.json',
+            'extensive_healthcare_data.json',
+            'extensive_finance_data.json',
+            'extensive_investment_data.json',
+            'regulatory_market_data.json'
+        ]
+        
+        all_samples = []
+        for filename in training_files:
+            file_path = self.training_data_dir / filename
+            if file_path.exists():
+                with open(file_path, 'r', encoding='utf-8') as f:
+                    data = json.load(f)
+                    samples = data.get('training_samples', [])
+                    all_samples.extend(samples)
+                    logger.info(f"Loaded {len(samples)} samples from {filename}")
+        
+        logger.info(f"Total samples loaded: {len(all_samples)}")
+        return all_samples
+    
+    def train_with_minimal_domain_data(self, samples):
+        """Train with minimal domain data - only 2 samples"""
+        logger.info("Training with minimal domain data (2 samples only)...")
+        
+        # Only use 2 samples to be ultra conservative
+        training_samples = samples[:2]
+        
+        for i, sample in enumerate(training_samples):
+            if 'content' in sample:
+                content = sample['content']
+                ai_analysis = sample.get('ai_analysis', {})
+                category = ai_analysis.get('category', 'general')
+                
+                # Create very short messages (5 words max)
+                words = content.split()[:5]
+                short_content = ' '.join(words)
+                
+                if category == 'healthcare':
+                    message = f"As Medarion, healthcare: {short_content}"
+                elif category == 'finance':
+                    message = f"As Medarion, finance: {short_content}"
+                elif category == 'investment':
+                    message = f"As Medarion, investment: {short_content}"
+                else:
+                    message = f"As Medarion, analysis: {short_content}"
+                
+                request_id = f"domain_{i+1:02d}"
+                
+                success = self.send_ultra_conservative_request(message, request_id)
+                
+                if success:
+                    logger.info(f"Domain training {i+1}/{len(training_samples)} completed")
+                else:
+                    logger.warning(f"Domain training {i+1}/{len(training_samples)} failed")
+                
+                # Long wait between requests
+                if i < len(training_samples) - 1:
+                    logger.info(f"Waiting {self.delay_between_requests} seconds before next request...")
+                    time.sleep(self.delay_between_requests)
+    
+    def test_medarion_response(self):
+        """Test if Medarion responds correctly"""
+        logger.info("Testing Medarion response...")
+        
+        test_questions = [
+            "What is your name?"
+        ]
+        
+        for i, question in enumerate(test_questions):
+            request_id = f"test_{i+1:02d}"
+            logger.info(f"Testing: {question}")
+            
+            success = self.send_ultra_conservative_request(question, request_id)
+            
+            if success:
+                logger.info(f"Test {i+1} completed successfully")
+            else:
+                logger.warning(f"Test {i+1} failed")
+    
+    def print_statistics(self):
+        """Print training statistics"""
+        total_requests = self.successful_requests + self.failed_requests
+        success_rate = (self.successful_requests / total_requests * 100) if total_requests > 0 else 0
+        
+        logger.info("Training Statistics:")
+        logger.info(f"   Total requests: {total_requests}")
+        logger.info(f"   Successful requests: {self.successful_requests}")
+        logger.info(f"   Failed requests: {self.failed_requests}")
+        logger.info(f"   Success rate: {success_rate:.1f}%")
+        logger.info(f"   Timeout used: {self.timeout} seconds")
+        logger.info(f"   Delay between requests: {self.delay_between_requests} seconds")
+        
+        # Calculate total training time
+        total_time = total_requests * (self.timeout + self.delay_between_requests)
+        logger.info(f"   Estimated total training time: {total_time/60:.1f} minutes")
+    
+    def run_training(self):
+        """Run complete training process ultra conservatively"""
+        logger.info("=== Starting Ollama Medarion Training (Ultra Conservative) ===")
+        logger.info("Optimized for: 5th gen Intel CPU, 4 cores, 8GB RAM, Windows")
+        
+        # Test connection
+        if not self.test_connection():
+            logger.error("Cannot connect to Ollama")
+            return False
+        
+        # Step 1: Train identity minimally
+        logger.info("Step 1: Training identity (minimal mode)...")
+        self.train_medarion_identity_minimal()
+        
+        # Long wait before next step
+        logger.info(f"Waiting {self.delay_between_requests} seconds before domain training...")
+        time.sleep(self.delay_between_requests)
+        
+        # Step 2: Load and train with minimal domain data
+        logger.info("Step 2: Training with minimal domain data...")
+        samples = self.load_training_data()
+        if samples:
+            self.train_with_minimal_domain_data(samples)
+        
+        # Long wait before testing
+        logger.info(f"Waiting {self.delay_between_requests} seconds before testing...")
+        time.sleep(self.delay_between_requests)
+        
+        # Step 3: Test the response
+        logger.info("Step 3: Testing Medarion response...")
+        self.test_medarion_response()
+        
+        # Print statistics
+        self.print_statistics()
+        
+        logger.info("=== Training Complete ===")
+        return True
+
+def main():
+    print("=== Ollama Medarion Training (Ultra Conservative) ===")
+    print(f"Started at: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
+    print("Optimized for: 5th gen Intel CPU, 4 cores, 8GB RAM, Windows")
+    print("4-minute timeouts, 90-second delays between requests")
+    print("Minimal data usage for maximum stability")
+    
+    # Create logs directory
+    os.makedirs('logs', exist_ok=True)
+    
+    # Initialize trainer
+    trainer = OllamaUltraConservativeTrainer("http://192.168.137.68:8080")
+    
+    try:
+        # Run training
+        success = trainer.run_training()
+        
+        if success:
+            print("\n=== Training Complete ===")
+            print(f"Successful requests: {trainer.successful_requests}")
+            print(f"Failed requests: {trainer.failed_requests}")
+            print("Medarion has been trained on Ollama!")
+            print("You can now test it by connecting to your Ollama instance.")
+        else:
+            print("\n=== Training Failed ===")
+            print("Please check your Ollama connection and try again.")
+        
+    except Exception as e:
+        logger.error(f"Training failed: {e}")
+        print(f"Error: {e}")
+
+if __name__ == "__main__":
+    main() 

@@ -1,0 +1,27 @@
+# Fix Port Conflict - Run in Jupyter Terminal
+
+# Option 1: Check what's using port 44047
+lsof -i :44047
+# OR
+fuser 44047/tcp
+# OR
+netstat -tulpn | grep 44047
+
+# Option 2: Kill process on port 44047
+fuser -k 44047/tcp
+# OR
+lsof -ti :44047 | xargs kill -9
+# OR
+pkill -f 'python.*44047'
+
+# Option 3: Use different port (44123 is already open)
+# The script has been updated to use port 44123
+# Just restart:
+pkill -f 'python3.*run_api_on_vast.py'
+cd /workspace && nohup python3 run_api_on_vast.py > api.log 2>&1 &
+
+# Wait and test
+sleep 5
+curl http://localhost:44123/health
+curl http://93.91.156.86:44123/health
+

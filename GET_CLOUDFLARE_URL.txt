@@ -1,0 +1,22 @@
+# Get Your Cloudflare Tunnel URL - Run in Jupyter Terminal
+
+# Option 1: Check cloudflared logs
+cat /tmp/cloudflared.log | grep trycloudflare
+
+# Option 2: Check running cloudflared process
+ps aux | grep cloudflared
+
+# Option 3: Check if tunnel is in background
+nohup cloudflared tunnel --url http://localhost:8080 > /tmp/cloudflared.log 2>&1 &
+# Then check the log
+tail -20 /tmp/cloudflared.log | grep trycloudflare
+
+# Option 4: Check Vast.ai dashboard
+# Go to your instance dashboard and look for "Tunnels" section
+
+# Once you have the URL, it will look like:
+# https://random-name.trycloudflare.com
+
+# Use this URL in your backend .env:
+# VAST_AI_URL=https://your-tunnel-url.trycloudflare.com
+

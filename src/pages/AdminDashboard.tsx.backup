@@ -1,0 +1,2303 @@
+import type React from 'react';
+import { useEffect, useMemo, useState } from 'react';
+import { useAuth } from '../contexts/AuthContext';
+import { AVAILABLE_MODULES, DEFAULT_MODULES_BY_ROLE, AppRole } from '../types/userTypes';
+import { 
+  Layers, Users as UsersIcon, Megaphone, Newspaper, Database, Settings, 
+  ArrowUp, ArrowDown, Save, Trash2, Plus, TrendingUp, TrendingDown, 
+  Activity, BarChart3, Eye, Clock, AlertCircle, CheckCircle,
+  UserCheck, Globe, Shield, Zap, Target, DollarSign, Calendar,
+  Edit, MoreVertical, UserX, UserCheck as UserCheckIcon, Key, 
+  Search, Filter, Download, Upload, Ban, Unlock, Mail, Phone,
+  Building2, Bell, FileText
+} from 'lucide-react';
+import { ACCESS_MATRIX } from '../types/accessControl';
+import { adminApi, type BlogPost, type Advertisement, type UserOverride, type PlatformConfig, type AdminOverview, type SystemSetting, type User } from '../services/adminApi';
+
+// Local types for admin data stored in localStorage
+type AppConfig = {
+  dataMode: 'demo' | 'live';
+  aiMode: 'demo' | 'live';
+  ollama: { endpoint: string; model: string };
+  adsEnabled?: boolean;
+};
+
+type AdminModules = Record<string, { modules: string[]; order: string[] }>;
+
+// Ads
+export type AdPlacement = 'blog_top' | 'blog_inline' | 'newsletter' | 'dashboard_sidebar' | 'dashboard_inline';
+export type AdCategory = 'blog_general' | 'dashboard_personalized' | 'newsletter_general';
+
+const defaultConfig: AppConfig = {
+  dataMode: 'demo',
+  aiMode: 'demo',
+  ollama: { endpoint: '', model: 'mistral' },
+  adsEnabled: true,
+};
+
+// Chart components
+const StatCard: React.FC<{
+  title: string;
+  value: string | number;
+  change?: number;
+  icon: React.ComponentType<any>;
+  color?: 'primary' | 'success' | 'accent' | 'sky' | 'error';
+}> = ({ title, value, change, icon: Icon, color = 'primary' }) => {
+  const colorClasses = {
+    primary: {
+      bg: 'bg-gradient-to-br from-[#00665C]/10 to-[#00A896]/20',
+      text: 'text-[#00665C]',
+      iconBg: 'bg-gradient-to-br from-[#00665C] to-[#00A896]',
+      change: change >= 0 ? 'text-green-600' : 'text-red-600'
+    },
+    success: {
+      bg: 'bg-gradient-to-br from-[#22C55E]/10 to-[#16A34A]/20',
+      text: 'text-[#22C55E]',
+      iconBg: 'bg-gradient-to-br from-[#22C55E] to-[#16A34A]',
+      change: change >= 0 ? 'text-green-600' : 'text-red-600'
+    },
+    accent: {
+      bg: 'bg-gradient-to-br from-[#F4A300]/10 to-[#F59E0B]/20',
+      text: 'text-[#F4A300]',
+      iconBg: 'bg-gradient-to-br from-[#F4A300] to-[#F59E0B]',
+      change: change >= 0 ? 'text-green-600' : 'text-red-600'
+    },
+    sky: {
+      bg: 'bg-gradient-to-br from-[#38BDF8]/10 to-[#0EA5E9]/20',
+      text: 'text-[#38BDF8]',
+      iconBg: 'bg-gradient-to-br from-[#38BDF8] to-[#0EA5E9]',
+      change: change >= 0 ? 'text-green-600' : 'text-red-600'
+    },
+    error: {
+      bg: 'bg-gradient-to-br from-[#EF4444]/10 to-[#DC2626]/20',
+      text: 'text-[#EF4444]',
+      iconBg: 'bg-gradient-to-br from-[#EF4444] to-[#DC2626]',
+      change: change >= 0 ? 'text-green-600' : 'text-red-600'
+    }
+  };
+
+  const classes = colorClasses[color];
+
+  return (
+    <div className="card-glass p-6 rounded-xl border border-[var(--color-divider-gray)] bg-[var(--color-background-surface)] hover:shadow-lg transition-all duration-300">
+      <div className="flex items-center justify-between">
+        <div className="flex-1">
+          <p className="text-sm font-medium text-[var(--color-text-secondary)] mb-1">{title}</p>
+          <p className="text-3xl font-bold text-[var(--color-text-primary)] mb-2">{value}</p>
+          {change !== undefined && (
+            <div className={`flex items-center text-sm font-medium ${classes.change}`}>
+              {change >= 0 ? <TrendingUp className="h-4 w-4 mr-1" /> : <TrendingDown className="h-4 w-4 mr-1" />}
+              {Math.abs(change)}%
+            </div>
+          )}
+        </div>
+        <div className={`p-4 rounded-xl ${classes.iconBg} shadow-lg`}>
+          <Icon className="h-6 w-6 text-white" />
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const SimpleBarChart: React.FC<{
+  data: Array<{ label: string; value: number }>;
+  title: string;
+  color?: 'primary' | 'success' | 'accent' | 'sky';
+}> = ({ data, title, color = 'primary' }) => {
+  const maxValue = Math.max(...data.map(d => d.value));
+  
+  const colorClasses = {
+    primary: 'bg-gradient-to-r from-[#00665C] to-[#00A896]',
+    success: 'bg-gradient-to-r from-[#22C55E] to-[#16A34A]',
+    accent: 'bg-gradient-to-r from-[#F4A300] to-[#F59E0B]',
+    sky: 'bg-gradient-to-r from-[#38BDF8] to-[#0EA5E9]'
+  };
+  
+  const colorMap = {
+    primary: '#00665C',
+    success: '#22C55E',
+    accent: '#F4A300',
+    sky: '#38BDF8'
+  };
+  
+  return (
+    <div className="card-glass p-6 rounded-xl border border-[var(--color-divider-gray)] bg-[var(--color-background-surface)]">
+      <h3 className="text-lg font-semibold text-[var(--color-text-primary)] mb-6">{title}</h3>
+      <div className="space-y-4">
+        {data.map((item, index) => {
+          const percentage = (item.value / maxValue) * 100;
+          const barColor = colorMap[color];
+          
+          return (
+            <div key={index} className="space-y-2">
+              <div className="flex items-center justify-between">
+                <div className="text-sm font-medium text-[var(--color-text-primary)]">{item.label}</div>
+                <div className="text-sm font-semibold text-[var(--color-text-primary)]">{item.value}</div>
+              </div>
+              <div className="relative">
+                <div className="w-full bg-[var(--color-neutral-taupe)] rounded-full h-3 overflow-hidden">
+                  <div 
+                    className={`${colorClasses[color]} h-3 rounded-full transition-all duration-700 ease-out shadow-sm`}
+                    style={{ width: `${percentage}%` }}
+                  />
+                </div>
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <span className="text-xs font-bold text-white drop-shadow-sm">
+                    {percentage > 15 ? `${percentage.toFixed(1)}%` : ''}
+                  </span>
+                </div>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+};
+
+const CustomPieChart: React.FC<{
+  data: Array<{ label: string; value: number; color?: string }>;
+  title: string;
+}> = ({ data, title }) => {
+  const total = data.reduce((sum, item) => sum + item.value, 0);
+  
+  const colorMap = {
+    'primary': '#00665C',
+    'success': '#22C55E',
+    'accent': '#F4A300',
+    'sky': '#38BDF8',
+    'purple': '#8B5CF6',
+    'pink': '#EC4899',
+    'orange': '#F97316',
+    'teal': '#14B8A6',
+    'red': '#EF4444',
+    'blue': '#3B82F6',
+    'green': '#10B981',
+    'yellow': '#F59E0B',
+    'indigo': '#6366F1',
+    'gray': '#6B7280'
+  };
+  
+  // Generate colors if not provided - use distinct colors for better visibility
+  const defaultColors = ['primary', 'success', 'accent', 'sky', 'purple', 'pink', 'orange', 'teal', 'red', 'blue'];
+  const dataWithColors = data.map((item, index) => ({
+    ...item,
+    color: item.color || defaultColors[index % defaultColors.length]
+  }));
+  
+  return (
+    <div className="card-glass p-6 rounded-xl border border-[var(--color-divider-gray)] bg-[var(--color-background-surface)]">
+      <h3 className="text-lg font-semibold text-[var(--color-text-primary)] mb-4">{title}</h3>
+      <div className="flex items-center justify-center mb-6">
+        <div className="relative w-40 h-40">
+          <svg className="w-full h-full transform -rotate-90" viewBox="0 0 100 100">
+            {dataWithColors.map((item, index) => {
+              const percentage = (item.value / total) * 100;
+              const startAngle = dataWithColors.slice(0, index).reduce((sum, d) => sum + (d.value / total) * 360, 0);
+              const endAngle = startAngle + (item.value / total) * 360;
+              const color = colorMap[item.color as keyof typeof colorMap] || item.color;
+              
+              // Convert angles to radians
+              const startAngleRad = (startAngle * Math.PI) / 180;
+              const endAngleRad = (endAngle * Math.PI) / 180;
+              
+              // Calculate path coordinates
+              const centerX = 50;
+              const centerY = 50;
+              const radius = 40;
+              const innerRadius = 25;
+              
+              const x1 = centerX + radius * Math.cos(startAngleRad);
+              const y1 = centerY + radius * Math.sin(startAngleRad);
+              const x2 = centerX + radius * Math.cos(endAngleRad);
+              const y2 = centerY + radius * Math.sin(endAngleRad);
+              
+              const innerX1 = centerX + innerRadius * Math.cos(startAngleRad);
+              const innerY1 = centerY + innerRadius * Math.sin(startAngleRad);
+              const innerX2 = centerX + innerRadius * Math.cos(endAngleRad);
+              const innerY2 = centerY + innerRadius * Math.sin(endAngleRad);
+              
+              const largeArcFlag = percentage > 50 ? 1 : 0;
+              
+              const pathData = [
+                `M ${x1} ${y1}`,
+                `A ${radius} ${radius} 0 ${largeArcFlag} 1 ${x2} ${y2}`,
+                `L ${innerX2} ${innerY2}`,
+                `A ${innerRadius} ${innerRadius} 0 ${largeArcFlag} 0 ${innerX1} ${innerY1}`,
+                'Z'
+              ].join(' ');
+              
+              return (
+                <path
+                  key={index}
+                  d={pathData}
+                  fill={color}
+                  stroke="none"
+                  className="transition-all duration-300 hover:opacity-80"
+                />
+              );
+            })}
+          </svg>
+          {/* Center circle for donut effect */}
+          <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+            <div className="text-center">
+              <div className="text-2xl font-bold text-[var(--color-text-primary)]">{total}</div>
+              <div className="text-sm text-[var(--color-text-secondary)]">Total</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div className="space-y-3">
+        {dataWithColors.map((item, index) => (
+          <div key={index} className="flex items-center justify-between text-sm">
+            <div className="flex items-center space-x-3">
+              <div 
+                className="w-4 h-4 rounded-full shadow-sm" 
+                style={{ backgroundColor: colorMap[item.color as keyof typeof colorMap] || item.color }}
+              />
+              <span className="text-[var(--color-text-secondary)] font-medium">{item.label}</span>
+            </div>
+            <div className="text-right">
+              <div className="font-semibold text-[var(--color-text-primary)]">{item.value}</div>
+              <div className="text-xs text-[var(--color-text-secondary)]">
+                {((item.value / total) * 100).toFixed(1)}%
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+const ActivityFeed: React.FC<{
+  activities: Array<{ type: string; message: string; time: string; icon: string }>;
+}> = ({ activities }) => {
+  const getActivityIcon = (iconType: string) => {
+    switch (iconType) {
+      case 'user': return UsersIcon;
+      case 'login': return Activity;
+      case 'signup': return UserCheck;
+      case 'post': return Newspaper;
+      case 'payment': return DollarSign;
+      default: return Activity;
+    }
+  };
+
+  return (
+    <div className="card-glass p-6 rounded-xl border border-[var(--color-divider-gray)] bg-[var(--color-background-surface)]">
+      <h3 className="text-lg font-semibold text-[var(--color-text-primary)] mb-4">Recent Activity</h3>
+      <div className="space-y-4">
+        {activities.map((activity, index) => {
+          const IconComponent = getActivityIcon(activity.icon);
+          return (
+            <div key={index} className="flex items-start space-x-3">
+              <div className="p-2 bg-primary-100 dark:bg-primary-900/20 rounded-lg">
+                <IconComponent className="h-4 w-4 text-primary-600 dark:text-primary-400" />
+              </div>
+              <div className="flex-1">
+                <p className="text-sm text-[var(--color-text-primary)]">{activity.message}</p>
+                <p className="text-xs text-[var(--color-text-secondary)]">{activity.time}</p>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+};
+
+const AdminDashboard: React.FC = () => {
+  const { profile } = useAuth();
+  const [activeTab, setActiveTab] = useState<'overview'|'config'|'users'|'modules'|'blog'|'ads'>('overview');
+  const [userQuery, setUserQuery] = useState<string>('');
+  const [userPage, setUserPage] = useState<number>(1);
+  const [userRoleFilter, setUserRoleFilter] = useState<string>('');
+  const [userStatusFilter, setUserStatusFilter] = useState<string>('');
+  const [userSearchTerm, setUserSearchTerm] = useState<string>('');
+  const [selectedUsers, setSelectedUsers] = useState<number[]>([]);
+  const [showUserEditModal, setShowUserEditModal] = useState<boolean>(false);
+  const [editingUser, setEditingUser] = useState<User | null>(null);
+  const [showUserActionsMenu, setShowUserActionsMenu] = useState<number | null>(null);
+  const usersPageSize = 8;
+  
+  // Database state
+  const [blogPosts, setBlogPosts] = useState<BlogPost[]>([]);
+  const [ads, setAds] = useState<Advertisement[]>([]);
+  const [userOverrides, setUserOverrides] = useState<UserOverride[]>([]);
+  const [platformConfig, setPlatformConfig] = useState<PlatformConfig | null>(null);
+
+  // State for real data
+  const [overviewData, setOverviewData] = useState<AdminOverview | null>(null);
+  const [usersData, setUsersData] = useState<{ users: User[]; pagination: any } | null>(null);
+  const [settingsData, setSettingsData] = useState<SystemSetting[]>([]);
+  const [blogData, setBlogData] = useState<{ posts: BlogPost[]; pagination: any } | null>(null);
+  const [adsData, setAdsData] = useState<{ advertisements: Advertisement[]; pagination: any } | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  // Functions to fetch real data
+  const fetchOverviewData = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+      const data = await adminApi.getAdminOverview();
+      setOverviewData(data);
+    } catch (err) {
+      setError('Failed to load overview data');
+      console.error('Error fetching overview data:', err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const fetchUsersData = async (page: number = 1, search?: string, role?: string) => {
+    try {
+      setLoading(true);
+      setError(null);
+      const data = await adminApi.getUsers(page, 20, search, role);
+      setUsersData(data);
+    } catch (err) {
+      setError('Failed to load users data');
+      console.error('Error fetching users data:', err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const fetchSettingsData = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+      const data = await adminApi.getSystemSettings();
+      setSettingsData(data);
+    } catch (err) {
+      setError('Failed to load settings data');
+      console.error('Error fetching settings data:', err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const fetchBlogData = async (page: number = 1, status?: string) => {
+    try {
+      setLoading(true);
+      setError(null);
+      const data = await adminApi.getBlogPosts(page, 20, status);
+      setBlogData(data);
+    } catch (err) {
+      setError('Failed to load blog data');
+      console.error('Error fetching blog data:', err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const fetchAdsData = async (page: number = 1, category?: string) => {
+    try {
+      setLoading(true);
+      setError(null);
+      const data = await adminApi.getAdvertisements(page, 20, category);
+      setAdsData(data);
+    } catch (err) {
+      setError('Failed to load ads data');
+      console.error('Error fetching ads data:', err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Load data when component mounts or tab changes
+  useEffect(() => {
+    if (activeTab === 'overview') {
+      fetchOverviewData();
+    } else if (activeTab === 'users') {
+      fetchUsersData();
+    } else if (activeTab === 'config') {
+      fetchSettingsData();
+    } else if (activeTab === 'blog') {
+      fetchBlogData();
+    } else if (activeTab === 'ads') {
+      fetchAdsData();
+    }
+  }, [activeTab]);
+
+  // Parse app_roles from JSON string if it exists
+  const appRoles = profile && (profile as any).app_roles 
+    ? (typeof (profile as any).app_roles === 'string' 
+        ? JSON.parse((profile as any).app_roles) 
+        : (profile as any).app_roles)
+    : [];
+
+  const canSuper = !!(profile && (
+    (profile as any).is_admin || 
+    (profile as any).role === 'admin' ||
+    appRoles.includes('Super Admin') ||
+    appRoles.includes('super_admin')
+  ));
+  const canBlog = canSuper || !!appRoles.some((r: AppRole) => ['blog_admin','content_editor', 'Blog Manager'].includes(r));
+  const canAds = canSuper || !!appRoles.includes('ads_admin') || appRoles.includes('Ads Manager');
+
+  // Data loading functions
+  const loadBlogPosts = async () => {
+    try {
+      setLoading(true);
+      const posts = await adminApi.getBlogPosts();
+      setBlogPosts(posts);
+    } catch (err) {
+      setError('Failed to load blog posts');
+      console.error('Error loading blog posts:', err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const loadAdvertisements = async () => {
+    try {
+      setLoading(true);
+      const advertisements = await adminApi.getAdvertisements();
+      setAds(advertisements);
+    } catch (err) {
+      setError('Failed to load advertisements');
+      console.error('Error loading advertisements:', err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const loadUserOverrides = async () => {
+    try {
+      setLoading(true);
+      const users = await adminApi.getUserOverrides();
+      setUserOverrides(users);
+    } catch (err) {
+      setError('Failed to load user overrides');
+      console.error('Error loading user overrides:', err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const loadPlatformConfig = async () => {
+    try {
+      setLoading(true);
+      const config = await adminApi.getPlatformConfig();
+      setPlatformConfig(config);
+    } catch (err) {
+      setError('Failed to load platform config');
+      console.error('Error loading platform config:', err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Load data on component mount
+  useEffect(() => {
+    if (canSuper || canBlog || canAds) {
+      loadBlogPosts();
+      loadAdvertisements();
+      loadUserOverrides();
+      loadPlatformConfig();
+    }
+  }, [canSuper, canBlog, canAds]);
+
+  // Config state for platform settings
+  const [config, setConfig] = useState<AppConfig>(defaultConfig);
+
+  // Form states
+  const [newUser, setNewUser] = useState({
+    email: '',
+    role: '',
+    accountTier: '',
+    fullName: '',
+    companyName: '',
+    isAdmin: false,
+    appRoles: [] as string[]
+  });
+
+  const [draftPost, setDraftPost] = useState({
+    title: '',
+    excerpt: '',
+    content: '',
+    author: (profile as any)?.full_name || 'Admin',
+    category: 'General',
+    readTime: '5 min read',
+    imageUrl: '',
+    featured: false
+  });
+
+  const [draftAd, setDraftAd] = useState({
+    title: '',
+    imageUrl: '',
+    ctaText: '',
+    targetUrl: '',
+    advertiser: '',
+    category: 'blog_general' as AdCategory,
+    placements: ['blog_top'] as string[]
+  });
+
+  // Modules state
+  const [moduleEmail, setModuleEmail] = useState('');
+  const [moduleSelection, setModuleSelection] = useState<string[]>([]);
+  const [moduleOrder, setModuleOrder] = useState<string[]>([]);
+
+  // Data is loaded via the load functions above
+
+  // Helpers
+  const saveUsers = (arr: UserOverride[]) => {
+    setUserOverrides(arr);
+  };
+
+  const handleAddUser = async () => {
+    if (!newUser.email) return;
+    
+    try {
+      setLoading(true);
+      const createdUser = await adminApi.createUserOverride({
+        email: newUser.email,
+        role: newUser.role || 'startup',
+        accountTier: newUser.accountTier || 'free',
+        fullName: newUser.fullName,
+        companyName: newUser.companyName,
+        isAdmin: newUser.isAdmin,
+        appRoles: newUser.appRoles
+      });
+      
+      setUserOverrides(prev => [createdUser, ...prev]);
+      setNewUser({
+        email: '',
+        role: '',
+        accountTier: '',
+        fullName: '',
+        companyName: '',
+        isAdmin: false,
+        appRoles: []
+      });
+    } catch (err) {
+      setError('Failed to create user override');
+      console.error('Error creating user override:', err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleRemoveUser = async (id: number) => {
+    try {
+      setLoading(true);
+      await adminApi.deleteUserOverride(id);
+      setUserOverrides(prev => prev.filter(u => u.id !== id));
+    } catch (err) {
+      setError('Failed to delete user override');
+      console.error('Error deleting user override:', err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Enhanced User Management Functions
+  const handleEditUser = (user: User) => {
+    setEditingUser(user);
+    setShowUserEditModal(true);
+  };
+
+  const handleSaveUser = async (updatedUser: User) => {
+    try {
+      setLoading(true);
+      await adminApi.updateUser(updatedUser.id, updatedUser);
+      // Refresh users data
+      await fetchUsersData();
+      setShowUserEditModal(false);
+      setEditingUser(null);
+    } catch (err) {
+      setError('Failed to update user');
+      console.error('Error updating user:', err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleUserStatusChange = async (userId: number, action: 'activate' | 'deactivate' | 'block' | 'suspend') => {
+    try {
+      setLoading(true);
+      await adminApi.deleteUser(userId, action);
+      await fetchUsersData();
+    } catch (err) {
+      setError(`Failed to ${action} user`);
+      console.error(`Error ${action}ing user:`, err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleVerifyUser = async (userId: number, verified: boolean) => {
+    try {
+      setLoading(true);
+      await adminApi.verifyUser(userId, verified);
+      await fetchUsersData();
+    } catch (err) {
+      setError('Failed to update user verification');
+      console.error('Error updating user verification:', err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleChangeUserTier = async (userId: number, tier: string) => {
+    try {
+      setLoading(true);
+      await adminApi.changeUserTier(userId, tier);
+      await fetchUsersData();
+    } catch (err) {
+      setError('Failed to change user tier');
+      console.error('Error changing user tier:', err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleChangeUserRole = async (userId: number, role: string) => {
+    try {
+      setLoading(true);
+      await adminApi.changeUserRole(userId, role);
+      await fetchUsersData();
+    } catch (err) {
+      setError('Failed to change user role');
+      console.error('Error changing user role:', err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleResetPassword = async (userId: number) => {
+    try {
+      setLoading(true);
+      await adminApi.resetUserPassword(userId);
+      setError('Password reset successfully');
+    } catch (err) {
+      setError('Failed to reset password');
+      console.error('Error resetting password:', err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleBulkAction = async (action: 'activate' | 'deactivate' | 'block' | 'delete') => {
+    try {
+      setLoading(true);
+      for (const userId of selectedUsers) {
+        await adminApi.deleteUser(userId, action);
+      }
+      setSelectedUsers([]);
+      await fetchUsersData();
+    } catch (err) {
+      setError(`Failed to ${action} selected users`);
+      console.error(`Error ${action}ing users:`, err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleSelectUser = (userId: number) => {
+    setSelectedUsers(prev => 
+      prev.includes(userId) 
+        ? prev.filter(id => id !== userId)
+        : [...prev, userId]
+    );
+  };
+
+  const handleSelectAllUsers = () => {
+    if (usersData?.users) {
+      setSelectedUsers(
+        selectedUsers.length === usersData.users.length 
+          ? [] 
+          : usersData.users.map(u => u.id)
+      );
+    }
+  };
+
+  const loadModulesForEmail = (email: string) => {
+    setModuleEmail(email);
+    try {
+      const raw = localStorage.getItem('medarionAdminModules');
+      if (raw) {
+        const all = JSON.parse(raw) as AdminModules;
+        const entry = all[email];
+        if (entry) {
+          setModuleSelection(entry.modules);
+          setModuleOrder(entry.order);
+          return;
+        }
+      }
+      const ov = userOverrides.find(u=>u.email===email);
+      const role = (ov?.role as keyof typeof DEFAULT_MODULES_BY_ROLE) || 'startup';
+      const defaults = DEFAULT_MODULES_BY_ROLE[role] || DEFAULT_MODULES_BY_ROLE.startup;
+      setModuleSelection(defaults);
+      setModuleOrder(defaults);
+    } catch {
+      const defaults = DEFAULT_MODULES_BY_ROLE.startup;
+      setModuleSelection(defaults);
+      setModuleOrder(defaults);
+    }
+  };
+
+  const toggleModule = (id: string) => {
+    if (moduleSelection.includes(id)) {
+      const sel = moduleSelection.filter(m=>m!==id);
+      setModuleSelection(sel);
+      setModuleOrder(moduleOrder.filter(m=>m!==id));
+    } else {
+      const sel = [...moduleSelection, id];
+      setModuleSelection(sel);
+      setModuleOrder([...moduleOrder, id]);
+    }
+  };
+
+  const moveModule = (id: string, dir: 'up'|'down') => {
+    const idx = moduleOrder.indexOf(id);
+    if (idx === -1) return;
+    const arr = [...moduleOrder];
+    const swapWith = dir==='up' ? idx-1 : idx+1;
+    if (swapWith < 0 || swapWith >= arr.length) return;
+    const tmp = arr[swapWith];
+    arr[swapWith] = arr[idx];
+    arr[idx] = tmp;
+    setModuleOrder(arr);
+  };
+
+  const saveModules = () => {
+    if (!moduleEmail) return;
+    const ensureDashboardFirst = (list: string[]) => {
+      const rest = list.filter(x=>x!=='dashboard');
+      return ['dashboard', ...rest];
+    };
+    const entry = { modules: ensureDashboardFirst(moduleSelection), order: ensureDashboardFirst(moduleOrder) };
+    let all: AdminModules = {};
+    try { const raw = localStorage.getItem('medarionAdminModules'); if (raw) all = JSON.parse(raw); } catch {}
+    all[moduleEmail] = entry;
+    localStorage.setItem('medarionAdminModules', JSON.stringify(all));
+  };
+
+  const handleCreateBlogPost = async () => {
+    try {
+      setLoading(true);
+      const newPost = await adminApi.createBlogPost(draftPost);
+      setBlogPosts(prev => [newPost, ...prev]);
+      setDraftPost({
+        title: '',
+        excerpt: '',
+        content: '',
+        author: (profile as any)?.full_name || 'Admin',
+        category: 'General',
+        readTime: '5 min read',
+        imageUrl: '',
+        featured: false
+      });
+    } catch (err) {
+      setError('Failed to create blog post');
+      console.error('Error creating blog post:', err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleDeleteBlogPost = async (id: number) => {
+    try {
+      setLoading(true);
+      await adminApi.deleteBlogPost(id);
+      setBlogPosts(prev => prev.filter(post => post.id !== id));
+    } catch (err) {
+      setError('Failed to delete blog post');
+      console.error('Error deleting blog post:', err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleCreateAdvertisement = async () => {
+    try {
+      setLoading(true);
+      const newAd = await adminApi.createAdvertisement(draftAd);
+      setAds(prev => [newAd, ...prev]);
+      setDraftAd({
+        title: '',
+        imageUrl: '',
+        ctaText: '',
+        targetUrl: '',
+        advertiser: '',
+        category: 'blog_general',
+        placements: ['blog_top']
+      });
+    } catch (err) {
+      setError('Failed to create advertisement');
+      console.error('Error creating advertisement:', err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleDeleteAdvertisement = async (id: number) => {
+    try {
+      setLoading(true);
+      await adminApi.deleteAdvertisement(id);
+      setAds(prev => prev.filter(ad => ad.id !== id));
+    } catch (err) {
+      setError('Failed to delete advertisement');
+      console.error('Error deleting advertisement:', err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+
+  const canSee = (tab: typeof activeTab) => {
+    if (tab === 'blog') return canBlog;
+    if (tab === 'ads') return canAds;
+    if (['users','modules','config','seeder','overview'].includes(tab)) return canSuper;
+    return false;
+  };
+
+  const visibleTabs = useMemo(() => [
+    { id: 'overview', label: 'Overview', icon: Settings },
+    { id: 'config', label: 'Config', icon: Layers },
+    { id: 'users', label: 'Users', icon: UsersIcon },
+    { id: 'modules', label: 'Modules', icon: Layers },
+    { id: 'blog', label: 'Blog', icon: Newspaper },
+    { id: 'ads', label: 'Ads', icon: Megaphone },
+  ].filter(t => canSee(t.id as any)), [canSuper, canBlog, canAds]);
+
+  if (!canSuper && !canBlog && !canAds) {
+    return (
+      <div className="p-6">
+        <div className="p-6 bg-background-surface rounded-lg border border-divider">
+          <h2 className="text-xl font-semibold text-text-primary mb-2">Unauthorized</h2>
+          <p className="text-text-secondary">You do not have permission to access the Admin area.</p>
+        </div>
+      </div>
+    );
+  }
+
+  const filteredUserOverrides = (userOverrides || []).filter(u => {
+    if (!userQuery.trim()) return true;
+    const q = userQuery.toLowerCase();
+    return (
+      u.email.toLowerCase().includes(q) ||
+      (u.role||'').toLowerCase().includes(q) ||
+      (u.account_tier||'').toLowerCase().includes(q) ||
+      (u.full_name||'').toLowerCase().includes(q) ||
+      (u.company_name||'').toLowerCase().includes(q)
+    );
+  });
+  const totalPages = Math.max(1, Math.ceil(filteredUserOverrides.length / usersPageSize));
+  const pageSafe = Math.min(Math.max(1, userPage), totalPages);
+  const pagedUserOverrides = filteredUserOverrides.slice((pageSafe-1)*usersPageSize, pageSafe*usersPageSize);
+
+  return (
+    <div className="space-y-6">
+
+      {/* Tabs */}
+      <div className="flex gap-2 flex-wrap">
+        {visibleTabs.map(({ id, label, icon: Icon }) => (
+          <button
+            key={id}
+            onClick={() => setActiveTab(id as any)}
+            className={`px-4 py-3 rounded-lg border-2 transition-all duration-200 flex items-center space-x-2 ${
+              activeTab === id 
+                ? 'bg-[var(--color-primary-teal)] text-white border-[var(--color-primary-teal)] shadow-lg' 
+                : 'card-glass text-[var(--color-text-primary)] border-[var(--color-divider-gray)] hover:bg-[var(--color-background-default)] hover:border-[var(--color-primary-teal)]/50'
+            }`}
+          >
+            <Icon className="h-4 w-4"/>
+            <span className="font-medium">{label}</span>
+          </button>
+        ))}
+      </div>
+
+      {/* Content */}
+      <div className="space-y-6">
+        {activeTab==='overview' && (
+          <div className="space-y-6">
+            {loading && (
+              <div className="flex items-center justify-center p-8">
+                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+                <span className="ml-2 text-[var(--color-text-secondary)]">Loading...</span>
+              </div>
+            )}
+            
+            {error && (
+              <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-4">
+                <div className="flex items-center">
+                  <AlertCircle className="h-5 w-5 text-red-600 mr-2" />
+                  <span className="text-red-800 dark:text-red-200">{error}</span>
+                </div>
+              </div>
+            )}
+            
+            {overviewData && !loading && (
+              <>
+            {/* Key Metrics */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              <StatCard
+                title="Total Users"
+                value={overviewData?.userStats.totalUsers.toLocaleString() || '0'}
+                change={overviewData?.userStats.newUsersThisMonth ? Math.round((overviewData.userStats.newUsersThisMonth / overviewData.userStats.totalUsers) * 100) : 0}
+                icon={UsersIcon}
+                color="primary"
+              />
+              <StatCard
+                title="Active Users"
+                value={overviewData?.userStats.activeUsers.toLocaleString() || '0'}
+                change={overviewData?.userStats.totalUsers ? Math.round((overviewData.userStats.activeUsers / overviewData.userStats.totalUsers) * 100) : 0}
+                icon={Activity}
+                color="success"
+              />
+              <StatCard
+                title="Monthly Revenue"
+                value={`$${overviewData?.revenueStats.monthlyRevenue.toLocaleString() || '0'}`}
+                change={overviewData?.revenueStats.totalRevenue ? Math.round((overviewData.revenueStats.monthlyRevenue / overviewData.revenueStats.totalRevenue) * 100) : 0}
+                icon={DollarSign}
+                color="accent"
+              />
+              <StatCard
+                title="Blog Posts"
+                value={overviewData?.blogStats.blogPosts.toLocaleString() || '0'}
+                change={overviewData?.blogStats.blogPosts ? Math.min(100, overviewData.blogStats.blogPosts * 2) : 0}
+                icon={Newspaper}
+                color="sky"
+              />
+            </div>
+
+            {/* Compact Stats and Charts Row */}
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+              {/* Compact User Growth Chart */}
+              <div className="card-glass p-4 rounded-xl border border-[var(--color-divider-gray)] bg-[var(--color-background-surface)]">
+                <h3 className="text-sm font-semibold text-[var(--color-text-primary)] mb-3">User Growth (6M)</h3>
+                <div className="space-y-2">
+                  {overviewData?.userGrowth.slice(-6).map((item, index) => {
+                    const maxValue = Math.max(...(overviewData?.userGrowth.slice(-6).map(d => d.users) || [1]));
+                    const percentage = (item.users / maxValue) * 100;
+                    
+                    return (
+                      <div key={index} className="space-y-1">
+                        <div className="flex items-center justify-between">
+                          <div className="text-xs font-medium text-[var(--color-text-primary)]">{item.month}</div>
+                          <div className="text-xs font-semibold text-[var(--color-text-primary)]">{item.users}</div>
+                        </div>
+                        <div className="relative">
+                          <div className="w-full bg-[var(--color-neutral-taupe)] rounded-full h-2 overflow-hidden">
+                            <div 
+                              className="bg-gradient-to-r from-[#00665C] to-[#00A896] h-2 rounded-full transition-all duration-700 ease-out shadow-sm"
+                              style={{ width: `${percentage}%` }}
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  }) || []}
+                </div>
+              </div>
+
+              {/* User Distribution Pie Chart */}
+              <div className="card-glass p-4 rounded-xl border border-[var(--color-divider-gray)] bg-[var(--color-background-surface)]">
+                <h3 className="text-sm font-semibold text-[var(--color-text-primary)] mb-3">User Roles</h3>
+                <div className="flex items-center justify-center">
+                  <div className="w-24 h-24 relative">
+                    <svg className="w-24 h-24 transform -rotate-90" viewBox="0 0 100 100">
+                      {overviewData?.userRoles.map((item, index) => {
+                        const total = overviewData.userRoles.reduce((sum, role) => sum + role.count, 0);
+                        const percentage = (item.count / total) * 100;
+                        const cumulativePercentage = overviewData.userRoles.slice(0, index).reduce((sum, role) => sum + (role.count / total) * 100, 0);
+                        
+                        const colors = ['#00665C', '#22C55E', '#F4A300', '#38BDF8', '#8B5CF6'];
+                        const color = colors[index] || '#00665C';
+                        
+                        return (
+                          <circle
+                            key={index}
+                            cx="50"
+                            cy="50"
+                            r="40"
+                            fill="none"
+                            stroke={color}
+                            strokeWidth="8"
+                            strokeDasharray={`${percentage * 2.51} 251`}
+                            strokeDashoffset={-cumulativePercentage * 2.51}
+                            className="transition-all duration-700 ease-out"
+                          />
+                        );
+                      }) || []}
+                    </svg>
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <span className="text-xs font-bold text-[var(--color-text-primary)]">
+                        {overviewData?.userRoles.reduce((sum, role) => sum + role.count, 0) || 0}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <div className="mt-3 space-y-1">
+                  {overviewData?.userRoles.slice(0, 3).map((item, index) => {
+                    const colors = ['#00665C', '#22C55E', '#F4A300'];
+                    return (
+                      <div key={index} className="flex items-center gap-2">
+                        <div className="w-2 h-2 rounded-full" style={{ backgroundColor: colors[index] }}></div>
+                        <span className="text-xs text-[var(--color-text-secondary)]">{item.role}: {item.count}</span>
+                      </div>
+                    );
+                  }) || []}
+                </div>
+              </div>
+
+              {/* Recent Activity Feed */}
+              <div className="card-glass p-4 rounded-xl border border-[var(--color-divider-gray)] bg-[var(--color-background-surface)]">
+                <h3 className="text-sm font-semibold text-[var(--color-text-primary)] mb-3">Recent Activity</h3>
+                <div className="space-y-3 max-h-48 overflow-y-auto">
+                  {overviewData?.recentActivity.slice(0, 4).map((activity, index) => (
+                    <div key={index} className="flex items-start gap-3">
+                      <div className="w-6 h-6 rounded-full bg-[var(--color-primary-teal)] flex items-center justify-center flex-shrink-0 mt-0.5">
+                        <span className="text-xs text-white font-bold">
+                          {activity.type === 'signup' ? 'U' : activity.type === 'deal' ? '$' : 'A'}
+                        </span>
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <p className="text-xs text-[var(--color-text-primary)] line-clamp-2">{activity.message}</p>
+                        <p className="text-xs text-[var(--color-text-tertiary)] mt-1">{activity.time}</p>
+                      </div>
+                    </div>
+                  )) || []}
+                </div>
+              </div>
+            </div>
+
+            {/* Revenue Chart and Additional Stats Row */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              <SimpleBarChart
+                data={overviewData?.revenueByTier.map(item => ({ label: item.tier, value: item.revenue })) || []}
+                title="Revenue by Tier"
+                color="success"
+              />
+              
+              {/* Additional Stats Grid */}
+              <div className="grid grid-cols-2 gap-4">
+                <div className="card-glass p-4 rounded-xl border border-[var(--color-divider-gray)] bg-[var(--color-background-surface)]">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="text-xs font-medium text-[var(--color-text-secondary)]">New Users</p>
+                      <p className="text-xl font-bold text-[var(--color-text-primary)]">{overviewData?.userStats.newUsersThisMonth || 0}</p>
+                      <p className="text-xs text-[var(--color-text-secondary)]">This month</p>
+                    </div>
+                    <div className="p-2 rounded-lg bg-primary-100 dark:bg-primary-900/20">
+                      <UserCheck className="h-4 w-4 text-primary-600 dark:text-primary-400" />
+                    </div>
+                  </div>
+                </div>
+
+                <div className="card-glass p-4 rounded-xl border border-[var(--color-divider-gray)] bg-[var(--color-background-surface)]">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="text-xs font-medium text-[var(--color-text-secondary)]">Total Revenue</p>
+                      <p className="text-xl font-bold text-[var(--color-text-primary)]">${overviewData?.revenueStats.totalRevenue.toLocaleString() || '0'}</p>
+                      <p className="text-xs text-[var(--color-text-secondary)]">All time</p>
+                    </div>
+                    <div className="p-2 rounded-lg bg-accent-100 dark:bg-accent-900/20">
+                      <DollarSign className="h-4 w-4 text-accent-600 dark:text-accent-400" />
+                    </div>
+                  </div>
+                </div>
+
+                <div className="card-glass p-4 rounded-xl border border-[var(--color-divider-gray)] bg-[var(--color-background-surface)]">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="text-xs font-medium text-[var(--color-text-secondary)]">Conversion</p>
+                      <p className="text-xl font-bold text-[var(--color-text-primary)]">{overviewData?.metrics.conversion_rate || '12.5'}%</p>
+                      <p className="text-xs text-[var(--color-text-secondary)]">Overall</p>
+                    </div>
+                    <div className="p-2 rounded-lg bg-sky-100 dark:bg-sky-900/20">
+                      <Target className="h-4 w-4 text-sky-600 dark:text-sky-400" />
+                    </div>
+                  </div>
+                </div>
+
+                <div className="card-glass p-4 rounded-xl border border-[var(--color-divider-gray)] bg-[var(--color-background-surface)]">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="text-xs font-medium text-[var(--color-text-secondary)]">Active Users</p>
+                      <p className="text-xl font-bold text-[var(--color-text-primary)]">{overviewData?.userStats.activeUsers || 0}</p>
+                      <p className="text-xs text-[var(--color-text-secondary)]">Last 30 days</p>
+                    </div>
+                    <div className="p-2 rounded-lg bg-green-100 dark:bg-green-900/20">
+                      <Activity className="h-4 w-4 text-green-600 dark:text-green-400" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Module Data Overview - Compact Grid */}
+            <div className="space-y-4">
+              <h2 className="text-xl font-bold text-[var(--color-text-primary)] mb-4">Module Data Overview</h2>
+              
+              {/* Compact Module Stats Grid */}
+              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                {/* Companies */}
+                <div className="card-glass p-4 rounded-xl border border-[var(--color-divider-gray)] bg-[var(--color-background-surface)]">
+                  <div className="flex items-center justify-between mb-3">
+                    <h3 className="text-sm font-semibold text-[var(--color-text-primary)]">Companies</h3>
+                    <Building2 className="h-4 w-4 text-[var(--color-primary-teal)]" />
+                  </div>
+                  <div className="space-y-2">
+                    <div className="text-center">
+                      <p className="text-2xl font-bold text-[var(--color-text-primary)]">{overviewData?.companyStats.totalCompanies || 0}</p>
+                      <p className="text-xs text-[var(--color-text-secondary)]">Total</p>
+                    </div>
+                    <div className="text-center">
+                      <p className="text-lg font-bold text-green-600">{overviewData?.companyStats.activeCompanies || 0}</p>
+                      <p className="text-xs text-[var(--color-text-secondary)]">Active</p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Deals */}
+                <div className="card-glass p-4 rounded-xl border border-[var(--color-divider-gray)] bg-[var(--color-background-surface)]">
+                  <div className="flex items-center justify-between mb-3">
+                    <h3 className="text-sm font-semibold text-[var(--color-text-primary)]">Deals</h3>
+                    <DollarSign className="h-4 w-4 text-green-600" />
+                  </div>
+                  <div className="space-y-2">
+                    <div className="text-center">
+                      <p className="text-2xl font-bold text-[var(--color-text-primary)]">{overviewData?.dealStats.totalDeals || 0}</p>
+                      <p className="text-xs text-[var(--color-text-secondary)]">Total</p>
+                    </div>
+                    <div className="text-center">
+                      <p className="text-lg font-bold text-green-600">${overviewData?.dealStats.totalDealValue?.toLocaleString() || '0'}</p>
+                      <p className="text-xs text-[var(--color-text-secondary)]">Value</p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Grants */}
+                <div className="card-glass p-4 rounded-xl border border-[var(--color-divider-gray)] bg-[var(--color-background-surface)]">
+                  <div className="flex items-center justify-between mb-3">
+                    <h3 className="text-sm font-semibold text-[var(--color-text-primary)]">Grants</h3>
+                    <FileText className="h-4 w-4 text-blue-600" />
+                  </div>
+                  <div className="space-y-2">
+                    <div className="text-center">
+                      <p className="text-2xl font-bold text-[var(--color-text-primary)]">{overviewData?.grantStats.totalGrants || 0}</p>
+                      <p className="text-xs text-[var(--color-text-secondary)]">Total</p>
+                    </div>
+                    <div className="text-center">
+                      <p className="text-lg font-bold text-blue-600">${overviewData?.grantStats.totalGrantValue?.toLocaleString() || '0'}</p>
+                      <p className="text-xs text-[var(--color-text-secondary)]">Value</p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Clinical Trials */}
+                <div className="card-glass p-4 rounded-xl border border-[var(--color-divider-gray)] bg-[var(--color-background-surface)]">
+                  <div className="flex items-center justify-between mb-3">
+                    <h3 className="text-sm font-semibold text-[var(--color-text-primary)]">Trials</h3>
+                    <Activity className="h-4 w-4 text-purple-600" />
+                  </div>
+                  <div className="space-y-2">
+                    <div className="text-center">
+                      <p className="text-2xl font-bold text-[var(--color-text-primary)]">{overviewData?.trialStats.totalTrials || 0}</p>
+                      <p className="text-xs text-[var(--color-text-secondary)]">Total</p>
+                    </div>
+                    <div className="text-center">
+                      <p className="text-lg font-bold text-purple-600">{overviewData?.trialStats.activeTrials || 0}</p>
+                      <p className="text-xs text-[var(--color-text-secondary)]">Active</p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Investors */}
+                <div className="card-glass p-4 rounded-xl border border-[var(--color-divider-gray)] bg-[var(--color-background-surface)]">
+                  <div className="flex items-center justify-between mb-3">
+                    <h3 className="text-sm font-semibold text-[var(--color-text-primary)]">Investors</h3>
+                    <UsersIcon className="h-4 w-4 text-orange-600" />
+                  </div>
+                  <div className="text-center">
+                    <p className="text-2xl font-bold text-[var(--color-text-primary)]">{overviewData?.investorStats.totalInvestors || 0}</p>
+                    <p className="text-xs text-[var(--color-text-secondary)]">Total</p>
+                  </div>
+                </div>
+
+                {/* Regulatory */}
+                <div className="card-glass p-4 rounded-xl border border-[var(--color-divider-gray)] bg-[var(--color-background-surface)]">
+                  <div className="flex items-center justify-between mb-3">
+                    <h3 className="text-sm font-semibold text-[var(--color-text-primary)]">Regulatory</h3>
+                    <Shield className="h-4 w-4 text-red-600" />
+                  </div>
+                  <div className="text-center">
+                    <p className="text-2xl font-bold text-[var(--color-text-primary)]">{overviewData?.regulatoryStats.totalRegulatory || 0}</p>
+                    <p className="text-xs text-[var(--color-text-secondary)]">Bodies</p>
+                  </div>
+                </div>
+
+                {/* Notifications */}
+                <div className="card-glass p-4 rounded-xl border border-[var(--color-divider-gray)] bg-[var(--color-background-surface)]">
+                  <div className="flex items-center justify-between mb-3">
+                    <h3 className="text-sm font-semibold text-[var(--color-text-primary)]">Notifications</h3>
+                    <Bell className="h-4 w-4 text-yellow-600" />
+                  </div>
+                  <div className="space-y-2">
+                    <div className="text-center">
+                      <p className="text-2xl font-bold text-[var(--color-text-primary)]">{overviewData?.notificationStats.totalNotifications || 0}</p>
+                      <p className="text-xs text-[var(--color-text-secondary)]">Total</p>
+                    </div>
+                    <div className="text-center">
+                      <p className="text-lg font-bold text-yellow-600">{overviewData?.notificationStats.unreadNotifications || 0}</p>
+                      <p className="text-xs text-[var(--color-text-secondary)]">Unread</p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Platform Health */}
+                <div className="card-glass p-4 rounded-xl border border-[var(--color-divider-gray)] bg-[var(--color-background-surface)]">
+                  <div className="flex items-center justify-between mb-3">
+                    <h3 className="text-sm font-semibold text-[var(--color-text-primary)]">Platform</h3>
+                    <Zap className="h-4 w-4 text-green-600" />
+                  </div>
+                  <div className="space-y-1">
+                    <div className="flex items-center justify-between">
+                      <span className="text-xs text-[var(--color-text-secondary)]">Database</span>
+                      <span className="text-xs font-semibold text-green-600">Online</span>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <span className="text-xs text-[var(--color-text-secondary)]">API</span>
+                      <span className="text-xs font-semibold text-green-600">Healthy</span>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <span className="text-xs text-[var(--color-text-secondary)]">Storage</span>
+                      <span className="text-xs font-semibold text-yellow-600">85%</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+            {/* System Status */}
+                <div className="card-glass p-6 rounded-xl border border-[var(--color-divider-gray)] bg-[var(--color-background-surface)]">
+                  <div className="flex items-center justify-between mb-4">
+                    <h3 className="text-lg font-semibold text-[var(--color-text-primary)]">Grants</h3>
+                    <FileText className="h-6 w-6 text-blue-600" />
+                  </div>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="text-center">
+                      <p className="text-3xl font-bold text-[var(--color-text-primary)]">{overviewData?.grantStats.totalGrants || 0}</p>
+                      <p className="text-sm text-[var(--color-text-secondary)]">Total Grants</p>
+                    </div>
+                    <div className="text-center">
+                      <p className="text-3xl font-bold text-blue-600">${overviewData?.grantStats.totalGrantValue?.toLocaleString() || '0'}</p>
+                      <p className="text-sm text-[var(--color-text-secondary)]">Total Value</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="card-glass p-6 rounded-xl border border-[var(--color-divider-gray)] bg-[var(--color-background-surface)]">
+                  <div className="flex items-center justify-between mb-4">
+                    <h3 className="text-lg font-semibold text-[var(--color-text-primary)]">Clinical Trials</h3>
+                    <Activity className="h-6 w-6 text-purple-600" />
+                  </div>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="text-center">
+                      <p className="text-3xl font-bold text-[var(--color-text-primary)]">{overviewData?.trialStats.totalTrials || 0}</p>
+                      <p className="text-sm text-[var(--color-text-secondary)]">Total Trials</p>
+                    </div>
+                    <div className="text-center">
+                      <p className="text-3xl font-bold text-purple-600">{overviewData?.trialStats.activeTrials || 0}</p>
+                      <p className="text-sm text-[var(--color-text-secondary)]">Active</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Investors & Regulatory Row */}
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <div className="card-glass p-6 rounded-xl border border-[var(--color-divider-gray)] bg-[var(--color-background-surface)]">
+                  <div className="flex items-center justify-between mb-4">
+                    <h3 className="text-lg font-semibold text-[var(--color-text-primary)]">Investors</h3>
+                    <TrendingUp className="h-6 w-6 text-emerald-600" />
+                  </div>
+                  <div className="text-center">
+                    <p className="text-4xl font-bold text-[var(--color-text-primary)]">{overviewData?.investorStats.totalInvestors || 0}</p>
+                    <p className="text-sm text-[var(--color-text-secondary)]">Total Investors</p>
+                  </div>
+                </div>
+
+                <div className="card-glass p-6 rounded-xl border border-[var(--color-divider-gray)] bg-[var(--color-background-surface)]">
+                  <div className="flex items-center justify-between mb-4">
+                    <h3 className="text-lg font-semibold text-[var(--color-text-primary)]">Regulatory Bodies</h3>
+                    <Shield className="h-6 w-6 text-orange-600" />
+                  </div>
+                  <div className="text-center">
+                    <p className="text-4xl font-bold text-[var(--color-text-primary)]">{overviewData?.regulatoryStats.totalRegulatory || 0}</p>
+                    <p className="text-sm text-[var(--color-text-secondary)]">Total Bodies</p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Notifications & System Metrics Row */}
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <div className="card-glass p-6 rounded-xl border border-[var(--color-divider-gray)] bg-[var(--color-background-surface)]">
+                  <div className="flex items-center justify-between mb-4">
+                    <h3 className="text-lg font-semibold text-[var(--color-text-primary)]">Notifications</h3>
+                    <Bell className="h-6 w-6 text-indigo-600" />
+                  </div>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="text-center">
+                      <p className="text-3xl font-bold text-[var(--color-text-primary)]">{overviewData?.notificationStats.totalNotifications || 0}</p>
+                      <p className="text-sm text-[var(--color-text-secondary)]">Total</p>
+                    </div>
+                    <div className="text-center">
+                      <p className="text-3xl font-bold text-red-600">{overviewData?.notificationStats.unreadNotifications || 0}</p>
+                      <p className="text-sm text-[var(--color-text-secondary)]">Unread</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="card-glass p-6 rounded-xl border border-[var(--color-divider-gray)] bg-[var(--color-background-surface)]">
+                  <div className="flex items-center justify-between mb-4">
+                    <h3 className="text-lg font-semibold text-[var(--color-text-primary)]">Platform Health</h3>
+                    <Zap className="h-6 w-6 text-yellow-600" />
+                  </div>
+                  <div className="space-y-3">
+                    <div className="flex justify-between items-center">
+                      <span className="text-sm text-[var(--color-text-secondary)]">Database</span>
+                      <span className="text-sm font-medium text-green-600">Online</span>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <span className="text-sm text-[var(--color-text-secondary)]">API</span>
+                      <span className="text-sm font-medium text-green-600">Healthy</span>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <span className="text-sm text-[var(--color-text-secondary)]">Cache</span>
+                      <span className="text-sm font-medium text-yellow-600">Warning</span>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <span className="text-sm text-[var(--color-text-secondary)]">Storage</span>
+                      <span className="text-sm font-medium text-blue-600">85% used</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* System Status */}
+            <div className="card-glass p-6 rounded-xl border border-[var(--color-divider-gray)] bg-[var(--color-background-surface)]">
+              <h3 className="text-lg font-semibold text-[var(--color-text-primary)] mb-4">System Status</h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                <div className="flex items-center space-x-3">
+                  <div className="p-2 bg-success/20 rounded-lg">
+                    <CheckCircle className="h-5 w-5 text-success" />
+                  </div>
+                  <div>
+                    <p className="text-sm font-medium text-[var(--color-text-primary)]">Database</p>
+                    <p className="text-xs text-[var(--color-text-secondary)]">Online</p>
+                  </div>
+                </div>
+                <div className="flex items-center space-x-3">
+                  <div className="p-2 bg-success/20 rounded-lg">
+                    <CheckCircle className="h-5 w-5 text-success" />
+                  </div>
+                  <div>
+                    <p className="text-sm font-medium text-[var(--color-text-primary)]">API</p>
+                    <p className="text-xs text-[var(--color-text-secondary)]">Healthy</p>
+                  </div>
+                </div>
+                <div className="flex items-center space-x-3">
+                  <div className="p-2 bg-accent-100 dark:bg-accent-900/20 rounded-lg">
+                    <AlertCircle className="h-5 w-5 text-accent-600 dark:text-accent-400" />
+                  </div>
+                  <div>
+                    <p className="text-sm font-medium text-[var(--color-text-primary)]">Cache</p>
+                    <p className="text-xs text-[var(--color-text-secondary)]">Warning</p>
+                  </div>
+                </div>
+                <div className="flex items-center space-x-3">
+                  <div className="p-2 bg-primary-100 dark:bg-primary-900/20 rounded-lg">
+                    <CheckCircle className="h-5 w-5 text-primary-600 dark:text-primary-400" />
+                  </div>
+                  <div>
+                    <p className="text-sm font-medium text-[var(--color-text-primary)]">Storage</p>
+                    <p className="text-xs text-[var(--color-text-secondary)]">85% used</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+              </>
+            )}
+          </div>
+        )}
+
+        {activeTab==='config' && (
+          <div className="space-y-6">
+            <div className="card-glass p-6 rounded-xl">
+              <h3 className="text-lg font-semibold text-[var(--color-text-primary)] mb-4">Platform Configuration</h3>
+              <div className="space-y-6">
+                <div className="space-y-3">
+                  <div className="text-sm font-medium text-[var(--color-text-primary)]">Platform Data Mode</div>
+                  <div className="flex gap-4 text-sm">
+                    <label className="flex items-center gap-2"><input type="radio" checked={config.dataMode==='demo'} onChange={()=>setConfig({ ...config, dataMode:'demo' })}/> Demo</label>
+                    <label className="flex items-center gap-2"><input type="radio" checked={config.dataMode==='live'} onChange={()=>setConfig({ ...config, dataMode:'live' })}/> Live</label>
+                  </div>
+                </div>
+                <div className="space-y-3">
+                  <div className="text-sm font-medium text-[var(--color-text-primary)]">AI Mode</div>
+                  <div className="flex gap-4 text-sm">
+                    <label className="flex items-center gap-2"><input type="radio" checked={config.aiMode==='demo'} onChange={()=>setConfig({ ...config, aiMode:'demo' })}/> Demo</label>
+                    <label className="flex items-center gap-2"><input type="radio" checked={config.aiMode==='live'} onChange={()=>setConfig({ ...config, aiMode:'live' })}/> Live (Ollama)</label>
+                  </div>
+                </div>
+                <div className="space-y-3">
+                  <div className="text-sm font-medium text-[var(--color-text-primary)]">Ollama Configuration</div>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                    <input className="input" placeholder="Endpoint" value={config.ollama.endpoint} onChange={e=>setConfig({ ...config, ollama: { ...config.ollama, endpoint: e.target.value } })}/>
+                    <input className="input" placeholder="Model" value={config.ollama.model} onChange={e=>setConfig({ ...config, ollama: { ...config.ollama, model: e.target.value } })}/>
+                  </div>
+                </div>
+                <div className="flex items-center gap-2 text-sm">
+                  <input type="checkbox" checked={!!config.adsEnabled} onChange={e=>setConfig({ ...config, adsEnabled: e.target.checked })}/>
+                  <span>Ads enabled</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Access presets (roles × tiers) */}
+            <div className="card-glass p-6 rounded-xl">
+              <h3 className="text-lg font-semibold text-[var(--color-text-primary)] mb-4">Access Presets (Roles × Tiers)</h3>
+              <div className="flex flex-wrap gap-3">
+                <button
+                  className="btn-outline px-4 py-2 rounded-lg flex items-center space-x-2"
+                  onClick={() => {
+                    try {
+                      const json = JSON.stringify(ACCESS_MATRIX, null, 2);
+                      navigator.clipboard.writeText(json);
+                      alert('Presets copied to clipboard');
+                    } catch {}
+                  }}
+                >
+                  <Database className="h-4 w-4"/>
+                  <span>Copy presets JSON</span>
+                </button>
+                <button
+                  className="btn-outline px-4 py-2 rounded-lg flex items-center space-x-2"
+                  onClick={() => {
+                    const pasted = prompt('Paste presets JSON (will apply for this session and store in localStorage):');
+                    if (!pasted) return;
+                    try {
+                      const overrides = JSON.parse(pasted);
+                      Object.keys(overrides).forEach((role: string) => {
+                        if (!(ACCESS_MATRIX as any)) return;
+                        if (!((ACCESS_MATRIX as any)[role])) return;
+                        Object.keys(overrides[role]).forEach((tier: string) => {
+                          (ACCESS_MATRIX as any)[role][tier] = {
+                            ...(ACCESS_MATRIX as any)[role][tier],
+                            ...overrides[role][tier],
+                          };
+                        });
+                      });
+                      localStorage.setItem('medarionAccessOverrides', JSON.stringify(overrides));
+                      alert('Presets applied');
+                    } catch {
+                      alert('Invalid JSON');
+                    }
+                  }}
+                >
+                  <Settings className="h-4 w-4"/>
+                  <span>Apply presets</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {activeTab==='users' && (
+          <div className="space-y-6">
+            {/* Enhanced User Management Header */}
+            <div className="card-glass p-6 rounded-xl">
+              <div className="flex items-center justify-between mb-6">
+                <h3 className="text-xl font-semibold text-[var(--color-text-primary)]">User Management</h3>
+                <div className="flex items-center gap-3">
+                  <button 
+                    className="btn-outline px-4 py-2 rounded-lg flex items-center gap-2"
+                    onClick={() => {/* TODO: Export users */}}
+                  >
+                    <Download className="h-4 w-4"/>
+                    <span>Export</span>
+                  </button>
+                  <button className="btn-primary px-4 py-2 rounded-lg flex items-center gap-2" onClick={handleAddUser}>
+                    <Plus className="h-4 w-4"/>
+                    <span>Add User</span>
+                  </button>
+                </div>
+              </div>
+
+              {/* Search and Filters */}
+              <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+                <div className="relative">
+                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400"/>
+                  <input 
+                    className="input pl-10" 
+                    placeholder="Search users..." 
+                    value={userSearchTerm} 
+                    onChange={e => setUserSearchTerm(e.target.value)}
+                  />
+                </div>
+                <select 
+                  className="input" 
+                  value={userRoleFilter} 
+                  onChange={e => setUserRoleFilter(e.target.value)}
+                >
+                  <option value="">All Roles</option>
+                  <option value="investors_finance">Investor</option>
+                  <option value="industry_executives">Executive</option>
+                  <option value="health_science_experts">Researcher</option>
+                  <option value="media_advisors">Media</option>
+                  <option value="startup">Startup</option>
+                </select>
+                <select 
+                  className="input" 
+                  value={userStatusFilter} 
+                  onChange={e => setUserStatusFilter(e.target.value)}
+                >
+                  <option value="">All Status</option>
+                  <option value="active">Active</option>
+                  <option value="inactive">Inactive</option>
+                  <option value="blocked">Blocked</option>
+                  <option value="suspended">Suspended</option>
+                </select>
+                <div className="flex items-center gap-2">
+                  <button 
+                    className="btn-outline px-3 py-2 rounded-lg flex items-center gap-2"
+                    onClick={() => {
+                      setUserSearchTerm('');
+                      setUserRoleFilter('');
+                      setUserStatusFilter('');
+                    }}
+                  >
+                    <Filter className="h-4 w-4"/>
+                    <span>Clear</span>
+                  </button>
+                </div>
+              </div>
+
+              {/* Bulk Actions */}
+              {selectedUsers.length > 0 && (
+                <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4 mb-6">
+                  <div className="flex items-center justify-between">
+                    <span className="text-blue-800 dark:text-blue-200 font-medium">
+                      {selectedUsers.length} user(s) selected
+                    </span>
+                    <div className="flex items-center gap-2">
+                      <button 
+                        className="btn-outline px-3 py-2 rounded-lg text-green-600 hover:bg-green-50 dark:hover:bg-green-900/20"
+                        onClick={() => handleBulkAction('activate')}
+                      >
+                        <UserCheckIcon className="h-4 w-4"/>
+                        <span>Activate</span>
+                      </button>
+                      <button 
+                        className="btn-outline px-3 py-2 rounded-lg text-yellow-600 hover:bg-yellow-50 dark:hover:bg-yellow-900/20"
+                        onClick={() => handleBulkAction('deactivate')}
+                      >
+                        <UserX className="h-4 w-4"/>
+                        <span>Deactivate</span>
+                      </button>
+                      <button 
+                        className="btn-outline px-3 py-2 rounded-lg text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20"
+                        onClick={() => handleBulkAction('block')}
+                      >
+                        <Ban className="h-4 w-4"/>
+                        <span>Block</span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* Users Table */}
+            <div className="card-glass rounded-xl overflow-hidden">
+              <div className="overflow-x-auto">
+                <table className="w-full">
+                  <thead className="bg-[var(--color-background-surface)] border-b border-[var(--color-divider-gray)]">
+                    <tr>
+                      <th className="px-4 py-3 text-left">
+                        <input 
+                          type="checkbox" 
+                          checked={selectedUsers.length === usersData?.users.length && usersData?.users.length > 0}
+                          onChange={handleSelectAllUsers}
+                          className="rounded"
+                        />
+                      </th>
+                      <th className="px-4 py-3 text-left text-sm font-medium text-[var(--color-text-primary)]">User</th>
+                      <th className="px-4 py-3 text-left text-sm font-medium text-[var(--color-text-primary)]">Role</th>
+                      <th className="px-4 py-3 text-left text-sm font-medium text-[var(--color-text-primary)]">Tier</th>
+                      <th className="px-4 py-3 text-left text-sm font-medium text-[var(--color-text-primary)]">Status</th>
+                      <th className="px-4 py-3 text-left text-sm font-medium text-[var(--color-text-primary)]">Verified</th>
+                      <th className="px-4 py-3 text-left text-sm font-medium text-[var(--color-text-primary)]">Joined</th>
+                      <th className="px-4 py-3 text-left text-sm font-medium text-[var(--color-text-primary)]">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-[var(--color-divider-gray)]">
+                    {usersData?.users.map(user => (
+                      <tr key={user.id} className="hover:bg-[var(--color-background-default)] transition-colors">
+                        <td className="px-4 py-3">
+                          <input 
+                            type="checkbox" 
+                            checked={selectedUsers.includes(user.id)}
+                            onChange={() => handleSelectUser(user.id)}
+                            className="rounded"
+                          />
+                        </td>
+                        <td className="px-4 py-3">
+                          <div className="flex items-center gap-3">
+                            <div className="w-10 h-10 bg-[var(--color-primary-teal)] rounded-full flex items-center justify-center text-white font-semibold">
+                              {user.first_name?.charAt(0) || user.email.charAt(0).toUpperCase()}
+                            </div>
+                            <div>
+                              <div className="font-medium text-[var(--color-text-primary)]">
+                                {user.first_name && user.last_name ? `${user.first_name} ${user.last_name}` : user.email}
+                              </div>
+                              <div className="text-sm text-[var(--color-text-secondary)]">{user.email}</div>
+                            </div>
+                          </div>
+                        </td>
+                        <td className="px-4 py-3">
+                          <span className="px-2 py-1 bg-blue-100 dark:bg-blue-900/20 text-blue-800 dark:text-blue-200 rounded-full text-sm">
+                            {user.role?.replace('_', ' ') || 'No role'}
+                          </span>
+                        </td>
+                        <td className="px-4 py-3">
+                          <span className="px-2 py-1 bg-green-100 dark:bg-green-900/20 text-green-800 dark:text-green-200 rounded-full text-sm">
+                            {user.account_tier || 'No tier'}
+                          </span>
+                        </td>
+                        <td className="px-4 py-3">
+                          <span className={`px-2 py-1 rounded-full text-sm ${
+                            user.is_active 
+                              ? 'bg-green-100 dark:bg-green-900/20 text-green-800 dark:text-green-200'
+                              : 'bg-red-100 dark:bg-red-900/20 text-red-800 dark:text-red-200'
+                          }`}>
+                            {user.is_active ? 'Active' : 'Inactive'}
+                          </span>
+                        </td>
+                        <td className="px-4 py-3">
+                          <span className={`px-2 py-1 rounded-full text-sm ${
+                            user.is_verified 
+                              ? 'bg-green-100 dark:bg-green-900/20 text-green-800 dark:text-green-200'
+                              : 'bg-gray-100 dark:bg-gray-900/20 text-gray-800 dark:text-gray-200'
+                          }`}>
+                            {user.is_verified ? 'Verified' : 'Unverified'}
+                          </span>
+                        </td>
+                        <td className="px-4 py-3 text-sm text-[var(--color-text-secondary)]">
+                          {new Date(user.created_at).toLocaleDateString()}
+                        </td>
+                        <td className="px-4 py-3">
+                          <div className="flex items-center gap-2">
+                            <button 
+                              className="btn-outline px-2 py-1 rounded text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/20"
+                              onClick={() => handleEditUser(user)}
+                            >
+                              <Edit className="h-4 w-4"/>
+                            </button>
+                            <div className="relative">
+                              <button 
+                                className="btn-outline px-2 py-1 rounded text-gray-600 hover:bg-gray-50 dark:hover:bg-gray-900/20"
+                                onClick={() => setShowUserActionsMenu(showUserActionsMenu === user.id ? null : user.id)}
+                              >
+                                <MoreVertical className="h-4 w-4"/>
+                              </button>
+                              {showUserActionsMenu === user.id && (
+                                <div className="absolute right-0 top-full mt-1 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg z-10 min-w-[200px]">
+                                  <div className="py-1">
+                                    <button 
+                                      className="w-full px-3 py-2 text-left text-sm hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center gap-2"
+                                      onClick={() => {
+                                        handleVerifyUser(user.id, !user.is_verified);
+                                        setShowUserActionsMenu(null);
+                                      }}
+                                    >
+                                      <UserCheckIcon className="h-4 w-4"/>
+                                      {user.is_verified ? 'Unverify' : 'Verify'}
+                                    </button>
+                                    <button 
+                                      className="w-full px-3 py-2 text-left text-sm hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center gap-2"
+                                      onClick={() => {
+                                        handleUserStatusChange(user.id, user.is_active ? 'deactivate' : 'activate');
+                                        setShowUserActionsMenu(null);
+                                      }}
+                                    >
+                                      {user.is_active ? <UserX className="h-4 w-4"/> : <UserCheckIcon className="h-4 w-4"/>}
+                                      {user.is_active ? 'Deactivate' : 'Activate'}
+                                    </button>
+                                    <button 
+                                      className="w-full px-3 py-2 text-left text-sm hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center gap-2"
+                                      onClick={() => {
+                                        handleResetPassword(user.id);
+                                        setShowUserActionsMenu(null);
+                                      }}
+                                    >
+                                      <Key className="h-4 w-4"/>
+                                      Reset Password
+                                    </button>
+                                    <button 
+                                      className="w-full px-3 py-2 text-left text-sm hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center gap-2 text-red-600"
+                                      onClick={() => {
+                                        handleUserStatusChange(user.id, 'block');
+                                        setShowUserActionsMenu(null);
+                                      }}
+                                    >
+                                      <Ban className="h-4 w-4"/>
+                                      Block User
+                                    </button>
+                                  </div>
+                                </div>
+                              )}
+                            </div>
+                          </div>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+              
+              {/* Pagination */}
+              {usersData?.pagination && (
+                <div className="px-4 py-3 border-t border-[var(--color-divider-gray)] flex items-center justify-between">
+                  <div className="text-sm text-[var(--color-text-secondary)]">
+                    Showing {((usersData.pagination.page - 1) * usersData.pagination.limit) + 1} to {Math.min(usersData.pagination.page * usersData.pagination.limit, usersData.pagination.total)} of {usersData.pagination.total} users
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <button 
+                      className="btn-outline px-3 py-2 rounded-lg disabled:opacity-50"
+                      disabled={usersData.pagination.page <= 1}
+                      onClick={() => setUserPage(p => Math.max(1, p - 1))}
+                    >
+                      Previous
+                    </button>
+                    <span className="px-3 py-2 bg-[var(--color-background-surface)] rounded-lg text-sm">
+                      Page {usersData.pagination.page} of {usersData.pagination.pages}
+                    </span>
+                    <button 
+                      className="btn-outline px-3 py-2 rounded-lg disabled:opacity-50"
+                      disabled={usersData.pagination.page >= usersData.pagination.pages}
+                      onClick={() => setUserPage(p => Math.min(usersData.pagination.pages, p + 1))}
+                    >
+                      Next
+                    </button>
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+        )}
+
+        {activeTab==='modules' && (
+          <div className="space-y-6">
+            {/* User Selection */}
+            <div className="card-glass p-6 rounded-xl">
+              <h3 className="text-lg font-semibold text-[var(--color-text-primary)] mb-4">Module Management</h3>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 items-end">
+                <div className="md:col-span-2">
+                  <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">Select User</label>
+                  <input className="input" placeholder="user@example.com" value={moduleEmail} onChange={e=>setModuleEmail(e.target.value)} />
+                </div>
+                <button className="btn-primary px-4 py-2 rounded-lg flex items-center gap-2" onClick={()=>loadModulesForEmail(moduleEmail)}>
+                  <Layers className="h-4 w-4"/>
+                  <span>Load Modules</span>
+                </button>
+              </div>
+            </div>
+
+            {/* Preset Management */}
+            <div className="card-glass p-6 rounded-xl">
+              <h3 className="text-lg font-semibold text-[var(--color-text-primary)] mb-4">Module Presets</h3>
+              <div className="flex flex-wrap items-center gap-3">
+                <button className="btn-outline px-4 py-2 rounded-lg flex items-center gap-2" onClick={()=>{
+                  try {
+                    const raw = localStorage.getItem('medarionAdminModules') || '{}';
+                    navigator.clipboard.writeText(raw);
+                    alert('Module presets copied to clipboard');
+                  } catch {}
+                }}>
+                  <Database className="h-4 w-4"/>
+                  <span>Copy Presets</span>
+                </button>
+                <button className="btn-outline px-4 py-2 rounded-lg flex items-center gap-2" onClick={()=>{
+                  const pasted = prompt('Paste module presets JSON (will overwrite medarionAdminModules):');
+                  if (!pasted) return;
+                  try {
+                    const next = JSON.parse(pasted);
+                    localStorage.setItem('medarionAdminModules', JSON.stringify(next));
+                    alert('Module presets applied');
+                  } catch {
+                    alert('Invalid JSON');
+                  }
+                }}>
+                  <Settings className="h-4 w-4"/>
+                  <span>Apply Presets</span>
+                </button>
+              </div>
+            </div>
+
+            {moduleEmail && (
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                {/* Available Modules */}
+                <div className="card-glass rounded-xl overflow-hidden">
+                  <div className="p-4 border-b border-[var(--color-divider-gray)]">
+                    <h3 className="text-lg font-semibold text-[var(--color-text-primary)]">Available Modules</h3>
+                    <p className="text-sm text-[var(--color-text-secondary)]">Select modules to enable for this user</p>
+                  </div>
+                  <div className="p-4 max-h-80 overflow-y-auto">
+                    <div className="grid grid-cols-1 gap-3">
+                      {AVAILABLE_MODULES.map(m => (
+                        <label key={m.id} className="flex items-center gap-3 p-3 rounded-lg hover:bg-[var(--color-background-default)] transition-colors cursor-pointer">
+                          <input 
+                            type="checkbox" 
+                            checked={moduleSelection.includes(m.id)} 
+                            onChange={()=>toggleModule(m.id)}
+                            className="w-4 h-4 text-[var(--color-primary-teal)]"
+                          />
+                          <div className="flex-1">
+                            <div className="font-medium text-[var(--color-text-primary)]">{m.name}</div>
+                            <div className="text-sm text-[var(--color-text-secondary)]">{m.id}</div>
+                          </div>
+                        </label>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+
+                {/* Module Order */}
+                <div className="card-glass rounded-xl overflow-hidden">
+                  <div className="p-4 border-b border-[var(--color-divider-gray)]">
+                    <h3 className="text-lg font-semibold text-[var(--color-text-primary)]">Module Order</h3>
+                    <p className="text-sm text-[var(--color-text-secondary)]">Drag or use arrows to reorder modules</p>
+                  </div>
+                  <div className="p-4 max-h-80 overflow-y-auto">
+                    <div className="space-y-2">
+                      {moduleOrder.filter(id=>moduleSelection.includes(id)).map((id, index) => {
+                        const meta = AVAILABLE_MODULES.find(m=>m.id===id);
+                        if (!meta) return null;
+                        return (
+                          <div key={id} className="flex items-center justify-between p-3 bg-[var(--color-background-surface)] rounded-lg border border-[var(--color-divider-gray)]">
+                            <div className="flex items-center gap-3">
+                              <div className="w-6 h-6 bg-[var(--color-primary-teal)] text-white rounded-full flex items-center justify-center text-xs font-semibold">
+                                {index + 1}
+                              </div>
+                              <div>
+                                <div className="font-medium text-[var(--color-text-primary)]">{meta.name}</div>
+                                <div className="text-sm text-[var(--color-text-secondary)]">{meta.id}</div>
+                              </div>
+                            </div>
+                            <div className="flex items-center gap-1">
+                              <button 
+                                className="p-2 rounded-lg hover:bg-[var(--color-background-default)] transition-colors disabled:opacity-50" 
+                                onClick={()=>moveModule(id,'up')}
+                                disabled={index === 0}
+                              >
+                                <ArrowUp className="h-4 w-4"/>
+                              </button>
+                              <button 
+                                className="p-2 rounded-lg hover:bg-[var(--color-background-default)] transition-colors disabled:opacity-50" 
+                                onClick={()=>moveModule(id,'down')}
+                                disabled={index === moduleOrder.filter(id=>moduleSelection.includes(id)).length - 1}
+                              >
+                                <ArrowDown className="h-4 w-4"/>
+                              </button>
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* Save Button */}
+            {moduleEmail && (
+              <div className="flex justify-end">
+                <button className="btn-primary px-6 py-3 rounded-lg flex items-center gap-2" onClick={saveModules}>
+                  <Save className="h-4 w-4"/>
+                  <span>Save Module Configuration</span>
+                </button>
+              </div>
+            )}
+          </div>
+        )}
+
+        {activeTab==='blog' && (
+          <div className="space-y-6">
+            {/* Create New Post */}
+            <div className="card-glass p-6 rounded-xl">
+              <h3 className="text-lg font-semibold text-[var(--color-text-primary)] mb-4">Create New Blog Post</h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <input className="input" placeholder="Post Title" value={draftPost.title} onChange={e=>setDraftPost(prev=>({...prev, title:e.target.value}))}/>
+                <input className="input" placeholder="Author Name" value={draftPost.author} onChange={e=>setDraftPost(prev=>({...prev, author:e.target.value}))}/>
+                <input className="input" placeholder="Category" value={draftPost.category} onChange={e=>setDraftPost(prev=>({...prev, category:e.target.value}))}/>
+                <input className="input" placeholder="Image URL" value={draftPost.imageUrl} onChange={e=>setDraftPost(prev=>({...prev, imageUrl:e.target.value}))}/>
+                <textarea className="input md:col-span-2" placeholder="Excerpt" rows={3} value={draftPost.excerpt} onChange={e=>setDraftPost(prev=>({...prev, excerpt:e.target.value}))}/>
+                <textarea className="input md:col-span-2" placeholder="Content" rows={6} value={draftPost.content} onChange={e=>setDraftPost(prev=>({...prev, content:e.target.value}))}/>
+                <div className="md:col-span-2 flex items-center justify-between">
+                  <label className="flex items-center gap-2 text-sm">
+                    <input type="checkbox" checked={draftPost.featured} onChange={e=>setDraftPost(prev=>({...prev, featured:e.target.checked}))}/>
+                    <span>Featured Post</span>
+                  </label>
+                  <button className="btn-primary px-4 py-2 rounded-lg flex items-center gap-2" onClick={handleCreateBlogPost}>
+                    <Plus className="h-4 w-4"/>
+                    <span>Create Post</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            {/* Blog Posts List */}
+            <div className="card-glass rounded-xl overflow-hidden">
+              <div className="p-4 border-b border-[var(--color-divider-gray)]">
+                <h3 className="text-lg font-semibold text-[var(--color-text-primary)]">Blog Posts ({blogPosts.length})</h3>
+                <p className="text-sm text-[var(--color-text-secondary)]">Manage your blog content</p>
+              </div>
+              <div className="divide-y divide-[var(--color-divider-gray)]">
+                {blogPosts.map(p => (
+                  <div key={p.id} className="p-4 hover:bg-[var(--color-background-default)] transition-colors">
+                    <div className="flex items-start justify-between">
+                      <div className="flex-1">
+                        <div className="flex items-center gap-3 mb-2">
+                          <h4 className="font-semibold text-[var(--color-text-primary)]">{p.title}</h4>
+                          {p.status === 'published' && (
+                            <span className="px-2 py-1 bg-yellow-100 dark:bg-yellow-900/20 text-yellow-800 dark:text-yellow-200 rounded-full text-xs font-medium">
+                              Published
+                            </span>
+                          )}
+                        </div>
+                        <p className="text-sm text-[var(--color-text-secondary)] mb-2 line-clamp-2">{p.excerpt}</p>
+                        <div className="flex items-center gap-4 text-sm text-[var(--color-text-secondary)]">
+                          <span className="flex items-center gap-1">
+                            <UsersIcon className="h-4 w-4"/>
+                            Author {p.author_id}
+                          </span>
+                          <span className="flex items-center gap-1">
+                            <Calendar className="h-4 w-4"/>
+                            {new Date(p.published_at).toLocaleDateString()}
+                          </span>
+                          <span className="px-2 py-1 bg-blue-100 dark:bg-blue-900/20 text-blue-800 dark:text-blue-200 rounded-full">
+                            {p.category}
+                          </span>
+                          <span className="px-2 py-1 bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-200 rounded-full">
+                            5 min read
+                          </span>
+                        </div>
+                      </div>
+                      <button 
+                        className="btn-outline px-3 py-2 rounded-lg flex items-center gap-2 text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20" 
+                        onClick={() => handleDeleteBlogPost(p.id)}
+                      >
+                        <Trash2 className="h-4 w-4"/>
+                        <span>Delete</span>
+                      </button>
+                    </div>
+                  </div>
+                ))}
+                {blogPosts.length === 0 && (
+                  <div className="p-8 text-center text-[var(--color-text-secondary)]">
+                    <Newspaper className="h-12 w-12 mx-auto mb-3 opacity-50" />
+                    <p>No blog posts yet</p>
+                    <p className="text-sm">Create your first blog post above</p>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+        )}
+
+        {activeTab==='ads' && (
+          <div className="space-y-6">
+            {/* Create New Ad */}
+            <div className="card-glass p-6 rounded-xl">
+              <h3 className="text-lg font-semibold text-[var(--color-text-primary)] mb-4">Create New Advertisement</h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <input className="input" placeholder="Ad Title" value={draftAd.title} onChange={e=>setDraftAd(prev=>({...prev, title:e.target.value}))}/>
+                <input className="input" placeholder="Advertiser Name" value={draftAd.advertiser||''} onChange={e=>setDraftAd(prev=>({...prev, advertiser:e.target.value}))}/>
+                <input className="input" placeholder="Image URL" value={draftAd.imageUrl} onChange={e=>setDraftAd(prev=>({...prev, imageUrl:e.target.value}))}/>
+                <input className="input" placeholder="Call-to-Action Text" value={draftAd.ctaText} onChange={e=>setDraftAd(prev=>({...prev, ctaText:e.target.value}))}/>
+                <input className="input md:col-span-2" placeholder="Target URL" value={draftAd.targetUrl} onChange={e=>setDraftAd(prev=>({...prev, targetUrl:e.target.value}))}/>
+                
+                <div className="md:col-span-2">
+                  <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">Ad Placements</label>
+                  <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
+                    {(['blog_top','blog_inline','newsletter','dashboard_sidebar','dashboard_inline'] as AdPlacement[]).map(pl => (
+                      <label key={pl} className="flex items-center gap-2 p-2 rounded-lg hover:bg-[var(--color-background-default)] transition-colors cursor-pointer">
+                        <input 
+                          type="checkbox" 
+                          checked={draftAd.placements.includes(pl)} 
+                          onChange={(e)=>{
+                            const present = draftAd.placements;
+                            const next = e.target.checked? [...present, pl] : present.filter(x=>x!==pl);
+                            setDraftAd(prev=>({...prev, placements: next}));
+                          }}
+                          className="w-4 h-4 text-[var(--color-primary-teal)]"
+                        />
+                        <span className="text-sm">{pl.replace('_', ' ')}</span>
+                      </label>
+                    ))}
+                  </div>
+                </div>
+                
+                <div className="md:col-span-2 flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <span className="text-sm font-medium text-[var(--color-text-primary)]">Category:</span>
+                    <select className="input" value={draftAd.category} onChange={e=>setDraftAd(prev=>({...prev, category: e.target.value as AdCategory}))}>
+                      <option value="blog_general">Blog General</option>
+                      <option value="dashboard_personalized">Dashboard Personalized</option>
+                      <option value="newsletter_general">Newsletter General</option>
+                    </select>
+                  </div>
+                  <button className="btn-primary px-4 py-2 rounded-lg flex items-center gap-2" onClick={handleCreateAdvertisement}>
+                    <Plus className="h-4 w-4"/>
+                    <span>Create Ad</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            {/* Ads List */}
+            <div className="card-glass rounded-xl overflow-hidden">
+              <div className="p-4 border-b border-[var(--color-divider-gray)]">
+                <h3 className="text-lg font-semibold text-[var(--color-text-primary)]">Advertisements ({ads.length})</h3>
+                <p className="text-sm text-[var(--color-text-secondary)]">Manage your advertising content</p>
+              </div>
+              <div className="divide-y divide-[var(--color-divider-gray)]">
+                {ads.map(a => (
+                  <div key={a.id} className="p-4 hover:bg-[var(--color-background-default)] transition-colors">
+                    <div className="flex items-start justify-between">
+                      <div className="flex-1">
+                        <div className="flex items-center gap-3 mb-2">
+                          <h4 className="font-semibold text-[var(--color-text-primary)]">{a.title}</h4>
+                          <span className="px-2 py-1 bg-blue-100 dark:bg-blue-900/20 text-blue-800 dark:text-blue-200 rounded-full text-xs font-medium">
+                            {a.category.replace('_', ' ')}
+                          </span>
+                        </div>
+                        <div className="flex items-center gap-4 text-sm text-[var(--color-text-secondary)] mb-2">
+                          <span className="flex items-center gap-1">
+                            <Megaphone className="h-4 w-4"/>
+                            {a.advertiser || 'Unknown Advertiser'}
+                          </span>
+                          <span className="flex items-center gap-1">
+                            <Target className="h-4 w-4"/>
+                            {a.cta_text || 'No CTA'}
+                          </span>
+                        </div>
+                        <div className="flex flex-wrap gap-2">
+                          {a.placements.map(placement => (
+                            <span key={placement} className="px-2 py-1 bg-green-100 dark:bg-green-900/20 text-green-800 dark:text-green-200 rounded-full text-xs">
+                              {placement.replace('_', ' ')}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                      <button 
+                        className="btn-outline px-3 py-2 rounded-lg flex items-center gap-2 text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20" 
+                        onClick={() => handleDeleteAdvertisement(a.id)}
+                      >
+                        <Trash2 className="h-4 w-4"/>
+                        <span>Delete</span>
+                      </button>
+                    </div>
+                  </div>
+                ))}
+                {ads.length === 0 && (
+                  <div className="p-8 text-center text-[var(--color-text-secondary)]">
+                    <Megaphone className="h-12 w-12 mx-auto mb-3 opacity-50" />
+                    <p>No advertisements yet</p>
+                    <p className="text-sm">Create your first ad above</p>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+        )}
+
+      </div>
+
+      {/* User Edit Modal */}
+      {showUserEditModal && editingUser && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white dark:bg-gray-800 rounded-xl p-6 w-full max-w-2xl mx-4 max-h-[90vh] overflow-y-auto">
+            <div className="flex items-center justify-between mb-6">
+              <h3 className="text-xl font-semibold text-[var(--color-text-primary)]">Edit User</h3>
+              <button 
+                className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
+                onClick={() => {
+                  setShowUserEditModal(false);
+                  setEditingUser(null);
+                }}
+              >
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+
+            <form onSubmit={(e) => {
+              e.preventDefault();
+              handleSaveUser(editingUser);
+            }} className="space-y-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">First Name</label>
+                  <input 
+                    className="input w-full" 
+                    value={editingUser.first_name || ''} 
+                    onChange={e => setEditingUser(prev => prev ? {...prev, first_name: e.target.value} : null)}
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">Last Name</label>
+                  <input 
+                    className="input w-full" 
+                    value={editingUser.last_name || ''} 
+                    onChange={e => setEditingUser(prev => prev ? {...prev, last_name: e.target.value} : null)}
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">Email</label>
+                  <input 
+                    className="input w-full" 
+                    type="email"
+                    value={editingUser.email || ''} 
+                    onChange={e => setEditingUser(prev => prev ? {...prev, email: e.target.value} : null)}
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">Phone</label>
+                  <input 
+                    className="input w-full" 
+                    value={editingUser.phone || ''} 
+                    onChange={e => setEditingUser(prev => prev ? {...prev, phone: e.target.value} : null)}
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">Company</label>
+                  <input 
+                    className="input w-full" 
+                    value={editingUser.company_name || ''} 
+                    onChange={e => setEditingUser(prev => prev ? {...prev, company_name: e.target.value} : null)}
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">Country</label>
+                  <input 
+                    className="input w-full" 
+                    value={editingUser.country || ''} 
+                    onChange={e => setEditingUser(prev => prev ? {...prev, country: e.target.value} : null)}
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">City</label>
+                  <input 
+                    className="input w-full" 
+                    value={editingUser.city || ''} 
+                    onChange={e => setEditingUser(prev => prev ? {...prev, city: e.target.value} : null)}
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">Role</label>
+                  <select 
+                    className="input w-full" 
+                    value={editingUser.role || ''} 
+                    onChange={e => setEditingUser(prev => prev ? {...prev, role: e.target.value} : null)}
+                  >
+                    <option value="">Select Role</option>
+                    <option value="investors_finance">Investor</option>
+                    <option value="industry_executives">Executive</option>
+                    <option value="health_science_experts">Researcher</option>
+                    <option value="media_advisors">Media</option>
+                    <option value="startup">Startup</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">Account Tier</label>
+                  <select 
+                    className="input w-full" 
+                    value={editingUser.account_tier || ''} 
+                    onChange={e => setEditingUser(prev => prev ? {...prev, account_tier: e.target.value} : null)}
+                  >
+                    <option value="">Select Tier</option>
+                    <option value="free">Free</option>
+                    <option value="paid">Paid</option>
+                    <option value="enterprise">Enterprise</option>
+                    <option value="academic">Academic</option>
+                  </select>
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">Bio</label>
+                <textarea 
+                  className="input w-full h-24" 
+                  value={editingUser.bio || ''} 
+                  onChange={e => setEditingUser(prev => prev ? {...prev, bio: e.target.value} : null)}
+                  placeholder="User bio..."
+                />
+              </div>
+
+              <div className="flex items-center gap-6">
+                <label className="flex items-center gap-2">
+                  <input 
+                    type="checkbox" 
+                    checked={editingUser.is_verified || false} 
+                    onChange={e => setEditingUser(prev => prev ? {...prev, is_verified: e.target.checked} : null)}
+                  />
+                  <span className="text-sm">Verified User</span>
+                </label>
+                <label className="flex items-center gap-2">
+                  <input 
+                    type="checkbox" 
+                    checked={editingUser.is_active || false} 
+                    onChange={e => setEditingUser(prev => prev ? {...prev, is_active: e.target.checked} : null)}
+                  />
+                  <span className="text-sm">Active User</span>
+                </label>
+                <label className="flex items-center gap-2">
+                  <input 
+                    type="checkbox" 
+                    checked={editingUser.is_admin || false} 
+                    onChange={e => setEditingUser(prev => prev ? {...prev, is_admin: e.target.checked} : null)}
+                  />
+                  <span className="text-sm">Admin User</span>
+                </label>
+              </div>
+
+              <div className="flex items-center justify-end gap-3 pt-4">
+                <button 
+                  type="button"
+                  className="btn-outline px-4 py-2 rounded-lg"
+                  onClick={() => {
+                    setShowUserEditModal(false);
+                    setEditingUser(null);
+                  }}
+                >
+                  Cancel
+                </button>
+                <button 
+                  type="submit"
+                  className="btn-primary px-4 py-2 rounded-lg flex items-center gap-2"
+                >
+                  <Save className="h-4 w-4"/>
+                  <span>Save Changes</span>
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default AdminDashboard; 

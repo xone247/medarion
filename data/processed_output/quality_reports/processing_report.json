@@ -1,0 +1,32 @@
+{
+  "processing_stats": {
+    "total_files": 12,
+    "processed_files": 10,
+    "skipped_files": 2,
+    "error_files": 0,
+    "total_records": 5,
+    "total_size_bytes": 60012,
+    "deleted_files": 2,
+    "processing_time": 131.90647625923157,
+    "start_time": 1759796459.2089908,
+    "last_update_time": 0.0
+  },
+  "quality_metrics": {
+    "avg_quality_score": 0.40977622862926466,
+    "min_quality_score": 0.404196347425669,
+    "max_quality_score": 0.41552865788536847,
+    "quality_distribution": {
+      "0.4": 5
+    }
+  },
+  "content_metrics": {
+    "avg_word_count": 4026007.6,
+    "min_word_count": 1733529,
+    "max_word_count": 6041062,
+    "total_size_mb": 0.057231903076171875
+  },
+  "file_type_distribution": {
+    ".jsonl": 5
+  },
+  "generated_at": "2025-10-07T00:23:11.603994"
+}

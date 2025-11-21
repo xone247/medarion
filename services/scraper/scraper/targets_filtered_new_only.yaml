@@ -1,0 +1,289 @@
+targets:
+- name: Kenya Dealroom Dashboard
+  type: html
+  url: https://kenya.dealroom.co/dashboard?dashboardChartType=vc_investment
+- name: Gavi Vaccine Alliance
+  type: html
+  url: https://www.gavi.org
+- name: The Pandemic Fund
+  type: html
+  url: https://www.thepandemicfund.org
+- name: OPEC Fund
+  type: html
+  url: https://opecfund.org
+- name: The Global Fund
+  type: html
+  url: https://www.theglobalfund.org/en/
+- name: LeapFrog Investments
+  type: html
+  url: https://leapfroginvest.com
+- name: Www_Who
+  type: html
+  url: https://www.who.int/news-room/fact-sheets/detail/essential-medicines
+- name: Www_Cardinalhealth
+  type: html
+  url: https://www.cardinalhealth.com/
+- name: Www_Who
+  type: html
+  url: https://www.who.int/news-room/fact-sheets/detail/health-information-systems
+- name: Www_Who
+  type: html
+  url: https://www.who.int/news-room/fact-sheets/detail/universal-health-coverage-%28uhc%29
+- name: Www_Who
+  type: html
+  url: https://www.who.int
+- name: Www_Who
+  type: html
+  url: https://www.who.int/
+- name: Www_Who
+  type: html
+  url: https://www.who.int/news-room/fact-sheets/detail/hiv-aids
+- name: Www_Who
+  type: html
+  url: https://www.who.int/countries/country-cooperation-strategies
+- name: Www_Who
+  type: html
+  url: https://www.who.int/publications/m/item/preliminary-evaluation-of-the-who-special-programme-on-primary-health-care--report
+- name: Www_Maritimeclinic
+  type: html
+  url: https://www.maritimeclinic.net/
+- name: Www_Who
+  type: html
+  url: https://www.who.int/news-room/fact-sheets/detail/dhis2-health-information-strengthening
+- name: Www_Africaglobalfunds
+  type: html
+  url: https://www.africaglobalfunds.com/news/private-equity/fundraising/p1-ventures-closes-50m-fund/
+- name: En_Wikipedia
+  type: html
+  url: https://en.wikipedia.org/wiki/WHO_Model_List_of_Essential_Medicines
+- name: Documents_Worldbank
+  type: html
+  url: https://documents.worldbank.org/en/publication/documents-reports/documentdetail/429501641932036747
+- name: Www_Undp
+  type: html
+  url: https://www.undp.org/acceleratorlabs
+- name: Namma
+  type: html
+  url: https://namma.org/covid-19/covid-19-vaccine-news/
+- name: Www_Hewatele
+  type: html
+  url: https://www.hewatele.org/
+- name: Www_Comunidad_Madrid
+  type: html
+  url: https://www.comunidad.madrid/hospital/lapaz/
+- name: Www_Theglobalfund
+  type: html
+  url: https://www.theglobalfund.org/
+- name: Www_Worldbank
+  type: html
+  url: https://www.worldbank.org/en/country/pacificislands/publication/the-world-bank-fiscal-resilience-program
+- name: Hewatele
+  type: html
+  url: https://hewatele.org
+- name: Www_Un
+  type: html
+  url: https://www.un.org/en/coronavirus
+- name: Www_P1_Ventures
+  type: html
+  url: https://www.p1.ventures/
+- name: Www_Thetimes_Co
+  type: html
+  url: https://www.thetimes.co.uk/article/nhs-plan-live-latest-news-labour-9wqmsdkvj
+- name: Www_Thetimes_Co
+  type: html
+  url: https://www.thetimes.co.uk/article/nhs-will-pay-diet-apps-who-help-to-slim-patients-with-weight-loss-drugs-jjwpr7jkt
+- name: News_Cision_Com
+  type: html
+  url: https://news.cision.com/implantica/r/implantica-announces-onboarding-of-the-world-leading-la-paz-university-hospital--spain,c4101461
+- name: English_Elpais_Com
+  type: html
+  url: https://english.elpais.com/news/hospital-la-paz/
+- name: Impact_Investor_Com
+  type: html
+  url: https://impact-investor.com/inspired-evolution-closes-energy-fund-at-238m-as-institutional-investors-pile-in/
+- name: Dabafinance_Com
+  type: html
+  url: https://dabafinance.com/en/news/p1-ventures-closes-50m-fund-to-expand-african-startup-investments
+- name: Www_Mckesson_Com
+  type: html
+  url: https://www.mckesson.com/
+- name: Www_F6S_Com
+  type: html
+  url: https://www.f6s.com/
+- name: Www_Dynamed_Com
+  type: html
+  url: https://www.dynamed.com/
+- name: Www_Inspiredevolution_Co_Za
+  type: html
+  url: https://www.inspiredevolution.co.za
+- name: Fi_Co
+  type: html
+  url: https://fi.co/
+- name: Www_Tnibiotech_Com
+  type: html
+  url: https://www.tnibiotech.com/
+- name: Inspiredevolution_Co_Za
+  type: html
+  url: https://inspiredevolution.co.za/insights/
+- name: Www_Lifeblood_Com
+  type: html
+  url: https://www.lifeblood.com/
+- name: Www_Medyc_Com
+  type: html
+  url: https://www.medyc.com/
+- name: Www_Cfaogroup_Com
+  type: html
+  url: https://www.cfaogroup.com/
+- name: Www_Oxitec_Com
+  type: html
+  url: https://www.oxitec.com/
+- name: Nextbillion_Net
+  type: html
+  url: https://nextbillion.net/news/hewatele-secures-10-5-million-from-africinvest-to-deliver-high-quality-medical-oxygen-across-kenya/
+- name: Www_Gasworld_Com
+  type: html
+  url: https://www.gasworld.com/story/kenyan-medical-oxygen-provider-buoyed-by-10-5m-investment/2163401.article/
+- name: Www_Baano_Com
+  type: html
+  url: https://www.baano.com/
+- name: Www_Lloyds_Com
+  type: html
+  url: https://www.lloyds.com/
+- name: Www_Mohs_Com
+  type: html
+  url: https://www.mohs.com/
+- name: Africa Health Business
+  type: html
+  url: https://africahealthbusiness.com
+- name: Africa Health Forum
+  type: html
+  url: https://www.africahealthforum.com
+- name: Africa Health Exhibition
+  type: html
+  url: https://www.africahealthexhibition.com
+- name: Africa Health Tech Summit
+  type: html
+  url: https://africahealthtechsummit.com
+- name: African Private Equity and Venture Capital Association
+  type: html
+  url: https://www.avca-africa.org
+- name: African Business Angels Network
+  type: html
+  url: https://www.abanangels.org
+- name: African Angel Investors
+  type: html
+  url: https://africanangelinvestors.com
+- name: African Investment Group
+  type: html
+  url: https://www.africaninvestmentgroup.com
+- name: Wellcome Trust
+  type: html
+  url: https://wellcome.org
+- name: Rockefeller Foundation
+  type: html
+  url: https://www.rockefellerfoundation.org
+- name: Bill & Melinda Gates Foundation
+  type: html
+  url: https://www.gatesfoundation.org
+- name: Clinton Health Access Initiative
+  type: html
+  url: https://www.clintonhealthaccess.org
+- name: HealthTech Capital
+  type: html
+  url: https://healthtechcapital.com
+- name: Digital Health Network
+  type: html
+  url: https://digitalhealth.network
+- name: Health Innovation Hub
+  type: html
+  url: https://healthinnovationhub.org
+- name: Global Health Innovation
+  type: html
+  url: https://globalhealthinnovation.org
+- name: African Development Bank Group
+  type: html
+  url: https://www.afdb.org
+- name: Africa Health Research Institute
+  type: html
+  url: https://www.ahri.org.za
+- name: African Population and Health Research Center
+  type: html
+  url: https://aphrc.org
+- name: African Medical Research Foundation
+  type: html
+  url: https://amref.org
+- name: African Institute for Development Policy
+  type: html
+  url: https://afidep.org
+- name: African Investment Exchange
+  type: html
+  url: https://www.africaninvestmentexchange.com
+- name: Africa Investment Summit
+  type: html
+  url: https://africainvestmentsummit.com
+- name: African Investment Forum
+  type: html
+  url: https://africainvestmentforum.com
+- name: Africa Investment Report
+  type: html
+  url: https://africainvestmentreport.com
+- name: Africa Health Tech
+  type: html
+  url: https://africahealthtech.com
+- name: Digital Health Africa
+  type: html
+  url: https://digitalhealthafrica.org
+- name: Health Tech Africa
+  type: html
+  url: https://healthtechafrica.com
+- name: Africa Health Innovation
+  type: html
+  url: https://africahealthinnovation.org
+- name: Global Health Council
+  type: html
+  url: https://globalhealth.org
+- name: Global Health Technologies Coalition
+  type: html
+  url: https://www.ghtcoalition.org
+- name: Global Health Investment Fund
+  type: html
+  url: https://ghif.com
+- name: Global Health Innovation Alliance
+  type: html
+  url: https://ghia.org
+- name: Healthcare Investment Partners
+  type: html
+  url: https://healthcareinvestmentpartners.com
+- name: Health Care Investment Group
+  type: html
+  url: https://healthcareinvestmentgroup.com
+- name: Global Healthcare Investment
+  type: html
+  url: https://globalhealthcareinvestment.com
+- name: Healthcare Capital Partners
+  type: html
+  url: https://healthcarecapitalpartners.com
+- name: Africa Startup Ecosystem
+  type: html
+  url: https://africastartupecosystem.com
+- name: African Startup Network
+  type: html
+  url: https://africanstartupnetwork.org
+- name: Startup Africa
+  type: html
+  url: https://startupafrica.com
+- name: Africa Innovation Hub
+  type: html
+  url: https://africainnovationhub.org
+- name: Healthcare Market Research
+  type: html
+  url: https://healthcaremarketresearch.com
+- name: Global Healthcare Market
+  type: html
+  url: https://globalhealthcaremarket.com
+- name: Healthcare Industry Analysis
+  type: html
+  url: https://healthcareindustryanalysis.com
+- name: Healthcare Market Intelligence
+  type: html
+  url: https://healthcaremarketintelligence.com

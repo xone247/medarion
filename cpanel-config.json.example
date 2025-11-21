@@ -1,0 +1,31 @@
+{
+  "ftp": {
+    "host": "ftp.yourdomain.com",
+    "username": "your_cpanel_username",
+    "password": "your_ftp_password",
+    "port": 21,
+    "useSftp": false,
+    "remotePath": "/public_html"
+  },
+  "database": {
+    "host": "localhost",
+    "name": "username_medarion",
+    "username": "db_username",
+    "password": "db_password",
+    "port": 3306
+  },
+  "deployment": {
+    "frontendDir": "medarion-dist",
+    "apiDir": "api",
+    "configDir": "config",
+    "uploadsDir": "uploads",
+    "excludePatterns": [
+      "node_modules",
+      ".git",
+      "*.log",
+      ".env.local",
+      "dist"
+    ]
+  }
+}
+

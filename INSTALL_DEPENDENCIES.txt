@@ -1,0 +1,8 @@
+One-Line Install Command:
+
+pip install torch transformers flask flask-cors tqdm boto3 accelerate flash-attn --no-build-isolation
+
+Or if flash-attn fails (it's optional, SDPA will be used instead):
+
+pip install torch transformers flask flask-cors tqdm boto3 accelerate
+

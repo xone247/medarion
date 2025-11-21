@@ -1,0 +1,91 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+deploy_output.log
+api.log
+
+# Dependencies
+node_modules
+dist
+dist-ssr
+medarion-dist
+
+# Environment variables
+.env
+.env.local
+.env.production
+.env.development
+*.local
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# cPanel deployment configuration (contains sensitive credentials)
+cpanel-config.json
+winscp_upload.txt
+winscp_log.txt
+
+# Production database config (contains sensitive credentials)
+config/database.php
+config/database.production.php
+
+# SSH Keys (NEVER commit these)
+*.ppk
+*.pem
+*.key
+id_rsa
+id_ed25519
+*.pub
+!*.pub.example
+
+# Build outputs
+build/
+dist/
+*.tar.gz
+*.zip
+
+# Temporary files
+*.tmp
+*.temp
+__pycache__/
+*.pyc
+
+# OS files
+Thumbs.db
+.DS_Store
+desktop.ini
+
+# Database exports (may contain sensitive data)
+*.sql
+!create_database.sql
+!comprehensive_database_schema.sql
+!seed_demo_data.sql
+
+# Large data files (exceed GitHub's 100MB limit)
+data/raw/*.jsonl
+data/processed_output/**/*.jsonl
+data/sft/**/*.jsonl
+**/*.jsonl
+!data/normalized/dataset.jsonl
+
+# Files with AWS credentials (sanitized, but keep pattern)
+# These files have been sanitized but may contain credential patterns
+
+# Deployment artifacts
+cpanel-deploy/
+deploy/
+medarion-backend.tar.gz
+medarion-dist.tar.gz.zip

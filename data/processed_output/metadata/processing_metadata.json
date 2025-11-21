@@ -1,0 +1,35 @@
+{
+  "processing_config": {
+    "base_dir": "..\\data",
+    "output_dir": "..\\data\\processed_output",
+    "max_content_length": 6000,
+    "min_content_length": 50,
+    "shard_size_gb": 1.0,
+    "quality_threshold": 0.2
+  },
+  "processing_stats": {
+    "total_files": 12,
+    "processed_files": 10,
+    "skipped_files": 2,
+    "error_files": 0,
+    "total_records": 5,
+    "total_size_bytes": 60012,
+    "deleted_files": 2,
+    "processing_time": 131.90647625923157,
+    "start_time": 1759796459.2089908,
+    "last_update_time": 0.0
+  },
+  "file_counts": {
+    "total_files_found": 12,
+    "files_processed": 10,
+    "files_skipped": 2,
+    "files_with_errors": 0,
+    "unnecessary_files_deleted": 2
+  },
+  "output_files": {
+    "total_records": 5,
+    "total_size_mb": 0.057231903076171875,
+    "avg_record_size_kb": 11.72109375
+  },
+  "generated_at": "2025-10-07T00:23:11.611950"
+}

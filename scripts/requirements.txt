@@ -1,0 +1,21 @@
+# Enhanced Data Processing Requirements
+# ====================================
+
+# Core dependencies
+chardet>=5.0.0          # Character encoding detection
+pathlib2>=2.3.7         # Enhanced path operations (Python < 3.4)
+
+# Optional dependencies for advanced features
+# Uncomment if you want to use these features:
+
+# pandas>=1.5.0          # For advanced data analysis
+# numpy>=1.21.0          # For numerical operations
+# tqdm>=4.64.0           # For progress bars
+# click>=8.0.0           # For enhanced CLI interface
+# pyyaml>=6.0            # For YAML configuration files
+# jsonschema>=4.0.0      # For configuration validation
+
+# Development dependencies (uncomment for development)
+# pytest>=7.0.0          # For testing
+# black>=22.0.0          # For code formatting
+# flake8>=5.0.0          # For linting
