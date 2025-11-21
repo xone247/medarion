@@ -11,6 +11,8 @@ Set-Alias -Name gbranch -Value git-branch -ErrorAction SilentlyContinue
 # Deployment shortcuts
 function Deploy { .\qd.ps1 -Message $args[0] -Deploy }
 function QuickDeploy { .\deploy_from_git.ps1 }
+function Frontend { .\qfi.ps1 }
+function FrontendWatch { .\qfi.ps1 -Watch }
 function Build { npm run build }
 function Dev { npm start }
 
