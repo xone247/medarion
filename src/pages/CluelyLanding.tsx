@@ -195,7 +195,7 @@ const CluelyLanding: React.FC<CluelyLandingProps> = ({ onGetStarted, onShowAuth,
 							Talk to us
 						</a>
 						<button 
-							className="text-white" 
+							className="md:hidden text-white" 
 							onClick={() => setMobileOpen(v => !v)}
 						>
 							{mobileOpen ? <X className="w-5 h-5"/> : <Menu className="w-5 h-5"/>}
@@ -204,7 +204,7 @@ const CluelyLanding: React.FC<CluelyLandingProps> = ({ onGetStarted, onShowAuth,
 				</div>
 				{/* Mobile menu */}
 				{mobileOpen && (
-					<div className="absolute top-16 left-0 right-0 bg-black/95 backdrop-blur-lg border-t border-white/10">
+					<div className="md:hidden absolute top-16 left-0 right-0 bg-black/95 backdrop-blur-lg border-t border-white/10">
 						<div className="page-container py-4 flex flex-col gap-3 text-sm text-white">
                             <a className="hover:opacity-80" href="/about" onClick={(e)=>{ e.preventDefault(); setMobileOpen(false); window.location.replace('/about'); }}>About</a>
                             <a className="hover:opacity-80" href="/arion" onClick={(e)=>{ e.preventDefault(); setMobileOpen(false); window.location.replace('/arion'); }}>Arion</a>
@@ -251,7 +251,7 @@ const CluelyLanding: React.FC<CluelyLandingProps> = ({ onGetStarted, onShowAuth,
 				/>
 				
 				{/* Hero Content */}
-				<div className="relative z-10 page-container flex items-center justify-center min-h-[70vh] pb-40">
+				<div className="relative z-10 page-container flex items-center justify-center min-h-[70vh] pb-32 md:pb-40">
 					<div className="text-center max-w-5xl mx-auto px-4">
 						{/* Main heading - Bold at top per feedback */}
 						<h1 className="text-imagine-h1 text-white mb-6 font-bold" style={{ fontFamily: 'Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif' }}>
@@ -482,7 +482,7 @@ const CluelyLanding: React.FC<CluelyLandingProps> = ({ onGetStarted, onShowAuth,
             </section>
 
 			{/* Professional Footer */}
-			{withFooter && (<footer className="relative overflow-hidden glass-strong backdrop-blur-xl hairline sheen noise-overlay shadow-elevated rounded-t-3xl border-t border-[var(--color-divider-gray)]" style={{ background: 'color-mix(in srgb, var(--color-background-surface), transparent 30%)' }}>
+			{withFooter && (<footer className="relative overflow-hidden glass-strong backdrop-blur-xl hairline sheen noise-overlay shadow-elevated rounded-t-2xl md:rounded-t-3xl border-t border-[var(--color-divider-gray)]" style={{ background: 'color-mix(in srgb, var(--color-background-surface), transparent 30%)' }}>
                 <div aria-hidden className="pointer-events-none absolute inset-0 bg-gradient-to-b from-white/10 via-white/5 to-transparent dark:from-white/5 dark:via-white/0 dark:to-transparent" />
                 <div aria-hidden className="absolute -top-6 left-1/2 -translate-x-1/2 w-[88%] h-8 pointer-events-none">
                     <div className="block dark:hidden w-full h-full rounded-b-[40px]" style={{background: 'radial-gradient(120% 120% at 50% 0%, rgba(0,0,0,0.10) 0%, rgba(0,0,0,0.05) 40%, rgba(0,0,0,0.00) 70%)'}} />
