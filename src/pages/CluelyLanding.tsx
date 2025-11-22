@@ -254,12 +254,12 @@ const CluelyLanding: React.FC<CluelyLandingProps> = ({ onGetStarted, onShowAuth,
 				<div className="relative z-10 page-container flex items-center justify-center min-h-[70vh] pb-32 md:pb-40">
 					<div className="text-center max-w-5xl mx-auto px-4">
 						{/* Main heading - Bold at top per feedback */}
-						<h1 className="text-imagine-h1-mobile sm:text-imagine-h1 text-white mb-6 font-bold" style={{ fontFamily: 'Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif' }}>
+						<h1 className="text-imagine-h1 text-white mb-6 font-bold" style={{ fontFamily: 'Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif' }}>
 							Your AI Gateway to Africa
 						</h1>
 						
 						{/* Supporting sub-text */}
-						<p className="text-xl sm:text-2xl text-white/90 mb-8 max-w-3xl mx-auto" style={{ fontFamily: 'Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif' }}>
+						<p className="text-2xl text-white/90 mb-8 max-w-3xl mx-auto" style={{ fontFamily: 'Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif' }}>
 							Gain a deeper understanding of Africa's ecosystem and transformation
 						</p>
 						
@@ -281,10 +281,10 @@ const CluelyLanding: React.FC<CluelyLandingProps> = ({ onGetStarted, onShowAuth,
 						{/* Left: Text Content */}
 						<div className="space-y-4">
 							<div className="text-2xl font-normal text-[var(--color-text-primary)]">01</div>
-							<h3 className="text-imagine-h3-mobile sm:text-imagine-h3 text-[var(--color-text-primary)] tracking-tight">
+							<h3 className="text-imagine-h3 text-[var(--color-text-primary)] tracking-tight">
 								AI Co-pilot for Deals & Funding
 							</h3>
-							<p className="text-imagine-body-mobile sm:text-imagine-body text-[var(--color-text-secondary)]">
+							<p className="text-imagine-body text-[var(--color-text-secondary)]">
 								Our AI co-pilot helps you gain a deeper understanding of deals and funding across Africa, with clear insights and executive-level summaries.
 							</p>
 							<div className="flex flex-wrap gap-2 pt-2">
@@ -324,10 +324,10 @@ const CluelyLanding: React.FC<CluelyLandingProps> = ({ onGetStarted, onShowAuth,
 						{/* Right: Text Content */}
 						<div className="space-y-4 order-1 lg:order-2">
 							<div className="text-2xl font-normal text-[var(--color-text-primary)]">02</div>
-							<h3 className="text-imagine-h3-mobile sm:text-imagine-h3 text-[var(--color-text-primary)] tracking-tight">
+							<h3 className="text-imagine-h3 text-[var(--color-text-primary)] tracking-tight">
 								Macro Insights Across Africa
 							</h3>
-							<p className="text-imagine-body-mobile sm:text-imagine-body text-[var(--color-text-secondary)]">
+							<p className="text-imagine-body text-[var(--color-text-secondary)]">
 								Clear macro insights across Africa compare countries and uncover investment opportunities.
 							</p>
 						</div>
@@ -342,10 +342,10 @@ const CluelyLanding: React.FC<CluelyLandingProps> = ({ onGetStarted, onShowAuth,
 						{/* Left: Text Content */}
 						<div className="space-y-4">
 							<div className="text-2xl font-normal text-[var(--color-text-primary)]">03</div>
-							<h3 className="text-imagine-h3-mobile sm:text-imagine-h3 text-[var(--color-text-primary)] tracking-tight">
+							<h3 className="text-imagine-h3 text-[var(--color-text-primary)] tracking-tight">
 								Clinical Trial Ecosystem
 							</h3>
-							<p className="text-imagine-body-mobile sm:text-imagine-body text-[var(--color-text-secondary)]">
+							<p className="text-imagine-body text-[var(--color-text-secondary)]">
 								Explore Africa's clinical trial ecosystem with precision, map trial sites, assess regulatory pathways, and identify key investigators.
 							</p>
 							<div className="flex flex-wrap gap-2 pt-2">
@@ -386,10 +386,10 @@ const CluelyLanding: React.FC<CluelyLandingProps> = ({ onGetStarted, onShowAuth,
 						{/* Right: Text Content */}
 						<div className="space-y-4 order-1 lg:order-2">
 							<div className="text-2xl font-normal text-[var(--color-text-primary)]">04</div>
-							<h3 className="text-imagine-h3-mobile sm:text-imagine-h3 text-[var(--color-text-primary)] tracking-tight">
+							<h3 className="text-imagine-h3 text-[var(--color-text-primary)] tracking-tight">
 								Real-time Epidemiology
 							</h3>
-							<p className="text-imagine-body-mobile sm:text-imagine-body text-[var(--color-text-secondary)]">
+							<p className="text-imagine-body text-[var(--color-text-secondary)]">
 								AI for real-time epidemiology, unlocking Africa's disease intelligence.
 							</p>
 						</div>
@@ -412,8 +412,8 @@ const CluelyLanding: React.FC<CluelyLandingProps> = ({ onGetStarted, onShowAuth,
 									</div>
 								</div>
 								<div className="space-y-4">
-									<h3 className="text-imagine-h3-mobile md:text-imagine-h3 text-[var(--color-text-primary)]">Ergon</h3>
-									<p className="text-imagine-body-mobile sm:text-imagine-body text-[var(--color-text-secondary)]">
+									<h3 className="text-imagine-h3 text-[var(--color-text-primary)]">Ergon</h3>
+									<p className="text-imagine-body text-[var(--color-text-secondary)]">
 										AI-driven recruitment copilot to help you hire the best talent across Africa.
 									</p>
 								</div>
@@ -430,8 +430,8 @@ const CluelyLanding: React.FC<CluelyLandingProps> = ({ onGetStarted, onShowAuth,
 									</div>
 								</div>
 								<div className="space-y-4">
-									<h3 className="text-imagine-h3-mobile md:text-imagine-h3 text-[var(--color-text-primary)]">M-Index</h3>
-									<p className="text-imagine-body-mobile sm:text-imagine-body text-[var(--color-text-secondary)]">
+									<h3 className="text-imagine-h3 text-[var(--color-text-primary)]">M-Index</h3>
+									<p className="text-imagine-body text-[var(--color-text-secondary)]">
 										Master the Terms. Maximize the Impact
 									</p>
 								</div>
@@ -444,7 +444,7 @@ const CluelyLanding: React.FC<CluelyLandingProps> = ({ onGetStarted, onShowAuth,
             {/* Blog Preview */}
             <section className="page-container section">
                 <div className="flex items-end justify-between mb-4">
-                    <h2 className="text-2xl sm:text-3xl font-semibold">From Arion</h2>
+                    <h2 className="text-3xl font-semibold">From Arion</h2>
                     <a className="btn-outline btn-sm inline-flex items-center justify-center" href="/arion" onClick={(e)=>{ e.preventDefault(); window.location.replace('/arion'); }}>View all</a>
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
