@@ -149,7 +149,7 @@ const SiteHeader: React.FC<SiteHeaderProps> = ({ currentPage }) => {
 				background: 'transparent'
 			}}
 		>
-			<div className="page-container flex items-center justify-center md:justify-between gap-3" style={{ paddingTop: '8px', paddingBottom: '8px' }}>
+			<div className="page-container flex items-center justify-between gap-3" style={{ paddingTop: '8px', paddingBottom: '8px' }}>
 				{/* Section 1: Logo (left) */}
 				<div 
 					className="flex items-center px-4 h-12 rounded-xl transition-all"
@@ -168,7 +168,7 @@ const SiteHeader: React.FC<SiteHeaderProps> = ({ currentPage }) => {
 				</div>
 
 				{/* Mobile hamburger and logo */}
-				<div className="md:hidden flex items-center gap-2">
+				<div className="flex items-center gap-2">
 					<button aria-label="Open menu" className="btn-outline btn-sm" onClick={toggleMenu}>
 						<span className="block w-5 h-[2px] bg-current mb-1"></span>
 						<span className="block w-5 h-[2px] bg-current mb-1"></span>
