@@ -330,7 +330,7 @@ const FundraisingCRMPage = () => {
     <div className="page-container">
       {/* Header with glassmorphism */}
       <div className="card-glass p-6 shadow-soft mb-6">
-        <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+        <div className="flex flex-row lg:items-center lg:justify-between gap-4">
           <div className="flex items-center space-x-3">
             <MessageSquare className="h-8 w-8 icon-primary" />
             <div>
@@ -338,7 +338,7 @@ const FundraisingCRMPage = () => {
               <p className="text-sm text-[var(--color-text-secondary)]">Manage your investor relationships and fundraising pipeline</p>
             </div>
           </div>
-          <div className="flex flex-col sm:flex-row gap-3">
+          <div className="flex flex-row gap-3">
           <div className="toolbar">
               <input className="input w-full sm:w-48" placeholder="Search..." value={query} onChange={(e)=>setQuery(e.target.value)} />
               <select className="input w-full sm:w-40" value={stageFilter} onChange={(e)=>setStageFilter(e.target.value)}>
@@ -421,7 +421,7 @@ const FundraisingCRMPage = () => {
       </div>
 
       {/* CRM Pipeline */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-3 md:gap-4">
+      <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-3 md:gap-4">
         {Object.entries(filteredPipeline).map(([stage, investors]) => (
           <div key={stage} className="card-glass rounded-lg flex flex-col h-[28rem] md:h-[32rem] shadow-soft">
             <div className={`h-1 w-full rounded-t ${getStageAccent(stage)}`}></div>
@@ -503,7 +503,7 @@ const FundraisingCRMPage = () => {
               <h3 className="text-lg md:text-xl font-bold text-[var(--color-text-primary)]">{selectedInvestor.name}</h3>
               <button onClick={() => setSelectedInvestor(null)} className="text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)]">✕</button>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+            <div className="grid grid-cols-2 gap-4 mb-4">
               <div><p className="text-sm text-[var(--color-text-secondary)]">Investment Type</p><p className="font-medium text-[var(--color-text-primary)]">{selectedInvestor.type}</p></div>
               <div><p className="text-sm text-[var(--color-text-secondary)]">Focus Area</p><p className="font-medium text-[var(--color-text-primary)]">{selectedInvestor.focus}</p></div>
               <div><p className="text-sm text-[var(--color-text-secondary)]">Deal Size</p><p className="font-medium text-[var(--color-text-primary)]">${selectedInvestor.dealSize}</p></div>
@@ -542,7 +542,7 @@ const FundraisingCRMPage = () => {
                 <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-1">Meeting Title</label>
                 <input type="text" value={meetingDetails.title} onChange={(e) => setMeetingDetails({...meetingDetails, title: e.target.value})} className="input" />
               </div>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-1">Date</label>
                   <input type="date" value={meetingDetails.date} onChange={(e) => setMeetingDetails({...meetingDetails, date: e.target.value})} className="input" />
@@ -599,7 +599,7 @@ const FundraisingCRMPage = () => {
                 <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-1">Reminder Title</label>
                 <input type="text" value={reminderDetails.title} onChange={(e) => setReminderDetails({...reminderDetails, title: e.target.value})} className="input" />
               </div>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="grid grid-cols-2 gap-4">
                 <div><label className="block text-sm font-medium text-[var(--color-text-primary)] mb-1">Date</label><input type="date" value={reminderDetails.date} onChange={(e) => setReminderDetails({...reminderDetails, date: e.target.value})} className="input" /></div>
                 <div><label className="block text-sm font-medium text-[var(--color-text-primary)] mb-1">Time</label><input type="time" value={reminderDetails.time} onChange={(e) => setReminderDetails({...reminderDetails, time: e.target.value})} className="input" /></div>
               </div>
@@ -737,7 +737,7 @@ const FundraisingCRMPage = () => {
               <h3 className="text-lg md:text-xl font-bold text-[var(--color-text-primary)]">Add Custom Investor</h3>
               <button onClick={()=>setShowAddModal(false)} className="text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)]">✕</button>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+            <div className="grid grid-cols-2 gap-3">
               <input className="input" placeholder="Name" value={newInv.name} onChange={(e)=>setNewInv(prev=>({...prev, name:e.target.value}))} />
               <select className="input" value={newInv.type} onChange={(e)=>setNewInv(prev=>({...prev, type:e.target.value}))}>
                 <option value="Seed">Seed</option>

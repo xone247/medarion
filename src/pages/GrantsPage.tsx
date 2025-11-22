@@ -209,7 +209,7 @@ const GrantsPage = () => {
     <div className="page-container py-6 space-y-6 bg-[var(--color-background-default)] min-h-screen">
       {/* Header with glassmorphism */}
       <div className="card-glass p-6 shadow-soft">
-        <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+        <div className="flex flex-row lg:items-center lg:justify-between gap-4">
           <div className="flex items-center space-x-3">
             <DollarSign className="h-8 w-8 icon-primary" />
             <div>
@@ -218,12 +218,12 @@ const GrantsPage = () => {
             </div>
           </div>
           <div className="flex flex-wrap items-center gap-2">
-            {(() => { try { const { useAuth } = require('../contexts/AuthContext'); const { profile } = useAuth(); const canAI = !!(profile && (profile.is_admin || ['paid','enterprise'].includes((profile as any).account_tier))); return canAI; } catch { return false; } })() && <button onClick={runAISuggest} className="btn-primary-elevated btn-sm flex items-center gap-2 w-full sm:w-auto"><Bot className="h-4 w-4" /><span className="text-sm">AI Summary</span></button>}
+            {(() => { try { const { useAuth } = require('../contexts/AuthContext'); const { profile } = useAuth(); const canAI = !!(profile && (profile.is_admin || ['paid','enterprise'].includes((profile as any).account_tier))); return canAI; } catch { return false; } })() && <button onClick={runAISuggest} className="btn-primary-elevated btn-sm flex items-center gap-2 w-auto"><Bot className="h-4 w-4" /><span className="text-sm">AI Summary</span></button>}
             {canExport && (
               <>
-                <button onClick={copyJSON} className="btn-outline btn-sm w-full sm:w-auto">Copy</button>
-                <button onClick={exportJSON} className="btn-outline btn-sm w-full sm:w-auto"><FileDown className="h-4 w-4 inline mr-2" /><span>Export JSON</span></button>
-                <button onClick={exportCSV} className="btn-outline btn-sm w-full sm:w-auto"><FileDown className="h-4 w-4 inline mr-2" /><span>Export CSV</span></button>
+                <button onClick={copyJSON} className="btn-outline btn-sm w-auto">Copy</button>
+                <button onClick={exportJSON} className="btn-outline btn-sm w-auto"><FileDown className="h-4 w-4 inline mr-2" /><span>Export JSON</span></button>
+                <button onClick={exportCSV} className="btn-outline btn-sm w-auto"><FileDown className="h-4 w-4 inline mr-2" /><span>Export CSV</span></button>
               </>
             )}
           </div>
@@ -241,7 +241,7 @@ const GrantsPage = () => {
       )}
 
       {/* Summary Stats with glassmorphism */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+      <div className="grid grid-cols-4 gap-6">
         <div className="card-glass p-6 shadow-soft">
           <div className="flex items-center space-x-3">
             <DollarSign className="h-6 w-6 icon-primary" />
@@ -281,7 +281,7 @@ const GrantsPage = () => {
       </div>
 
       {/* Charts Section with glassmorphism */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div className="grid grid-cols-2 gap-6">
         <MonthlyGrantChart grants={grants} />
         
         <div className="card-glass overflow-hidden shadow-soft">
@@ -307,7 +307,7 @@ const GrantsPage = () => {
           <Filter className="h-5 w-5 icon-primary" />
           <h3 className="text-lg font-semibold text-[var(--color-text-primary)]">Filters</h3>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
+        <div className="grid grid-cols-5 gap-4">
           <div className="relative">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-[var(--color-text-secondary)]" />
             <input type="text" placeholder="Search organizations or funders..." value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} className="input pl-10" />
@@ -402,7 +402,7 @@ const GrantsPage = () => {
               <h3 className="text-xl font-bold text-[var(--color-text-primary)]">{showGrantDetails.organizationName}</h3>
               <button onClick={() => setShowGrantDetails(null)} className="text-[var(--color-text-secondary)] hover:opacity-80">✕</button>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+            <div className="grid grid-cols-2 gap-4 mb-4">
               <div><p className="text-sm text-[var(--color-text-secondary)]">Grant Amount</p><p className="text-2xl font-bold text-[var(--color-primary-teal)]">${(showGrantDetails.value / 1000000).toFixed(1)}M</p></div>
               <div><p className="text-sm text-[var(--color-text-secondary)]">Grant Type</p><p className="font-medium text-[var(--color-text-primary)]">{showGrantDetails.type}</p></div>
               <div><p className="text-sm text-[var(--color-text-secondary)]">Sector</p><p className="font-medium text-[var(--color-text-primary)]">{showGrantDetails.sector}</p></div>

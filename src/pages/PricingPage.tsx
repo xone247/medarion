@@ -102,7 +102,7 @@ const PricingPage: React.FC<PricingPageProps> = ({ onBack }) => {
 					<p className="text-[var(--color-text-secondary)] text-lg">Choose a plan that suits your workflow. Upgrade anytime as your needs grow.</p>
 				</div>
 
-				<div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+				<div className="grid grid-cols-3 gap-6">
 					<PricingCard title="Starter" price="Free" desc="All essential features to get you started." cta="Get Started" variant="starter" onClick={() => { window.dispatchEvent(new CustomEvent('medarion:navigate:auth')); }} />
 					<PricingCard title="Pro" price="$20" desc="Unlock advanced features for individuals." cta="Subscribe" secondary="/ month" variant="pro" onClick={() => { alert('Subscription flow placeholder'); }} />
 					<PricingCard title="Enterprise" price="Custom" desc="Advanced security and controls for teams." cta="Talk to sales" variant="enterprise" onClick={() => { window.dispatchEvent(new CustomEvent('medarion:navigate:static', { detail: { page: 'contact' } })); }} />
@@ -110,7 +110,7 @@ const PricingPage: React.FC<PricingPageProps> = ({ onBack }) => {
 
 				<div className="rounded-xl border border-[var(--color-divider-gray)] bg-[var(--color-background-surface)] p-6">
 					<h3 className="text-lg font-semibold text-[var(--color-text-primary)] mb-4">What’s included</h3>
-					<div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
+					<div className="grid grid-cols-3 gap-4 text-sm">
 						<div>
 							<div className="font-medium mb-2">Starter</div>
 							<ul className="space-y-2 text-[var(--color-text-secondary)]">

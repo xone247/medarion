@@ -154,7 +154,7 @@ const CompaniesPage: React.FC<{ onViewCompany: (name: string) => void }> = ({ on
     <div className="page-container py-6 space-y-6 bg-[var(--color-background-default)] min-h-screen">
       {/* Header with glassmorphism */}
       <div className="card-glass p-6 shadow-soft">
-        <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+        <div className="flex flex-row lg:items-center lg:justify-between gap-4">
           <div className="flex items-center space-x-3">
             <Building2 className="h-8 w-8 icon-primary" />
             <div>
@@ -163,12 +163,12 @@ const CompaniesPage: React.FC<{ onViewCompany: (name: string) => void }> = ({ on
             </div>
           </div>
           <div className="flex flex-wrap items-center gap-2">
-            {canAI && <button onClick={() => setAiOpen(true)} className="btn-primary-elevated btn-sm flex items-center gap-2 w-full sm:w-auto"><Bot className="h-4 w-4" /><span className="text-sm">AI Summary</span></button>}
+            {canAI && <button onClick={() => setAiOpen(true)} className="btn-primary-elevated btn-sm flex items-center gap-2 w-auto"><Bot className="h-4 w-4" /><span className="text-sm">AI Summary</span></button>}
             {canExport && (
               <>
-                <button onClick={copyJSON} className="btn-outline btn-sm w-full sm:w-auto">Copy</button>
-                <button onClick={exportJSON} className="btn-outline btn-sm w-full sm:w-auto"><FileDown className="h-4 w-4 inline mr-2"/>Export JSON</button>
-                <button onClick={exportCSV} className="btn-outline btn-sm w-full sm:w-auto"><FileDown className="h-4 w-4 inline mr-2"/>Export CSV</button>
+                <button onClick={copyJSON} className="btn-outline btn-sm w-auto">Copy</button>
+                <button onClick={exportJSON} className="btn-outline btn-sm w-auto"><FileDown className="h-4 w-4 inline mr-2"/>Export JSON</button>
+                <button onClick={exportCSV} className="btn-outline btn-sm w-auto"><FileDown className="h-4 w-4 inline mr-2"/>Export CSV</button>
               </>
             )}
           </div>
@@ -176,7 +176,7 @@ const CompaniesPage: React.FC<{ onViewCompany: (name: string) => void }> = ({ on
       </div>
 
       {/* Summary Stats with glassmorphism */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+      <div className="grid grid-cols-4 gap-6">
         <div className="card-glass p-6 shadow-soft">
           <div className="flex items-center space-x-3">
             <Building2 className="h-6 w-6 icon-primary" />
@@ -216,7 +216,7 @@ const CompaniesPage: React.FC<{ onViewCompany: (name: string) => void }> = ({ on
       </div>
 
       {/* Insights with glassmorphism */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="grid grid-cols-2 gap-6">
         <div className="card-glass p-6 shadow-soft">
           <h3 className="text-lg font-semibold text-[var(--color-text-primary)] mb-3">Top Sectors</h3>
           <ul className="space-y-2">
@@ -247,7 +247,7 @@ const CompaniesPage: React.FC<{ onViewCompany: (name: string) => void }> = ({ on
           <Filter className="h-5 w-5 icon-primary" />
           <h3 className="text-lg font-semibold text-[var(--color-text-primary)]">Filters</h3>
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
           <div className="relative">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-[var(--color-text-secondary)]" />
             <input
@@ -272,7 +272,7 @@ const CompaniesPage: React.FC<{ onViewCompany: (name: string) => void }> = ({ on
       </div>
 
       {/* Companies Grid with glassmorphism */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+      <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
         {filteredCompanies.slice().sort((a: any, b: any) => b.totalFunding - a.totalFunding).map((company: any) => (
           <div key={company.name} className="card-glass p-5 sm:p-6 shadow-soft hover:shadow-elevated transition-all duration-300 cursor-pointer card-hover">
             <div className="flex items-start justify-between mb-4">
@@ -371,7 +371,7 @@ const CompaniesPage: React.FC<{ onViewCompany: (name: string) => void }> = ({ on
             </div>
             
             {/* Key Metrics with glassmorphism */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+            <div className="grid grid-cols-3 gap-4 mb-6">
               <div className="card-glass p-4 shadow-soft">
                 <p className="text-sm text-[var(--color-text-secondary)]">Total Funding</p>
                 <p className="text-2xl font-bold text-[var(--color-primary-teal)]">${(showCompanyDetails.totalFunding / 1000000).toFixed(1)}M</p>

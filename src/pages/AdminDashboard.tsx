@@ -342,7 +342,7 @@ const UserGrowthChart: React.FC<{
       </div>
       
       {/* Enhanced Statistics Grid */}
-      <div className="relative z-10 grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div className="relative z-10 grid grid-cols-3 gap-4">
         <div className="bg-gradient-to-br from-[var(--color-primary-teal)]/10 to-[var(--color-primary-teal)]/5 p-4 rounded-xl border border-[var(--color-primary-teal)]/20">
           <div className="flex items-center space-x-3">
             <div className="p-2 bg-[var(--color-primary-teal)]/20 rounded-lg">
@@ -3627,7 +3627,7 @@ const AdminDashboard: React.FC = () => {
             {overviewData && !loading && (
               <>
             {/* Key Metrics */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
               <StatCard
                 title="Total Users"
                 value={overviewData?.userStats.totalUsers.toLocaleString() || '0'}
@@ -3659,7 +3659,7 @@ const AdminDashboard: React.FC = () => {
             </div>
 
             {/* Charts Row */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <div className="grid grid-cols-2 gap-6">
               <UserGrowthChart
                 data={overviewData?.userGrowth?.slice(-6).map(item => ({ 
                   label: item.month || 'Unknown', 
@@ -3679,7 +3679,7 @@ const AdminDashboard: React.FC = () => {
             </div>
 
             {/* Revenue and Activity Row */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <div className="grid grid-cols-2 gap-6">
               <RevenueByTierChart
                 data={overviewData?.revenueByTier?.map(item => ({ 
                   label: item.tier || 'Unknown', 
@@ -3691,7 +3691,7 @@ const AdminDashboard: React.FC = () => {
             </div>
 
             {/* Additional Stats */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="grid grid-cols-3 gap-6">
               <div className="card-glass p-6 rounded-xl border border-[var(--color-divider-gray)] bg-[var(--color-background-surface)]">
                 <div className="flex items-center justify-between">
                   <div>
@@ -3735,7 +3735,7 @@ const AdminDashboard: React.FC = () => {
             {/* System Status */}
             <div className="card-glass p-6 rounded-xl border border-[var(--color-divider-gray)] bg-[var(--color-background-surface)]">
               <h3 className="text-lg font-semibold text-[var(--color-text-primary)] mb-4">System Status</h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+              <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
                 <div className="flex items-center space-x-3">
                   <div className="p-2 bg-success/20 rounded-lg">
                     <CheckCircle className="h-5 w-5 text-success" />
@@ -3780,7 +3780,7 @@ const AdminDashboard: React.FC = () => {
               <h3 className="text-lg font-semibold text-[var(--color-text-primary)] mb-6">Module Overview</h3>
               
               {/* Module Grid */}
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              <div className="grid grid-cols-2 lg:grid-cols-3 gap-6">
                 {/* Companies Module */}
                 <div className="bg-[var(--color-background-default)] p-4 rounded-lg border border-[var(--color-divider-gray)]">
                   <div className="flex items-center justify-between mb-3">
@@ -3993,7 +3993,7 @@ const AdminDashboard: React.FC = () => {
               </div>
               
               {/* Ads Metrics Grid */}
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+              <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
                 <div className="bg-gradient-to-br from-blue-500/10 to-blue-500/5 p-4 rounded-xl border border-blue-500/20">
                   <div className="flex items-center justify-between mb-3">
                     <div className="p-2 bg-blue-500/20 rounded-lg">
@@ -4104,7 +4104,7 @@ const AdminDashboard: React.FC = () => {
               </div>
               
               {/* Top Performing Campaigns */}
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              <div className="grid grid-cols-2 gap-6">
                 <div>
                   <h4 className="text-lg font-semibold text-[var(--color-text-primary)] mb-4">Top Performing Campaigns</h4>
                   <div className="space-y-3">
@@ -4213,7 +4213,7 @@ const AdminDashboard: React.FC = () => {
               </div>
 
               {/* Search and Filters */}
-              <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+              <div className="grid grid-cols-4 gap-4 mb-6">
                 <div className="relative">
                   <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400"/>
                   <input 
@@ -4488,7 +4488,7 @@ const AdminDashboard: React.FC = () => {
             {/* Create New Module */}
             <div id="create-module-section" className="card-glass p-6 rounded-xl">
               <h3 className="text-lg font-semibold text-[var(--color-text-primary)] mb-4">Create New Module</h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="grid grid-cols-2 gap-4">
                 <input className="input" placeholder="Module ID (e.g., new_module)" value={draftModule.module_id} onChange={e=>setDraftModule(prev=>({...prev, module_id:e.target.value}))}/>
                 <input className="input" placeholder="Module Name" value={draftModule.name} onChange={e=>setDraftModule(prev=>({...prev, name:e.target.value}))}/>
                 <textarea className="input md:col-span-2" placeholder="Description" value={draftModule.description||''} onChange={e=>setDraftModule(prev=>({...prev, description:e.target.value}))} rows={2}/>
@@ -4530,7 +4530,7 @@ const AdminDashboard: React.FC = () => {
 
             {/* Search and Filters */}
             <div className="card-glass p-4 rounded-xl">
-              <div className="grid grid-cols-1 md:grid-cols-4 gap-3">
+              <div className="grid grid-cols-4 gap-3">
                 <div className="relative">
                   <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400"/>
                   <input className="input pl-10" placeholder="Search modules..." value={moduleSearchTerm} onChange={e=>{ setModuleSearchTerm(e.target.value); setModulesPagination(prev=>({...prev, page:1})); }} />
@@ -4729,7 +4729,7 @@ const AdminDashboard: React.FC = () => {
                 e.preventDefault();
                 if (editingModule) handleSaveModule(editingModule);
               }}>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                <div className="grid grid-cols-2 gap-4 mb-4">
                   <div>
                     <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">Module ID</label>
                     <input 
@@ -5015,7 +5015,7 @@ const AdminDashboard: React.FC = () => {
                     <h4 className="text-md font-semibold text-[var(--color-text-primary)] mb-4">
                       {editingVideo ? 'Edit Video' : 'Create New Video'}
                     </h4>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="grid grid-cols-2 gap-4">
                       <input 
                         className="input" 
                         placeholder="Video Title *" 
@@ -5202,7 +5202,7 @@ const AdminDashboard: React.FC = () => {
 
             {/* Statistics Cards */}
             {newsletterStats && (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+              <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
                 <div className="card-glass p-4 rounded-xl border border-[var(--color-divider-gray)]">
                   <div className="flex items-center justify-between">
                     <div>
@@ -5265,7 +5265,7 @@ const AdminDashboard: React.FC = () => {
               
               {showEmailConfig && (
                 <div className="p-6 space-y-4">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="grid grid-cols-2 gap-4">
                     <div>
                       <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">SMTP Host *</label>
                       <input
@@ -5480,7 +5480,7 @@ const AdminDashboard: React.FC = () => {
 
               {/* Filters */}
               <div className="p-4 border-b border-[var(--color-divider-gray)] bg-[var(--color-background-default)]">
-                <div className="flex flex-col sm:flex-row gap-4">
+                <div className="flex flex-row gap-4">
                   <div className="flex-1 relative">
                     <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-[var(--color-text-secondary)]" />
                     <input
@@ -5620,10 +5620,10 @@ const AdminDashboard: React.FC = () => {
             {/* Create New Ad */}
             <div id="create-ad-section" className="card-glass p-6 rounded-xl">
               <h3 className="text-lg font-semibold text-[var(--color-text-primary)] mb-4">Create New Advertisement</h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="grid grid-cols-2 gap-4">
                 <input className="input" placeholder="Ad Title" value={draftAd.title} onChange={e=>setDraftAd(prev=>({...prev, title:e.target.value}))}/>
                 <input className="input" placeholder="Advertiser Name" value={draftAd.advertiser||''} onChange={e=>setDraftAd(prev=>({...prev, advertiser:e.target.value}))}/>
-                <div className="md:col-span-2 grid grid-cols-1 lg:grid-cols-3 gap-3">
+                <div className="md:col-span-2 grid grid-cols-3 gap-3">
                   <input className="input lg:col-span-2" placeholder="Image URL" value={draftAd.imageUrl} onChange={e=>setDraftAd(prev=>({...prev, imageUrl:e.target.value}))}/>
                   {/* Use ImageUploadModal for consistent upload experience */}
                   <button
@@ -5683,7 +5683,7 @@ const AdminDashboard: React.FC = () => {
 
             {/* Search and Filters (now close to list) */}
             <div className="card-glass p-4 rounded-xl">
-              <div className="grid grid-cols-1 md:grid-cols-4 gap-3">
+              <div className="grid grid-cols-4 gap-3">
                 <div className="relative">
                   <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400"/>
                   <input className="input pl-10" placeholder="Search ads..." value={adSearchTerm} onChange={e=>{ setAdSearchTerm(e.target.value); setAdPage(1); }} />
@@ -5845,7 +5845,7 @@ const AdminDashboard: React.FC = () => {
               {/* Create New Announcement */}
               <div id="create-announcement-section" className="card-glass p-6 rounded-xl mb-6">
                 <h3 className="text-lg font-semibold text-[var(--color-text-primary)] mb-4">Create New Announcement</h3>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="grid grid-cols-2 gap-4">
                   <input className="input" placeholder="Announcement Title *" value={draftAnnouncement.title} onChange={e=>setDraftAnnouncement(prev=>({...prev, title:e.target.value}))}/>
                   <div className="flex items-center gap-2">
                     <span className="text-sm font-medium text-[var(--color-text-primary)]">Placement:</span>
@@ -5925,7 +5925,7 @@ const AdminDashboard: React.FC = () => {
 
               {/* Search and Filters */}
               <div className="card-glass p-4 rounded-xl mb-6">
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                <div className="grid grid-cols-3 gap-3">
                   <div className="relative">
                     <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400"/>
                     <input className="input pl-10" placeholder="Search announcements..." value={announcementSearchTerm} onChange={e=>{ setAnnouncementSearchTerm(e.target.value); setAnnouncementPage(1); }} />
@@ -6091,7 +6091,7 @@ const AdminDashboard: React.FC = () => {
               e.preventDefault();
               handleAddUser();
             }} className="space-y-4">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">Email *</label>
                   <input 
@@ -6265,7 +6265,7 @@ const AdminDashboard: React.FC = () => {
               e.preventDefault();
               handleSaveUser(editingUser);
             }} className="space-y-4">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">First Name</label>
                   <input 
@@ -6440,7 +6440,7 @@ const AdminDashboard: React.FC = () => {
               if (editingAd) handleSaveAd(editingAd);
               if (editingAnnouncement) handleSaveAnnouncement(editingAnnouncement);
             }}>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+              <div className="grid grid-cols-2 gap-4 mb-4">
                 {editingAnnouncement ? (
                   <>
                     <div className="md:col-span-2">
@@ -7626,7 +7626,7 @@ const AdminDashboard: React.FC = () => {
                 setLoading(false);
               }
             }}>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+              <div className="grid grid-cols-2 gap-4 mb-4">
                 {/* Basic Information */}
                 <div className="md:col-span-2">
                   <h4 className="text-lg font-semibold text-[var(--color-text-primary)] mb-3">Basic Information</h4>
@@ -8027,7 +8027,7 @@ const AdminDashboard: React.FC = () => {
                 setLoading(false);
               }
             }}>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+              <div className="grid grid-cols-2 gap-4 mb-4">
                 <div className="md:col-span-2">
                   <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">Title *</label>
                   <input 
@@ -8249,7 +8249,7 @@ const AdminDashboard: React.FC = () => {
                 setLoading(false);
               }
             }}>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+              <div className="grid grid-cols-2 gap-4 mb-4">
                 <div className="md:col-span-2">
                   <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">Company *</label>
                   <select 
@@ -8415,7 +8415,7 @@ const AdminDashboard: React.FC = () => {
                 setLoading(false);
               }
             }}>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="grid grid-cols-2 gap-4">
                 <div className="md:col-span-2">
                   <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">Name *</label>
                   <input 
@@ -8615,7 +8615,7 @@ const AdminDashboard: React.FC = () => {
                 setLoading(false);
               }
             }}>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+              <div className="grid grid-cols-2 gap-4 mb-4">
                 <div className="md:col-span-2">
                   <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">Company Name *</label>
                   <input 
@@ -8795,7 +8795,7 @@ const AdminDashboard: React.FC = () => {
                 setLoading(false);
               }
             }}>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+              <div className="grid grid-cols-2 gap-4 mb-4">
                 <div className="md:col-span-2">
                   <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">Name *</label>
                   <input 
@@ -8982,7 +8982,7 @@ const AdminDashboard: React.FC = () => {
                 setLoading(false);
               }
             }}>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+              <div className="grid grid-cols-2 gap-4 mb-4">
                 {(editingInvestigator?.first_name !== undefined || editingInvestigator?.name === undefined) ? (
                   <>
                     <div>
@@ -9216,7 +9216,7 @@ const AdminDashboard: React.FC = () => {
                 setLoading(false);
               }
             }}>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+              <div className="grid grid-cols-2 gap-4 mb-4">
                 <div className="md:col-span-2">
                   <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">Company *</label>
                   <select 
@@ -9445,7 +9445,7 @@ const AdminDashboard: React.FC = () => {
                 setLoading(false);
               }
             }}>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+              <div className="grid grid-cols-2 gap-4 mb-4">
                 <div className="md:col-span-2">
                   <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">Title *</label>
                   <input 
@@ -9775,7 +9775,7 @@ const AdminDashboard: React.FC = () => {
                 setLoading(false);
               }
             }}>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+              <div className="grid grid-cols-2 gap-4 mb-4">
                 <div className="md:col-span-2">
                   <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">Name *</label>
                   <input 

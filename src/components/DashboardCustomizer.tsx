@@ -158,7 +158,7 @@ const DashboardCustomizer: React.FC<DashboardCustomizerProps> = ({ onClose }) =>
                 </button>
               </div>
               
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="grid grid-cols-2 gap-4">
                 {visibleActive.map((module, index) => (
                   <div
                     key={module.id}
@@ -202,7 +202,7 @@ const DashboardCustomizer: React.FC<DashboardCustomizerProps> = ({ onClose }) =>
                 Click the + button to add modules to your dashboard. Each module provides specific functionality and insights.
               </p>
               
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="grid grid-cols-2 gap-4">
                 {availableToAdd.map((module) => (
                   <div
                     key={module.id}

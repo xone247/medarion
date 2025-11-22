@@ -152,7 +152,7 @@ const SiteHeader: React.FC<SiteHeaderProps> = ({ currentPage }) => {
 			<div className="page-container flex items-center justify-center md:justify-between gap-3" style={{ paddingTop: '8px', paddingBottom: '8px' }}>
 				{/* Section 1: Logo (left) */}
 				<div 
-					className="hidden md:flex items-center px-4 h-12 rounded-xl transition-all"
+					className="flex items-center px-4 h-12 rounded-xl transition-all"
 					style={sectionStyle}
 				>
 					<a href="/" className="flex items-center gap-2">
@@ -188,7 +188,7 @@ const SiteHeader: React.FC<SiteHeaderProps> = ({ currentPage }) => {
 
 				{/* Section 2: Navigation (center) - Desktop only */}
 				<nav 
-					className="hidden md:flex items-center gap-2 px-4 h-12 rounded-xl transition-all"
+					className="flex items-center gap-2 px-4 h-12 rounded-xl transition-all"
 					style={sectionStyle}
 				>
 					<button
@@ -243,7 +243,7 @@ const SiteHeader: React.FC<SiteHeaderProps> = ({ currentPage }) => {
 
 				{/* Section 3: Actions (right) */}
 				<div 
-					className="hidden md:flex items-center gap-2 px-4 h-12 rounded-xl transition-all"
+					className="flex items-center gap-2 px-4 h-12 rounded-xl transition-all"
 					style={sectionStyle}
 				>
 					<button className={`px-3 py-1.5 transition-all font-medium text-sm ${

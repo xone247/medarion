@@ -38,7 +38,7 @@ const CompanyProfile: React.FC<{ companyName: string; onBack: () => void }> = ({
       </div>
 
       {/* Stats */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div className="grid grid-cols-3 gap-6">
         <div className="bg-[var(--color-background-surface)] p-6 rounded-lg border border-[var(--color-divider-gray)]">
           <div className="flex items-center space-x-3">
             <DollarSign className="h-6 w-6 text-[var(--color-primary-teal)]" />

@@ -110,11 +110,11 @@ const AdminProfile: React.FC = () => {
         </div>
 
         {/* Profile Information */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-3 gap-6">
           <div className="lg:col-span-2 bg-[var(--color-background-surface)] p-6 rounded-lg border border-[var(--color-divider-gray)] shadow-sm">
             <h3 className="text-lg font-semibold text-[var(--color-text-primary)] mb-4">Profile Information</h3>
             <div className="space-y-4">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm text-[var(--color-text-secondary)] mb-1">Full Name</label>
                   {isEditing ? (
@@ -274,7 +274,7 @@ const AdminProfile: React.FC = () => {
             </div>
           )}
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+          <div className="grid grid-cols-2 lg:grid-cols-3 gap-3">
             {profile.permissions.map((permission, index) => (
               <div
                 key={index}
@@ -300,7 +300,7 @@ const AdminProfile: React.FC = () => {
         {/* Quick Actions */}
         <div className="bg-[var(--color-background-surface)] p-6 rounded-lg border border-[var(--color-divider-gray)] shadow-sm">
           <h3 className="text-lg font-semibold text-[var(--color-text-primary)] mb-4">Quick Actions</h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
             <button
               onClick={() => navigateToModule('admin-dashboard')}
               className="btn-outline p-4 rounded-lg text-center hover:bg-[var(--color-primary-teal)] hover:text-white transition-colors"

@@ -103,7 +103,7 @@ const AboutPage: React.FC<AboutPageProps> = ({ onBack }) => {
       <div className="container mx-auto px-4 py-16">
         <div className="max-w-6xl mx-auto space-y-20">
         {/* Mission & Vision */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+        <div className="grid grid-cols-2 gap-12">
             <div className="bg-white dark:bg-gray-800 rounded-3xl shadow-2xl p-8 lg:p-12">
               <div className="flex items-center gap-4 mb-8">
                 <div className="w-16 h-16 bg-gradient-to-br from-[var(--color-primary-teal)] to-[var(--color-accent-sky)] rounded-2xl flex items-center justify-center">
@@ -142,7 +142,7 @@ const AboutPage: React.FC<AboutPageProps> = ({ onBack }) => {
               </h2>
               <p className="text-xl text-gray-600 dark:text-gray-300">Transforming healthcare across Africa through data</p>
             </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
               <div className="text-center group">
                 <div className="w-20 h-20 bg-gradient-to-br from-[var(--color-primary-teal)] to-[var(--color-accent-sky)] rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
                   <Globe className="h-10 w-10 text-white" />
@@ -185,7 +185,7 @@ const AboutPage: React.FC<AboutPageProps> = ({ onBack }) => {
                 The principles that guide everything we do at Medarion
               </p>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
               {values.map((value, index) => (
                 <div key={index} className="group bg-white dark:bg-gray-800 rounded-3xl shadow-2xl p-8 text-center hover:shadow-3xl transition-all duration-300 hover:scale-[1.02]">
                   <div className="w-20 h-20 bg-gradient-to-br from-[var(--color-primary-teal)] to-[var(--color-accent-sky)] rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
@@ -210,7 +210,7 @@ const AboutPage: React.FC<AboutPageProps> = ({ onBack }) => {
                 The passionate leaders driving healthcare innovation across Africa
               </p>
             </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
             {team.map((member, index) => (
                 <div key={index} className="group bg-white dark:bg-gray-800 rounded-3xl shadow-2xl p-8 text-center hover:shadow-3xl transition-all duration-300 hover:scale-[1.02]">
                   <div className="w-24 h-24 bg-gradient-to-br from-[var(--color-primary-teal)] to-[var(--color-accent-sky)] rounded-2xl flex items-center justify-center mx-auto mb-6 text-4xl group-hover:scale-110 transition-transform duration-300">
@@ -243,7 +243,7 @@ const AboutPage: React.FC<AboutPageProps> = ({ onBack }) => {
                 Join thousands of healthcare innovators, investors, and policymakers who trust Medarion 
                 for comprehensive African healthcare data and insights.
               </p>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <div className="flex flex-row gap-4 justify-center">
                 <a 
                   href="https://medarion.africa" 
                   className="inline-flex items-center gap-2 bg-gradient-to-r from-[var(--color-primary-teal)] to-[var(--color-accent-sky)] text-white py-4 px-8 rounded-2xl font-semibold hover:opacity-90 transition-all duration-200 shadow-lg text-lg"

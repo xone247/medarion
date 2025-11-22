@@ -68,7 +68,7 @@ const RegulatoryEcosystemPage: React.FC = () => {
     <div className="page-container">
       {/* Header with glassmorphism */}
       <div className="card-glass p-6 shadow-soft mb-6">
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+        <div className="flex flex-row sm:items-center sm:justify-between gap-3">
           <div className="flex items-center space-x-2">
             <Globe className="h-6 w-6 icon-primary" />
             <h1 className="text-xl md:text-2xl font-bold text-[var(--color-text-primary)]">Regulatory Ecosystem</h1>

@@ -143,7 +143,7 @@ const InvestorsPage = () => {
     <div className="page-container py-6 space-y-6 bg-[var(--color-background-default)] min-h-screen">
       {/* Header with glassmorphism */}
       <div className="card-glass p-6 shadow-soft">
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+        <div className="flex flex-row sm:items-center sm:justify-between gap-3">
           <div className="flex items-center space-x-3">
             <Users className="h-8 w-8 icon-primary" />
             <div>
@@ -167,7 +167,7 @@ const InvestorsPage = () => {
       )}
 
       {/* Summary Stats with glassmorphism */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+      <div className="grid grid-cols-4 gap-6">
         <div className="card-glass p-6 shadow-soft">
           <div className="flex items-center space-x-3">
             <Users className="h-6 w-6 icon-primary" />
@@ -219,7 +219,7 @@ const InvestorsPage = () => {
           <Filter className="h-5 w-5 icon-primary" />
           <h3 className="text-lg font-semibold text-[var(--color-text-primary)]">Filters</h3>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="grid grid-cols-2 gap-4">
           <div className="relative">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-[var(--color-text-secondary)]" />
             <input
@@ -243,7 +243,7 @@ const InvestorsPage = () => {
       </div>
 
       {/* Investors Grid with glassmorphism */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-2 lg:grid-cols-3 gap-6">
         {filteredInvestors.sort((a: any, b: any) => b.totalInvested - a.totalInvested).map((investor: any) => (
           <div 
             key={investor.name} 
@@ -353,7 +353,7 @@ const InvestorsPage = () => {
               </button>
             </div>
             
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+            <div className="grid grid-cols-2 gap-6 mb-6">
               <div>
                 <h4 className="text-lg font-semibold text-[var(--color-text-primary)] mb-3">Investment Profile</h4>
                 <div className="space-y-3">
@@ -425,7 +425,7 @@ const InvestorsPage = () => {
             
             <div className="mb-6">
               <h4 className="text-lg font-semibold text-[var(--color-text-primary)] mb-3">Focus Areas</h4>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="grid grid-cols-2 gap-4">
                 <div>
                   <p className="text-sm text-[var(--color-text-secondary)] mb-2">Sectors</p>
                   <div className="flex flex-wrap gap-2">

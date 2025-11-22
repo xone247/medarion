@@ -52,7 +52,7 @@ const PrivacyPage: React.FC<PrivacyPageProps> = ({ onBack }) => {
         {/* Quick Overview */}
         <div className="bg-gradient-to-r from-primary-50 to-blue-50 dark:from-primary-900/20 dark:to-blue-900/20 p-8 rounded-lg border border-primary-200 dark:border-primary-800">
           <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">Privacy at a Glance</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-3 gap-6">
             <div className="flex items-start space-x-3">
               <Shield className="h-6 w-6 text-primary-600 mt-1" />
               <div>
@@ -122,7 +122,7 @@ const PrivacyPage: React.FC<PrivacyPageProps> = ({ onBack }) => {
             <h2 className="text-2xl font-bold text-gray-900 dark:text-white">How We Use Your Information</h2>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-2 gap-6">
             <div>
               <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">Platform Services</h3>
               <ul className="list-disc list-inside space-y-2 text-gray-600 dark:text-gray-300">
@@ -179,7 +179,7 @@ const PrivacyPage: React.FC<PrivacyPageProps> = ({ onBack }) => {
         <div className="bg-white dark:bg-gray-800 p-8 rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm">
           <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">Data Security</h2>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-2 gap-6">
             <div>
               <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">Technical Safeguards</h3>
               <ul className="list-disc list-inside space-y-2 text-gray-600 dark:text-gray-300">
@@ -313,7 +313,7 @@ const PrivacyPage: React.FC<PrivacyPageProps> = ({ onBack }) => {
         {/* Contact Information */}
         <div className="bg-gradient-to-r from-primary-600 to-primary-700 p-8 rounded-lg text-white">
           <h2 className="text-2xl font-bold mb-6">Contact Us About Privacy</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-2 gap-6">
             <div>
               <h3 className="text-lg font-semibold mb-3">Data Protection Officer</h3>
               <p className="text-primary-100 mb-2">Email: privacy@medarion.com</p>

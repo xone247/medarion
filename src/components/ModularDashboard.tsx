@@ -663,7 +663,7 @@ const ModularDashboard: React.FC<ModularDashboardProps> = ({ onViewCompany }) =>
       </div>
 
       {/* KPI row */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
         <KPICard title="Total Investment" value={summary.totalInvestment} icon={DollarSign} trend={summary.dealsCount>0?`from ${summary.dealsCount} deals`:undefined} tooltip="Sum of deal values" onClick={()=>{ setCurrentModule('public_markets'); setShowDashboardSummary(false); }} />
         <KPICard title="Deals (YTD)" value={summary.dealsCount} icon={TrendingUp} trend={`+${Math.max(2, Math.min(15, Math.round(summary.dealsCount*0.08)))}%`} tooltip="Total unique deals in the last period" onClick={()=>{ setCurrentModule('dealflow_tracker'); setShowDashboardSummary(false); }} />
         <KPICard title="Investors" value={summary.investorsCount} icon={Users} trend={`+${Math.max(1, Math.min(10, Math.round(summary.investorsCount*0.05)))}%`} tooltip="Active investors in dataset" onClick={()=>{ setCurrentModule('investors'); setShowDashboardSummary(false); }} />
@@ -671,7 +671,7 @@ const ModularDashboard: React.FC<ModularDashboardProps> = ({ onViewCompany }) =>
       </div>
 
       {/* Secondary KPIs */}
-      <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-6 gap-6">
+      <div className="grid grid-cols-3 lg:grid-cols-6 gap-6">
         {visibleCards.includes('grants') && (<KPICard title="Grants" value={summary.grantsCount} />)}
         {visibleCards.includes('avgDeal') && (<KPICard title="Avg Deal Size ($)" value={summary.avgDealSize} />)}
         {visibleCards.includes('topSector') && (<KPICard title="Top Sector" value={summary.topSector || '-'} />)}
@@ -681,7 +681,7 @@ const ModularDashboard: React.FC<ModularDashboardProps> = ({ onViewCompany }) =>
       </div>
 
       {/* Map + Monthly dealflow row */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div className="grid grid-cols-2 gap-6">
         <div className="tile">
           <div className="tile-header">
             <h3 className="text-[var(--color-text-primary)] font-semibold">African Healthcare Investment Map</h3>
@@ -704,7 +704,7 @@ const ModularDashboard: React.FC<ModularDashboardProps> = ({ onViewCompany }) =>
       {/* Available Modules */}
       <div className="p-6">
         <h3 className="text-lg font-semibold text-[var(--color-text-primary)] mb-4">Available Modules</h3>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid grid-cols-2 lg:grid-cols-3 gap-4">
           {dashboardAvailableModules.map((module: any) => {
             const IconComponent = getModuleIcon(module.icon);
             return (
@@ -798,7 +798,7 @@ const ModularDashboard: React.FC<ModularDashboardProps> = ({ onViewCompany }) =>
   }
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
+    <div className="grid grid-cols-2 xl:grid-cols-3 gap-6">
       {moduleOrder
         .filter((moduleId) => moduleId !== 'admin_access' && (moduleId !== 'admin' || canSuper))
         .map((moduleId) => (

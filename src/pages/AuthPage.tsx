@@ -225,13 +225,13 @@ const AuthPage: React.FC<AuthPageProps> = ({ onBack }) => {
   }
 
   return (
-    <div className="min-h-screen bg-[var(--color-background-default)] flex items-center px-4 sm:px-6 lg:px-8 py-10 relative overflow-hidden">
+    <div className="min-h-screen bg-[var(--color-background-default)] flex items-center px-6 lg:px-8 py-10 relative overflow-hidden">
       <div className="absolute -top-40 -left-40 w-[520px] h-[520px] rounded-full pointer-events-none" style={{background:'radial-gradient(circle at 30% 30%, rgba(90,215,192,0.22), transparent 60%)'}}/>
       <div className="absolute -bottom-32 -right-32 w-[600px] h-[600px] rounded-full pointer-events-none" style={{background:'radial-gradient(circle at 70% 70%, rgba(56,189,248,0.20), transparent 60%)'}}/>
 
-      <div className="max-w-5xl w-full mx-auto grid grid-cols-1 md:grid-cols-2 gap-6 items-stretch">
+      <div className="max-w-5xl w-full mx-auto grid grid-cols-2 gap-6 items-stretch">
         {/* Left showcase panel (hidden on small screens) */}
-        <div className="hidden md:flex flex-col justify-between card-glass sheen noise-overlay shadow-elevated rounded-2xl p-8 border border-[var(--color-divider-gray)]">
+        <div className="flex flex-col justify-between card-glass sheen noise-overlay shadow-elevated rounded-2xl p-8 border border-[var(--color-divider-gray)]">
           <div>
             <div className="flex items-center gap-3">
               <div className="w-9 h-9 rounded-lg bg-[var(--color-primary-teal)] flex items-center justify-center">

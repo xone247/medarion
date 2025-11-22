@@ -43,7 +43,7 @@ const ResearcherDashboard = () => {
     <div className="p-6 space-y-6 bg-[var(--color-background-default)] min-h-screen">
 
       {/* KPI Row */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+      <div className="grid grid-cols-4 gap-6">
         <KPICard title="Active Projects" value="3" icon={Microscope} trend="+1 this month" />
         <KPICard title="Publications" value="12" icon={FileText} trend="+2 this year" />
         <KPICard title="Citations" value="156" icon={TrendingUp} trend="+23 this quarter" />
@@ -51,7 +51,7 @@ const ResearcherDashboard = () => {
       </div>
 
       {/* Research Overview */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div className="grid grid-cols-2 gap-6">
         <div className="bg-[var(--color-background-surface)] p-6 rounded-lg border border-[var(--color-divider-gray)] shadow-sm">
           <div className="flex items-center space-x-2 mb-4">
             <Microscope className="h-5 w-5 text-[var(--color-primary-teal)]" />
@@ -105,7 +105,7 @@ const ResearcherDashboard = () => {
           <Users className="h-5 w-5 text-[var(--color-primary-teal)]" />
           <h3 className="text-lg font-semibold text-[var(--color-text-primary)]">Research Collaborations</h3>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="grid grid-cols-3 gap-4">
           {collaborations.map((collab, index) => (
             <div key={index} className="p-4 bg-[var(--color-background-default)] rounded-lg border border-[var(--color-divider-gray)]">
               <h4 className="text-[var(--color-text-primary)] font-medium mb-2">{collab.institution}</h4>
@@ -120,7 +120,7 @@ const ResearcherDashboard = () => {
       </div>
 
       {/* Market Intelligence Section */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div className="grid grid-cols-2 gap-6">
         <NationPulseWidget type="overview" />
         <HealthcareMarketWidget />
       </div>
@@ -167,7 +167,7 @@ const ResearcherDashboard = () => {
       </div>
 
       {/* Research Metrics */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+      <div className="grid grid-cols-4 gap-6">
         <div className="bg-[var(--color-background-surface)] p-6 rounded-lg border border-[var(--color-divider-gray)] shadow-sm text-center">
           <Award className="h-5 w-5 mx-auto text-[var(--color-primary-teal)] mb-2" />
           <p className="text-sm text-[var(--color-text-secondary)] mb-1">Total Funding</p>
@@ -195,7 +195,7 @@ const ResearcherDashboard = () => {
       </div>
 
       {/* Market Opportunity Charts */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div className="grid grid-cols-2 gap-6">
         <NationPulseWidget type="health-metrics" />
         <NationPulseWidget type="investment-opportunities" />
       </div>

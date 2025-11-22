@@ -81,7 +81,7 @@ const InvestorDashboard = () => {
     <div className="p-6 space-y-6 bg-[var(--color-background-default)] min-h-screen">
 
       {/* KPI Row */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+      <div className="grid grid-cols-4 gap-6">
         <KPICard title="Portfolio Value" value={kpis?.total_value_usd ? `$${(kpis.total_value_usd / 1000000).toFixed(1)}M` : '—'} icon={DollarSign} trend="+18% this quarter" />
         <KPICard title="Active Deals" value={kpis?.deals_and_grants ?? '—'} icon={TrendingUp} trend="+5 this month" />
         <KPICard title="Portfolio Companies" value={kpis?.companies ?? '—'} icon={Building2} trend="+2 this quarter" />
@@ -89,13 +89,13 @@ const InvestorDashboard = () => {
       </div>
 
       {/* Market Intelligence Section */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div className="grid grid-cols-2 gap-6">
         <NationPulseWidget type="overview" />
         <HealthcareMarketWidget />
       </div>
 
       {/* Portfolio Overview */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div className="grid grid-cols-2 gap-6">
         <div className="bg-[var(--color-background-surface)] p-6 rounded-lg border border-[var(--color-divider-gray)] shadow-sm">
           <div className="flex items-center space-x-2 mb-4">
             <Building2 className="h-5 w-5 text-[var(--color-primary-teal)]" />
@@ -181,7 +181,7 @@ const InvestorDashboard = () => {
       </div>
 
       {/* Market Insights */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+      <div className="grid grid-cols-4 gap-6">
         {marketInsights.map((insight, index) => (
           <div key={index} className="bg-[var(--color-background-surface)] p-6 rounded-lg border border-[var(--color-divider-gray)] shadow-sm text-center">
             <div className="flex items-center justify-center mb-2">
@@ -199,7 +199,7 @@ const InvestorDashboard = () => {
       </div>
 
       {/* Market Opportunity Charts */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div className="grid grid-cols-2 gap-6">
         <NationPulseWidget type="health-metrics" />
         <NationPulseWidget type="investment-opportunities" />
       </div>

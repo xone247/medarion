@@ -176,7 +176,7 @@ const InvestorOverview = () => {
       {/* Notable investors logos removed */}
 
       {/* Charts Section with Interactive Map */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6">
+      <div className="grid grid-cols-2 gap-4 md:gap-6">
         <div className="border border-[var(--color-divider-gray)] rounded-lg">
           <MonthlyDealflowChart />
         </div>
@@ -224,7 +224,7 @@ const InvestorOverview = () => {
       </div>
 
       {/* Nation Pulse Charts Section */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6">
+      <div className="grid grid-cols-2 gap-4 md:gap-6">
         <NationPulseWidget type="health-metrics" />
         <NationPulseWidget type="economic-overview" />
       </div>
@@ -235,7 +235,7 @@ const InvestorOverview = () => {
       </div>
 
       {/* Lists Section */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6">
+      <div className="grid grid-cols-2 gap-4 md:gap-6">
         <div className="border border-[var(--color-divider-gray)] rounded-lg">
           <TopDealsWidget />
         </div>
@@ -245,7 +245,7 @@ const InvestorOverview = () => {
       </div>
 
       {/* Bottom Charts */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6">
+      <div className="grid grid-cols-2 gap-4 md:gap-6">
         <div className="border border-[var(--color-divider-gray)] rounded-lg">
           <DealsByStageChart />
         </div>
@@ -255,7 +255,7 @@ const InvestorOverview = () => {
       </div>
 
       {/* Dealroom-style Charts */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6">
+      <div className="grid grid-cols-2 gap-4 md:gap-6">
         <VCInvestmentOverTimeChart />
         <SectorTreemap />
       </div>

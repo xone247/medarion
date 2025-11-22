@@ -215,7 +215,7 @@ const InvestorSearchPage = () => {
           <Filter className="h-5 w-5 icon-primary" />
           <h3 className="text-lg font-semibold text-[var(--color-text-primary)]">Search Filters</h3>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <div className="grid grid-cols-4 gap-4">
           <div className="relative">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-[var(--color-text-secondary)]" />
             <input
@@ -264,7 +264,7 @@ const InvestorSearchPage = () => {
       </div>
 
       {/* Investor Cards */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div className="grid grid-cols-2 gap-6">
         {filteredInvestors.sort((a: any, b: any) => b.matchScore - a.matchScore).map((investor: any) => (
           <div key={investor.name} className="card-glass p-6 shadow-soft hover:shadow-md transition-shadow">
             <div className="flex items-start justify-between mb-4">
@@ -406,7 +406,7 @@ const InvestorSearchPage = () => {
               </button>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+            <div className="grid grid-cols-2 gap-6 mb-6">
               {/* Basic Info */}
               <div className="space-y-4">
                 <div>
@@ -528,7 +528,7 @@ const InvestorSearchPage = () => {
             
             <div className="border-t border-[var(--color-divider-gray)] pt-4">
               <h4 className="text-lg font-semibold text-[var(--color-text-primary)] mb-3">Recent Portfolio Companies</h4>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+              <div className="grid grid-cols-2 gap-2">
                 {showInvestorProfile.companies.slice(0, 6).map((company: string, index: number) => (
                   <div key={index} className="flex items-center space-x-2 p-2 card-glass shadow-soft">
                     <Building2 className="h-4 w-4 text-[var(--color-text-secondary)]" />

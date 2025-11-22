@@ -70,7 +70,7 @@ const GlobalHeader: React.FC = () => {
           >
             <Menu className="h-5 w-5 text-[var(--color-text-secondary)]" />
           </button>
-          <div className="hidden lg:block min-w-0">
+          <div className="block min-w-0">
             <h1 className="text-lg font-bold text-gray-900 dark:text-white truncate">{getCurrentModuleTitle()}</h1>
             <p className="text-sm text-gray-700 dark:text-white/80 truncate">{(profile as any)?.email || 'User'} • {accountTierInfo.label}</p>
           </div>

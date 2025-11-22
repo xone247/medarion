@@ -113,7 +113,7 @@ const UsersManagerDashboard: React.FC = () => {
 
 	return (
 		<>
-		<div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+		<div className="grid grid-cols-4 gap-6">
 			{/* Sidebar */}
 			<aside className="lg:col-span-1 space-y-4">
 				<div className="tile">
@@ -248,7 +248,7 @@ const UsersManagerDashboard: React.FC = () => {
 							<h3 className="text-lg font-semibold text-[var(--color-text-primary)]">{editing.id ? 'Edit User' : 'New User'}</h3>
 							<button className="btn-outline px-2 py-1 rounded" onClick={()=> setEditing(null)}>Close</button>
 						</div>
-						<div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+						<div className="grid grid-cols-2 gap-3">
 							<input className="input" placeholder="Full name" value={editing.full_name} onChange={e=> setEditing(prev => prev? { ...prev, full_name: e.target.value } : prev)} />
 							<input className="input" placeholder="Email" value={editing.email} onChange={e=> setEditing(prev => prev? { ...prev, email: e.target.value } : prev)} />
 							<input className="input" placeholder="User type" value={editing.user_type} onChange={e=> setEditing(prev => prev? { ...prev, user_type: e.target.value } : prev)} />

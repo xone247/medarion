@@ -357,7 +357,7 @@ const BlogDetailPage: React.FC = () => {
 							</button>
 						</div>
 					</div>
-					<div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
+					<div className="grid grid-cols-3 gap-12">
 						{/* Main Content */}
 						<article className="lg:col-span-2 space-y-8" id="blog-article">
 							{/* Content */}
@@ -437,7 +437,7 @@ const BlogDetailPage: React.FC = () => {
 									</h3>
 									</div>
 									<div className="p-8 lg:p-12">
-										<div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+										<div className="grid grid-cols-2 gap-8">
                             {relatedPosts.map(r => (
 												<article 
 													key={r.id} 

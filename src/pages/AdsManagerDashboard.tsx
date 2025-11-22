@@ -81,7 +81,7 @@ const AdsManagerDashboard: React.FC = () => {
   }
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+    <div className="grid grid-cols-4 gap-6">
       {/* Sidebar */}
       <aside className="lg:col-span-1 space-y-4">
         <div className="tile">
@@ -202,7 +202,7 @@ const AdsManagerDashboard: React.FC = () => {
               <h3 className="text-lg font-semibold text-[var(--color-text-primary)]">{editing.id ? 'Edit Ad' : 'New Ad'}</h3>
               <button className="btn-outline px-2 py-1 rounded" onClick={()=> setEditing(null)}>Close</button>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+            <div className="grid grid-cols-2 gap-3">
               <input className="input" placeholder="Title" value={editing.title} onChange={e=> setEditing(prev => prev? { ...prev, title: e.target.value } : prev)} />
               <input className="input" placeholder="Advertiser" value={editing.advertiser||''} onChange={e=> setEditing(prev => prev? { ...prev, advertiser: e.target.value } : prev)} />
               <input className="input md:col-span-2" placeholder="Image URL" value={editing.imageUrl} onChange={e=> setEditing(prev => prev? { ...prev, imageUrl: e.target.value } : prev)} />

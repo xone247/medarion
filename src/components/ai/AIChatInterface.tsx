@@ -206,7 +206,7 @@ const AIChatInterface: React.FC<AIChatInterfaceProps> = ({
                   <Lightbulb className="h-4 w-4 text-[var(--color-primary-teal)]" />
                   <h4 className="text-sm font-bold text-gray-900 dark:text-white">Use Cases</h4>
                 </div>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-2">
+                <div className="grid grid-cols-3 gap-2">
                   {useCases.map((useCase, idx) => (
                     <div
                       key={idx}

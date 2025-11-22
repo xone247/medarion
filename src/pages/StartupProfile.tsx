@@ -248,7 +248,7 @@ const StartupProfile = () => {
         </p>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-3 gap-6">
         {/* Main Profile */}
         <div className="lg:col-span-2 space-y-6">
           {/* Basic Information */}
@@ -302,7 +302,7 @@ const StartupProfile = () => {
           {/* Company Details */}
           <div className="bg-background-surface p-6 rounded-lg border border-divider shadow-sm">
             <h3 className="text-lg font-semibold text-text-primary mb-4">Company Details</h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="grid grid-cols-2 gap-4">
               <div>
                 <label className="block text-sm font-medium text-text-secondary mb-1">Sector</label>
                 {isEditing ? (
@@ -374,7 +374,7 @@ const StartupProfile = () => {
           {/* Key Metrics */}
           <div className="bg-background-surface p-6 rounded-lg border border-divider shadow-sm">
             <h3 className="text-lg font-semibold text-text-primary mb-4">Key Metrics</h3>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="grid grid-cols-3 gap-4">
               <div>
                 <label className="block text-sm font-medium text-text-secondary mb-1">Annual Revenue (USD)</label>
                 {isEditing ? (
@@ -673,7 +673,7 @@ const StartupProfile = () => {
               </button>
             </div>
             
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
+            <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
               <div>
                 <label className="block text-sm font-medium text-text-secondary mb-1">Revenue 2023 (USD)</label>
                 <input
@@ -800,7 +800,7 @@ const StartupProfile = () => {
             {/* Add New Team Member */}
             <div className="mb-6 p-4 bg-background rounded-lg border border-divider">
               <h4 className="text-lg font-semibold text-text-primary mb-3">Add New Team Member</h4>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+              <div className="grid grid-cols-2 gap-4 mb-4">
                 <div>
                   <label className="block text-sm font-medium text-text-secondary mb-1">Full Name</label>
                   <input

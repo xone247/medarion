@@ -22,8 +22,8 @@ const SiteFooter: React.FC = () => {
           }}
         />
       </div>
-      <div className="page-container py-10 md:py-12 px-4 md:px-6 lg:px-8">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-1 md:gap-2 lg:gap-2 text-sm">
+      <div className="page-container py-10 md:py-12 px-6 lg:px-8">
+        <div className="grid grid-cols-2 lg:grid-cols-12 gap-1 md:gap-2 lg:gap-2 text-sm">
           {/* Left: Logo + Promo + Contact */}
           <div className="lg:col-span-4">
             <div className="flex items-center gap-2">
@@ -85,7 +85,7 @@ const SiteFooter: React.FC = () => {
 
         </div>
 
-        <div className="mt-8 pt-5 border-t border-[var(--color-divider-gray)] flex flex-col md:flex-row items-center justify-between gap-3 md:gap-4 text-xs text-[var(--color-text-secondary)]">
+        <div className="mt-8 pt-5 border-t border-[var(--color-divider-gray)] flex flex-row items-center justify-between gap-3 md:gap-4 text-xs text-[var(--color-text-secondary)]">
           <div className="flex items-center gap-2">
             <CheckCircle2 className="w-4 h-4" />
             <span>All systems operational</span>

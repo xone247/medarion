@@ -146,7 +146,7 @@ const ContactPage: React.FC<ContactPageProps> = ({ onBack }) => {
       <div className="max-w-6xl mx-auto px-6 py-12 space-y-16">
 
         {/* Contact Form & Info */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+        <div className="grid grid-cols-2 gap-12">
           {/* Contact Form */}
           <div className="bg-white dark:bg-gray-800 p-8 rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm">
             <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">Send us a Message</h2>
@@ -161,7 +161,7 @@ const ContactPage: React.FC<ContactPageProps> = ({ onBack }) => {
               </div>
             ) : (
               <form onSubmit={handleSubmit} className="space-y-6">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="grid grid-cols-2 gap-4">
                   <div>
                     <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                       Full Name *
@@ -191,7 +191,7 @@ const ContactPage: React.FC<ContactPageProps> = ({ onBack }) => {
                   </div>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="grid grid-cols-2 gap-4">
                   <div>
                     <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                       Company/Organization
@@ -329,7 +329,7 @@ const ContactPage: React.FC<ContactPageProps> = ({ onBack }) => {
         {/* Office Locations */}
         <div>
           <h2 className="text-3xl font-bold text-gray-900 dark:text-white text-center mb-12">Our Offices</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="grid grid-cols-3 gap-8">
             {offices.map((office, index) => (
               <div key={index} className="bg-white dark:bg-gray-800 p-6 rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm">
                 <div className="flex items-center space-x-3 mb-4">
@@ -368,7 +368,7 @@ const ContactPage: React.FC<ContactPageProps> = ({ onBack }) => {
         {/* FAQ Section */}
         <div>
           <h2 className="text-3xl font-bold text-gray-900 dark:text-white text-center mb-12">Frequently Asked Questions</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div className="grid grid-cols-2 gap-8">
             {faqs.map((faq, index) => (
               <div key={index} className="bg-white dark:bg-gray-800 p-6 rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm">
                 <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">{faq.question}</h3>

@@ -382,7 +382,7 @@ const NationPulsePage = () => {
     switch (selectedElement) {
       case 'population':
         return (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-2 lg:grid-cols-3 gap-6">
             <div className="card-glass p-6 shadow-soft">
               <div className="flex items-center space-x-3 mb-4">
                 <Heart className="h-6 w-6 icon-primary" />
@@ -460,7 +460,7 @@ const NationPulsePage = () => {
               <h4 className="text-lg font-semibold text-[var(--color-text-primary)] mb-4">Disease Prevalence</h4>
               <p className="text-sm text-[var(--color-text-secondary)]">Health indicators showing the burden of diseases in the population</p>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-2 lg:grid-cols-3 gap-6">
               <div className="card-glass p-6 shadow-soft">
                 <div className="flex items-center space-x-3 mb-4">
                   <Shield className="h-6 w-6 icon-primary" />
@@ -564,7 +564,7 @@ const NationPulsePage = () => {
         const waterSanitation = dataObj.water_sanitation || { drinking_water_access: 0, basic_sanitation_access: 0 };
         return (
           <div className="space-y-6">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="grid grid-cols-3 gap-6">
               <div className="card-glass p-6 shadow-soft">
                 <div className="flex items-center space-x-3 mb-4">
                   <Stethoscope className="h-6 w-6 icon-primary" />
@@ -593,7 +593,7 @@ const NationPulsePage = () => {
               </div>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="grid grid-cols-2 gap-6">
               <div className="card-glass p-6 shadow-soft">
                 <h4 className="text-lg font-semibold text-[var(--color-text-primary)] mb-4">Health Expenditure</h4>
                 <div className="space-y-4">
@@ -682,7 +682,7 @@ const NationPulsePage = () => {
         const povertyInequality = dataObj.poverty_inequality || { poverty_rate: 0, gini_coefficient: 0 };
         return (
           <div className="space-y-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
               <div className="card-glass p-6 shadow-soft">
                 <div className="flex items-center space-x-3 mb-4">
                   <DollarSign className="h-6 w-6 icon-primary" />
@@ -720,7 +720,7 @@ const NationPulsePage = () => {
               </div>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="grid grid-cols-2 gap-6">
               <div className="card-glass p-6 shadow-soft">
                 <h4 className="text-lg font-semibold text-[var(--color-text-primary)] mb-4">Employment & Poverty</h4>
                 <div className="space-y-4">
@@ -776,7 +776,7 @@ const NationPulsePage = () => {
   return (
     <div className="page-container py-6 space-y-6 bg-[var(--color-background-default)] min-h-screen">
       {/* Analytics Overview with glassmorphism */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
         <div className="card-glass p-6 shadow-soft">
           <div className="flex items-center space-x-3 mb-4">
             <Heart className="h-6 w-6 icon-primary" />
@@ -862,7 +862,7 @@ const NationPulsePage = () => {
           <h3 className="text-lg font-semibold text-[var(--color-text-primary)]">Filters & Controls</h3>
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="grid grid-cols-3 gap-4">
           {/* Country Search */}
           <div className="relative">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-[var(--color-text-secondary)]" />
@@ -939,7 +939,7 @@ const NationPulsePage = () => {
       {/* Investment Opportunities with glassmorphism */}
       <div className="card-glass p-6 shadow-soft">
         <h3 className="text-lg font-semibold text-[var(--color-text-primary)] mb-4">Healthcare Investment Opportunities</h3>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid grid-cols-2 lg:grid-cols-3 gap-4">
           {analytics.investment_insights.market_opportunities.map((opportunity: any, index: number) => {
             const countryKey = getCountryKey(opportunity.country);
             const economicData = data?.economic_indicators?.[countryKey];

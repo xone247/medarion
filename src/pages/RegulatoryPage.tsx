@@ -164,7 +164,7 @@ const RegulatoryPage: React.FC = () => {
     <div className="page-container">
       {/* Header with glassmorphism */}
       <div className="card-glass p-6 shadow-soft mb-6">
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+        <div className="flex flex-row sm:items-center sm:justify-between gap-3">
           <div className="flex items-center space-x-2">
             <FileText className="h-6 w-6 icon-primary" />
             <h1 className="text-xl md:text-2xl font-bold text-[var(--color-text-primary)]">Regulatory</h1>
@@ -219,7 +219,7 @@ const RegulatoryPage: React.FC = () => {
       )}
 
       {/* Summary Stats */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
+      <div className="grid grid-cols-4 gap-6 mb-6">
         <div className="card-glass p-6 shadow-soft">
           <div className="flex items-center space-x-3">
             <FileCheck className="h-6 w-6 icon-primary" />
@@ -274,7 +274,7 @@ const RegulatoryPage: React.FC = () => {
           <Globe className="h-5 w-5 icon-primary" />
           <h3 className="text-lg font-semibold text-[var(--color-text-primary)]">Most Active Regulatory Countries</h3>
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid grid-cols-2 lg:grid-cols-3 gap-4">
           {topCountries.map((country: any, index: number) => (
             <div key={country.country} className="card-glass p-4 shadow-soft hover:shadow-md transition-shadow">
               <div className="flex items-center justify-between mb-2">
@@ -311,7 +311,7 @@ const RegulatoryPage: React.FC = () => {
           <Filter className="h-5 w-5 icon-primary" />
           <h3 className="text-lg font-semibold text-[var(--color-text-primary)]">Filters</h3>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="grid grid-cols-3 gap-4">
           <div className="relative">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-[var(--color-text-secondary)]" />
             <input

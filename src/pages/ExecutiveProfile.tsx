@@ -36,10 +36,10 @@ const ExecutiveProfile: React.FC = () => {
           </button>
         </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-3 gap-6">
         <div className="lg:col-span-2 bg-[var(--color-background-surface)] p-6 rounded-lg border border-[var(--color-divider-gray)] shadow-sm">
           <h3 className="text-lg font-semibold text-[var(--color-text-primary)] mb-4">Organization</h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-2 gap-4">
             <div>
               <label className="block text-sm text-[var(--color-text-secondary)] mb-1">Organization Name</label>
               {isEditing ? (
@@ -96,7 +96,7 @@ const ExecutiveProfile: React.FC = () => {
           <h3 className="text-lg font-semibold text-[var(--color-text-primary)]">Strategic Initiatives</h3>
           <button className="btn-outline px-3 py-2 rounded" onClick={()=>setShowNew(true)}><Plus className="h-4 w-4 inline mr-2"/>Add Initiative</button>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+        <div className="grid grid-cols-2 lg:grid-cols-3 gap-3">
           {initiatives.map((i, idx)=> (
             <div key={idx} className="p-3 bg-[var(--color-background-default)] rounded-lg border border-[var(--color-divider-gray)]">
               <div className="font-medium text-[var(--color-text-primary)]">{i.title}</div>

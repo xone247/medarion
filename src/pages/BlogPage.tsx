@@ -386,7 +386,7 @@ const BlogPage: React.FC<BlogPageProps> = ({ onBack }) => {
                 ) : (
                   <>
                     {/* Featured Large Post + 3 Equal-Sized Posts Row */}
-                    <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 mb-6 items-start">
+                    <div className="grid grid-cols-4 gap-6 mb-6 items-start">
                       {/* Large Featured Post - Left Side (2 columns) */}
                       <article 
                         className="lg:col-span-2 bg-[var(--color-background-surface)] rounded-2xl shadow-lg overflow-hidden border border-[var(--color-divider-gray)] group cursor-pointer flex flex-col h-full"
@@ -478,7 +478,7 @@ const BlogPage: React.FC<BlogPageProps> = ({ onBack }) => {
                     </div>
 
                     {/* Two Rows of Blog Posts Below */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                    <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                       {paginatedPosts.slice(6, 14).map((post, idx) => (
                         <article 
                           key={post.id} 
@@ -576,7 +576,7 @@ const BlogPage: React.FC<BlogPageProps> = ({ onBack }) => {
                 ) : (
                   <>
                     {/* Featured Large Video + 3 Equal-Sized Videos Row */}
-                    <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 mb-6 items-start">
+                    <div className="grid grid-cols-4 gap-6 mb-6 items-start">
                       {/* Large Featured Video - Left Side (2 columns) */}
                       {videos[0] && (() => {
                         const mainVideo = videos[0];
@@ -737,7 +737,7 @@ const BlogPage: React.FC<BlogPageProps> = ({ onBack }) => {
                     </div>
 
                     {/* Two Rows of Videos Below */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                    <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                       {videos.slice(6, 14).map((video) => {
                         const videoId = extractYouTubeId(video.video_url);
                         const embedUrl = videoId ? getYouTubeEmbedUrl(video.video_url, {

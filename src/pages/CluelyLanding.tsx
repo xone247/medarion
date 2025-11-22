@@ -561,7 +561,7 @@ const CluelyLanding: React.FC<CluelyLandingProps> = ({ onGetStarted, onShowAuth,
 					</div>
 
 					{/* Bottom bar */}
-                    <div className="mt-12 pt-6 border-t border-[var(--color-divider-gray)] flex flex-col md:flex-row items-start md:items-center justify-between gap-4 text-xs text-[var(--color-text-secondary)]">
+                    <div className="mt-12 pt-6 border-t border-[var(--color-divider-gray)] flex flex-row items-start md:items-center justify-between gap-4 text-xs text-[var(--color-text-secondary)]">
 						<div className="flex items-center gap-2">
 							<CheckCircle2 className="w-4 h-4"/>
 							<span>All systems operational</span>

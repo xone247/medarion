@@ -430,7 +430,7 @@ const AdminDataManagement: React.FC = () => {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-4 gap-6">
         {/* Table Selection Sidebar */}
         <div className="card-glass shadow-soft p-4">
           <h3 className="text-lg font-semibold text-[var(--color-text-primary)] mb-4">Data Tables</h3>
@@ -618,7 +618,7 @@ const AdminDataManagement: React.FC = () => {
                 handleCreate(data);
               }
             }}>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="grid grid-cols-2 gap-4">
                 {currentTable.columns
                   .filter(col => col.editable !== false)
                   .map((column) => (

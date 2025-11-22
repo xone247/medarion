@@ -69,7 +69,7 @@ const InvestorProfile: React.FC = () => {
         </div>
 
       {/* Firm Overview */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-3 gap-6">
         <div className="lg:col-span-2 bg-[var(--color-background-surface)] p-6 rounded-lg border border-[var(--color-divider-gray)] shadow-sm">
           <h3 className="text-lg font-semibold text-[var(--color-text-primary)] mb-4">Firm Overview</h3>
           <div className="space-y-4">
@@ -81,7 +81,7 @@ const InvestorProfile: React.FC = () => {
                 <p className="text-[var(--color-text-primary)] font-medium">{profile.firmName}</p>
               )}
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="grid grid-cols-3 gap-4">
               <div>
                 <label className="block text-sm text-[var(--color-text-secondary)] mb-1">Website</label>
                 {isEditing ? (
@@ -146,7 +146,7 @@ const InvestorProfile: React.FC = () => {
           <h3 className="text-lg font-semibold text-[var(--color-text-primary)]">Recent Deals</h3>
           <button className="btn-outline px-3 py-2 rounded" onClick={()=>setShowAddDeal(true)}><Plus className="h-4 w-4 inline mr-2"/>Add Deal</button>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+        <div className="grid grid-cols-2 lg:grid-cols-3 gap-3">
           {recentDeals.map((d, i)=> (
             <div key={i} className="p-3 bg-[var(--color-background-default)] rounded-lg border border-[var(--color-divider-gray)]">
               <div className="flex items-center justify-between">
@@ -183,7 +183,7 @@ const InvestorProfile: React.FC = () => {
       )}
 
       {/* Metrics */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div className="grid grid-cols-3 gap-6">
         <div className="bg-[var(--color-background-surface)] p-6 rounded-lg border border-[var(--color-divider-gray)] shadow-sm text-center">
           <DollarSign className="h-5 w-5 mx-auto text-[var(--color-primary-teal)]" />
           <p className="text-sm text-[var(--color-text-secondary)] mt-1">Total AUM</p>

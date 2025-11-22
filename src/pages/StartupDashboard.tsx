@@ -46,7 +46,7 @@ const StartupDashboard = () => {
     <div className="p-6 space-y-6 bg-[var(--color-background-default)] min-h-screen">
 
       {/* KPI Row */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+      <div className="grid grid-cols-4 gap-6">
         <KPICard title="Deals & Grants" value={kpis?.deals_and_grants ?? '—'} icon={TrendingUp} trend="+12% this week" />
         <KPICard title="Companies" value={kpis?.companies ?? '—'} icon={User} trend="+8% this week" />
         <KPICard title="Investors" value={kpis?.investors ?? '—'} icon={Eye} trend="+5% this week" />
@@ -54,7 +54,7 @@ const StartupDashboard = () => {
       </div>
 
       {/* Market Intelligence Section */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div className="grid grid-cols-2 gap-6">
         <NationPulseWidget type="overview" />
         <HealthcareMarketWidget />
       </div>
@@ -101,7 +101,7 @@ const StartupDashboard = () => {
       </div>
 
       {/* Market Opportunity Charts */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div className="grid grid-cols-2 gap-6">
         <NationPulseWidget type="health-metrics" />
         <NationPulseWidget type="investment-opportunities" />
       </div>
@@ -113,7 +113,7 @@ const StartupDashboard = () => {
           <h3 className="text-lg font-semibold text-[var(--color-text-primary)]">AI Investor Matches</h3>
           <span className="bg-[var(--color-secondary-gold)] text-black text-xs px-2 py-1 rounded-full font-bold">NEW</span>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="grid grid-cols-2 gap-4">
           {matchedInvestors.map((investor, index) => (
             <div key={index} className="bg-[var(--color-background-default)] p-4 rounded-lg hover:bg-[color-mix(in_srgb,var(--color-background-default),black_5%)] transition-colors cursor-pointer shadow-sm border border-[var(--color-divider-gray)]">
               <div className="flex justify-between items-start mb-2">
@@ -141,7 +141,7 @@ const StartupDashboard = () => {
           <MessageSquare className="h-5 w-5 text-[var(--color-primary-teal)]" />
           <h3 className="text-lg font-semibold text-[var(--color-text-primary)]">Fundraising CRM</h3>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="grid grid-cols-3 gap-6">
           {Object.entries(crmData).map(([stage, investors]) => (
             <div key={stage} className="bg-[var(--color-background-default)] p-4 rounded-lg shadow-sm border border-[var(--color-divider-gray)]">
               <h4 className="text-[var(--color-text-primary)] font-medium mb-3 text-center border-b border-[var(--color-divider-gray)] pb-2">

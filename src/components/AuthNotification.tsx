@@ -54,7 +54,7 @@ const AuthNotification: React.FC<AuthNotificationProps> = ({
           </p>
 
           {/* Action Buttons */}
-          <div className="flex flex-col sm:flex-row gap-3">
+          <div className="flex flex-row gap-3">
             <button
               onClick={onLogin}
               className="flex-1 flex items-center justify-center space-x-2 px-4 py-3 bg-[var(--color-primary-teal)] hover:bg-[var(--color-primary-teal)]/90 text-white rounded-lg transition-colors font-medium"

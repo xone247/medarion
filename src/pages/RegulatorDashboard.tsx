@@ -62,7 +62,7 @@ const RegulatorDashboard = () => {
     <div className="bg-[var(--color-background-default)] min-h-screen">
       {/* Header */}
       <div className="border-b border-[var(--color-divider-gray)] bg-[var(--color-background-surface)]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <div className="py-6">
             <div className="flex items-center justify-between">
               <div>
@@ -80,9 +80,9 @@ const RegulatorDashboard = () => {
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="max-w-7xl mx-auto px-6 lg:px-8 py-8">
         {/* KPI Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
           <KPICard
             title="Compliance Rate"
             value="91%"
@@ -113,7 +113,7 @@ const RegulatorDashboard = () => {
           />
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+        <div className="grid grid-cols-2 gap-8 mb-8">
           {/* Regulatory Initiatives */}
           <div className="bg-[var(--color-background-surface)] rounded-lg border border-[var(--color-divider-gray)] p-6">
             <div className="flex items-center space-x-3 mb-6">
@@ -216,7 +216,7 @@ const RegulatorDashboard = () => {
         </div>
 
         {/* Map and Nation Pulse */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <div className="grid grid-cols-2 gap-8">
           <div className="bg-[var(--color-background-surface)] rounded-lg border border-[var(--color-divider-gray)] p-6">
             <div className="flex items-center space-x-3 mb-6">
               <Globe className="h-6 w-6 text-[var(--color-primary-teal)]" />

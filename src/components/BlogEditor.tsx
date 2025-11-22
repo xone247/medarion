@@ -306,7 +306,7 @@ const BlogEditor: React.FC<BlogEditorProps> = ({ post, onChange, onSave, onCance
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div className="grid grid-cols-2 gap-6">
         {/* Left Column - Editor */}
         <div className="space-y-6">
           {/* Basic Information */}

@@ -131,7 +131,7 @@ const BlogManagerDashboard: React.FC = () => {
   }
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+    <div className="grid grid-cols-4 gap-6">
       {/* Sidebar */}
       <aside className="lg:col-span-1 space-y-4">
         <div className="tile">
@@ -265,7 +265,7 @@ const BlogManagerDashboard: React.FC = () => {
               <h3 className="text-lg font-semibold text-[var(--color-text-primary)]">{editing.id ? 'Edit Post' : 'New Post'}</h3>
               <button className="btn-outline px-2 py-1 rounded" onClick={()=> setEditing(null)}>Close</button>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+            <div className="grid grid-cols-2 gap-3">
               <input className="input" placeholder="Title" value={editing.title} onChange={e=> setEditing(prev => prev? { ...prev, title: e.target.value } : prev)} />
               <input className="input" placeholder="Category" value={editing.category} onChange={e=> setEditing(prev => prev? { ...prev, category: e.target.value } : prev)} />
               <input className="input" placeholder="Author" value={editing.author} onChange={e=> setEditing(prev => prev? { ...prev, author: e.target.value } : prev)} />

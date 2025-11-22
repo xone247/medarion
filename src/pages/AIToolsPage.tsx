@@ -547,7 +547,7 @@ const AIToolsPage: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-[var(--color-background-default)]">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="max-w-7xl mx-auto px-6 lg:px-8 py-8">
         {/* Hero Header */}
         <div className="mb-8">
           <div className="card-glass p-6 shadow-soft mb-6">
@@ -588,7 +588,7 @@ const AIToolsPage: React.FC = () => {
 
         {/* Search and Filters */}
         <div className="card-glass p-6 shadow-soft mb-6">
-          <div className="flex flex-col md:flex-row gap-4">
+          <div className="flex flex-row gap-4">
             <div className="flex-1 relative">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-[var(--color-text-secondary)]" />
               <input
@@ -623,7 +623,7 @@ const AIToolsPage: React.FC = () => {
         </div>
 
         {/* Tools Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+        <div className="grid grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
           {filteredTools.map((tool) => {
             const enabled = canAccessTool(tool);
             const Icon = iconMap[tool.id] || Bot;
@@ -872,7 +872,7 @@ const AIToolsPage: React.FC = () => {
                   {/* Parameters Form */}
                   <div className="mb-6">
                     <h3 className="text-lg font-bold text-[var(--color-text-primary)] mb-4">Configure Parameters</h3>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="grid grid-cols-2 gap-4">
                       {getToolParams(selectedTool).map((param) => (
                         <div key={param.key} className={param.type === 'textarea' ? 'md:col-span-2' : ''}>
                           <label className="block text-sm font-semibold text-[var(--color-text-primary)] mb-2">

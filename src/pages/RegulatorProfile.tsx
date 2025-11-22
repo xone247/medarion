@@ -23,7 +23,7 @@ const RegulatorProfile: React.FC = () => {
     <div className="bg-[var(--color-background-default)] min-h-screen">
       {/* Header */}
       <div className="border-b border-[var(--color-divider-gray)] bg-[var(--color-background-surface)]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <div className="py-6">
             <div className="flex items-center justify-between">
               <div>
@@ -44,8 +44,8 @@ const RegulatorProfile: React.FC = () => {
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <div className="max-w-7xl mx-auto px-6 lg:px-8 py-8">
+        <div className="grid grid-cols-3 gap-8">
           {/* Profile Information */}
           <div className="lg:col-span-1">
             <div className="bg-[var(--color-background-surface)] rounded-lg border border-[var(--color-divider-gray)] p-6">
@@ -179,7 +179,7 @@ const RegulatorProfile: React.FC = () => {
 
               {showNew && (
                 <div className="border border-[var(--color-divider-gray)] rounded-lg p-4 mb-4">
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                  <div className="grid grid-cols-3 gap-4 mb-4">
                     <div>
                       <label className="block text-sm font-medium text-[var(--color-text-secondary)] mb-1">Title</label>
                       <input

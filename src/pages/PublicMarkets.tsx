@@ -299,7 +299,7 @@ const PublicMarkets = () => {
     <div className="page-container py-6 space-y-6 bg-[var(--color-background-default)] min-h-screen">
       {/* Header with glassmorphism */}
       <div className="card-glass p-6 shadow-soft">
-        <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+        <div className="flex flex-row lg:items-center lg:justify-between gap-4">
           <div className="flex items-center space-x-3">
             <TrendingUp className="h-8 w-8 icon-primary" />
             <div>
@@ -308,12 +308,12 @@ const PublicMarkets = () => {
             </div>
           </div>
           <div className="flex flex-wrap items-center gap-2">
-            {canAI && <button onClick={runAISummary} className="btn-primary-elevated btn-sm flex items-center gap-2 w-full sm:w-auto"><Bot className="h-4 w-4" /><span className="text-sm">AI Summary</span></button>}
+            {canAI && <button onClick={runAISummary} className="btn-primary-elevated btn-sm flex items-center gap-2 w-auto"><Bot className="h-4 w-4" /><span className="text-sm">AI Summary</span></button>}
             {canExport && (
               <>
-                <button onClick={copyFinancialsJSON} className="btn-outline btn-sm w-full sm:w-auto">Copy</button>
-                <button onClick={exportFinancialsJSON} className="btn-outline btn-sm w-full sm:w-auto"><FileDown className="h-4 w-4 inline mr-2"/>Export JSON</button>
-                <button onClick={exportFinancialsCSV} className="btn-outline btn-sm w-full sm:w-auto"><FileDown className="h-4 w-4 inline mr-2"/>Export CSV</button>
+                <button onClick={copyFinancialsJSON} className="btn-outline btn-sm w-auto">Copy</button>
+                <button onClick={exportFinancialsJSON} className="btn-outline btn-sm w-auto"><FileDown className="h-4 w-4 inline mr-2"/>Export JSON</button>
+                <button onClick={exportFinancialsCSV} className="btn-outline btn-sm w-auto"><FileDown className="h-4 w-4 inline mr-2"/>Export CSV</button>
               </>
             )}
           </div>
@@ -331,7 +331,7 @@ const PublicMarkets = () => {
       )}
 
       {/* Summary Stats with glassmorphism */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+      <div className="grid grid-cols-4 gap-6">
         <div className="card-glass p-6 shadow-soft">
           <div className="flex items-center space-x-3">
             <Building2 className="h-6 w-6 icon-primary" />
@@ -376,10 +376,10 @@ const PublicMarkets = () => {
       {/* Navigation Tabs with glassmorphism */}
       <div className="card-glass overflow-hidden shadow-soft">
         <div className="flex border-b border-[var(--color-divider-gray)] overflow-x-auto no-scrollbar">
-          <button onClick={() => setSelectedTab('overview')} className={`flex-shrink-0 px-4 sm:px-6 py-3 text-sm font-medium ${selectedTab === 'overview' ? 'border-b-2 border-[var(--color-primary-teal)] text-[var(--color-primary-teal)]' : 'text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)]'}`}>Market Overview</button>
-          <button onClick={() => setSelectedTab('watchlist')} className={`flex-shrink-0 px-4 sm:px-6 py-3 text-sm font-medium ${selectedTab === 'watchlist' ? 'border-b-2 border-[var(--color-primary-teal)] text-[var(--color-primary-teal)]' : 'text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)]'}`}>Watchlist & Movers</button>
-          <button onClick={() => setSelectedTab('financials')} className={`flex-shrink-0 px-4 sm:px-6 py-3 text-sm font-medium ${selectedTab === 'financials' ? 'border-b-2 border-[var(--color-primary-teal)] text-[var(--color-primary-teal)]' : 'text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)]'}`}>Financial Metrics</button>
-          <button onClick={() => setSelectedTab('currency')} className={`flex-shrink-0 px-4 sm:px-6 py-3 text-sm font-medium ${selectedTab === 'currency' ? 'border-b-2 border-[var(--color-primary-teal)] text-[var(--color-primary-teal)]' : 'text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)]'}`}>Currency Exchange</button>
+          <button onClick={() => setSelectedTab('overview')} className={`flex-shrink-0 px-6 py-3 text-sm font-medium ${selectedTab === 'overview' ? 'border-b-2 border-[var(--color-primary-teal)] text-[var(--color-primary-teal)]' : 'text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)]'}`}>Market Overview</button>
+          <button onClick={() => setSelectedTab('watchlist')} className={`flex-shrink-0 px-6 py-3 text-sm font-medium ${selectedTab === 'watchlist' ? 'border-b-2 border-[var(--color-primary-teal)] text-[var(--color-primary-teal)]' : 'text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)]'}`}>Watchlist & Movers</button>
+          <button onClick={() => setSelectedTab('financials')} className={`flex-shrink-0 px-6 py-3 text-sm font-medium ${selectedTab === 'financials' ? 'border-b-2 border-[var(--color-primary-teal)] text-[var(--color-primary-teal)]' : 'text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)]'}`}>Financial Metrics</button>
+          <button onClick={() => setSelectedTab('currency')} className={`flex-shrink-0 px-6 py-3 text-sm font-medium ${selectedTab === 'currency' ? 'border-b-2 border-[var(--color-primary-teal)] text-[var(--color-primary-teal)]' : 'text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)]'}`}>Currency Exchange</button>
         </div>
 
         <div className="p-4 sm:p-6">
@@ -503,7 +503,7 @@ const PublicMarkets = () => {
               </div>
 
               {/* Movers with glassmorphism */}
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div className="grid grid-cols-3 gap-6">
                 {/* Gainers */}
                 <div className="card-glass p-4 shadow-soft">
                   <h4 className="text-base font-semibold text-[var(--color-text-primary)] mb-3 flex items-center"><ArrowUp className="h-4 w-4 text-green-500 mr-2" />Top Gainers</h4>
@@ -573,7 +573,7 @@ const PublicMarkets = () => {
                   <Filter className="h-5 w-5 icon-primary" />
                   <h3 className="text-lg font-semibold text-[var(--color-text-primary)]">Filters</h3>
                 </div>
-                <div className="flex flex-col md:flex-row gap-4">
+                <div className="flex flex-row gap-4">
                   <div className="relative flex-1">
                     <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-[var(--color-text-secondary)]" />
                     <input
@@ -681,7 +681,7 @@ const PublicMarkets = () => {
               </div>
              
               {/* Currency Exchange Rates with glassmorphism */}
-              <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+              <div className="grid grid-cols-3 gap-4">
                 {/* Rates list */}
                 <div className="card-glass p-4 shadow-soft lg:col-span-2">
                   <div className="flex items-center justify-between mb-3">

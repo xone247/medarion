@@ -168,7 +168,7 @@ const ClinicalTrialsPage: React.FC = () => {
     <div className="page-container py-6 space-y-6 bg-[var(--color-background-default)] min-h-screen">
       {/* Header with glassmorphism */}
       <div className="card-glass p-6 shadow-soft">
-        <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+        <div className="flex flex-row lg:items-center lg:justify-between gap-4">
           <div className="flex items-center space-x-3">
             <Microscope className="h-8 w-8 icon-primary" />
             <div>
@@ -178,13 +178,13 @@ const ClinicalTrialsPage: React.FC = () => {
           </div>
           <div className="flex items-center gap-2 flex-wrap">
             {canAI && (
-              <button onClick={runAI} className="btn-primary-elevated btn-sm flex items-center gap-2 w-full sm:w-auto">
+              <button onClick={runAI} className="btn-primary-elevated btn-sm flex items-center gap-2 w-auto">
                 <Bot className="h-4 w-4" />
                 <span className="text-sm">AI Summary</span>
               </button>
             )}
-            <button onClick={copyJSON} className="btn-outline btn-sm w-full sm:w-auto">Copy</button>
-            <button onClick={exportJSON} className="btn-outline btn-sm w-full sm:w-auto"><FileDown className="h-4 w-4 inline mr-2"/>Export JSON</button>
+            <button onClick={copyJSON} className="btn-outline btn-sm w-auto">Copy</button>
+            <button onClick={exportJSON} className="btn-outline btn-sm w-auto"><FileDown className="h-4 w-4 inline mr-2"/>Export JSON</button>
           </div>
         </div>
       </div>
@@ -198,7 +198,7 @@ const ClinicalTrialsPage: React.FC = () => {
       )}
 
       {/* Summary Stats with glassmorphism */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+      <div className="grid grid-cols-4 gap-6">
         <div className="card-glass p-6 shadow-soft">
           <div className="flex items-center space-x-3">
             <Microscope className="h-6 w-6 icon-primary" />
@@ -249,7 +249,7 @@ const ClinicalTrialsPage: React.FC = () => {
           <Globe className="h-5 w-5 icon-primary" />
           <h3 className="text-lg font-semibold text-[var(--color-text-primary)]">Most Active Clinical Trials Countries</h3>
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid grid-cols-2 lg:grid-cols-3 gap-4">
           {topCountries.map((country: any, index: number) => (
             <div key={country.country} className="card-glass p-4 shadow-soft hover:shadow-elevated transition-all duration-300 card-hover">
               <div className="flex items-center justify-between mb-2">
@@ -286,7 +286,7 @@ const ClinicalTrialsPage: React.FC = () => {
           <Filter className="h-5 w-5 icon-primary" />
           <h3 className="text-lg font-semibold text-[var(--color-text-primary)]">Filters</h3>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="grid grid-cols-3 gap-4">
           <div className="relative">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-[var(--color-text-secondary)]" />
             <input
@@ -395,7 +395,7 @@ const ClinicalTrialsPage: React.FC = () => {
               </button>
             </div>
             
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+            <div className="grid grid-cols-3 gap-6 mb-6">
               <div className="card-glass p-4 shadow-soft">
                 <p className="text-sm text-[var(--color-text-secondary)]">Indication</p>
                 <p className="text-lg font-bold text-[var(--color-text-primary)]">{showTrialDetails.indication}</p>
@@ -412,7 +412,7 @@ const ClinicalTrialsPage: React.FC = () => {
 
             <div className="mb-6">
               <h4 className="text-lg font-semibold text-[var(--color-text-primary)] mb-3">Trial Details</h4>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="grid grid-cols-2 gap-4">
                 <div className="card-glass p-4 shadow-soft">
                   <p className="text-sm text-[var(--color-text-secondary)] mb-1">Number of Trial Sites</p>
                   <p className="text-base font-medium text-[var(--color-text-primary)]">{showTrialDetails.sites}</p>

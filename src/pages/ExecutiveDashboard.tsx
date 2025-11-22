@@ -44,7 +44,7 @@ const ExecutiveDashboard = () => {
     <div className="p-6 space-y-6 bg-[var(--color-background-default)] min-h-screen">
 
       {/* KPI Row */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+      <div className="grid grid-cols-4 gap-6">
         <KPICard title="Market Cap" value={kpis?.total_value_usd ? `$${(kpis.total_value_usd / 1000000).toFixed(1)}B` : '—'} icon={DollarSign} trend="+8% this quarter" />
         <KPICard title="Strategic Initiatives" value="12" icon={Target} trend="+2 this month" />
         <KPICard title="Active Partnerships" value="8" icon={Users} trend="+1 this quarter" />
@@ -57,7 +57,7 @@ const ExecutiveDashboard = () => {
           <Target className="h-5 w-5 text-[var(--color-primary-teal)]" />
           <h3 className="text-lg font-semibold text-[var(--color-text-primary)]">Strategic Initiatives</h3>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="grid grid-cols-3 gap-4">
           {strategicInitiatives.map((initiative, index) => (
             <div key={index} className="p-4 bg-[var(--color-background-default)] rounded-lg border border-[var(--color-divider-gray)]">
               <div className="flex items-center justify-between mb-2">
@@ -93,7 +93,7 @@ const ExecutiveDashboard = () => {
       </div>
 
       {/* Market Analysis */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div className="grid grid-cols-2 gap-6">
         <div className="bg-[var(--color-background-surface)] p-6 rounded-lg border border-[var(--color-divider-gray)] shadow-sm">
           <div className="flex items-center space-x-2 mb-4">
             <BarChart3 className="h-5 w-5 text-[var(--color-primary-teal)]" />
@@ -143,7 +143,7 @@ const ExecutiveDashboard = () => {
       </div>
 
       {/* Market Intelligence Section */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div className="grid grid-cols-2 gap-6">
         <NationPulseWidget type="overview" />
         <HealthcareMarketWidget />
       </div>
@@ -190,7 +190,7 @@ const ExecutiveDashboard = () => {
       </div>
 
       {/* Executive Metrics */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+      <div className="grid grid-cols-4 gap-6">
         <div className="bg-[var(--color-background-surface)] p-6 rounded-lg border border-[var(--color-divider-gray)] shadow-sm text-center">
           <Building2 className="h-5 w-5 mx-auto text-[var(--color-primary-teal)] mb-2" />
           <p className="text-sm text-[var(--color-text-secondary)] mb-1">Market Share</p>
@@ -218,7 +218,7 @@ const ExecutiveDashboard = () => {
       </div>
 
       {/* Market Opportunity Charts */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div className="grid grid-cols-2 gap-6">
         <NationPulseWidget type="health-metrics" />
         <NationPulseWidget type="investment-opportunities" />
       </div>

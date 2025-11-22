@@ -179,7 +179,7 @@ const StartupAnalyticsPage = () => {
 
       {/* Engagement Metrics */}
       {visibleSections.includes('engagementMetrics') && (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 mb-6">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 mb-6">
           {engagementData.map((metric, index) => (
             <div key={index} className="card-glass p-4 md:p-6 shadow-soft">
               <div className="flex items-center justify-between">
@@ -202,7 +202,7 @@ const StartupAnalyticsPage = () => {
       )}
 
       {/* Views Trend + Investor Type */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+      <div className="grid grid-cols-2 gap-6 mb-6">
         {visibleSections.includes('viewsTrend') && (
           <div className="card-glass p-4 md:p-6 shadow-soft">
             <h3 className="text-base md:text-lg font-semibold text-[var(--color-text-primary)] mb-4">African Market Profile Views Trend</h3>
@@ -238,7 +238,7 @@ const StartupAnalyticsPage = () => {
       </div>
 
       {/* Regional Distribution + Top Countries */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+      <div className="grid grid-cols-2 gap-6 mb-6">
         {visibleSections.includes('regionalDistribution') && (
           <div className="card-glass p-4 md:p-6 shadow-soft">
             <h3 className="text-base md:text-lg font-semibold text-[var(--color-text-primary)] mb-4">African Regional Distribution</h3>
@@ -259,7 +259,7 @@ const StartupAnalyticsPage = () => {
         {visibleSections.includes('topCountries') && (
           <div className="card-glass p-4 md:p-6 shadow-soft">
             <h3 className="text-base md:text-lg font-semibold text-[var(--color-text-primary)] mb-4">Top African Countries by Engagement</h3>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 h-64 md:h-72 overflow-y-auto pr-2">
+            <div className="grid grid-cols-2 gap-3 h-64 md:h-72 overflow-y-auto pr-2">
               {countryViewsData.map((country, index) => (
                 <div key={country.country} className="flex items-center justify-between p-3 card-glass rounded-lg shadow-soft">
                   <div className="flex items-center space-x-3">
@@ -284,7 +284,7 @@ const StartupAnalyticsPage = () => {
       {visibleSections.includes('sectorInterest') && (
         <div className="card-glass p-4 md:p-6 shadow-soft mb-6">
           <h3 className="text-base md:text-lg font-semibold text-[var(--color-text-primary)] mb-4">African Investor Interest by Sector</h3>
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div className="grid grid-cols-2 gap-6">
             <div className="h-72">
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart data={sectorInterestData} layout="horizontal" margin={{ top: 5, right: 20, bottom: 5, left: 0 }}>
@@ -300,7 +300,7 @@ const StartupAnalyticsPage = () => {
             </div>
             <div className="space-y-4">
               <h4 className="text-md font-semibold text-[var(--color-text-primary)]">African Market Relevance</h4>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 h-64 overflow-y-auto pr-2">
+              <div className="grid grid-cols-2 gap-3 h-64 overflow-y-auto pr-2">
                 {sectorInterestData.map((sector, index) => (
                   <div key={sector.sector} className="p-3 card-glass rounded-lg shadow-soft">
                     <div className="flex justify-between items-center mb-2">
@@ -326,7 +326,7 @@ const StartupAnalyticsPage = () => {
             <Globe className="h-5 w-5 text-[var(--color-primary-teal)]" />
             <h3 className="text-base md:text-lg font-semibold text-[var(--color-text-primary)]">African Market Insights</h3>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div className="grid grid-cols-2 gap-4">
             {marketInsights.map((insight, index) => (
               <div key={index} className={`p-4 rounded-lg border card-glass shadow-soft ${insight.color}`}>
                 <div className="flex items-center space-x-3 mb-2">
@@ -347,7 +347,7 @@ const StartupAnalyticsPage = () => {
             <MapPin className="h-5 w-5 text-[var(--color-primary-teal)]" />
             <h3 className="text-base md:text-lg font-semibold text-[var(--color-text-primary)]">African Healthcare Market Summary</h3>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
+          <div className="grid grid-cols-3 gap-4 md:gap-6">
             <div className="text-center">
               <div className="text-2xl md:text-3xl font-bold text-[var(--color-primary-teal)] mb-2">54</div>
               <div className="text-sm text-[var(--color-text-secondary)]">African Countries</div>
@@ -374,11 +374,11 @@ const StartupAnalyticsPage = () => {
       )}
 
       {/* Investment Analytics (using filtered deals) */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+      <div className="grid grid-cols-2 gap-6 mb-6">
         {visibleSections.includes('investmentOverTime') && (<VCInvestmentOverTimeChart deals={filteredDeals} />)}
         {visibleSections.includes('dealsByStage') && (<DealsByStageChart deals={filteredDeals} />)}
       </div>
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div className="grid grid-cols-2 gap-6">
         {visibleSections.includes('dealsBySector') && (<DealsBySectorChart deals={filteredDeals} />)}
         {visibleSections.includes('sectorTreemap') && (<SectorTreemap deals={filteredDeals} />)}
       </div>

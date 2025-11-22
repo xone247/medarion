@@ -17,7 +17,7 @@ const ConsultingScheduler: React.FC = () => {
     <div className="bg-background-surface p-6 rounded-lg border border-divider space-y-4">
       <h3 className="text-lg font-semibold text-text-primary">Schedule a Consulting Call</h3>
       <p className="text-sm text-text-secondary">Discuss custom research, advisory support, or tailored insights with our team.</p>
-      <form onSubmit={handleSubmit} className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+      <form onSubmit={handleSubmit} className="grid grid-cols-2 gap-3">
         <input className="px-3 py-2 border border-divider rounded-lg bg-background text-text-primary" placeholder="Full name" value={name} onChange={(e)=>setName(e.target.value)} />
         <input className="px-3 py-2 border border-divider rounded-lg bg-background text-text-primary" placeholder="Email" value={email} onChange={(e)=>setEmail(e.target.value)} />
         <select className="px-3 py-2 border border-divider rounded-lg bg-background text-text-primary" value={preferred} onChange={(e)=>setPreferred(e.target.value)}>

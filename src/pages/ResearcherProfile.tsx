@@ -37,7 +37,7 @@ const ResearcherProfile: React.FC = () => {
         </div>
 
       <div className="bg-[var(--color-background-surface)] p-6 rounded-lg border border-[var(--color-divider-gray)] shadow-sm">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="grid grid-cols-2 gap-4">
           <div>
             <label className="block text-sm text-[var(--color-text-secondary)] mb-1">Name</label>
             {isEditing ? <input className="input" value={profile.name} onChange={(e)=>setProfile(p=>({...p, name:e.target.value}))} /> : <p className="text-[var(--color-text-primary)]">{profile.name}</p>}
@@ -96,7 +96,7 @@ const ResearcherProfile: React.FC = () => {
         </div>
       )}
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div className="grid grid-cols-3 gap-6">
         <div className="bg-[var(--color-background-surface)] p-6 rounded-lg border border-[var(--color-divider-gray)] shadow-sm text-center">
           <FileText className="h-5 w-5 mx-auto text-[var(--color-primary-teal)]" />
           <p className="text-sm text-[var(--color-text-secondary)] mt-1">Publications</p>
