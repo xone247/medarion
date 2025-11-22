@@ -38,8 +38,8 @@ const AfricaMap: React.FC<AfricaMapProps> = ({
           setCountryData(africaCountriesData);
         }
       } catch (error: any) {
-        console.error('Error fetching country data:', error);
-        // Fallback to static data
+        // Silently fallback to static data - this is expected when backend is not running
+        console.debug('Error fetching country data:', error);
         setCountryData(africaCountriesData);
       } finally {
         setLoading(false);
@@ -67,8 +67,11 @@ const AfricaMap: React.FC<AfricaMapProps> = ({
       });
     }
 
+    // Get current theme from the map's style or use context
+    const currentTheme = theme || (document.documentElement.classList.contains('dark') ? 'dark' : 'light');
+    
     // Build color match expression for country fills - Cursor.com monochrome style
-    const isDark = theme === 'dark';
+    const isDark = currentTheme === 'dark';
     const fillColor = isDark ? '#4a5568' : '#9ca3af'; // Monochrome gray
     const hoverColor = isDark ? '#718096' : '#6b7280'; // Slightly lighter on hover
     const defaultColor = isDark ? '#2d3748' : '#e5e7eb'; // Default background
@@ -191,19 +194,18 @@ const AfricaMap: React.FC<AfricaMapProps> = ({
           maxZoom: 8
         });
 
-        // Fit bounds to Africa after map loads
+        // Single load handler that does everything
         map.current.on('load', () => {
           // Fit to Africa bounds: [minLng, minLat], [maxLng, maxLat]
           map.current.fitBounds([[-20, -35], [55, 38]], {
             padding: { top: 50, bottom: 50, left: 50, right: 50 },
             duration: 1000
           });
-        });
-
-        if (countryData.length > 0) {
-          map.current.on('load', addSourcesAndLayers);
-        } else {
-          map.current.on('load', () => {
+          
+          // Add layers after fitBounds completes
+          if (countryData.length > 0) {
+            setTimeout(() => addSourcesAndLayers(), 1100);
+          } else {
             // Wait for country data to load with timeout
             let attempts = 0;
             const maxAttempts = 50; // 5 seconds max wait
@@ -211,20 +213,28 @@ const AfricaMap: React.FC<AfricaMapProps> = ({
               attempts++;
               if (countryData.length > 0) {
                 clearInterval(checkData);
-                addSourcesAndLayers();
+                setTimeout(() => addSourcesAndLayers(), 100);
               } else if (attempts >= maxAttempts) {
                 clearInterval(checkData);
                 console.warn('Map: Country data not loaded after timeout, using static data');
                 setCountryData(africaCountriesData);
-                addSourcesAndLayers();
+                setTimeout(() => addSourcesAndLayers(), 100);
               }
             }, 100);
-          });
-        }
+          }
+        });
 
-        map.current.on('error', () => {
-          setMapError(true);
-          setLoading(false);
+        map.current.on('error', (e: any) => {
+          console.error('Map error:', e);
+          // Only set error for critical failures, not style loading issues
+          if (e.error && e.error.message && (
+            e.error.message.includes('token') || 
+            e.error.message.includes('unauthorized') ||
+            e.error.message.includes('forbidden')
+          )) {
+            setMapError(true);
+            setLoading(false);
+          }
         });
 
       } catch (error) {
@@ -233,8 +243,23 @@ const AfricaMap: React.FC<AfricaMapProps> = ({
         setLoading(false);
       }
     } else {
-      setMapError(true);
-      setLoading(false);
+      // Wait for mapboxgl to load (script might still be loading)
+      const checkInterval = setInterval(() => {
+        if ((window as any).mapboxgl) {
+          clearInterval(checkInterval);
+          // Retry initialization by triggering a re-render
+          setLoading(true);
+        }
+      }, 100);
+      
+      // Timeout after 10 seconds
+      setTimeout(() => {
+        clearInterval(checkInterval);
+        if (!(window as any).mapboxgl) {
+          setMapError(true);
+          setLoading(false);
+        }
+      }, 10000);
     }
 
     return () => {
@@ -243,7 +268,7 @@ const AfricaMap: React.FC<AfricaMapProps> = ({
         map.current = null;
       }
     };
-  }, [countryData.length]);
+  }, [countryData.length, theme]);
 
   // Switch map style on theme change
   useEffect(() => {
@@ -252,15 +277,15 @@ const AfricaMap: React.FC<AfricaMapProps> = ({
       const styleId = theme === 'dark' ? 'mapbox://styles/mapbox/dark-v11' : 'mapbox://styles/mapbox/light-v11';
       map.current.setStyle(styleId);
       map.current.once('style.load', () => {
-        // Hide all non-African countries by setting their opacity to 0
-        if (map.current.getLayer('country-fills')) {
-          addSourcesAndLayers();
-        }
         // Ensure bounds are maintained
         map.current.setMaxBounds([[-20, -35], [55, 38]]);
+        // Re-add layers with new theme colors
+        if (countryData.length > 0) {
+          addSourcesAndLayers();
+        }
       });
     } catch {}
-  }, [theme]);
+  }, [theme, countryData.length]);
 
   if (mapError) {
     return (
