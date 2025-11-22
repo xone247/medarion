@@ -104,10 +104,10 @@ const MIndexPage: React.FC<MIndexPageProps> = ({ onBack }) => {
         <div className="container mx-auto px-4 relative z-10">
           <div className="max-w-4xl mx-auto text-center">
             <div className="mx-auto w-16 h-1 rounded-full bg-[var(--color-primary-teal)] mb-6" />
-            <h1 className="text-5xl md:text-6xl font-bold text-white mb-4 leading-tight drop-shadow-lg">
+            <h1 className="text-5xl sm:text-6xl font-bold text-white mb-4 leading-tight drop-shadow-lg">
               M-Index
             </h1>
-            <p className="text-lg md:text-xl text-white/90 mb-8 max-w-2xl mx-auto drop-shadow-md">
+            <p className="text-lg sm:text-xl text-white/90 mb-8 max-w-2xl mx-auto drop-shadow-md">
               Master the Terms. Maximize the Impact
             </p>
           </div>
@@ -126,7 +126,7 @@ const MIndexPage: React.FC<MIndexPageProps> = ({ onBack }) => {
       {/* Key Terms Section */}
       <div className="max-w-7xl mx-auto px-6 py-10">
         <div className="mb-8 text-center">
-          <h2 className="text-3xl md:text-4xl font-bold text-[var(--color-text-primary)] mb-3">Key Terms</h2>
+          <h2 className="text-3xl sm:text-4xl font-bold text-[var(--color-text-primary)] mb-3">Key Terms</h2>
           <p className="text-lg text-[var(--color-text-secondary)] max-w-3xl mx-auto">
             Browse and search key terms to help you navigate the Africa Healthcare ecosystem
           </p>

@@ -162,8 +162,8 @@
     line-height: 30px;
   }
   
-  /* Responsive typography */
-  @media (max-width: 768px) {
+  /* Responsive typography - Only apply on very small screens (mobile) */
+  @media (max-width: 640px) {
     h1 {
       font-size: 40px;
       line-height: 44px;
@@ -374,10 +374,10 @@
   .font-semibold { font-weight: 500 !important; }
   .font-bold { font-weight: 600 !important; }
   
-  /* Responsive font size overrides */
-  @media (max-width: 768px) {
-    .text-4xl { font-size: 40px !important; line-height: 44px !important; letter-spacing: -1.2px !important; }
-    .text-5xl { font-size: 40px !important; line-height: 44px !important; letter-spacing: -1.2px !important; }
+  /* Responsive font size overrides - Keep sizes consistent, only reduce on very small screens */
+  @media (max-width: 640px) {
+    .text-4xl { font-size: 32px !important; line-height: 38px !important; letter-spacing: -0.96px !important; }
+    .text-5xl { font-size: 36px !important; line-height: 40px !important; letter-spacing: -1.08px !important; }
     .text-6xl { font-size: 40px !important; line-height: 44px !important; letter-spacing: -1.2px !important; }
     .text-7xl { font-size: 40px !important; line-height: 44px !important; letter-spacing: -1.2px !important; }
     .text-3xl { font-size: 28px !important; line-height: 42px !important; }
