@@ -120,8 +120,11 @@ const InteractiveMap: React.FC<InteractiveMapProps> = ({
 			});
 		}
 
+		// Get current theme from the map's style or use context
+		const currentTheme = theme || (document.documentElement.classList.contains('dark') ? 'dark' : 'light');
+		
 		// Build color match expression for country fills - Cursor.com monochrome style
-		const isDark = theme === 'dark';
+		const isDark = currentTheme === 'dark';
 		const defaultColor = isDark ? '#2d3748' : '#e5e7eb';
 		const hoverColor = isDark ? '#718096' : '#6b7280';
 		const borderColor = isDark ? '#4a5568' : '#d1d5db';
@@ -237,19 +240,18 @@ const InteractiveMap: React.FC<InteractiveMapProps> = ({
 					minZoom: 2.5,
 					maxZoom: 8
 				});
-				// Fit bounds to Africa after map loads
+				// Single load handler that does everything
 				map.current.on('load', () => {
 					// Fit to Africa bounds: [minLng, minLat], [maxLng, maxLat]
 					map.current.fitBounds([[-20, -35], [55, 38]], {
 						padding: { top: 50, bottom: 50, left: 50, right: 50 },
 						duration: 1000
 					});
-				});
-
-				if (countryData.length > 0) {
-					map.current.on('load', addSourcesAndLayers);
-				} else {
-					map.current.on('load', () => {
+					
+					// Add layers after fitBounds completes
+					if (countryData.length > 0) {
+						setTimeout(() => addSourcesAndLayers(), 1100);
+					} else {
 						// Wait for country data to load with timeout
 						let attempts = 0;
 						const maxAttempts = 50; // 5 seconds max wait
@@ -257,16 +259,16 @@ const InteractiveMap: React.FC<InteractiveMapProps> = ({
 							attempts++;
 							if (countryData.length > 0) {
 								clearInterval(checkData);
-								addSourcesAndLayers();
+								setTimeout(() => addSourcesAndLayers(), 100);
 							} else if (attempts >= maxAttempts) {
 								clearInterval(checkData);
 								console.warn('Map: Country data not loaded after timeout, using static data');
 								setCountryData(africanCountriesMapData);
-								addSourcesAndLayers();
+								setTimeout(() => addSourcesAndLayers(), 100);
 							}
 						}, 100);
-					});
-				}
+					}
+				});
 
 				map.current.on('error', () => {
 					setMapError(true);
@@ -295,11 +297,12 @@ const InteractiveMap: React.FC<InteractiveMapProps> = ({
 			const styleId = theme === 'dark' ? 'mapbox://styles/mapbox/dark-v11' : 'mapbox://styles/mapbox/light-v11';
 			map.current.setStyle(styleId);
 			map.current.once('style.load', () => {
-				if (map.current.getLayer('country-fills')) {
-					addSourcesAndLayers();
-				}
 				// Ensure bounds are maintained
 				map.current.setMaxBounds([[-20, -35], [55, 38]]);
+				// Re-add layers with new theme colors
+				if (countryData.length > 0) {
+					addSourcesAndLayers();
+				}
 			});
 		} catch {}
 	}, [theme, countryData.length]);
@@ -399,7 +402,7 @@ const InteractiveMap: React.FC<InteractiveMapProps> = ({
 								</button>
 							</div>
 
-							<div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+							<div className="grid grid-cols-2 gap-6">
 								<div>
 									<h4 className="font-medium text-[var(--color-text-primary)] mb-3">Investment Overview</h4>
 									<div className="space-y-2 text-[var(--color-text-primary)]/90">

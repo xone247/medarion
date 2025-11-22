@@ -171,7 +171,7 @@ const CluelyLanding: React.FC<CluelyLandingProps> = ({ onGetStarted, onShowAuth,
 					</a>
 					
 					{/* Navigation - Center */}
-					<nav className="hidden md:flex items-center gap-8 text-sm text-white">
+					<nav className="flex items-center gap-8 text-sm text-white">
                         <a className="hover:opacity-80 transition-opacity" href="/about">About</a>
                         <a className="hover:opacity-80 transition-opacity" href="/arion">Arion</a>
                         <a className="hover:opacity-80 transition-opacity" href="/m-index">M-Index</a>
@@ -181,7 +181,7 @@ const CluelyLanding: React.FC<CluelyLandingProps> = ({ onGetStarted, onShowAuth,
 					{/* Right side actions */}
 					<div className="flex items-center gap-3">
 						<a 
-							className="text-sm text-white hover:opacity-80 transition-opacity hidden md:block" 
+							className="text-sm text-white hover:opacity-80 transition-opacity" 
 							href="/auth" 
 							onClick={handleSignInClick}
 						>
@@ -264,7 +264,7 @@ const CluelyLanding: React.FC<CluelyLandingProps> = ({ onGetStarted, onShowAuth,
 						</p>
 						
 						{/* CTA Buttons */}
-						<div className="mt-12 flex flex-col sm:flex-row items-center justify-center gap-4">
+						<div className="mt-12 flex flex-row items-center justify-center gap-4">
 							<button className="px-8 py-3 bg-[var(--color-text-primary)] text-[var(--color-background-default)] rounded-lg font-medium hover:opacity-90 transition-opacity shadow-md hover:shadow-lg flex items-center gap-2" style={{ fontFamily: 'Inter, system-ui, sans-serif' }} onClick={onGetStarted}>
 								Get started <ArrowRight className="w-4 h-4" />
 							</button>
@@ -275,9 +275,9 @@ const CluelyLanding: React.FC<CluelyLandingProps> = ({ onGetStarted, onShowAuth,
 			</section>
 
 			{/* Section 01 - AI Co-pilot for Deals & Funding - Matching ImagineAI.me structure */}
-			<section className="page-container py-16 md:py-24">
-				<div className="max-w-7xl mx-auto px-4 md:px-6">
-					<div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 items-center">
+			<section className="page-container py-24">
+				<div className="max-w-7xl mx-auto px-6">
+					<div className="grid grid-cols-2 gap-12 items-center">
 						{/* Left: Text Content */}
 						<div className="space-y-4">
 							<div className="text-2xl font-normal text-[var(--color-text-primary)]">01</div>
@@ -309,11 +309,11 @@ const CluelyLanding: React.FC<CluelyLandingProps> = ({ onGetStarted, onShowAuth,
 			</section>
 
 			{/* Section 02 - Macro Insights Across Africa - Matching ImagineAI.me structure */}
-			<section className="page-container py-16 md:py-24">
-				<div className="max-w-7xl mx-auto px-4 md:px-6">
-					<div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 items-center">
+			<section className="page-container py-24">
+				<div className="max-w-7xl mx-auto px-6">
+					<div className="grid grid-cols-2 gap-12 items-center">
 						{/* Left: Visual Placeholder */}
-						<div className="relative order-2 lg:order-1">
+						<div className="relative order-1">
 							<div className="bg-[var(--color-background-default)] border border-[var(--color-divider-gray)] rounded-lg aspect-[4/3] flex items-center justify-center">
 								<div className="text-center text-[var(--color-text-secondary)]">
 									<div className="text-4xl mb-3">📈</div>
@@ -322,7 +322,7 @@ const CluelyLanding: React.FC<CluelyLandingProps> = ({ onGetStarted, onShowAuth,
 							</div>
 						</div>
 						{/* Right: Text Content */}
-						<div className="space-y-4 order-1 lg:order-2">
+						<div className="space-y-4 order-2">
 							<div className="text-2xl font-normal text-[var(--color-text-primary)]">02</div>
 							<h3 className="text-imagine-h3 text-[var(--color-text-primary)] tracking-tight">
 								Macro Insights Across Africa
@@ -336,9 +336,9 @@ const CluelyLanding: React.FC<CluelyLandingProps> = ({ onGetStarted, onShowAuth,
 			</section>
 
 			{/* Section 03 - Clinical Trial Ecosystem - Matching ImagineAI.me structure */}
-			<section className="page-container py-16 md:py-24">
-				<div className="max-w-7xl mx-auto px-4 md:px-6">
-					<div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 items-center">
+			<section className="page-container py-24">
+				<div className="max-w-7xl mx-auto px-6">
+					<div className="grid grid-cols-2 gap-12 items-center">
 						{/* Left: Text Content */}
 						<div className="space-y-4">
 							<div className="text-2xl font-normal text-[var(--color-text-primary)]">03</div>
@@ -371,11 +371,11 @@ const CluelyLanding: React.FC<CluelyLandingProps> = ({ onGetStarted, onShowAuth,
 			</section>
 
 			{/* Section 04 - Real-time Epidemiology - Matching ImagineAI.me structure */}
-			<section className="page-container py-16 md:py-24">
-				<div className="max-w-7xl mx-auto px-4 md:px-6">
-					<div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 items-center">
+			<section className="page-container py-24">
+				<div className="max-w-7xl mx-auto px-6">
+					<div className="grid grid-cols-2 gap-12 items-center">
 						{/* Left: Visual Placeholder */}
-						<div className="relative order-2 lg:order-1">
+						<div className="relative order-1">
 							<div className="bg-[var(--color-background-default)] border border-[var(--color-divider-gray)] rounded-lg aspect-[4/3] flex items-center justify-center">
 								<div className="text-center text-[var(--color-text-secondary)]">
 									<div className="text-4xl mb-3">🌍</div>
@@ -384,7 +384,7 @@ const CluelyLanding: React.FC<CluelyLandingProps> = ({ onGetStarted, onShowAuth,
 							</div>
 						</div>
 						{/* Right: Text Content */}
-						<div className="space-y-4 order-1 lg:order-2">
+						<div className="space-y-4 order-2">
 							<div className="text-2xl font-normal text-[var(--color-text-primary)]">04</div>
 							<h3 className="text-imagine-h3 text-[var(--color-text-primary)] tracking-tight">
 								Real-time Epidemiology
@@ -398,9 +398,9 @@ const CluelyLanding: React.FC<CluelyLandingProps> = ({ onGetStarted, onShowAuth,
 			</section>
 
 			{/* Section 05 - M-Index & Ergon Side by Side */}
-			<section className="page-container py-24 md:py-32 relative overflow-hidden">
+			<section className="page-container py-32 relative overflow-hidden">
 				<div className="max-w-7xl mx-auto relative z-10">
-					<div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+					<div className="grid grid-cols-2 gap-12">
 						{/* Left: Ergon */}
 						<div className="space-y-6">
 							<div className="bg-gradient-to-br from-[var(--color-primary-teal)]/5 to-[var(--color-accent-sky)]/5 rounded-3xl p-8 shadow-2xl min-h-[400px] flex flex-col border border-[var(--color-divider-gray)]">
@@ -447,7 +447,7 @@ const CluelyLanding: React.FC<CluelyLandingProps> = ({ onGetStarted, onShowAuth,
                     <h2 className="text-3xl font-semibold">From Arion</h2>
                     <a className="btn-outline btn-sm inline-flex items-center justify-center" href="/arion" onClick={(e)=>{ e.preventDefault(); window.location.replace('/arion'); }}>View all</a>
                 </div>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div className="grid grid-cols-3 gap-4">
                     {(blogPreview && blogPreview.length ? blogPreview : []).map((p) => (
                         <div 
                             key={p.id} 
@@ -489,9 +489,9 @@ const CluelyLanding: React.FC<CluelyLandingProps> = ({ onGetStarted, onShowAuth,
                     <div className="hidden dark:block w-full h-full rounded-b-[40px]" style={{background: 'radial-gradient(120% 120% at 50% 0%, rgba(255,255,255,0.10) 0%, rgba(255,255,255,0.05) 40%, rgba(255,255,255,0.00) 70%)'}} />
                 </div>
                 <div className="page-container py-14">
-					<div className="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-6 gap-8 text-sm">
+					<div className="grid grid-cols-6 gap-8 text-sm">
 						{/* Brand */}
-						<div className="lg:col-span-2">
+						<div className="col-span-2">
 							<div className="flex items-center gap-2">
 								<img 
 									src="/images/logo-light.png" 

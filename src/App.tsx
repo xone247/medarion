@@ -186,7 +186,7 @@ import AuthNotification from './components/AuthNotification';
 
     const renderAppShell = (child: React.ReactNode) => {
       return (
-              <div className="flex flex-col lg:flex-row h-screen w-full bg-[var(--color-background-default)] relative">
+              <div className="flex flex-row h-screen w-full bg-[var(--color-background-default)] relative">
                 {/* Background gradient overlay like landing page */}
                 <div className="fixed inset-0 -z-20" aria-hidden>
                   <div className="absolute inset-0 bg-gradient-to-br from-blue-50 via-white to-cyan-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900" />

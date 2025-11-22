@@ -255,7 +255,7 @@
   .card { @apply bg-[var(--color-background-surface)] border border-[var(--color-divider-gray)] rounded-lg shadow-sm; }
   .card-hover { @apply transition-transform hover:-translate-y-0.5 hover:shadow-card; }
   .panel { @apply border border-[var(--color-divider-gray)] rounded-xl shadow-sm; background-color: var(--color-background-surface); backdrop-filter: none; -webkit-backdrop-filter: none; }
-  .section { @apply py-10 md:py-14; }
+  .section { @apply py-14; }
   .toolbar { @apply bg-[var(--color-background-surface)] border border-[var(--color-divider-gray)] rounded-lg px-3 py-2 flex flex-wrap items-center gap-2; }
   
   .text-success { @apply text-[var(--color-success)]; }
@@ -303,9 +303,9 @@
   /* Surface containers */
   .surface { @apply bg-[var(--color-background-surface)] rounded-xl border border-[var(--color-divider-gray)]; }
 
-  /* Responsive page container and grids */
+  /* Fixed page container and grids - no responsive sizing */
   .page-container { @apply w-full px-4; }
-  .section-grid { @apply grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6; }
+  .section-grid { @apply grid grid-cols-3 gap-6; }
 
   /* Consistent tiles for charts/maps */
   .tile { @apply card; }

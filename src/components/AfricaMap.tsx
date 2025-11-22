@@ -358,7 +358,7 @@ const AfricaMap: React.FC<AfricaMapProps> = ({
                 </button>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="grid grid-cols-2 gap-6">
                 <div className="space-y-4">
                   <div>
                     <h4 className="text-sm font-semibold text-[var(--color-text-secondary)] uppercase tracking-wide mb-2">Currency</h4>

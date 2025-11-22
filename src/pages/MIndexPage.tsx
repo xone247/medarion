@@ -134,7 +134,7 @@ const MIndexPage: React.FC<MIndexPageProps> = ({ onBack }) => {
 
         {/* Search and Filter Bar */}
         <div className="mb-8 bg-[var(--color-background-surface)] border border-[var(--color-divider-gray)] rounded-xl p-6 shadow-sm">
-          <div className="flex flex-col md:flex-row gap-4 items-center">
+          <div className="flex flex-row gap-4 items-center">
             <div className="flex-1 w-full">
               <input
                 type="text"
@@ -144,7 +144,7 @@ const MIndexPage: React.FC<MIndexPageProps> = ({ onBack }) => {
                 className="w-full px-4 py-3 rounded-lg border border-[var(--color-divider-gray)] bg-[var(--color-background-default)] text-[var(--color-text-primary)] placeholder-[var(--color-text-secondary)] focus:ring-2 focus:ring-[var(--color-primary-teal)] focus:border-transparent"
               />
             </div>
-            <div className="flex flex-wrap gap-2 justify-center md:justify-start">
+            <div className="flex flex-wrap gap-2 justify-start">
               {categories.map(c => (
                 <button
                   key={c}
@@ -170,7 +170,7 @@ const MIndexPage: React.FC<MIndexPageProps> = ({ onBack }) => {
         {/* Key Terms Grid */}
         {filtered.length > 0 ? (
           <>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-3 gap-6">
               {filtered.map((i, idx) => (
                 <div
                   key={`${i.term}-${idx}`}
