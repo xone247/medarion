@@ -50,11 +50,12 @@ const InteractiveMap: React.FC<InteractiveMapProps> = ({
 						);
 						
 						if (dbCountry) {
-							// Determine color based on investment level
-							let color = '#e5e7eb'; // default gray
-							if (dbCountry.investment_level === 'high') color = '#00665C'; // lead green
-							else if (dbCountry.investment_level === 'medium') color = '#ffc107'; // yellow
-							else if (dbCountry.investment_level === 'low') color = '#ff9800'; // orange
+							// Determine color based on investment level - Cursor.com monochrome style
+							const isDark = theme === 'dark';
+							let color = isDark ? '#2d3748' : '#e5e7eb'; // default gray
+							if (dbCountry.investment_level === 'high') color = isDark ? '#718096' : '#6b7280'; // medium gray
+							else if (dbCountry.investment_level === 'medium') color = isDark ? '#4a5568' : '#9ca3af'; // lighter gray
+							else if (dbCountry.investment_level === 'low') color = isDark ? '#2d3748' : '#d1d5db'; // lightest gray
 							
 							return {
 								...staticCountry,
@@ -119,14 +120,34 @@ const InteractiveMap: React.FC<InteractiveMapProps> = ({
 			});
 		}
 
-		// Build color match expression for country fills from database data
+		// Build color match expression for country fills - Cursor.com monochrome style
+		const isDark = theme === 'dark';
+		const defaultColor = isDark ? '#2d3748' : '#e5e7eb';
+		const hoverColor = isDark ? '#718096' : '#6b7280';
+		const borderColor = isDark ? '#4a5568' : '#d1d5db';
+		
 		const colorMatch: any[] = ['match', ['get', 'name_en']];
-		countryData.forEach((c: CountryData) => { colorMatch.push(c.name, c.color); });
-		colorMatch.push('#e5e7eb');
+		countryData.forEach((c: CountryData) => { colorMatch.push(c.name, c.color || defaultColor); });
+		colorMatch.push(defaultColor);
 
 		// Restrict to our listed African countries by English name
 		const countryFilter: any[] = ['in', 'name_en'];
 		countryData.forEach((c: CountryData) => countryFilter.push(c.name));
+		
+		// Add a layer to hide all non-African countries by making them transparent
+		if (!map.current.getLayer('non-africa-fills')) {
+			map.current.addLayer({
+				id: 'non-africa-fills',
+				type: 'fill',
+				source: 'countries',
+				'source-layer': 'country_boundaries',
+				paint: {
+					'fill-color': defaultColor,
+					'fill-opacity': 0.1 // Very transparent for non-African countries
+				},
+				filter: ['!', countryFilter] // Everything NOT in our filter
+			});
+		}
 
 		if (!map.current.getLayer('country-fills')) {
 			map.current.addLayer({
@@ -135,11 +156,16 @@ const InteractiveMap: React.FC<InteractiveMapProps> = ({
 				source: 'countries',
 				'source-layer': 'country_boundaries',
 				paint: {
-					'fill-color': colorMatch,
+					'fill-color': [
+						'case',
+						['boolean', ['feature-state', 'hover'], false],
+						hoverColor,
+						colorMatch
+					],
 					'fill-opacity': [
 						'case',
-						['boolean', ['feature-state', 'hover'], false], 0.85,
-						0.6
+						['boolean', ['feature-state', 'hover'], false], 0.9,
+						0.7
 					]
 				},
 				filter: countryFilter
@@ -153,8 +179,9 @@ const InteractiveMap: React.FC<InteractiveMapProps> = ({
 				source: 'countries',
 				'source-layer': 'country_boundaries',
 				paint: {
-					'line-color': '#9ca3af',
-					'line-width': 0.8
+					'line-color': borderColor,
+					'line-width': 1,
+					'line-opacity': 0.8
 				},
 				filter: countryFilter
 			});
@@ -204,8 +231,21 @@ const InteractiveMap: React.FC<InteractiveMapProps> = ({
 					style: styleId,
 					center: [20, 0],
 					zoom: 3,
-					projection: 'mercator'
+					projection: 'mercator',
+					// Restrict to Africa only - bounds: [minLng, minLat, maxLng, maxLat]
+					maxBounds: [[-20, -35], [55, 38]], // Africa continent bounds
+					minZoom: 2.5,
+					maxZoom: 8
 				});
+				// Fit bounds to Africa after map loads
+				map.current.on('load', () => {
+					// Fit to Africa bounds: [minLng, minLat], [maxLng, maxLat]
+					map.current.fitBounds([[-20, -35], [55, 38]], {
+						padding: { top: 50, bottom: 50, left: 50, right: 50 },
+						duration: 1000
+					});
+				});
+
 				if (countryData.length > 0) {
 					map.current.on('load', addSourcesAndLayers);
 				} else {
@@ -255,7 +295,11 @@ const InteractiveMap: React.FC<InteractiveMapProps> = ({
 			const styleId = theme === 'dark' ? 'mapbox://styles/mapbox/dark-v11' : 'mapbox://styles/mapbox/light-v11';
 			map.current.setStyle(styleId);
 			map.current.once('style.load', () => {
-				addSourcesAndLayers();
+				if (map.current.getLayer('country-fills')) {
+					addSourcesAndLayers();
+				}
+				// Ensure bounds are maintained
+				map.current.setMaxBounds([[-20, -35], [55, 38]]);
 			});
 		} catch {}
 	}, [theme, countryData.length]);

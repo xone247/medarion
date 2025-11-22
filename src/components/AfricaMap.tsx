@@ -67,16 +67,37 @@ const AfricaMap: React.FC<AfricaMapProps> = ({
       });
     }
 
-    // Build color match expression for country fills
+    // Build color match expression for country fills - Cursor.com monochrome style
+    const isDark = theme === 'dark';
+    const fillColor = isDark ? '#4a5568' : '#9ca3af'; // Monochrome gray
+    const hoverColor = isDark ? '#718096' : '#6b7280'; // Slightly lighter on hover
+    const defaultColor = isDark ? '#2d3748' : '#e5e7eb'; // Default background
+    const borderColor = isDark ? '#4a5568' : '#d1d5db'; // Border color
+    
     const colorMatch: any[] = ['match', ['get', 'name_en']];
     countryData.forEach((c: AfricaCountryInfo) => { 
-      colorMatch.push(c.name, '#00665C'); // Lead green color
+      colorMatch.push(c.name, fillColor); // Monochrome color
     });
-    colorMatch.push('#e5e7eb'); // Default gray
+    colorMatch.push(defaultColor); // Default
 
     // Restrict to our listed African countries by English name
     const countryFilter: any[] = ['in', 'name_en'];
     countryData.forEach((c: AfricaCountryInfo) => countryFilter.push(c.name));
+    
+    // Add a layer to hide all non-African countries by making them transparent
+    if (!map.current.getLayer('non-africa-fills')) {
+      map.current.addLayer({
+        id: 'non-africa-fills',
+        type: 'fill',
+        source: 'countries',
+        'source-layer': 'country_boundaries',
+        paint: {
+          'fill-color': defaultColor,
+          'fill-opacity': 0.1 // Very transparent for non-African countries
+        },
+        filter: ['!', countryFilter] // Everything NOT in our filter
+      });
+    }
 
     if (!map.current.getLayer('country-fills')) {
       map.current.addLayer({
@@ -85,11 +106,16 @@ const AfricaMap: React.FC<AfricaMapProps> = ({
         source: 'countries',
         'source-layer': 'country_boundaries',
         paint: {
-          'fill-color': colorMatch,
+          'fill-color': [
+            'case',
+            ['boolean', ['feature-state', 'hover'], false],
+            hoverColor,
+            colorMatch
+          ],
           'fill-opacity': [
             'case',
-            ['boolean', ['feature-state', 'hover'], false], 0.85,
-            0.6
+            ['boolean', ['feature-state', 'hover'], false], 0.9,
+            0.7
           ]
         },
         filter: countryFilter
@@ -103,8 +129,9 @@ const AfricaMap: React.FC<AfricaMapProps> = ({
         source: 'countries',
         'source-layer': 'country_boundaries',
         paint: {
-          'line-color': '#9ca3af',
-          'line-width': 0.8
+          'line-color': borderColor,
+          'line-width': 1,
+          'line-opacity': 0.8
         },
         filter: countryFilter
       });
@@ -157,7 +184,20 @@ const AfricaMap: React.FC<AfricaMapProps> = ({
           style: styleId,
           center: [20, 0],
           zoom: 3,
-          projection: 'mercator'
+          projection: 'mercator',
+          // Restrict to Africa only - bounds: [minLng, minLat, maxLng, maxLat]
+          maxBounds: [[-20, -35], [55, 38]], // Africa continent bounds
+          minZoom: 2.5,
+          maxZoom: 8
+        });
+
+        // Fit bounds to Africa after map loads
+        map.current.on('load', () => {
+          // Fit to Africa bounds: [minLng, minLat], [maxLng, maxLat]
+          map.current.fitBounds([[-20, -35], [55, 38]], {
+            padding: { top: 50, bottom: 50, left: 50, right: 50 },
+            duration: 1000
+          });
         });
 
         if (countryData.length > 0) {
@@ -212,7 +252,12 @@ const AfricaMap: React.FC<AfricaMapProps> = ({
       const styleId = theme === 'dark' ? 'mapbox://styles/mapbox/dark-v11' : 'mapbox://styles/mapbox/light-v11';
       map.current.setStyle(styleId);
       map.current.once('style.load', () => {
-        addSourcesAndLayers();
+        // Hide all non-African countries by setting their opacity to 0
+        if (map.current.getLayer('country-fills')) {
+          addSourcesAndLayers();
+        }
+        // Ensure bounds are maintained
+        map.current.setMaxBounds([[-20, -35], [55, 38]]);
       });
     } catch {}
   }, [theme]);
