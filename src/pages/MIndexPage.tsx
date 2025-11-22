@@ -105,29 +105,11 @@ const MIndexPage: React.FC<MIndexPageProps> = ({ onBack }) => {
           <div className="max-w-4xl mx-auto text-center">
             <div className="mx-auto w-16 h-1 rounded-full bg-[var(--color-primary-teal)] mb-6" />
             <h1 className="text-5xl md:text-6xl font-bold text-white mb-4 leading-tight drop-shadow-lg">
-              m‑index
+              M-Index
             </h1>
             <p className="text-lg md:text-xl text-white/90 mb-8 max-w-2xl mx-auto drop-shadow-md">
-              Key terms to help you navigate Africa Healthcare ecosystem
+              Master the Terms. Maximize the Impact
             </p>
-            <div className="mt-6 max-w-2xl mx-auto">
-              <input
-                value={query}
-                onChange={(e)=>setQuery(e.target.value)}
-                placeholder="Search terms..."
-                className="w-full px-4 py-3 rounded-lg border-2 border-white/50 bg-white/95 backdrop-blur-sm text-gray-900 placeholder-gray-600 focus:ring-2 focus:ring-[var(--color-primary-teal)] focus:border-transparent shadow-lg"
-              />
-              <div className="mt-3 flex flex-wrap justify-center gap-2">
-                {categories.map(c => (
-                  <button key={c}
-                    onClick={()=>setCategory(c)}
-                    className={`px-3 py-1.5 rounded-full border ${category===c ? 'bg-[var(--color-primary-teal)] text-white border-[var(--color-primary-teal)]' : 'bg-white/90 backdrop-blur-sm border-white/50 text-gray-900 hover:bg-white'}`}
-                  >
-                    {c}
-                  </button>
-                ))}
-              </div>
-            </div>
           </div>
         </div>
       </div>

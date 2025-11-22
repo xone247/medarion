@@ -253,18 +253,15 @@ const CluelyLanding: React.FC<CluelyLandingProps> = ({ onGetStarted, onShowAuth,
 				{/* Hero Content */}
 				<div className="relative z-10 page-container flex items-center justify-center min-h-[70vh] pb-32 md:pb-40">
 					<div className="text-center max-w-5xl mx-auto px-4">
-						{/* Small rounded box tag */}
-						<div className="mb-8 flex justify-center">
-							<span className="inline-flex items-center justify-center px-4 py-2 rounded-full text-sm font-medium text-white bg-black/40 backdrop-blur-md border border-white/20">
-								<span className="w-2 h-2 rounded-full bg-white mr-2"></span>
-								Your AI Gateway to Africa
-							</span>
-						</div>
-						
-						{/* Main heading */}
-						<h1 className="text-imagine-h1-mobile md:text-imagine-h1 text-white mb-6" style={{ fontFamily: 'Inter, system-ui, sans-serif' }}>
-							Gain a deeper understanding of Africa's ecosystem and transformation
+						{/* Main heading - Bold at top per feedback */}
+						<h1 className="text-imagine-h1-mobile md:text-imagine-h1 text-white mb-6 font-bold" style={{ fontFamily: 'Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif' }}>
+							Your AI Gateway to Africa
 						</h1>
+						
+						{/* Supporting sub-text */}
+						<p className="text-xl md:text-2xl text-white/90 mb-8 max-w-3xl mx-auto" style={{ fontFamily: 'Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif' }}>
+							Gain a deeper understanding of Africa's ecosystem and transformation
+						</p>
 						
 						{/* CTA Buttons */}
 						<div className="mt-12 flex flex-col sm:flex-row items-center justify-center gap-4">
