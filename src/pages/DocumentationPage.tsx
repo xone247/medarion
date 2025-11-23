@@ -645,38 +645,26 @@ app.listen(3000);`}
   return (
     <div className="min-h-screen bg-[var(--color-background-default)]">
       {/* Hero Section */}
-      <div className="relative overflow-hidden border-b border-[var(--color-divider-gray)] bg-[var(--color-background-surface)]" style={{ 
-        marginTop: '-100px',
-        marginLeft: '-50vw',
-        marginRight: '-50vw',
-        left: '50%',
-        right: '50%',
-        width: '100vw',
-        paddingTop: '120px',
-        paddingBottom: '48px',
-        position: 'relative',
-      }}>
-        <div aria-hidden className="absolute inset-0 z-0">
+      <div className="page-hero">
+        <div aria-hidden className="page-hero-bg">
           <img
             src={(import.meta as any).env?.VITE_BLOG_HERO_URL || '/images/page hero section.jpeg'}
             alt=""
-            className="w-full h-full object-cover blur-[2px] scale-105 opacity-90"
-            style={{ filter: 'brightness(0.4) saturate(1.1)' }}
           />
-          <div className="absolute inset-0 bg-black/50" />
-          <div className="absolute inset-0 opacity-10 mix-blend-multiply" style={{ background: 'linear-gradient(90deg, var(--color-primary-teal) 0%, var(--color-accent-sky) 100%)' }} />
+          <div className="page-hero-overlay" />
+          <div className="page-hero-gradient" />
         </div>
         
-        <div className="container mx-auto px-4 relative z-10">
-          <div className="max-w-4xl mx-auto text-center">
+        <div className="page-hero-content">
+          <div className="page-hero-content-inner">
             <div className="inline-flex items-center justify-center p-3 rounded-xl bg-[var(--color-primary-teal)]/20 backdrop-blur-sm mb-6">
               <Code className="h-8 w-8 text-white" />
             </div>
-            <div className="mx-auto w-16 h-1 rounded-full bg-[var(--color-primary-teal)] mb-6" />
-            <h1 className="text-5xl md:text-6xl font-bold text-white mb-4 leading-tight drop-shadow-lg">
+            <div className="page-hero-accent" />
+            <h1 className="page-hero-heading">
               API Documentation
             </h1>
-            <p className="text-lg md:text-xl text-white/90 mb-8 max-w-2xl mx-auto drop-shadow-md">
+            <p className="page-hero-subtext">
               Comprehensive guides and references for integrating with the Medarion API
             </p>
           </div>
@@ -721,7 +709,7 @@ app.listen(3000);`}
         </div>
 
         {/* Main Content */}
-        <div className="flex-1 p-8 md:p-12">
+        <div className="flex-1 p-8 p-12">
           <div className="max-w-4xl">
             {renderContent()}
           </div>

@@ -64,35 +64,23 @@ const AboutPage: React.FC<AboutPageProps> = ({ onBack }) => {
   return (
     <div className="min-h-screen bg-[var(--color-background-default)] text-[var(--color-text-primary)]">
         {/* Hero Section */}
-      <div className="relative overflow-hidden border-b border-[var(--color-divider-gray)] bg-[var(--color-background-surface)]" style={{ 
-        marginTop: '-100px',
-        marginLeft: '-50vw',
-        marginRight: '-50vw',
-        left: '50%',
-        right: '50%',
-        width: '100vw',
-        paddingTop: '120px',
-        paddingBottom: '48px',
-        position: 'relative',
-      }}>
-        <div aria-hidden className="absolute inset-0 z-0">
+      <div className="page-hero">
+        <div aria-hidden className="page-hero-bg">
           <img
             src={(import.meta as any).env?.VITE_ABOUT_HERO_URL || (import.meta as any).env?.VITE_BLOG_HERO_URL || '/images/page hero section.jpeg'}
             alt=""
-            className="w-full h-full object-cover blur-[2px] scale-105 opacity-90"
-            style={{ filter: 'brightness(0.4) saturate(1.1)' }}
           />
-          <div className="absolute inset-0 bg-black/50" />
-          <div className="absolute inset-0 opacity-10 mix-blend-multiply" style={{ background: 'linear-gradient(90deg, var(--color-primary-teal) 0%, var(--color-accent-sky) 100%)' }} />
+          <div className="page-hero-overlay" />
+          <div className="page-hero-gradient" />
         </div>
         
-        <div className="container mx-auto px-4 relative z-10">
-          <div className="max-w-4xl mx-auto text-center">
-            <div className="mx-auto w-16 h-1 rounded-full bg-[var(--color-primary-teal)] mb-6" />
-            <h1 className="text-5xl md:text-6xl font-bold text-white mb-4 leading-tight drop-shadow-lg">
+        <div className="page-hero-content">
+          <div className="page-hero-content-inner">
+            <div className="page-hero-accent" />
+            <h1 className="page-hero-heading">
               About Medarion
             </h1>
-            <p className="text-lg md:text-xl text-white/90 mb-8 max-w-2xl mx-auto drop-shadow-md">
+            <p className="page-hero-subtext">
               We're transforming African healthcare with comprehensive data intelligence—connecting innovators, investors, and institutions to accelerate solutions across the continent.
             </p>
           </div>
@@ -100,32 +88,28 @@ const AboutPage: React.FC<AboutPageProps> = ({ onBack }) => {
       </div>
 
       {/* Main Content */}
-      <div className="container mx-auto px-4 py-16">
-        <div className="max-w-6xl mx-auto space-y-20">
+      <div className="content-container section-spacing-lg">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 space-y-12 sm:space-y-16 md:space-y-20">
         {/* Mission & Vision */}
-        <div className="grid grid-cols-2 gap-12">
-            <div className="bg-white dark:bg-gray-800 rounded-3xl shadow-2xl p-8 lg:p-12">
+        <div className="grid-2-col gap-8 sm:gap-12">
+            <div>
               <div className="flex items-center gap-4 mb-8">
-                <div className="w-16 h-16 bg-gradient-to-br from-[var(--color-primary-teal)] to-[var(--color-accent-sky)] rounded-2xl flex items-center justify-center">
-                  <Target className="h-8 w-8 text-white" />
-                </div>
-                <h2 className="text-3xl font-bold text-gray-900 dark:text-white">Our Mission</h2>
+                <Target className="h-8 w-8 text-[var(--color-primary-teal)]" />
+                <h2 className="section-heading">Our Mission</h2>
             </div>
-              <p className="text-lg text-gray-600 dark:text-gray-300 leading-relaxed">
+              <p className="text-lg text-[var(--color-text-secondary)] leading-relaxed">
               To democratize access to African healthcare data and insights, empowering startups, investors, 
               and policymakers to make informed decisions that improve health outcomes across Africa. 
               We believe that better data leads to better healthcare solutions.
             </p>
           </div>
 
-            <div className="bg-white dark:bg-gray-800 rounded-3xl shadow-2xl p-8 lg:p-12">
+            <div>
               <div className="flex items-center gap-4 mb-8">
-                <div className="w-16 h-16 bg-gradient-to-br from-[var(--color-primary-teal)] to-[var(--color-accent-sky)] rounded-2xl flex items-center justify-center">
-                  <Globe className="h-8 w-8 text-white" />
-                </div>
-                <h2 className="text-3xl font-bold text-gray-900 dark:text-white">Our Vision</h2>
+                <Globe className="h-8 w-8 text-[var(--color-primary-teal)]" />
+                <h2 className="section-heading">Our Vision</h2>
             </div>
-              <p className="text-lg text-gray-600 dark:text-gray-300 leading-relaxed">
+              <p className="text-lg text-[var(--color-text-secondary)] leading-relaxed">
               A future where every African has access to quality healthcare, supported by a thriving 
               ecosystem of innovative companies, strategic investments, and data-driven policies. 
               We envision Africa as a global leader in healthcare innovation.
@@ -134,42 +118,34 @@ const AboutPage: React.FC<AboutPageProps> = ({ onBack }) => {
         </div>
 
           {/* Stats Section */}
-          <div className="bg-white dark:bg-gray-800 rounded-3xl shadow-2xl p-8 lg:p-12">
+          <div>
             <div className="text-center mb-12">
-              <h2 className="text-4xl font-bold text-gray-900 dark:text-white mb-4 flex items-center justify-center gap-3">
+              <h2 className="section-heading mb-4 flex items-center justify-center gap-3">
                 <span className="w-1 h-12 bg-gradient-to-b from-[var(--color-primary-teal)] to-[var(--color-accent-sky)] rounded-full"></span>
                 Medarion by the Numbers
               </h2>
-              <p className="text-xl text-gray-600 dark:text-gray-300">Transforming healthcare across Africa through data</p>
+              <p className="section-subheading">Transforming healthcare across Africa through data</p>
             </div>
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
-              <div className="text-center group">
-                <div className="w-20 h-20 bg-gradient-to-br from-[var(--color-primary-teal)] to-[var(--color-accent-sky)] rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
-                  <Globe className="h-10 w-10 text-white" />
-                </div>
-                <div className="text-4xl font-bold text-gray-900 dark:text-white mb-2">35+</div>
-                <div className="text-gray-600 dark:text-gray-300 font-medium">African Countries</div>
+          <div className="grid-4-col">
+              <div className="stats-card">
+                <Globe className="h-10 w-10 text-[var(--color-primary-teal)] mx-auto mb-4" />
+                <div className="stats-number">35+</div>
+                <div className="text-[var(--color-text-secondary)] font-medium">African Countries</div>
               </div>
-              <div className="text-center group">
-                <div className="w-20 h-20 bg-gradient-to-br from-[var(--color-primary-teal)] to-[var(--color-accent-sky)] rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
-                  <TrendingUp className="h-10 w-10 text-white" />
-          </div>
-                <div className="text-4xl font-bold text-gray-900 dark:text-white mb-2">500+</div>
-                <div className="text-gray-600 dark:text-gray-300 font-medium">Healthcare Companies</div>
+              <div className="text-center">
+                <TrendingUp className="h-10 w-10 text-[var(--color-primary-teal)] mx-auto mb-4" />
+                <div className="text-4xl font-bold text-[var(--color-text-primary)] mb-2">500+</div>
+                <div className="text-[var(--color-text-secondary)] font-medium">Healthcare Companies</div>
         </div>
-              <div className="text-center group">
-                <div className="w-20 h-20 bg-gradient-to-br from-[var(--color-primary-teal)] to-[var(--color-accent-sky)] rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
-                  <Award className="h-10 w-10 text-white" />
-                </div>
-                <div className="text-4xl font-bold text-gray-900 dark:text-white mb-2">$2.5B+</div>
-                <div className="text-gray-600 dark:text-gray-300 font-medium">Investment Data Tracked</div>
+              <div className="text-center">
+                <Award className="h-10 w-10 text-[var(--color-primary-teal)] mx-auto mb-4" />
+                <div className="text-4xl font-bold text-[var(--color-text-primary)] mb-2">$2.5B+</div>
+                <div className="text-[var(--color-text-secondary)] font-medium">Investment Data Tracked</div>
                   </div>
-              <div className="text-center group">
-                <div className="w-20 h-20 bg-gradient-to-br from-[var(--color-primary-teal)] to-[var(--color-accent-sky)] rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
-                  <Users className="h-10 w-10 text-white" />
-                </div>
-                <div className="text-4xl font-bold text-gray-900 dark:text-white mb-2">1000+</div>
-                <div className="text-gray-600 dark:text-gray-300 font-medium">Platform Users</div>
+              <div className="text-center">
+                <Users className="h-10 w-10 text-[var(--color-primary-teal)] mx-auto mb-4" />
+                <div className="text-4xl font-bold text-[var(--color-text-primary)] mb-2">1000+</div>
+                <div className="text-[var(--color-text-secondary)] font-medium">Platform Users</div>
               </div>
             </div>
           </div>
@@ -185,14 +161,14 @@ const AboutPage: React.FC<AboutPageProps> = ({ onBack }) => {
                 The principles that guide everything we do at Medarion
               </p>
             </div>
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
+            <div className="grid-4-col gap-6 sm:gap-8">
               {values.map((value, index) => (
-                <div key={index} className="group bg-white dark:bg-gray-800 rounded-3xl shadow-2xl p-8 text-center hover:shadow-3xl transition-all duration-300 hover:scale-[1.02]">
-                  <div className="w-20 h-20 bg-gradient-to-br from-[var(--color-primary-teal)] to-[var(--color-accent-sky)] rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
-                    <value.icon className="h-10 w-10 text-white" />
+                <div key={index} className="p-8 text-center">
+                  <div className="w-20 h-20 flex items-center justify-center mx-auto mb-6">
+                    <value.icon className="h-10 w-10 text-[var(--color-primary-teal)]" />
                   </div>
-                  <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-4">{value.title}</h3>
-                  <p className="text-gray-600 dark:text-gray-300 leading-relaxed">{value.description}</p>
+                  <h3 className="text-xl font-bold text-[var(--color-text-primary)] mb-4">{value.title}</h3>
+                  <p className="text-[var(--color-text-secondary)] leading-relaxed">{value.description}</p>
                 </div>
               ))}
           </div>
@@ -210,15 +186,15 @@ const AboutPage: React.FC<AboutPageProps> = ({ onBack }) => {
                 The passionate leaders driving healthcare innovation across Africa
               </p>
             </div>
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
+          <div className="grid-4-col gap-6 sm:gap-8">
             {team.map((member, index) => (
-                <div key={index} className="group bg-white dark:bg-gray-800 rounded-3xl shadow-2xl p-8 text-center hover:shadow-3xl transition-all duration-300 hover:scale-[1.02]">
-                  <div className="w-24 h-24 bg-gradient-to-br from-[var(--color-primary-teal)] to-[var(--color-accent-sky)] rounded-2xl flex items-center justify-center mx-auto mb-6 text-4xl group-hover:scale-110 transition-transform duration-300">
+                <div key={index} className="p-8 text-center">
+                  <div className="w-24 h-24 flex items-center justify-center mx-auto mb-6 text-4xl">
                     {member.image}
                   </div>
-                  <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">{member.name}</h3>
-                  <p className="text-[var(--color-primary-teal)] dark:text-[var(--color-accent-sky)] font-semibold mb-4">{member.role}</p>
-                  <p className="text-gray-600 dark:text-gray-300 mb-6 leading-relaxed">{member.bio}</p>
+                  <h3 className="text-xl font-bold text-[var(--color-text-primary)] mb-2">{member.name}</h3>
+                  <p className="text-[var(--color-primary-teal)] font-semibold mb-4">{member.role}</p>
+                  <p className="text-[var(--color-text-secondary)] mb-6 leading-relaxed">{member.bio}</p>
                 <a 
                   href={`https://${member.linkedin}`} 
                     className="inline-flex items-center gap-2 text-[var(--color-primary-teal)] dark:text-[var(--color-accent-sky)] hover:gap-3 transition-all duration-200 font-semibold"
@@ -234,19 +210,19 @@ const AboutPage: React.FC<AboutPageProps> = ({ onBack }) => {
         </div>
 
           {/* CTA Section */}
-          <div className="bg-gradient-to-br from-[var(--color-primary-light)]/20 to-[var(--color-accent-sky)]/20 dark:from-gray-800 dark:to-gray-700 rounded-3xl shadow-2xl p-12 text-center">
+          <div className="p-12 text-center">
             <div className="max-w-4xl mx-auto">
-              <h2 className="text-4xl font-bold text-gray-900 dark:text-white mb-6">
+              <h2 className="text-4xl font-bold text-[var(--color-text-primary)] mb-6">
                 Ready to Transform African Healthcare?
               </h2>
-              <p className="text-xl text-gray-600 dark:text-gray-300 mb-8 leading-relaxed">
+              <p className="text-xl text-[var(--color-text-secondary)] mb-8 leading-relaxed">
                 Join thousands of healthcare innovators, investors, and policymakers who trust Medarion 
                 for comprehensive African healthcare data and insights.
               </p>
               <div className="flex flex-row gap-4 justify-center">
                 <a 
                   href="https://medarion.africa" 
-                  className="inline-flex items-center gap-2 bg-gradient-to-r from-[var(--color-primary-teal)] to-[var(--color-accent-sky)] text-white py-4 px-8 rounded-2xl font-semibold hover:opacity-90 transition-all duration-200 shadow-lg text-lg"
+                  className="inline-flex items-center gap-2 bg-[var(--color-primary-teal)] text-white py-4 px-8 rounded-lg font-semibold hover:opacity-90 transition-all duration-200 text-lg"
                   target="_blank"
                   rel="noopener noreferrer"
                 >

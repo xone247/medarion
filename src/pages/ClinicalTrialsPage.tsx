@@ -165,14 +165,14 @@ const ClinicalTrialsPage: React.FC = () => {
   };
 
   return (
-    <div className="page-container py-6 space-y-6 bg-[var(--color-background-default)] min-h-screen">
+    <div className="page-container py-4 sm:py-6 space-y-4 sm:space-y-6 bg-[var(--color-background-default)] min-h-screen">
       {/* Header with glassmorphism */}
       <div className="card-glass p-6 shadow-soft">
-        <div className="flex flex-row lg:items-center lg:justify-between gap-4">
+        <div className="flex flex-row items-center justify-between gap-4">
           <div className="flex items-center space-x-3">
             <Microscope className="h-8 w-8 icon-primary" />
             <div>
-              <h1 className="text-xl md:text-2xl font-bold text-[var(--color-text-primary)]">Clinical Trials</h1>
+              <h1 className="text-xl text-2xl font-bold text-[var(--color-text-primary)]">Clinical Trials</h1>
               <p className="text-sm text-[var(--color-text-secondary)]">Track ongoing clinical trials and research studies across Africa</p>
             </div>
           </div>
@@ -198,7 +198,7 @@ const ClinicalTrialsPage: React.FC = () => {
       )}
 
       {/* Summary Stats with glassmorphism */}
-      <div className="grid grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6">
         <div className="card-glass p-6 shadow-soft">
           <div className="flex items-center space-x-3">
             <Microscope className="h-6 w-6 icon-primary" />
@@ -249,7 +249,7 @@ const ClinicalTrialsPage: React.FC = () => {
           <Globe className="h-5 w-5 icon-primary" />
           <h3 className="text-lg font-semibold text-[var(--color-text-primary)]">Most Active Clinical Trials Countries</h3>
         </div>
-        <div className="grid grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
           {topCountries.map((country: any, index: number) => (
             <div key={country.country} className="card-glass p-4 shadow-soft hover:shadow-elevated transition-all duration-300 card-hover">
               <div className="flex items-center justify-between mb-2">
@@ -286,7 +286,7 @@ const ClinicalTrialsPage: React.FC = () => {
           <Filter className="h-5 w-5 icon-primary" />
           <h3 className="text-lg font-semibold text-[var(--color-text-primary)]">Filters</h3>
         </div>
-        <div className="grid grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
           <div className="relative">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-[var(--color-text-secondary)]" />
             <input
@@ -381,7 +381,7 @@ const ClinicalTrialsPage: React.FC = () => {
       {/* Trial Details Modal with glassmorphism */}
       {showTrialDetails && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-          <div className="card-glass p-6 max-w-4xl w-full mx-auto max-h-[80vh] overflow-y-auto shadow-elevated">
+          <div className="card-glass p-6 max-w-4xl w-full mx-auto max-h-[600px] overflow-y-auto shadow-elevated">
             <div className="flex items-center justify-between mb-6">
               <div>
                 <h3 className="text-xl font-bold text-[var(--color-text-primary)]">{showTrialDetails.trial_id}</h3>
@@ -421,7 +421,7 @@ const ClinicalTrialsPage: React.FC = () => {
                   <p className="text-sm text-[var(--color-text-secondary)] mb-1">Principal Investigator</p>
                   <p className="text-base font-medium text-[var(--color-text-primary)]">{showTrialDetails.principalInvestigator}</p>
                 </div>
-                <div className="md:col-span-2 card-glass p-4 shadow-soft">
+                <div className="col-span-2 card-glass p-4 shadow-soft">
                   <p className="text-sm text-[var(--color-text-secondary)] mb-1">Site Locations</p>
                   <div className="flex flex-wrap gap-2 mt-1">
                     {showTrialDetails.locations.map((location: string, idx: number) => (

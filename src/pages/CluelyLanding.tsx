@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useTheme } from '../contexts/ThemeContext';
 import { useAuth } from '../contexts/AuthContext';
 import { mockData } from '../data/mockData';
@@ -35,6 +35,16 @@ const CluelyLanding: React.FC<CluelyLandingProps> = ({ onGetStarted, onShowAuth,
 	const { theme, toggleTheme } = useTheme();
 	const { user, profile } = useAuth();
 	const [mobileOpen, setMobileOpen] = useState(false);
+	const [isMobile, setIsMobile] = useState(false);
+	const location = useLocation();
+
+	// Detect mobile breakpoint
+	useEffect(() => {
+		const checkMobile = () => setIsMobile(window.innerWidth < 768);
+		checkMobile();
+		window.addEventListener('resize', checkMobile);
+		return () => window.removeEventListener('resize', checkMobile);
+	}, []);
 
 	// Handle sign in button click - redirect to dashboard if already signed in
 	const handleSignInClick = (e: React.MouseEvent) => {
@@ -157,29 +167,30 @@ const CluelyLanding: React.FC<CluelyLandingProps> = ({ onGetStarted, onShowAuth,
             {withHeader && (<header className="sticky top-0 z-40" style={{ 
               background: 'transparent',
             }}>
-				<div className="page-container h-16 flex items-center justify-between">
+				{/* Desktop Header */}
+				<div className={`page-container h-16 flex items-center justify-between ${isMobile ? 'hidden' : 'flex'}`} style={{ flexWrap: 'nowrap', minWidth: 0 }}>
 					{/* Logo */}
-					<a href="/" className="flex items-center gap-2">
+					<a href="/" className="flex items-center gap-2 flex-shrink-0">
 						<img 
 							src="/images/logo-light.png" 
 							alt="Medarion" 
 							className="h-8"
 							style={{
-								filter: theme === 'dark' ? 'brightness(0) invert(1)' : 'brightness(0)',
+								filter: 'brightness(0) invert(1)', // Always white for header over dark hero background
 							}}
 						/>
 					</a>
 					
 					{/* Navigation - Center */}
-					<nav className="flex items-center gap-8 text-sm text-white">
-                        <a className="hover:opacity-80 transition-opacity" href="/about">About</a>
-                        <a className="hover:opacity-80 transition-opacity" href="/arion">Arion</a>
-                        <a className="hover:opacity-80 transition-opacity" href="/m-index">M-Index</a>
-                        <a className="hover:opacity-80 transition-opacity" href="#">Ergon</a>
+					<nav className="flex items-center gap-4 text-sm text-white flex-shrink-0" style={{ fontSize: '14px' }}>
+                        <a className="hover:opacity-80 transition-opacity whitespace-nowrap" href="/about">About</a>
+                        <a className="hover:opacity-80 transition-opacity whitespace-nowrap" href="/arion">Arion</a>
+                        <a className="hover:opacity-80 transition-opacity whitespace-nowrap" href="/m-index">M-Index</a>
+                        <a className="hover:opacity-80 transition-opacity whitespace-nowrap" href="#">Ergon</a>
 					</nav>
 					
 					{/* Right side actions */}
-					<div className="flex items-center gap-3">
+					<div className="flex items-center gap-3 flex-shrink-0">
 						<a 
 							className="text-sm text-white hover:opacity-80 transition-opacity" 
 							href="/auth" 
@@ -194,113 +205,284 @@ const CluelyLanding: React.FC<CluelyLandingProps> = ({ onGetStarted, onShowAuth,
 						>
 							Talk to us
 						</a>
-						<button 
-							className="md:hidden text-white" 
-							onClick={() => setMobileOpen(v => !v)}
-						>
-							{mobileOpen ? <X className="w-5 h-5"/> : <Menu className="w-5 h-5"/>}
-						</button>
 					</div>
 				</div>
-				{/* Mobile menu */}
-				{mobileOpen && (
-					<div className="md:hidden absolute top-16 left-0 right-0 bg-black/95 backdrop-blur-lg border-t border-white/10">
-						<div className="page-container py-4 flex flex-col gap-3 text-sm text-white">
-                            <a className="hover:opacity-80" href="/about" onClick={(e)=>{ e.preventDefault(); setMobileOpen(false); window.location.replace('/about'); }}>About</a>
-                            <a className="hover:opacity-80" href="/arion" onClick={(e)=>{ e.preventDefault(); setMobileOpen(false); window.location.replace('/arion'); }}>Arion</a>
-                            <a className="hover:opacity-80" href="/m-index" onClick={(e)=>{ e.preventDefault(); setMobileOpen(false); window.location.replace('/m-index'); }}>M-Index</a>
-                            <a className="hover:opacity-80" href="#" onClick={(e)=>{ e.preventDefault(); setMobileOpen(false); }}>Ergon</a>
-							<div className="pt-3 border-t border-white/10 flex flex-col gap-2">
-								<a className="hover:opacity-80" href="/auth" onClick={(e)=>{ e.preventDefault(); setMobileOpen(false); handleSignInClick(e); }}>Sign in</a>
-								<a className="px-4 py-2 text-center border border-white/30 rounded-md hover:bg-white/10" href="/auth" onClick={(e)=>{ e.preventDefault(); setMobileOpen(false); handleSignInClick(e); }}>Talk to us</a>
-							</div>
+
+				{/* Mobile Header */}
+				<div className={`page-container ${isMobile ? 'flex' : 'hidden'} flex-col gap-2`} style={{ paddingTop: '8px', paddingBottom: '8px' }}>
+					{/* Mobile Header Row 1: Hamburger + Logo + Actions */}
+					<div className="flex items-center justify-between gap-2 w-full" style={{ flexWrap: 'nowrap' }}>
+						{/* Left: Hamburger + Logo */}
+						<div className="flex items-center gap-2 flex-shrink-0">
+							<button 
+								aria-label="Open menu" 
+								className="flex items-center justify-center w-10 h-10 rounded-xl text-white hover:bg-white/10 transition-colors"
+								onClick={() => setMobileOpen(v => !v)}
+							>
+								{mobileOpen ? <X className="w-5 h-5"/> : <Menu className="w-5 h-5"/>}
+							</button>
+							<a href="/" className="flex items-center gap-2 flex-shrink-0">
+								<img 
+									src="/images/logo-light.png" 
+									alt="Medarion" 
+									className="h-7"
+									style={{
+										filter: 'brightness(0) invert(1)', // Always white for header over dark hero background
+									}}
+								/>
+							</a>
+						</div>
+
+						{/* Right: Sign in */}
+						<div className="flex items-center gap-2 flex-shrink-0">
+							<a 
+								className="px-3 py-1.5 text-sm text-white border border-white/30 rounded-lg hover:bg-white/10 transition-colors flex-shrink-0"
+								href="/auth" 
+								onClick={handleSignInClick}
+							>
+								{user && profile ? 'Dashboard' : 'Sign in'}
+							</a>
 						</div>
 					</div>
+
+					{/* Mobile Breadcrumb */}
+					{window.location.pathname !== '/' && (
+						<div className="flex items-center gap-1 overflow-x-auto scrollbar-hide" style={{ fontSize: '12px' }}>
+							<a href="/" className="text-white/80 hover:opacity-80 transition-opacity whitespace-nowrap">Home</a>
+							{window.location.pathname.split('/').filter(Boolean).map((seg, index, arr) => {
+								const path = '/' + arr.slice(0, index + 1).join('/');
+								const label = seg.replace(/-/g, ' ').replace(/\b\w/g, (m) => m.toUpperCase());
+								return (
+									<React.Fragment key={path}>
+										<span className="text-white/60 mx-1">/</span>
+										{index === arr.length - 1 ? (
+											<span className="text-white font-medium whitespace-nowrap">{label}</span>
+										) : (
+											<a href={path} className="text-white/80 hover:opacity-80 transition-opacity whitespace-nowrap">{label}</a>
+										)}
+									</React.Fragment>
+								);
+							})}
+						</div>
+					)}
+				</div>
+
+				{/* Mobile menu overlay - Cursor.com style */}
+				{mobileOpen && isMobile && (
+					<>
+						<div className="fixed inset-0 z-40 bg-black/20 backdrop-blur-sm" onClick={() => setMobileOpen(false)} />
+						<div className="fixed top-16 left-3 right-3 z-50">
+							<div
+								className="rounded-2xl shadow-2xl"
+								style={{
+									background: 'rgba(0,0,0,0.95)',
+									backdropFilter: 'blur(20px)',
+									WebkitBackdropFilter: 'blur(20px)',
+									border: '1px solid rgba(255,255,255,0.2)',
+									boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)'
+								}}
+							>
+								<div className="flex flex-col p-2">
+									<a
+										className="text-left py-3 px-4 rounded-xl transition-colors hover:bg-white/10 text-white font-normal"
+										href="/about"
+										onClick={(e) => { e.preventDefault(); setMobileOpen(false); window.location.replace('/about'); }}
+										style={{ fontSize: '14px' }}
+									>
+										About
+									</a>
+									<a
+										className="text-left py-3 px-4 rounded-xl transition-colors hover:bg-white/10 text-white font-normal"
+										href="/arion"
+										onClick={(e) => { e.preventDefault(); setMobileOpen(false); window.location.replace('/arion'); }}
+										style={{ fontSize: '14px' }}
+									>
+										Arion
+									</a>
+									<a
+										className="text-left py-3 px-4 rounded-xl transition-colors hover:bg-white/10 text-white font-normal"
+										href="/m-index"
+										onClick={(e) => { e.preventDefault(); setMobileOpen(false); window.location.replace('/m-index'); }}
+										style={{ fontSize: '14px' }}
+									>
+										M-Index
+									</a>
+									<a
+										className="text-left py-3 px-4 rounded-xl transition-colors hover:bg-white/10 text-white font-normal"
+										href="#"
+										onClick={(e) => { e.preventDefault(); setMobileOpen(false); }}
+										style={{ fontSize: '14px' }}
+									>
+										Ergon
+									</a>
+									<div className="h-px my-1 mx-2 bg-white/20" />
+									<a
+										className="text-left py-3 px-4 rounded-xl transition-colors hover:bg-white/10 text-white font-medium"
+										href="/auth"
+										onClick={(e) => { e.preventDefault(); setMobileOpen(false); handleSignInClick(e); }}
+										style={{ fontSize: '14px', fontWeight: 500 }}
+									>
+										{user && profile ? 'Dashboard' : 'Sign in'}
+									</a>
+								</div>
+							</div>
+						</div>
+					</>
 				)}
 			</header>)}
 
-			{/* Hero section - with background image */}
+			{/* Hero section - Giga.ai style */}
 			<section
-				className="relative overflow-hidden"
+				className="relative overflow-hidden landing-hero"
 				style={{
-					minHeight: `min(100vh, ${Math.max(32, Math.min(90, heroVh))}vh)`,
 					backgroundImage: `url('${heroImageUrl}')`,
 					backgroundSize: 'cover',
 					backgroundPosition: 'center',
 					backgroundRepeat: 'no-repeat',
-					marginTop: '-100px',
-					marginLeft: '-50vw',
-					marginRight: '-50vw',
-					left: '50%',
-					right: '50%',
-					width: '100vw',
-					paddingTop: '220px',
-					position: 'relative',
+					backgroundAttachment: 'fixed',
 				}}
 			>
-				{/* Subtle dark overlay */}
-				<div className="absolute inset-0 bg-black/8" />
+				{/* Dark overlay - Giga.ai style */}
+				<div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/30 to-black/50" />
 				
-				{/* Bottom transition */}
+				{/* Additional darkening filter */}
+				<div className="absolute inset-0 bg-black/20" />
+				
+				{/* Bottom transition - Smooth blend */}
 				<div
 					className="absolute inset-0 pointer-events-none"
 					style={{
 						background:
-							'linear-gradient(180deg, rgba(0,0,0,0.00) 0%, rgba(0,0,0,0.00) 75%, rgba(255,255,255,0.20) 85%, rgba(255,255,255,0.60) 95%, var(--color-background-default) 100%)'
+							'linear-gradient(180deg, rgba(0,0,0,0.00) 0%, rgba(0,0,0,0.00) 60%, rgba(0,0,0,0.10) 75%, rgba(0,0,0,0.25) 85%, rgba(255,255,255,0.20) 92%, rgba(255,255,255,0.50) 96%, rgba(255,255,255,0.80) 98%, var(--color-background-default) 100%)'
 					}}
 				/>
 				
-				{/* Hero Content */}
-				<div className="relative z-10 page-container flex items-center justify-center min-h-[70vh] pb-32 md:pb-40">
-					<div className="text-center max-w-5xl mx-auto px-4">
-						{/* Main heading - Bold at top per feedback */}
-						<h1 className="text-imagine-h1 text-white mb-6 font-bold" style={{ fontFamily: 'Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif' }}>
-							Your AI Gateway to Africa
+				{/* Hero Content - Centered like Giga.ai */}
+				<div className="relative z-10 w-full flex items-center justify-center landing-hero-content" style={{ minHeight: '100vh' }}>
+					<div className="text-center max-w-5xl mx-auto px-4 sm:px-6">
+						{/* Small rounded badge - Giga.ai style */}
+						<div className="inline-flex items-center justify-center mb-6 sm:mb-8">
+							<div className="px-4 py-1.5 sm:px-5 sm:py-2 rounded-full bg-white/10 backdrop-blur-md border border-white/20">
+								<span className="text-xs sm:text-sm text-white/90 font-medium" style={{ 
+									fontFamily: 'Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
+									letterSpacing: '0.02em'
+								}}>
+									Your AI Gateway to Africa
+								</span>
+							</div>
+						</div>
+						
+						{/* Main heading - Large like Giga.ai, two lines */}
+						<h1 className="text-white mb-8 sm:mb-10 font-normal" style={{ 
+							fontFamily: 'Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
+							fontSize: 'clamp(2rem, 6vw, 4rem)',
+							letterSpacing: '-0.02em',
+							lineHeight: '1.2',
+							fontWeight: 400,
+							maxWidth: '900px',
+							marginLeft: 'auto',
+							marginRight: 'auto'
+						}}>
+							Gain a deeper understanding of Africa's ecosystem and transformation
 						</h1>
 						
-						{/* Supporting sub-text */}
-						<p className="text-2xl text-white/90 mb-8 max-w-3xl mx-auto" style={{ fontFamily: 'Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif' }}>
-							Gain a deeper understanding of Africa's ecosystem and transformation
-						</p>
-						
-						{/* CTA Buttons */}
-						<div className="mt-12 flex flex-row items-center justify-center gap-4">
-							<button className="px-8 py-3 bg-[var(--color-text-primary)] text-[var(--color-background-default)] rounded-lg font-medium hover:opacity-90 transition-opacity shadow-md hover:shadow-lg flex items-center gap-2" style={{ fontFamily: 'Inter, system-ui, sans-serif' }} onClick={onGetStarted}>
-								Get started <ArrowRight className="w-4 h-4" />
+						{/* CTA Buttons - Giga.ai style */}
+						<div className="mt-8 sm:mt-10 flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 px-4">
+							<button className="w-full sm:w-auto px-8 sm:px-10 py-3 sm:py-3.5 bg-black text-white rounded-full font-medium hover:bg-black/90 transition-all shadow-lg hover:shadow-xl flex items-center justify-center gap-2 text-base sm:text-lg" style={{ fontFamily: 'Inter, system-ui, sans-serif' }} onClick={onGetStarted}>
+								Get started <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5" />
 							</button>
-							<a className="px-8 py-3 border border-white/30 text-white rounded-lg font-medium hover:bg-white/10 transition-all backdrop-blur-sm inline-flex items-center justify-center" style={{ fontFamily: 'Inter, system-ui, sans-serif' }} href="/pricing" onClick={(e)=>{ e.preventDefault(); window.location.replace('/pricing'); }}>See pricing</a>
+							<a className="w-full sm:w-auto px-8 sm:px-10 py-3 sm:py-3.5 border-2 border-white/40 text-white rounded-full font-medium hover:bg-white/10 hover:border-white/60 transition-all backdrop-blur-sm inline-flex items-center justify-center text-base sm:text-lg" style={{ fontFamily: 'Inter, system-ui, sans-serif' }} href="/pricing" onClick={(e)=>{ e.preventDefault(); window.location.replace('/pricing'); }}>See pricing</a>
 						</div>
 					</div>
 				</div>
 			</section>
 
-			{/* Section 01 - AI Co-pilot for Deals & Funding - Matching ImagineAI.me structure */}
-			<section className="page-container py-24">
-				<div className="max-w-7xl mx-auto px-6">
-					<div className="grid grid-cols-2 gap-12 items-center">
+			{/* Section 01 - AI Co-pilot for Deals & Funding - Large spacious style */}
+			<section className="py-20 sm:py-28 md:py-36 lg:py-40">
+				<div className="max-w-7xl mx-auto px-6 sm:px-8 md:px-12 lg:px-16">
+					<div className="grid grid-cols-1 lg:grid-cols-5 items-center gap-12 sm:gap-16 md:gap-20 lg:gap-24">
 						{/* Left: Text Content */}
-						<div className="space-y-4">
-							<div className="text-2xl font-normal text-[var(--color-text-primary)]">01</div>
-							<h3 className="text-imagine-h3 text-[var(--color-text-primary)] tracking-tight">
+						<div className="lg:col-span-2 space-y-4 sm:space-y-5">
+							<div className="text-xl sm:text-2xl font-normal text-[var(--color-text-primary)] opacity-60">01</div>
+							<h3 className="text-2xl sm:text-3xl md:text-4xl font-normal text-[var(--color-text-primary)] tracking-tight leading-tight">
 								AI Co-pilot for Deals & Funding
 							</h3>
-							<p className="text-imagine-body text-[var(--color-text-secondary)]">
+							<p className="text-sm sm:text-base md:text-lg text-[var(--color-text-secondary)] leading-relaxed">
 								Our AI co-pilot helps you gain a deeper understanding of deals and funding across Africa, with clear insights and executive-level summaries.
 							</p>
-							<div className="flex flex-wrap gap-2 pt-2">
-								<span className="px-3 py-1 rounded-md bg-[var(--color-background-surface)] text-xs text-[var(--color-text-primary)] border border-[var(--color-divider-gray)]">Due Diligence</span>
-								<span className="px-3 py-1 rounded-md bg-[var(--color-background-surface)] text-xs text-[var(--color-text-primary)] border border-[var(--color-divider-gray)]">Valuation</span>
-								<span className="px-3 py-1 rounded-md bg-[var(--color-background-surface)] text-xs text-[var(--color-text-primary)] border border-[var(--color-divider-gray)]">Pitch Deck</span>
-								<span className="px-3 py-1 rounded-md bg-[var(--color-background-surface)] text-xs text-[var(--color-text-primary)] border border-[var(--color-divider-gray)]">Investor Matching</span>
-								<span className="px-3 py-1 rounded-md bg-[var(--color-background-surface)] text-xs text-[var(--color-text-primary)] border border-[var(--color-divider-gray)]">Market Risk</span>
+							<div className="flex flex-wrap gap-2 sm:gap-3 pt-3">
+								<span className="px-3 py-1 text-xs sm:text-sm text-[var(--color-text-secondary)]">Due Diligence</span>
+								<span className="px-3 py-1 text-xs sm:text-sm text-[var(--color-text-secondary)]">Valuation</span>
+								<span className="px-3 py-1 text-xs sm:text-sm text-[var(--color-text-secondary)]">Pitch Deck</span>
+								<span className="px-3 py-1 text-xs sm:text-sm text-[var(--color-text-secondary)]">Investor Matching</span>
+								<span className="px-3 py-1 text-xs sm:text-sm text-[var(--color-text-secondary)]">Market Risk</span>
 							</div>
 						</div>
-						{/* Right: Visual Placeholder */}
-						<div className="relative">
-							<div className="bg-[var(--color-background-default)] border border-[var(--color-divider-gray)] rounded-lg aspect-[4/3] flex items-center justify-center">
-								<div className="text-center text-[var(--color-text-secondary)]">
-									<div className="text-4xl mb-3">🤖</div>
-									<p className="text-sm">AI Tools Visual</p>
+						{/* Right: Overlapping Cards Design */}
+						<div className="relative lg:col-span-3 min-h-[500px] sm:min-h-[600px] md:min-h-[700px] lg:min-h-[800px]">
+							<div className="relative w-full h-full" style={{
+								background: 'linear-gradient(180deg, #f0f9f4 0%, #e0f2e9 100%)'
+							}}>
+								{/* Card 1 - Front */}
+								<div className="absolute top-0 left-0 w-64 sm:w-72 md:w-80 bg-white rounded-lg shadow-lg p-6 transform rotate-[-3deg] z-10">
+									<div className="flex items-center justify-between mb-4">
+										<div className="flex items-center gap-3">
+											<div className="w-10 h-10 bg-[var(--color-primary-teal)] rounded-full flex items-center justify-center">
+												<Shield className="w-5 h-5 text-white" />
+											</div>
+											<h4 className="font-semibold text-[var(--color-text-primary)] text-sm sm:text-base">Due Diligence</h4>
+										</div>
+										<div className="px-2 py-1 bg-[var(--color-primary-teal)] text-white text-xs font-medium rounded">70</div>
+									</div>
+									<p className="text-xs sm:text-sm text-[var(--color-text-secondary)] mb-4 leading-relaxed">
+										A comprehensive overview of your current financial standing and future projections.
+									</p>
+									<button className="w-full px-4 py-2 bg-[var(--color-primary-teal)] text-white rounded-md text-xs sm:text-sm font-medium hover:opacity-90 transition-opacity flex items-center justify-center gap-2">
+										Launch <ChevronRight className="w-4 h-4" />
+									</button>
+								</div>
+
+								{/* Card 2 - Behind */}
+								<div className="absolute top-8 left-8 sm:left-12 md:left-16 w-64 sm:w-72 md:w-80 bg-white rounded-lg shadow-lg p-6 transform rotate-[2deg] z-9">
+									<div className="flex items-center justify-between mb-4">
+										<div className="flex items-center gap-3">
+											<div className="w-10 h-10 bg-[var(--color-primary-teal)] rounded-full flex items-center justify-center">
+												<LineChart className="w-5 h-5 text-white" />
+											</div>
+											<h4 className="font-semibold text-[var(--color-text-primary)] text-sm sm:text-base">Valuation</h4>
+										</div>
+										<div className="px-2 py-1 bg-[var(--color-primary-teal)] text-white text-xs font-medium rounded">80</div>
+									</div>
+									<p className="text-xs sm:text-sm text-[var(--color-text-secondary)] mb-4 leading-relaxed">
+										Provides real-time insights into market trends and investment opportunities.
+									</p>
+									<button className="w-full px-4 py-2 bg-[var(--color-primary-teal)] text-white rounded-md text-xs sm:text-sm font-medium hover:opacity-90 transition-opacity flex items-center justify-center gap-2">
+										Launch <ChevronRight className="w-4 h-4" />
+									</button>
+								</div>
+
+								{/* Card 3 - Further Behind */}
+								<div className="absolute top-16 left-16 sm:left-24 md:left-32 w-64 sm:w-72 md:w-80 bg-white rounded-lg shadow-lg p-6 transform rotate-[-1deg] z-8">
+									<div className="flex items-center justify-between mb-4">
+										<div className="flex items-center gap-3">
+											<div className="w-10 h-10 bg-[var(--color-primary-teal)] rounded-full flex items-center justify-center">
+												<Database className="w-5 h-5 text-white" />
+											</div>
+											<h4 className="font-semibold text-[var(--color-text-primary)] text-sm sm:text-base">Pitch Deck</h4>
+										</div>
+										<div className="px-2 py-1 bg-[var(--color-primary-teal)] text-white text-xs font-medium rounded">90</div>
+									</div>
+									<p className="text-xs sm:text-sm text-[var(--color-text-secondary)] mb-4 leading-relaxed">
+										Advanced analytics and reporting tools for data-driven decision making.
+									</p>
+									<div className="flex gap-2">
+										<button className="flex-1 px-3 py-2 bg-orange-500 text-white rounded-md text-xs font-medium hover:opacity-90 transition-opacity">
+											Edit
+										</button>
+										<button className="flex-1 px-3 py-2 bg-blue-500 text-white rounded-md text-xs font-medium hover:opacity-90 transition-opacity">
+											View
+										</button>
+									</div>
 								</div>
 							</div>
 						</div>
@@ -308,26 +490,26 @@ const CluelyLanding: React.FC<CluelyLandingProps> = ({ onGetStarted, onShowAuth,
 				</div>
 			</section>
 
-			{/* Section 02 - Macro Insights Across Africa - Matching ImagineAI.me structure */}
-			<section className="page-container py-24">
-				<div className="max-w-7xl mx-auto px-6">
-					<div className="grid grid-cols-2 gap-12 items-center">
+			{/* Section 02 - Macro Insights Across Africa - Large spacious style */}
+			<section className="py-20 sm:py-28 md:py-36 lg:py-40">
+				<div className="max-w-7xl mx-auto px-6 sm:px-8 md:px-12 lg:px-16">
+					<div className="grid grid-cols-1 lg:grid-cols-5 items-center gap-12 sm:gap-16 md:gap-20 lg:gap-24">
 						{/* Left: Visual Placeholder */}
-						<div className="relative order-1">
-							<div className="bg-[var(--color-background-default)] border border-[var(--color-divider-gray)] rounded-lg aspect-[4/3] flex items-center justify-center">
+						<div className="relative order-1 lg:order-1 lg:col-span-3">
+							<div className="aspect-[4/3] flex items-center justify-center min-h-[500px] sm:min-h-[600px] md:min-h-[700px] lg:min-h-[800px]">
 								<div className="text-center text-[var(--color-text-secondary)]">
-									<div className="text-4xl mb-3">📈</div>
-									<p className="text-sm">Economic Growth Visual</p>
+									<div className="text-6xl sm:text-7xl md:text-8xl mb-4">📈</div>
+									<p className="text-base sm:text-lg md:text-xl">Economic Growth Visual</p>
 								</div>
 							</div>
 						</div>
 						{/* Right: Text Content */}
-						<div className="space-y-4 order-2">
-							<div className="text-2xl font-normal text-[var(--color-text-primary)]">02</div>
-							<h3 className="text-imagine-h3 text-[var(--color-text-primary)] tracking-tight">
+						<div className="space-y-4 sm:space-y-5 order-2 lg:order-2 lg:col-span-2">
+							<div className="text-xl sm:text-2xl font-normal text-[var(--color-text-primary)] opacity-60">02</div>
+							<h3 className="text-2xl sm:text-3xl md:text-4xl font-normal text-[var(--color-text-primary)] tracking-tight leading-tight">
 								Macro Insights Across Africa
 							</h3>
-							<p className="text-imagine-body text-[var(--color-text-secondary)]">
+							<p className="text-sm sm:text-base md:text-lg text-[var(--color-text-secondary)] leading-relaxed">
 								Clear macro insights across Africa compare countries and uncover investment opportunities.
 							</p>
 						</div>
@@ -335,34 +517,34 @@ const CluelyLanding: React.FC<CluelyLandingProps> = ({ onGetStarted, onShowAuth,
 				</div>
 			</section>
 
-			{/* Section 03 - Clinical Trial Ecosystem - Matching ImagineAI.me structure */}
-			<section className="page-container py-24">
-				<div className="max-w-7xl mx-auto px-6">
-					<div className="grid grid-cols-2 gap-12 items-center">
+			{/* Section 03 - Clinical Trial Ecosystem - Large spacious style */}
+			<section className="py-20 sm:py-28 md:py-36 lg:py-40">
+				<div className="max-w-7xl mx-auto px-6 sm:px-8 md:px-12 lg:px-16">
+					<div className="grid grid-cols-1 lg:grid-cols-5 items-center gap-12 sm:gap-16 md:gap-20 lg:gap-24">
 						{/* Left: Text Content */}
-						<div className="space-y-4">
-							<div className="text-2xl font-normal text-[var(--color-text-primary)]">03</div>
-							<h3 className="text-imagine-h3 text-[var(--color-text-primary)] tracking-tight">
+						<div className="lg:col-span-2 space-y-4 sm:space-y-5">
+							<div className="text-xl sm:text-2xl font-normal text-[var(--color-text-primary)] opacity-60">03</div>
+							<h3 className="text-2xl sm:text-3xl md:text-4xl font-normal text-[var(--color-text-primary)] tracking-tight leading-tight">
 								Clinical Trial Ecosystem
 							</h3>
-							<p className="text-imagine-body text-[var(--color-text-secondary)]">
+							<p className="text-sm sm:text-base md:text-lg text-[var(--color-text-secondary)] leading-relaxed">
 								Explore Africa's clinical trial ecosystem with precision, map trial sites, assess regulatory pathways, and identify key investigators.
 							</p>
-							<div className="flex flex-wrap gap-2 pt-2">
-								<span className="px-3 py-1 rounded-md bg-[var(--color-background-surface)] text-xs text-[var(--color-text-primary)] border border-[var(--color-divider-gray)]">Country</span>
-								<span className="px-3 py-1 rounded-md bg-[var(--color-background-surface)] text-xs text-[var(--color-text-primary)] border border-[var(--color-divider-gray)]">Phase</span>
-								<span className="px-3 py-1 rounded-md bg-[var(--color-background-surface)] text-xs text-[var(--color-text-primary)] border border-[var(--color-divider-gray)]">Indication</span>
-								<span className="px-3 py-1 rounded-md bg-[var(--color-background-surface)] text-xs text-[var(--color-text-primary)] border border-[var(--color-divider-gray)]">Sponsor</span>
-								<span className="px-3 py-1 rounded-md bg-[var(--color-background-surface)] text-xs text-[var(--color-text-primary)] border border-[var(--color-divider-gray)]">Site</span>
-								<span className="px-3 py-1 rounded-md bg-[var(--color-background-surface)] text-xs text-[var(--color-text-primary)] border border-[var(--color-divider-gray)]">Investigator</span>
+							<div className="flex flex-wrap gap-2 sm:gap-3 pt-3">
+								<span className="px-3 py-1 text-xs sm:text-sm text-[var(--color-text-secondary)]">Country</span>
+								<span className="px-3 py-1 text-xs sm:text-sm text-[var(--color-text-secondary)]">Phase</span>
+								<span className="px-3 py-1 text-xs sm:text-sm text-[var(--color-text-secondary)]">Indication</span>
+								<span className="px-3 py-1 text-xs sm:text-sm text-[var(--color-text-secondary)]">Sponsor</span>
+								<span className="px-3 py-1 text-xs sm:text-sm text-[var(--color-text-secondary)]">Site</span>
+								<span className="px-3 py-1 text-xs sm:text-sm text-[var(--color-text-secondary)]">Investigator</span>
 							</div>
 						</div>
 						{/* Right: Visual Placeholder */}
-						<div className="relative">
-							<div className="bg-[var(--color-background-default)] border border-[var(--color-divider-gray)] rounded-lg aspect-[4/3] flex items-center justify-center">
+						<div className="relative lg:col-span-3">
+							<div className="aspect-[4/3] flex items-center justify-center min-h-[500px] sm:min-h-[600px] md:min-h-[700px] lg:min-h-[800px]">
 								<div className="text-center text-[var(--color-text-secondary)]">
-									<div className="text-4xl mb-3">🔬</div>
-									<p className="text-sm">Clinical Trial Filters</p>
+									<div className="text-6xl sm:text-7xl md:text-8xl mb-4">🔬</div>
+									<p className="text-base sm:text-lg md:text-xl">Clinical Trial Filters</p>
 								</div>
 							</div>
 						</div>
@@ -370,26 +552,26 @@ const CluelyLanding: React.FC<CluelyLandingProps> = ({ onGetStarted, onShowAuth,
 				</div>
 			</section>
 
-			{/* Section 04 - Real-time Epidemiology - Matching ImagineAI.me structure */}
-			<section className="page-container py-24">
-				<div className="max-w-7xl mx-auto px-6">
-					<div className="grid grid-cols-2 gap-12 items-center">
+			{/* Section 04 - Real-time Epidemiology - Large spacious style */}
+			<section className="py-20 sm:py-28 md:py-36 lg:py-40">
+				<div className="max-w-7xl mx-auto px-6 sm:px-8 md:px-12 lg:px-16">
+					<div className="grid grid-cols-1 lg:grid-cols-5 items-center gap-12 sm:gap-16 md:gap-20 lg:gap-24">
 						{/* Left: Visual Placeholder */}
-						<div className="relative order-1">
-							<div className="bg-[var(--color-background-default)] border border-[var(--color-divider-gray)] rounded-lg aspect-[4/3] flex items-center justify-center">
+						<div className="relative order-1 lg:order-1 lg:col-span-3">
+							<div className="aspect-[4/3] flex items-center justify-center min-h-[500px] sm:min-h-[600px] md:min-h-[700px] lg:min-h-[800px]">
 								<div className="text-center text-[var(--color-text-secondary)]">
-									<div className="text-4xl mb-3">🌍</div>
-									<p className="text-sm">Epidemiology Visual</p>
+									<div className="text-6xl sm:text-7xl md:text-8xl mb-4">🌍</div>
+									<p className="text-base sm:text-lg md:text-xl">Epidemiology Visual</p>
 								</div>
 							</div>
 						</div>
 						{/* Right: Text Content */}
-						<div className="space-y-4 order-2">
-							<div className="text-2xl font-normal text-[var(--color-text-primary)]">04</div>
-							<h3 className="text-imagine-h3 text-[var(--color-text-primary)] tracking-tight">
+						<div className="space-y-4 sm:space-y-5 order-2 lg:order-2 lg:col-span-2">
+							<div className="text-xl sm:text-2xl font-normal text-[var(--color-text-primary)] opacity-60">04</div>
+							<h3 className="text-2xl sm:text-3xl md:text-4xl font-normal text-[var(--color-text-primary)] tracking-tight leading-tight">
 								Real-time Epidemiology
 							</h3>
-							<p className="text-imagine-body text-[var(--color-text-secondary)]">
+							<p className="text-sm sm:text-base md:text-lg text-[var(--color-text-secondary)] leading-relaxed">
 								AI for real-time epidemiology, unlocking Africa's disease intelligence.
 							</p>
 						</div>
@@ -398,40 +580,40 @@ const CluelyLanding: React.FC<CluelyLandingProps> = ({ onGetStarted, onShowAuth,
 			</section>
 
 			{/* Section 05 - M-Index & Ergon Side by Side */}
-			<section className="page-container py-32 relative overflow-hidden">
-				<div className="max-w-7xl mx-auto relative z-10">
-					<div className="grid grid-cols-2 gap-12">
+			<section className="py-20 sm:py-28 md:py-36 lg:py-40 relative overflow-hidden">
+				<div className="max-w-7xl mx-auto relative z-10 px-6 sm:px-8 md:px-12 lg:px-16">
+					<div className="grid grid-cols-1 lg:grid-cols-2 gap-12 sm:gap-16 md:gap-20 lg:gap-24">
 						{/* Left: Ergon */}
-						<div className="space-y-6">
-							<div className="bg-gradient-to-br from-[var(--color-primary-teal)]/5 to-[var(--color-accent-sky)]/5 rounded-3xl p-8 shadow-2xl min-h-[400px] flex flex-col border border-[var(--color-divider-gray)]">
-								<div className="flex-1 flex items-center justify-center mb-6">
+						<div className="space-y-8">
+							<div className="p-8 sm:p-12 md:p-16 min-h-[500px] sm:min-h-[600px] md:min-h-[700px] flex flex-col">
+								<div className="flex-1 flex items-center justify-center mb-8">
 									<div className="text-center text-[var(--color-text-secondary)]">
-										<div className="text-6xl mb-4">💼</div>
-										<p className="text-sm font-medium">Ergon Screenshot</p>
-										<p className="text-xs mt-2 opacity-60">Image placeholder</p>
+										<div className="text-7xl sm:text-8xl md:text-9xl mb-6">💼</div>
+										<p className="text-base sm:text-lg md:text-xl font-medium">Ergon Screenshot</p>
+										<p className="text-sm sm:text-base mt-2 opacity-60">Image placeholder</p>
 									</div>
 								</div>
-								<div className="space-y-4">
-									<h3 className="text-imagine-h3 text-[var(--color-text-primary)]">Ergon</h3>
-									<p className="text-imagine-body text-[var(--color-text-secondary)]">
+								<div className="space-y-6">
+									<h3 className="text-3xl sm:text-4xl md:text-5xl font-normal text-[var(--color-text-primary)] tracking-tight">Ergon</h3>
+									<p className="text-lg sm:text-xl md:text-2xl text-[var(--color-text-secondary)] leading-relaxed">
 										AI-driven recruitment copilot to help you hire the best talent across Africa.
 									</p>
 								</div>
 							</div>
 						</div>
 						{/* Right: M-Index */}
-						<div className="space-y-6">
-							<div className="bg-gradient-to-br from-[var(--color-primary-teal)]/5 to-[var(--color-accent-sky)]/5 rounded-3xl p-8 shadow-2xl min-h-[400px] flex flex-col border border-[var(--color-divider-gray)]">
-								<div className="flex-1 flex items-center justify-center mb-6">
+						<div className="space-y-8">
+							<div className="p-8 sm:p-12 md:p-16 min-h-[500px] sm:min-h-[600px] md:min-h-[700px] flex flex-col">
+								<div className="flex-1 flex items-center justify-center mb-8">
 									<div className="text-center text-[var(--color-text-secondary)]">
-										<div className="text-6xl mb-4">📚</div>
-										<p className="text-sm font-medium">M-Index Screenshot</p>
-										<p className="text-xs mt-2 opacity-60">Image placeholder</p>
+										<div className="text-7xl sm:text-8xl md:text-9xl mb-6">📚</div>
+										<p className="text-base sm:text-lg md:text-xl font-medium">M-Index Screenshot</p>
+										<p className="text-sm sm:text-base mt-2 opacity-60">Image placeholder</p>
 									</div>
 								</div>
-								<div className="space-y-4">
-									<h3 className="text-imagine-h3 text-[var(--color-text-primary)]">M-Index</h3>
-									<p className="text-imagine-body text-[var(--color-text-secondary)]">
+								<div className="space-y-6">
+									<h3 className="text-3xl sm:text-4xl md:text-5xl font-normal text-[var(--color-text-primary)] tracking-tight">M-Index</h3>
+									<p className="text-lg sm:text-xl md:text-2xl text-[var(--color-text-secondary)] leading-relaxed">
 										Master the Terms. Maximize the Impact
 									</p>
 								</div>
@@ -442,16 +624,17 @@ const CluelyLanding: React.FC<CluelyLandingProps> = ({ onGetStarted, onShowAuth,
 			</section>
 
             {/* Blog Preview */}
-            <section className="page-container section">
-                <div className="flex items-end justify-between mb-4">
-                    <h2 className="text-3xl font-semibold">From Arion</h2>
-                    <a className="btn-outline btn-sm inline-flex items-center justify-center" href="/arion" onClick={(e)=>{ e.preventDefault(); window.location.replace('/arion'); }}>View all</a>
-                </div>
-                <div className="grid grid-cols-3 gap-4">
+            <section className="page-container section py-12 sm:py-16 md:py-24">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6">
+                    <div className="flex flex-col sm:flex-row items-start sm:items-end justify-between mb-6 gap-4">
+                        <h2 className="text-2xl sm:text-3xl font-semibold">From Arion</h2>
+                        <a className="btn-outline btn-sm inline-flex items-center justify-center" href="/arion" onClick={(e)=>{ e.preventDefault(); window.location.replace('/arion'); }}>View all</a>
+                    </div>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6">
                     {(blogPreview && blogPreview.length ? blogPreview : []).map((p) => (
                         <div 
                             key={p.id} 
-                            className="card-glass p-4 shadow-soft cursor-pointer hover:shadow-lg transition-all duration-200 hover:scale-[1.02]"
+                            className="p-4 cursor-pointer transition-opacity duration-200 hover:opacity-80"
                             onClick={() => navigate(`/arion/${p.slug || p.id}`)}
                         >
                             <div className="aspect-[16/9] rounded-md bg-[var(--color-background-default)] mb-3 overflow-hidden">
@@ -478,101 +661,257 @@ const CluelyLanding: React.FC<CluelyLandingProps> = ({ onGetStarted, onShowAuth,
                     {(!blogPreview || blogPreview.length === 0) && (
                       <div className="text-sm text-[var(--color-text-secondary)]">No blog posts yet.</div>
                     )}
+                    </div>
                 </div>
             </section>
 
 			{/* Professional Footer */}
-			{withFooter && (<footer className="relative overflow-hidden glass-strong backdrop-blur-xl hairline sheen noise-overlay shadow-elevated rounded-t-2xl md:rounded-t-3xl border-t border-[var(--color-divider-gray)]" style={{ background: 'color-mix(in srgb, var(--color-background-surface), transparent 30%)' }}>
-                <div aria-hidden className="pointer-events-none absolute inset-0 bg-gradient-to-b from-white/10 via-white/5 to-transparent dark:from-white/5 dark:via-white/0 dark:to-transparent" />
-                <div aria-hidden className="absolute -top-6 left-1/2 -translate-x-1/2 w-[88%] h-8 pointer-events-none">
-                    <div className="block dark:hidden w-full h-full rounded-b-[40px]" style={{background: 'radial-gradient(120% 120% at 50% 0%, rgba(0,0,0,0.10) 0%, rgba(0,0,0,0.05) 40%, rgba(0,0,0,0.00) 70%)'}} />
-                    <div className="hidden dark:block w-full h-full rounded-b-[40px]" style={{background: 'radial-gradient(120% 120% at 50% 0%, rgba(255,255,255,0.10) 0%, rgba(255,255,255,0.05) 40%, rgba(255,255,255,0.00) 70%)'}} />
-                </div>
-                <div className="page-container py-14">
-					<div className="grid grid-cols-6 gap-8 text-sm">
-						{/* Brand */}
-						<div className="col-span-2">
-							<div className="flex items-center gap-2">
+			{withFooter && (<footer className="relative border-t border-[var(--color-divider-gray)] bg-[var(--color-background-default)]">
+				<div className="page-container py-12 sm:py-16 md:py-20">
+					<div className="footer-grid">
+						{/* Brand Section - Widest */}
+						<div className="space-y-6">
+							<div className="flex items-center gap-3">
 								<img 
 									src="/images/logo-light.png" 
 									alt="Medarion" 
-									className="h-7"
+									className="h-10 sm:h-12"
 									style={{
 										filter: theme === 'dark' ? 'brightness(0) invert(1)' : 'brightness(0)',
 									}}
 								/>
 							</div>
-							<p className="mt-3 text-[var(--color-text-secondary)] max-w-md">African healthcare market data and AI assistance to keep you prepared on every call.</p>
-                            <form className="mt-5 flex items-stretch gap-2" onSubmit={(e)=>e.preventDefault()}>
-                                <input className="input" placeholder="Enter your email" aria-label="Email" />
-                                <button className="btn-primary-elevated btn-lg">Subscribe</button>
-                            </form>
-                            <div className="mt-3 text-xs text-[var(--color-text-secondary)]">We’ll email occasional updates. Unsubscribe anytime.</div>
-						<div className="mt-4 flex items-center gap-2">
-							<a href="#" aria-label="Twitter" className="btn-outline btn-sm flex items-center gap-1 text-[var(--color-text-primary)] hover:text-[var(--color-primary-teal)]"><Twitter className="w-4 h-4"/>Twitter</a>
-							<a href="#" aria-label="LinkedIn" className="btn-outline btn-sm flex items-center gap-1 text-[var(--color-text-primary)] hover:text-[var(--color-primary-teal)]"><Linkedin className="w-4 h-4"/>LinkedIn</a>
-							<a href="#" aria-label="GitHub" className="btn-outline btn-sm flex items-center gap-1 text-[var(--color-text-primary)] hover:text-[var(--color-primary-teal)]"><Github className="w-4 h-4"/>GitHub</a>
-						</div>
-						</div>
-
-						{/* Product */}
-                        <div>
-                            <h4 className="font-semibold text-[var(--color-text-primary)] mb-3">Product</h4>
-                            <ul className="space-y-2 leading-7">
-								<li><button className="text-[var(--color-text-secondary)] hover:text-[var(--color-primary-teal)]" onClick={() => onNavigate('about')}>Overview</button></li>
-								<li><button className="text-[var(--color-text-secondary)] hover:text-[var(--color-primary-teal)]" onClick={() => onNavigate('pricing')}>Pricing</button></li>
-								<li><button className="text-[var(--color-text-secondary)] hover:text-[var(--color-primary-teal)]" onClick={() => onNavigate('documentation')}>Documentation</button></li>
-								<li><button className="text-[var(--color-text-secondary)] hover:text-[var(--color-primary-teal)]" onClick={() => onNavigate('arion')}>Release notes</button></li>
-							</ul>
+							<p className="text-sm sm:text-base text-[var(--color-text-secondary)] max-w-lg leading-relaxed">
+								African healthcare market data and AI assistance to keep you prepared on every call.
+							</p>
+							
+							{/* Social Links */}
+							<div className="flex items-center gap-3">
+								<a 
+									href="#" 
+									aria-label="Twitter" 
+									className="p-2 text-[var(--color-text-secondary)] hover:text-[var(--color-primary-teal)] transition-colors"
+								>
+									<Twitter className="w-5 h-5"/>
+								</a>
+								<a 
+									href="#" 
+									aria-label="LinkedIn" 
+									className="p-2 text-[var(--color-text-secondary)] hover:text-[var(--color-primary-teal)] transition-colors"
+								>
+									<Linkedin className="w-5 h-5"/>
+								</a>
+								<a 
+									href="#" 
+									aria-label="GitHub" 
+									className="p-2 text-[var(--color-text-secondary)] hover:text-[var(--color-primary-teal)] transition-colors"
+								>
+									<Github className="w-5 h-5"/>
+								</a>
+							</div>
 						</div>
 
 						{/* Data */}
-                        <div>
-                            <h4 className="font-semibold text-[var(--color-text-primary)] mb-3">Data</h4>
-                            <ul className="space-y-2 leading-7">
-								<li><button className="text-[var(--color-text-secondary)] hover:text-[var(--color-primary-teal)]" onClick={() => onNavigate('companies')}>Companies</button></li>
-								<li><button className="text-[var(--color-text-secondary)] hover:text-[var(--color-primary-teal)]" onClick={() => onNavigate('deals')}>Deals</button></li>
-								<li><button className="text-[var(--color-text-secondary)] hover:text-[var(--color-primary-teal)]" onClick={() => onNavigate('grants')}>Grants</button></li>
-								<li><button className="text-[var(--color-text-secondary)] hover:text-[var(--color-primary-teal)]" onClick={() => onNavigate('clinical-trials')}>Clinical Trials</button></li>
+						<div className="space-y-4">
+							<h4 className="text-sm font-semibold text-[var(--color-text-primary)]">Data</h4>
+							<ul className="space-y-3">
+								<li>
+									<button 
+										className="text-sm text-[var(--color-text-secondary)] hover:text-[var(--color-primary-teal)] transition-colors" 
+										onClick={() => onNavigate('companies')}
+									>
+										Companies
+									</button>
+								</li>
+								<li>
+									<button 
+										className="text-sm text-[var(--color-text-secondary)] hover:text-[var(--color-primary-teal)] transition-colors" 
+										onClick={() => onNavigate('deals')}
+									>
+										Deals
+									</button>
+								</li>
+								<li>
+									<button 
+										className="text-sm text-[var(--color-text-secondary)] hover:text-[var(--color-primary-teal)] transition-colors" 
+										onClick={() => onNavigate('grants')}
+									>
+										Grants
+									</button>
+								</li>
+								<li>
+									<button 
+										className="text-sm text-[var(--color-text-secondary)] hover:text-[var(--color-primary-teal)] transition-colors" 
+										onClick={() => onNavigate('clinical-trials')}
+									>
+										Clinical Trials
+									</button>
+								</li>
 							</ul>
 						</div>
 
 						{/* Resources */}
-                        <div>
-                            <h4 className="font-semibold text-[var(--color-text-primary)] mb-3">Resources</h4>
-                            <ul className="space-y-2 leading-7">
-								<li><button className="text-[var(--color-text-secondary)] hover:text-[var(--color-primary-teal)]" onClick={() => onNavigate('blog')}>Blog</button></li>
-								<li><button className="text-[var(--color-text-secondary)] hover:text-[var(--color-primary-teal)]" onClick={() => onNavigate('glossary')}>Glossary</button></li>
-								<li><button className="text-[var(--color-text-secondary)] hover:text-[var(--color-primary-teal)]" onClick={() => onNavigate('nationpulse')}>Nation Pulse</button></li>
-								<li><a className="text-[var(--color-text-secondary)] hover:text-[var(--color-primary-teal)]" href="#">Help Center</a></li>
+						<div className="space-y-4">
+							<h4 className="text-sm font-semibold text-[var(--color-text-primary)]">Resources</h4>
+							<ul className="space-y-3">
+								<li>
+									<button 
+										className="text-sm text-[var(--color-text-secondary)] hover:text-[var(--color-primary-teal)] transition-colors" 
+										onClick={() => onNavigate('blog')}
+									>
+										Blog
+									</button>
+								</li>
+								<li>
+									<button 
+										className="text-sm text-[var(--color-text-secondary)] hover:text-[var(--color-primary-teal)] transition-colors" 
+										onClick={() => onNavigate('glossary')}
+									>
+										Glossary
+									</button>
+								</li>
+								<li>
+									<button 
+										className="text-sm text-[var(--color-text-secondary)] hover:text-[var(--color-primary-teal)] transition-colors" 
+										onClick={() => onNavigate('nationpulse')}
+									>
+										Nation Pulse
+									</button>
+								</li>
+								<li>
+									<button 
+										className="text-sm text-[var(--color-text-secondary)] hover:text-[var(--color-primary-teal)] transition-colors" 
+										onClick={() => onNavigate('ergon')}
+									>
+										Ergon
+									</button>
+								</li>
+								<li>
+									<a 
+										className="text-sm text-[var(--color-text-secondary)] hover:text-[var(--color-primary-teal)] transition-colors" 
+										href="#"
+									>
+										Help Center
+									</a>
+								</li>
 							</ul>
 						</div>
 
 						{/* Company */}
-                        <div>
-                            <h4 className="font-semibold text-[var(--color-text-primary)] mb-3">Company</h4>
-                            <ul className="space-y-2 leading-7">
-								<li><button className="text-[var(--color-text-secondary)] hover:text-[var(--color-primary-teal)]" onClick={() => onNavigate('about')}>About</button></li>
-								<li><a className="text-[var(--color-text-secondary)] hover:text-[var(--color-primary-teal)]" href="#">Careers</a></li>
-								<li><button className="text-[var(--color-text-secondary)] hover:text-[var(--color-primary-teal)]" onClick={() => onNavigate('contact')}>Contact</button></li>
-								<li><a className="text-[var(--color-text-secondary)] hover:text-[var(--color-primary-teal)]" href="#">Press</a></li>
+						<div className="space-y-4">
+							<h4 className="text-sm font-semibold text-[var(--color-text-primary)]">Company</h4>
+							<ul className="space-y-3">
+								<li>
+									<button 
+										className="text-sm text-[var(--color-text-secondary)] hover:text-[var(--color-primary-teal)] transition-colors" 
+										onClick={() => onNavigate('about')}
+									>
+										About
+									</button>
+								</li>
+								<li>
+									<a 
+										className="text-sm text-[var(--color-text-secondary)] hover:text-[var(--color-primary-teal)] transition-colors" 
+										href="#"
+									>
+										Careers
+									</a>
+								</li>
+								<li>
+									<button 
+										className="text-sm text-[var(--color-text-secondary)] hover:text-[var(--color-primary-teal)] transition-colors" 
+										onClick={() => onNavigate('contact')}
+									>
+										Contact
+									</button>
+								</li>
+								<li>
+									<a 
+										className="text-sm text-[var(--color-text-secondary)] hover:text-[var(--color-primary-teal)] transition-colors" 
+										href="#"
+									>
+										Press
+									</a>
+								</li>
 							</ul>
+						</div>
+
+						{/* Newsletter Section - Last Column, Biggest */}
+						<div className="space-y-4">
+							<h4 className="text-sm font-semibold text-[var(--color-text-primary)]">Stay updated</h4>
+							<p className="text-sm text-[var(--color-text-secondary)]">
+								Get the latest updates and insights delivered to your inbox.
+							</p>
+							<form 
+								className="flex flex-col gap-2" 
+								onSubmit={(e)=>{
+									e.preventDefault();
+									const form = e.target as HTMLFormElement;
+									const input = form.querySelector('input[type="email"]') as HTMLInputElement;
+									if (input && input.value) {
+										// TODO: Integrate with newsletter API
+										alert('Thank you for subscribing!');
+										input.value = '';
+									}
+								}}
+							>
+								<input 
+									type="email" 
+									className="w-full px-4 py-2.5 border border-[var(--color-divider-gray)] bg-[var(--color-background-default)] text-[var(--color-text-primary)] placeholder:text-[var(--color-text-secondary)] focus:outline-none focus:ring-1 focus:ring-[var(--color-primary-teal)] focus:border-[var(--color-primary-teal)] text-sm rounded" 
+									placeholder="Enter your email" 
+									aria-label="Email" 
+									required
+								/>
+								<button 
+									type="submit"
+									className="w-full px-6 py-2.5 bg-[var(--color-primary-teal)] text-white rounded font-medium hover:opacity-90 transition-opacity text-sm"
+								>
+									Subscribe
+								</button>
+							</form>
+							<p className="text-xs text-[var(--color-text-secondary)]">
+								We'll email occasional updates. Unsubscribe anytime.
+							</p>
 						</div>
 					</div>
 
 					{/* Bottom bar */}
-                    <div className="mt-12 pt-6 border-t border-[var(--color-divider-gray)] flex flex-row items-center justify-between gap-4 text-xs text-[var(--color-text-secondary)]">
-						<div className="flex items-center gap-2">
-							<CheckCircle2 className="w-4 h-4"/>
-							<span>All systems operational</span>
+					<div className="mt-12 pt-8 border-t border-[var(--color-divider-gray)]">
+						<div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 sm:gap-6">
+							<div className="flex items-center gap-2 text-xs text-[var(--color-text-secondary)]">
+								<CheckCircle2 className="w-4 h-4 text-green-500"/>
+								<span>All systems operational</span>
+							</div>
+							<div className="flex flex-wrap items-center gap-4 text-xs">
+								<button 
+									onClick={() => onNavigate('privacy')} 
+									className="text-[var(--color-text-secondary)] hover:text-[var(--color-primary-teal)] transition-colors"
+								>
+									Privacy
+								</button>
+								<a 
+									className="text-[var(--color-text-secondary)] hover:text-[var(--color-primary-teal)] transition-colors" 
+									href="#"
+								>
+									Terms
+								</a>
+								<a 
+									className="text-[var(--color-text-secondary)] hover:text-[var(--color-primary-teal)] transition-colors" 
+									href="#"
+								>
+									DPA
+								</a>
+								<a 
+									className="text-[var(--color-text-secondary)] hover:text-[var(--color-primary-teal)] transition-colors" 
+									href="#"
+								>
+									Subprocessors
+								</a>
+							</div>
+							<div className="text-xs text-[var(--color-text-secondary)]">
+								© {new Date().getFullYear()} Medarion. All rights reserved.
+							</div>
 						</div>
-						<div className="flex items-center gap-4">
-							<button onClick={() => onNavigate('privacy')} className="text-[var(--color-text-secondary)] hover:text-[var(--color-primary-teal)]">Privacy</button>
-							<a className="text-[var(--color-text-secondary)] hover:text-[var(--color-primary-teal)]" href="#">Terms</a>
-							<a className="text-[var(--color-text-secondary)] hover:text-[var(--color-primary-teal)]" href="#">DPA</a>
-							<a className="text-[var(--color-text-secondary)] hover:text-[var(--color-primary-teal)]" href="#">Subprocessors</a>
-						</div>
-						<div className="text-[var(--color-text-secondary)]">© {new Date().getFullYear()} Medarion. All rights reserved.</div>
 					</div>
 				</div>
 			</footer>)}

@@ -61,7 +61,7 @@ const InvestigatorsPage: React.FC = () => {
     <div className="page-container py-6 space-y-6 bg-[var(--color-background-default)] min-h-screen">
       {/* Header */}
       <div className="card-glass p-6 shadow-soft">
-        <div className="flex flex-row sm:items-center sm:justify-between gap-3">
+        <div className="flex flex-row items-center justify-between gap-3">
           <div className="flex items-center space-x-3">
             <User className="h-8 w-8 icon-primary" />
             <div>
