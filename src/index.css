@@ -40,7 +40,7 @@
     --color-neutral-taupe: #F5F5F5;     /* Very light gray */
     --color-divider-gray: #E5E5E5;      /* Light gray divider */
     --color-background-default: #FFFFFF; /* Pure white */
-    --color-background-surface: #FAFAFA; /* Very light gray surface */
+    --color-background-surface: #F9F7F4; /* Warm beige surface */
   }
 
   .dark {
@@ -61,11 +61,11 @@
     --color-text-primary: #FFFFFF;      /* Pure white */
     --color-text-secondary: #9A9A9A;    /* Medium gray */
 
-    /* Neutrals / Surfaces - Pure black like cursor.com */
-    --color-neutral-taupe: #1A1A1A;     /* Very dark gray */
-    --color-divider-gray: #2A2A2A;      /* Dark gray divider */
-    --color-background-default: #000000; /* Pure black */
-    --color-background-surface: #0A0A0A; /* Very dark gray surface */
+    /* Neutrals / Surfaces - Brighter dark mode for less depressing feel */
+    --color-neutral-taupe: #2A2A2A;     /* Dark gray */
+    --color-divider-gray: #3A3A3A;      /* Medium gray divider */
+    --color-background-default: #121212; /* Dark gray instead of pure black */
+    --color-background-surface: #1A1A1A; /* Slightly lighter dark gray surface */
   }
 
   /* Theme Presets (Light) - switch by adding class to <html> or <body> */
@@ -182,7 +182,7 @@
 /* Custom utility classes for the new color system */
 @layer components {
   .btn-primary {
-    @apply bg-[var(--color-primary-teal)] text-white border border-[var(--color-primary-teal)] hover:opacity-90 transition-opacity;
+    @apply bg-black dark:bg-gray-700 text-white dark:text-white border border-black dark:border-gray-600 hover:opacity-90 dark:hover:opacity-80 transition-opacity;
   }
   
   .btn-secondary {
@@ -226,23 +226,31 @@
   .btn-sm { @apply px-2.5 py-1.5 rounded-md text-xs; }
   /* Flat primary (no gradients) */
   .btn-primary-elevated { 
-    @apply text-white shadow-md hover:shadow-lg border; 
-    background-color: var(--color-primary-teal) !important; 
-    border-color: var(--color-primary-teal) !important; 
+    @apply bg-black dark:bg-gray-700 text-white dark:text-white border border-black dark:border-gray-600 shadow-md hover:shadow-lg transition-all; 
   }
-  .dark .btn-primary-elevated {
-    background-color: var(--color-primary-teal) !important;
-    border-color: var(--color-primary-teal) !important;
-    color: #FFFFFF !important;
+  .btn-primary-elevated:hover {
+    @apply opacity-90 dark:opacity-80;
+  }
+  .btn-primary-elevated .lucide,
+  .btn-primary-elevated svg,
+  .btn-primary-elevated [class*="lucide"],
+  .btn-primary-elevated i {
+    color: white !important; 
+  }
+  .dark .btn-primary-elevated .lucide,
+  .dark .btn-primary-elevated svg,
+  .dark .btn-primary-elevated [class*="lucide"],
+  .dark .btn-primary-elevated i {
+    color: white !important; 
   }
   
   /* Compact action chips (good contrast in dark/light) */
   .btn-chip { @apply inline-flex items-center gap-1 px-2 py-1 rounded-md text-xs font-medium transition-colors; }
   .btn-chip:hover { @apply opacity-90; }
-  .btn-chip-primary { @apply bg-[var(--color-primary-teal)] text-white; }
-  .btn-chip-info { @apply bg-[var(--color-accent-sky)] text-white; }
-  .btn-chip-danger { @apply bg-[var(--color-error)] text-white; }
-  .btn-chip-warning { @apply bg-[var(--color-warning)] text-white; }
+  .btn-chip-primary { @apply bg-black dark:bg-white text-white dark:text-black; }
+  .btn-chip-info { @apply bg-blue-500 dark:bg-blue-600 text-white; }
+  .btn-chip-danger { @apply bg-red-500 dark:bg-red-600 text-white; }
+  .btn-chip-warning { @apply bg-yellow-500 dark:bg-yellow-600 text-white; }
   .btn-chip-muted { @apply bg-[var(--color-neutral-taupe)] text-[var(--color-text-primary)]; }
   
   /* Layered surfaces for contrast (inspired by the palette) */
@@ -303,9 +311,798 @@
   /* Surface containers */
   .surface { @apply bg-[var(--color-background-surface)] rounded-xl border border-[var(--color-divider-gray)]; }
 
-  /* Fixed page container and grids - no responsive sizing */
-  .page-container { @apply w-full px-4; }
+  /* Fixed page container and grids - responsive padding */
+  .page-container { 
+    width: 100%;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+
+  @media (min-width: 640px) {
+    .page-container {
+      padding-left: 1.5rem;
+      padding-right: 1.5rem;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .page-container {
+      padding-left: 2rem;
+      padding-right: 2rem;
+    }
+  }
   .section-grid { @apply grid grid-cols-3 gap-6; }
+
+  /* ============================================
+     CENTRALIZED PAGE HERO SECTION STYLES
+     ============================================ */
+  
+  /* Standard page hero section - used across About, Contact, Pricing, etc. */
+  .page-hero {
+    position: relative;
+    overflow: hidden;
+    border-bottom: 1px solid var(--color-divider-gray);
+    background-color: var(--color-background-surface);
+    margin-top: -100px;
+    margin-left: -50vw;
+    margin-right: -50vw;
+    left: 50%;
+    right: 50%;
+    width: 100vw;
+    min-height: 40vh;
+    padding-top: 120px;
+    padding-bottom: 48px;
+  }
+
+  /* Hero background image container */
+  .page-hero-bg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+  }
+
+  /* Hero background image */
+  .page-hero-bg img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: brightness(0.7) saturate(1.1);
+    transform: scale(1.05);
+    opacity: 1;
+  }
+
+  /* Hero overlay layers */
+  .page-hero-overlay {
+    position: absolute;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.3);
+  }
+
+  .page-hero-gradient {
+    position: absolute;
+    inset: 0;
+    opacity: 0.1;
+    mix-blend-mode: multiply;
+    background: linear-gradient(90deg, var(--color-primary-teal) 0%, var(--color-accent-sky) 100%);
+  }
+
+  /* Hero content container */
+  .page-hero-content {
+    position: relative;
+    z-index: 10;
+    max-width: 1280px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    padding-top: 4rem;
+    padding-bottom: 4rem;
+  }
+
+  .page-hero-content-inner {
+    max-width: 56rem;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+  }
+
+  /* Hero accent line */
+  .page-hero-accent {
+    width: 4rem;
+    height: 0.25rem;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 1.5rem;
+    border-radius: 9999px;
+    background-color: var(--color-primary-teal);
+  }
+
+  /* Hero heading */
+  .page-hero-heading {
+    font-size: 3rem;
+    font-weight: 400;
+    color: white;
+    margin-bottom: 1rem;
+    line-height: 1.25;
+    text-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 2px 4px rgba(0, 0, 0, 0.06);
+  }
+
+  /* Hero subtext */
+  .page-hero-subtext {
+    font-size: 1.125rem;
+    color: rgba(255, 255, 255, 0.9);
+    margin-bottom: 2rem;
+    max-width: 42rem;
+    margin-left: auto;
+    margin-right: auto;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  /* Landing page hero (different from standard page hero) - Giga.ai style */
+  .landing-hero {
+    position: relative;
+    overflow: hidden;
+    min-height: 100vh;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    margin-top: -100px;
+    margin-left: 0;
+    margin-right: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  @media (min-width: 768px) {
+    .landing-hero {
+      min-height: 100vh;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .landing-hero {
+      min-height: 100vh;
+    }
+  }
+
+  .landing-hero-overlay {
+    position: absolute;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.08);
+  }
+
+  .landing-hero-gradient {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: linear-gradient(180deg, rgba(0,0,0,0.00) 0%, rgba(0,0,0,0.00) 75%, rgba(255,255,255,0.20) 85%, rgba(255,255,255,0.60) 95%, #ffffff 100%);
+  }
+
+  .landing-hero-content {
+    position: relative;
+    z-index: 10;
+    min-height: auto;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+  }
+
+  /* ============================================
+     CENTRALIZED CONTAINER & SPACING STYLES
+     ============================================ */
+
+  /* Standard content container */
+  .content-container {
+    max-width: 1280px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+
+  .content-container-sm {
+    max-width: 1024px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+
+  .content-container-lg {
+    max-width: 1536px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+
+  /* Footer grid with balanced columns - 5 columns total */
+  .footer-grid {
+    display: grid;
+    gap: 1.5rem;
+    grid-template-columns: 1fr;
+    align-items: stretch;
+  }
+
+  @media (min-width: 640px) {
+    .footer-grid {
+      grid-template-columns: repeat(2, 1fr);
+      align-items: stretch;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .footer-grid {
+      grid-template-columns: 3fr 1fr 1fr 1fr 3fr;
+      gap: 1.5rem;
+      align-items: stretch;
+    }
+  }
+
+  /* Standard section spacing */
+  .section-spacing {
+    padding-top: 3rem;
+    padding-bottom: 3rem;
+  }
+
+  .section-spacing-lg {
+    padding-top: 4rem;
+    padding-bottom: 4rem;
+  }
+
+  .section-spacing-xl {
+    padding-top: 6rem;
+    padding-bottom: 6rem;
+  }
+
+  /* ============================================
+     CENTRALIZED CARD & BOX STYLES
+     ============================================ */
+
+  /* Standard card with consistent styling */
+  .standard-card {
+    background-color: white;
+    border-radius: 1.5rem;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    padding: 2rem;
+  }
+
+  .dark .standard-card {
+    background-color: rgb(31, 41, 55);
+  }
+
+  /* Value/feature card */
+  .value-card {
+    background-color: white;
+    border-radius: 1.5rem;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    padding: 2rem 3rem;
+  }
+
+  .dark .value-card {
+    background-color: rgb(31, 41, 55);
+  }
+
+  /* Icon container for cards */
+  .card-icon-container {
+    width: 4rem;
+    height: 4rem;
+    background: linear-gradient(to bottom right, var(--color-primary-teal), var(--color-accent-sky));
+    border-radius: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Stats card */
+  .stats-card {
+    text-align: center;
+  }
+
+  .stats-icon {
+    width: 5rem;
+    height: 5rem;
+    background: linear-gradient(to bottom right, var(--color-primary-teal), var(--color-accent-sky));
+    border-radius: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 1rem;
+    transition: transform 0.3s;
+  }
+
+  .stats-card:hover .stats-icon {
+    transform: scale(1.1);
+  }
+
+  .stats-number {
+    font-size: 2.25rem;
+    font-weight: 700;
+    color: rgb(17, 24, 39);
+    margin-bottom: 0.5rem;
+  }
+
+  .dark .stats-number {
+    color: white;
+  }
+
+  .stats-label {
+    font-size: 0.875rem;
+    color: rgb(107, 114, 128);
+  }
+
+  .dark .stats-label {
+    color: rgb(209, 213, 219);
+  }
+
+  /* ============================================
+     CENTRALIZED TEXT STYLES
+     ============================================ */
+
+  /* Section heading */
+  .section-heading {
+    font-size: 2.25rem;
+    font-weight: 700;
+    color: rgb(17, 24, 39);
+    margin-bottom: 1rem;
+  }
+
+  .dark .section-heading {
+    color: white;
+  }
+
+  /* Section subheading */
+  .section-subheading {
+    font-size: 1.25rem;
+    color: rgb(107, 114, 128);
+  }
+
+  .dark .section-subheading {
+    color: rgb(209, 213, 219);
+  }
+
+  /* ============================================
+     CENTRALIZED GRID LAYOUTS
+     Unified responsive system
+     ============================================ */
+
+  /* Two column grid - stacks on mobile, side-by-side on desktop */
+  .grid-2-col {
+    display: grid;
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+    gap: 3rem;
+  }
+
+  /* Four column grid - stacks on mobile, expands on desktop */
+  .grid-4-col {
+    display: grid;
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+    gap: 2rem;
+  }
+
+  /* Dashboard grid - for KPI cards and widgets */
+  .dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+    gap: 1.5rem;
+  }
+
+  /* Profile grid - for profile sections */
+  .profile-grid {
+    display: grid;
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+    gap: 1.5rem;
+  }
+
+  /* ============================================
+     UNIFIED RESPONSIVE SYSTEM
+     Single breakpoint system for consistency
+     ============================================ */
+
+  /* Base: All sizes are consistent - no responsive changes */
+  /* Mobile-first: Stack on small screens, side-by-side on larger */
+  
+  /* Grids automatically stack on small screens using CSS Grid */
+  .grid-2-col {
+    display: grid;
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+    gap: 3rem;
+  }
+
+  .grid-4-col {
+    display: grid;
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+    gap: 2rem;
+  }
+
+  /* ============================================
+     UNIFIED RESPONSIVE BREAKPOINT SYSTEM
+     Single breakpoint: 768px
+     - Below 768px: Single column (stacked)
+     - Above 768px: Multi-column layouts
+     ============================================ */
+
+  @media (min-width: 768px) {
+    .grid-2-col {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    .grid-4-col {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    .dashboard-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    .profile-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .grid-4-col {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+    .dashboard-grid {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+  }
+
+  /* ============================================
+     CENTRALIZED DASHBOARD & PROFILE STYLES
+     ============================================ */
+
+  /* Dashboard container */
+  .dashboard-container {
+    padding: 0;
+    background-color: transparent;
+    min-height: 100%; /* Use percentage instead of viewport height */
+  }
+
+  /* Dashboard section */
+  .dashboard-section {
+    margin-bottom: 1.5rem;
+  }
+
+  /* Dashboard card */
+  .dashboard-card {
+    background-color: white;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    border-radius: 16px;
+    padding: 1.5rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04), 0 1px 3px rgba(0, 0, 0, 0.08);
+  }
+
+  .dark .dashboard-card {
+    background-color: var(--color-background-surface);
+    border: 1px solid var(--color-divider-gray);
+    box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.3), 0 1px 2px -1px rgba(0, 0, 0, 0.2);
+  }
+
+  /* Dashboard card header */
+  .dashboard-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--color-divider-gray);
+  }
+
+  .dashboard-card-title {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: var(--color-text-primary);
+  }
+
+  .dashboard-card-subtitle {
+    font-size: 0.875rem;
+    color: var(--color-text-secondary);
+    margin-top: 0.25rem;
+  }
+
+  /* Profile container */
+  .profile-container {
+    padding: 1.5rem;
+    background-color: var(--color-background-default);
+    min-height: 100%; /* Use percentage instead of viewport height */
+  }
+
+  /* Profile section */
+  .profile-section {
+    background-color: var(--color-background-surface);
+    border: 1px solid var(--color-divider-gray);
+    border-radius: 0.5rem;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .profile-section-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--color-text-primary);
+    margin-bottom: 1rem;
+  }
+
+  /* KPI Grid - for dashboard KPIs */
+  .kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+    gap: 1.5rem;
+  }
+
+  @media (min-width: 640px) {
+    .kpi-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (min-width: 768px) {
+    .kpi-grid {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .kpi-grid {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+  }
+
+  /* ============================================
+     CENTRALIZED BUTTON PATTERNS
+     ============================================ */
+
+  /* Standard button variants */
+  .btn-hero-search {
+    width: 100%;
+    padding-left: 3.5rem;
+    padding-right: 3rem;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    border-radius: 1rem;
+    border-width: 2px;
+    border-color: rgba(255, 255, 255, 0.5);
+    background-color: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(4px);
+    color: rgb(17, 24, 39);
+    font-size: 1.125rem;
+    transition: all 0.2s;
+  }
+
+  .btn-hero-search:focus {
+    outline: 2px solid transparent;
+    outline-offset: 2px;
+    ring-width: 2px;
+    ring-color: var(--color-primary-teal);
+    border-color: transparent;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  }
+
+  .btn-hero-search::placeholder {
+    color: rgb(107, 114, 128);
+  }
+
+  /* Category filter buttons */
+  .btn-category {
+    padding: 0.375rem 0.75rem;
+    border-radius: 9999px;
+    border: 1px solid var(--color-divider-gray);
+    transition: all 0.2s;
+  }
+
+  .btn-category-active {
+    background-color: var(--color-primary-teal);
+    color: white;
+    border-color: var(--color-primary-teal);
+  }
+
+  .btn-category-inactive {
+    border-color: var(--color-divider-gray);
+    color: var(--color-text-primary);
+  }
+
+  .btn-category-inactive:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+  }
+
+  /* ============================================
+     CENTRALIZED FORM PATTERNS
+     ============================================ */
+
+  /* Standard form input */
+  .form-input {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border-radius: 0.5rem;
+    border: 1px solid var(--color-divider-gray);
+    background-color: rgba(255, 255, 255, 0.9);
+    color: rgb(17, 24, 39);
+    font-size: 1rem;
+    transition: all 0.2s;
+  }
+
+  .form-input:focus {
+    outline: 2px solid transparent;
+    outline-offset: 2px;
+    ring-width: 2px;
+    ring-color: var(--color-primary-teal);
+    border-color: transparent;
+  }
+
+  .form-input::placeholder {
+    color: rgb(107, 114, 128);
+  }
+
+  .dark .form-input {
+    background-color: var(--color-background-surface);
+    color: white;
+  }
+
+  .dark .form-input::placeholder {
+    color: rgb(156, 163, 175);
+  }
+
+  /* Form label */
+  .form-label {
+    display: block;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--color-text-primary);
+    margin-bottom: 0.5rem;
+  }
+
+  /* Form group */
+  .form-group {
+    margin-bottom: 1.5rem;
+  }
+
+  /* ============================================
+     CENTRALIZED MODAL PATTERNS
+     ============================================ */
+
+  /* Modal overlay */
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(4px);
+    z-index: 50;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+  }
+
+  /* Modal container */
+  .modal-container {
+    background-color: var(--color-background-default);
+    border-radius: 1rem;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    max-width: 32rem;
+    width: 100%;
+    max-height: 600px; /* Fixed height instead of viewport-based */
+    overflow-y: auto;
+    padding: 1.5rem;
+  }
+
+  .dark .modal-container {
+    background-color: var(--color-background-surface);
+  }
+
+  /* Modal header */
+  .modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--color-divider-gray);
+  }
+
+  .modal-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--color-text-primary);
+  }
+
+  .modal-close {
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    color: var(--color-text-secondary);
+    transition: all 0.2s;
+  }
+
+  .modal-close:hover {
+    background-color: var(--color-background-surface);
+    color: var(--color-text-primary);
+  }
+
+  /* Modal body */
+  .modal-body {
+    margin-bottom: 1.5rem;
+  }
+
+  /* Modal footer */
+  .modal-footer {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 0.75rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--color-divider-gray);
+  }
+
+  /* ============================================
+     CENTRALIZED SEARCH PATTERNS
+     ============================================ */
+
+  /* Search input with icon */
+  .search-input-wrapper {
+    position: relative;
+    width: 100%;
+  }
+
+  .search-input-icon {
+    position: absolute;
+    left: 1.25rem;
+    top: 50%;
+    transform: translateY(-50%);
+    height: 1.25rem;
+    width: 1.25rem;
+    color: rgb(156, 163, 175);
+    pointer-events: none;
+  }
+
+  .search-input {
+    width: 100%;
+    padding-left: 3.5rem;
+    padding-right: 3rem;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    border-radius: 1rem;
+    border-width: 2px;
+    border-color: rgba(255, 255, 255, 0.5);
+    background-color: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(4px);
+    color: rgb(17, 24, 39);
+    font-size: 1.125rem;
+    transition: all 0.2s;
+  }
+
+  .search-input:focus {
+    outline: 2px solid transparent;
+    outline-offset: 2px;
+    ring-width: 2px;
+    ring-color: var(--color-primary-teal);
+    border-color: transparent;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  }
+
+  .search-input-clear {
+    position: absolute;
+    right: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    padding: 0.25rem;
+    border-radius: 9999px;
+    color: rgb(107, 114, 128);
+    transition: all 0.2s;
+  }
+
+  .search-input-clear:hover {
+    background-color: rgb(243, 244, 246);
+  }
 
   /* Consistent tiles for charts/maps */
   .tile { @apply card; }
@@ -321,14 +1118,59 @@
     background: color-mix(in srgb, var(--color-primary-teal), white 96%); 
     color: var(--color-text-primary);
   }
+  .dark table thead th {
+    background: var(--color-background-surface) !important;
+    color: var(--color-text-primary) !important;
+  }
   table tbody tr:hover {
     background: color-mix(in srgb, var(--color-primary-teal), white 98%);
+  }
+  .dark table tbody tr:hover {
+    background: var(--color-background-default) !important;
+  }
+  /* Table cell text colors */
+  table tbody td {
+    color: var(--color-text-primary);
+  }
+  .dark table tbody td {
+    color: var(--color-text-primary) !important;
   }
 
   /* Contextual icon defaults */
   .tile-header .lucide { color: var(--color-primary-teal) !important; }
   .toolbar .lucide { color: var(--color-primary-teal) !important; }
-  .btn-primary .lucide { color: var(--color-background-surface) !important; }
+  .btn-primary .lucide,
+  .btn-primary svg,
+  .btn-primary [class*="lucide"] { 
+    color: white !important; 
+  }
+  .dark .btn-primary .lucide,
+  .dark .btn-primary svg,
+  .dark .btn-primary [class*="lucide"] { 
+    color: white !important; 
+  }
+
+  /* Global badge fixes - ensure proper dark mode colors */
+  .dark [class*="bg-blue-500/30"],
+  .dark [class*="bg-green-500/30"],
+  .dark [class*="bg-red-500/30"],
+  .dark [class*="bg-yellow-500/30"],
+  .dark [class*="bg-purple-500/30"],
+  .dark [class*="bg-orange-500/30"],
+  .dark [class*="bg-gray-500/30"] {
+    opacity: 0.4 !important;
+  }
+  
+  /* Ensure all badge text in dark mode is white */
+  .dark span[class*="bg-blue-500"],
+  .dark span[class*="bg-green-500"],
+  .dark span[class*="bg-red-500"],
+  .dark span[class*="bg-yellow-500"],
+  .dark span[class*="bg-purple-500"],
+  .dark span[class*="bg-orange-500"],
+  .dark span[class*="bg-gray-500"] {
+    color: white !important;
+  }
 }
 
 @layer utilities {
@@ -375,6 +1217,81 @@
   .bg-red-100 { background-color: color-mix(in srgb, var(--color-error), white 85%) !important; }
   .bg-amber-100, .bg-yellow-100 { background-color: color-mix(in srgb, var(--color-warning), white 85%) !important; }
   .bg-blue-100, .bg-sky-100 { background-color: color-mix(in srgb, var(--color-info), white 85%) !important; }
+  /* Override in dark mode to allow dark:bg-*-500/40 to work - must override the !important from bg-*-100 */
+  .dark .bg-green-100,
+  .dark span.bg-green-100,
+  .dark td .bg-green-100 { 
+    background-color: transparent !important; 
+    background: transparent !important;
+  }
+  .dark .bg-red-100,
+  .dark span.bg-red-100,
+  .dark td .bg-red-100 { 
+    background-color: transparent !important; 
+    background: transparent !important;
+  }
+  .dark .bg-amber-100, 
+  .dark .bg-yellow-100,
+  .dark span.bg-amber-100,
+  .dark span.bg-yellow-100,
+  .dark td .bg-amber-100,
+  .dark td .bg-yellow-100 { 
+    background-color: transparent !important; 
+    background: transparent !important;
+  }
+  .dark .bg-blue-100, 
+  .dark .bg-sky-100,
+  .dark span.bg-blue-100,
+  .dark span.bg-sky-100,
+  .dark td .bg-blue-100,
+  .dark td .bg-sky-100 { 
+    background-color: transparent !important; 
+    background: transparent !important;
+  }
+  .dark .bg-gray-100,
+  .dark span.bg-gray-100,
+  .dark td .bg-gray-100 { 
+    background-color: transparent !important; 
+    background: transparent !important;
+  }
+  .dark .bg-purple-100,
+  .dark span.bg-purple-100,
+  .dark td .bg-purple-100 { 
+    background-color: transparent !important; 
+    background: transparent !important;
+  }
+  .dark .bg-orange-100,
+  .dark span.bg-orange-100,
+  .dark td .bg-orange-100 { 
+    background-color: transparent !important; 
+    background: transparent !important;
+  }
+  /* Badge styling for dark mode - ensure colored backgrounds show */
+  .dark table span.rounded-full[class*="bg-blue-100"] {
+    background-color: rgba(59, 130, 246, 0.4) !important;
+  }
+  .dark table span.rounded-full[class*="bg-green-100"] {
+    background-color: rgba(34, 197, 94, 0.4) !important;
+  }
+  .dark table span.rounded-full[class*="bg-red-100"] {
+    background-color: rgba(239, 68, 68, 0.4) !important;
+  }
+  .dark table span.rounded-full[class*="bg-yellow-100"] {
+    background-color: rgba(234, 179, 8, 0.4) !important;
+  }
+  .dark table span.rounded-full[class*="bg-purple-100"] {
+    background-color: rgba(168, 85, 247, 0.4) !important;
+  }
+  .dark table span.rounded-full[class*="bg-orange-100"] {
+    background-color: rgba(249, 115, 22, 0.4) !important;
+  }
+  .dark table span.rounded-full[class*="bg-gray-100"] {
+    background-color: rgba(107, 114, 128, 0.4) !important;
+  }
+  /* Ensure badge text is white in dark mode */
+  .dark table span.rounded-full[class*="dark:text-white"] {
+    color: #FFFFFF !important;
+  }
 
   /* Background fills (dark variants) */
   .dark .bg-green-900 { background-color: color-mix(in srgb, var(--color-success), black 85%) !important; }
@@ -430,6 +1347,22 @@
   .dark button[class*="bg-[var(--color-primary-teal)]"] .text-white {
     color: #FFFFFF !important;
   }
+  
+  /* Newsletter subscribe button - black text in dark mode */
+  .dark button.newsletter-subscribe-btn,
+  .dark .newsletter-subscribe-btn {
+    color: #000000 !important;
+    -webkit-text-fill-color: #000000 !important;
+    caret-color: #000000 !important;
+  }
+  
+  /* Newsletter subscribe button - white text in light mode */
+  button.newsletter-subscribe-btn,
+  .newsletter-subscribe-btn {
+    color: #FFFFFF !important;
+    -webkit-text-fill-color: #FFFFFF !important;
+    caret-color: #FFFFFF !important;
+  }
   .dark .text-gray-300, .dark .text-gray-400 { color: var(--color-text-secondary) !important; }
 
   /* Inputs often use gray backgrounds in dark mode */
@@ -444,7 +1377,6 @@
   .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 }
 
-.**REMOVE_BLOG_THEME_MARKER** {}
 /* Glassmorphism helpers (Apple-like) */
 .glass-soft {
   background: color-mix(in srgb, var(--color-background-surface) 55%, transparent);
@@ -496,17 +1428,42 @@
   background-repeat: repeat;
 }
 
+/* Modern card styling - Enhanced for profiles, dashboards, and modules */
 .card-glass {
-  border-radius: 16px; overflow: hidden;
-  background: var(--color-background-surface);
-  border: 1px solid var(--color-divider-gray);
+  border-radius: 16px;
+  overflow: hidden;
+  background: white;
+  border: 1px solid rgba(0, 0, 0, 0.06);
   backdrop-filter: none;
   -webkit-backdrop-filter: none;
-  box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.08), 0 1px 2px -1px rgba(0, 0, 0, 0.04);
+  box-shadow: 
+    0 1px 3px rgba(0, 0, 0, 0.05),
+    0 4px 12px rgba(0, 0, 0, 0.03),
+    0 0 0 1px rgba(0, 0, 0, 0.02);
+  transition: all 0.2s ease;
+}
+
+.card-glass:hover {
+  box-shadow: 
+    0 2px 6px rgba(0, 0, 0, 0.08),
+    0 8px 24px rgba(0, 0, 0, 0.04),
+    0 0 0 1px rgba(0, 0, 0, 0.04);
+  transform: translateY(-1px);
 }
 
 .dark .card-glass {
   background: var(--color-background-surface);
   border: 1px solid var(--color-divider-gray);
-  box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.3), 0 1px 2px -1px rgba(0, 0, 0, 0.2);
+  box-shadow: 
+    0 2px 8px rgba(0, 0, 0, 0.4),
+    0 1px 3px rgba(0, 0, 0, 0.3),
+    0 0 0 1px rgba(255, 255, 255, 0.05);
+}
+
+.dark .card-glass:hover {
+  box-shadow: 
+    0 4px 12px rgba(0, 0, 0, 0.5),
+    0 2px 6px rgba(0, 0, 0, 0.4),
+    0 0 0 1px rgba(255, 255, 255, 0.08);
+  transform: translateY(-1px);
 }

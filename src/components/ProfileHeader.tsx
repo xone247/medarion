@@ -74,11 +74,11 @@ const ProfileHeader: React.FC<ProfileHeaderProps> = ({
   const quickActions = getQuickActions();
 
   return (
-    <div className="md:sticky md:top-0 z-30 bg-[var(--color-background-surface)] border-b border-[var(--color-divider-gray)] backdrop-blur-sm">
-      <div className="px-4 py-2 md:px-6 md:py-4">
+    <div className="sticky top-0 z-30 bg-[var(--color-background-surface)] border-b border-[var(--color-divider-gray)] backdrop-blur-sm">
+      <div className="px-4 py-2 px-6 py-4">
         <div className="flex items-center justify-between">
           {/* Left side - Title and back button */}
-          <div className="flex items-center space-x-3 md:space-x-4">
+          <div className="flex items-center space-x-3 space-x-4">
             {showBackButton && (
               <button
                 onClick={onBack}
@@ -95,9 +95,9 @@ const ProfileHeader: React.FC<ProfileHeaderProps> = ({
                 </div>
               )}
               <div>
-                <h1 className="text-lg md:text-2xl font-bold text-[var(--color-text-primary)]">{title}</h1>
+                <h1 className="text-lg text-2xl font-bold text-[var(--color-text-primary)]">{title}</h1>
                 {subtitle && (
-                  <p className="text-xs md:text-sm text-[var(--color-text-secondary)]">{subtitle}</p>
+                  <p className="text-xs text-sm text-[var(--color-text-secondary)]">{subtitle}</p>
                 )}
               </div>
             </div>
@@ -105,7 +105,7 @@ const ProfileHeader: React.FC<ProfileHeaderProps> = ({
 
           {/* Right side - Minimal actions */}
           <div className="flex items-center space-x-2">
-            <span className={`hidden md:inline-flex items-center gap-1 px-3 py-1 rounded-full text-sm font-medium ${accountTierInfo.bgColor} ${accountTierInfo.color}`}>
+            <span className={`hidden inline-flex items-center gap-1 px-3 py-1 rounded-full text-sm font-medium ${accountTierInfo.bgColor} ${accountTierInfo.color}`}>
               {accountTierInfo.icon}
               {accountTierInfo.label}
             </span>

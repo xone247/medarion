@@ -1,69 +1,22 @@
 import React from 'react';
-import { Globe, Users, Target, Award, Heart, ArrowRight, Star, TrendingUp, Shield, Zap, CheckCircle2 } from 'lucide-react';
+import { Globe, Users, Target, Award, Heart, ArrowRight, Star, TrendingUp, Shield, Zap, CheckCircle2, Play } from 'lucide-react';
+import { useTheme } from '../contexts/ThemeContext';
 
 interface AboutPageProps {
   onBack: () => void;
 }
 
 const AboutPage: React.FC<AboutPageProps> = ({ onBack }) => {
-  const team = [
-    {
-      name: 'Dr. Kwame Asante',
-      role: 'CEO & Co-founder',
-      bio: 'Former WHO Africa Director with 15+ years in healthcare policy and digital health initiatives across Africa.',
-      image: '👨🏿‍⚕️',
-      linkedin: 'linkedin.com/in/kwameasante'
-    },
-    {
-      name: 'Amara Okafor',
-      role: 'CTO & Co-founder',
-      bio: 'Ex-Google AI researcher specializing in healthcare data analytics and machine learning for emerging markets.',
-      image: '👩🏿‍💻',
-      linkedin: 'linkedin.com/in/amaraokafor'
-    },
-    {
-      name: 'Sarah Mwangi',
-      role: 'Head of Data',
-      bio: 'Former McKinsey consultant with expertise in African healthcare markets and investment analysis.',
-      image: '👩🏾‍💼',
-      linkedin: 'linkedin.com/in/sarahmwangi'
-    },
-    {
-      name: 'David Adebayo',
-      role: 'Head of Product',
-      bio: 'Product leader with experience at Flutterwave and Paystack, focused on African fintech and healthtech.',
-      image: '👨🏾‍💻',
-      linkedin: 'linkedin.com/in/davidadebayo'
-    }
-  ];
-
-
-  const values = [
-    {
-      title: 'African-First',
-      description: 'We prioritize African healthcare needs and solutions, understanding the unique challenges and opportunities across the continent.',
-      icon: Heart
-    },
-    {
-      title: 'Data Integrity',
-      description: 'We maintain the highest standards of data accuracy and reliability, ensuring our users can make informed decisions.',
-      icon: Award
-    },
-    {
-      title: 'Innovation',
-      description: 'We leverage cutting-edge technology to solve complex healthcare challenges and drive meaningful change.',
-      icon: Target
-    },
-    {
-      title: 'Collaboration',
-      description: 'We believe in the power of partnerships and community to accelerate healthcare innovation across Africa.',
-      icon: Users
-    }
-  ];
-
+  const { theme } = useTheme();
+  
   return (
-    <div className="min-h-screen bg-[var(--color-background-default)] text-[var(--color-text-primary)]">
-        {/* Hero Section */}
+    <div 
+      className="min-h-screen text-[var(--color-text-primary)] transition-colors duration-500" 
+      style={{ 
+        backgroundColor: theme === 'dark' ? 'var(--color-background-default)' : '#F9F7F4'
+      }}
+    >
+      {/* Hero Section */}
       <div className="page-hero">
         <div aria-hidden className="page-hero-bg">
           <img
@@ -76,167 +29,187 @@ const AboutPage: React.FC<AboutPageProps> = ({ onBack }) => {
         
         <div className="page-hero-content">
           <div className="page-hero-content-inner">
-            <div className="page-hero-accent" />
             <h1 className="page-hero-heading">
               About Medarion
             </h1>
             <p className="page-hero-subtext">
-              We're transforming African healthcare with comprehensive data intelligence—connecting innovators, investors, and institutions to accelerate solutions across the continent.
+              We're transforming Africa with the continent's most advanced AI platform, enabling a deeper understanding of Africa's ecosystem and accelerating solutions across the continent.
             </p>
           </div>
         </div>
       </div>
 
       {/* Main Content */}
-      <div className="content-container section-spacing-lg">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 space-y-12 sm:space-y-16 md:space-y-20">
+      <div className="max-w-screen-2xl mx-auto px-6 md:px-8 lg:px-12 xl:px-16 py-16 md:py-20 lg:py-24">
+        
         {/* Mission & Vision */}
-        <div className="grid-2-col gap-8 sm:gap-12">
-            <div>
-              <div className="flex items-center gap-4 mb-8">
-                <Target className="h-8 w-8 text-[var(--color-primary-teal)]" />
-                <h2 className="section-heading">Our Mission</h2>
+        <section className="mb-20 md:mb-24 lg:mb-32">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 md:gap-16 lg:gap-20">
+            {/* Mission */}
+            <div className="space-y-6 p-8 md:p-10 lg:p-12 rounded-2xl border border-[var(--color-divider-gray)]/20 bg-[var(--color-background-surface)] transition-colors duration-500">
+              <div className="flex items-center gap-4">
+                <div className="p-3 rounded-xl bg-black/10 dark:bg-white/10">
+                  <Target className="h-6 w-6 text-black dark:text-white" />
+                </div>
+                <h2 className="text-xl sm:text-2xl md:text-3xl font-semibold text-[var(--color-text-primary)]">Our Mission</h2>
+              </div>
+              <p className="text-base sm:text-lg text-[var(--color-text-secondary)] leading-relaxed">
+                To democratize access to AI and insights empowering startups, investors, healthcare professionals, and policymakers to make informed decisions that improve outcomes across Africa. We believe that better AI and better data lead to better solutions for the continent.
+              </p>
             </div>
-              <p className="text-lg text-[var(--color-text-secondary)] leading-relaxed">
-              To democratize access to African healthcare data and insights, empowering startups, investors, 
-              and policymakers to make informed decisions that improve health outcomes across Africa. 
-              We believe that better data leads to better healthcare solutions.
-            </p>
-          </div>
 
-            <div>
-              <div className="flex items-center gap-4 mb-8">
-                <Globe className="h-8 w-8 text-[var(--color-primary-teal)]" />
-                <h2 className="section-heading">Our Vision</h2>
+            {/* Vision */}
+            <div className="space-y-6 p-8 md:p-10 lg:p-12 rounded-2xl border border-[var(--color-divider-gray)]/20 bg-[var(--color-background-surface)] transition-colors duration-500">
+              <div className="flex items-center gap-4">
+                <div className="p-3 rounded-xl bg-black/10 dark:bg-white/10">
+                  <Globe className="h-6 w-6 text-black dark:text-white" />
+                </div>
+                <h2 className="text-xl sm:text-2xl md:text-3xl font-semibold text-[var(--color-text-primary)]">Our Vision</h2>
+              </div>
+              <p className="text-base sm:text-lg text-[var(--color-text-secondary)] leading-relaxed">
+                A future where every African can achieve meaningful transformation, supported by a thriving ecosystem of innovative companies, strategic investments, and data-driven policies. We envision Africa as a global leader in innovation.
+              </p>
             </div>
-              <p className="text-lg text-[var(--color-text-secondary)] leading-relaxed">
-              A future where every African has access to quality healthcare, supported by a thriving 
-              ecosystem of innovative companies, strategic investments, and data-driven policies. 
-              We envision Africa as a global leader in healthcare innovation.
-            </p>
           </div>
-        </div>
+        </section>
 
-          {/* Stats Section */}
-          <div>
-            <div className="text-center mb-12">
-              <h2 className="section-heading mb-4 flex items-center justify-center gap-3">
-                <span className="w-1 h-12 bg-gradient-to-b from-[var(--color-primary-teal)] to-[var(--color-accent-sky)] rounded-full"></span>
+        {/* Stats Section */}
+        <section 
+          className="mb-20 md:mb-24 lg:mb-32 py-16 md:py-20 lg:py-24 rounded-2xl transition-colors duration-500"
+          style={{ 
+            backgroundColor: theme === 'dark' ? 'var(--color-background-surface)' : '#F9F7F4'
+          }}
+        >
+          <div className="max-w-screen-2xl mx-auto px-6 md:px-8 lg:px-12 xl:px-16">
+            <div className="text-center mb-12 md:mb-16">
+              <h2 className="text-xl sm:text-2xl md:text-3xl font-semibold text-[var(--color-text-primary)] mb-4">
                 Medarion by the Numbers
               </h2>
-              <p className="section-subheading">Transforming healthcare across Africa through data</p>
+              <p className="text-base sm:text-lg text-[var(--color-text-secondary)] max-w-2xl mx-auto">
+                Accelerating Africa's transformation through AI and actionable insights
+              </p>
             </div>
-          <div className="grid-4-col">
-              <div className="stats-card">
-                <Globe className="h-10 w-10 text-[var(--color-primary-teal)] mx-auto mb-4" />
-                <div className="stats-number">35+</div>
-                <div className="text-[var(--color-text-secondary)] font-medium">African Countries</div>
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
+            <div className="text-center p-8 md:p-10 rounded-xl bg-white dark:bg-[var(--color-background-default)] border border-[var(--color-divider-gray)]/20 shadow-sm hover:shadow-md transition-shadow duration-300">
+              <div className="inline-flex items-center justify-center p-4 rounded-xl bg-black/10 dark:bg-white/10 mb-4">
+                <Globe className="h-8 w-8 text-black dark:text-white" />
               </div>
-              <div className="text-center">
-                <TrendingUp className="h-10 w-10 text-[var(--color-primary-teal)] mx-auto mb-4" />
-                <div className="text-4xl font-bold text-[var(--color-text-primary)] mb-2">500+</div>
-                <div className="text-[var(--color-text-secondary)] font-medium">Healthcare Companies</div>
-        </div>
-              <div className="text-center">
-                <Award className="h-10 w-10 text-[var(--color-primary-teal)] mx-auto mb-4" />
-                <div className="text-4xl font-bold text-[var(--color-text-primary)] mb-2">$2.5B+</div>
-                <div className="text-[var(--color-text-secondary)] font-medium">Investment Data Tracked</div>
-                  </div>
-              <div className="text-center">
-                <Users className="h-10 w-10 text-[var(--color-primary-teal)] mx-auto mb-4" />
-                <div className="text-4xl font-bold text-[var(--color-text-primary)] mb-2">1000+</div>
-                <div className="text-[var(--color-text-secondary)] font-medium">Platform Users</div>
+              <div className="text-3xl sm:text-4xl md:text-5xl font-bold text-[var(--color-text-primary)] mb-2">35+</div>
+              <div className="text-sm sm:text-base text-[var(--color-text-secondary)] font-medium">African Countries</div>
+            </div>
+            <div className="text-center p-8 md:p-10 rounded-xl bg-white dark:bg-[var(--color-background-default)] border border-[var(--color-divider-gray)]/20 shadow-sm hover:shadow-md transition-shadow duration-300">
+              <div className="inline-flex items-center justify-center p-4 rounded-xl bg-black/10 dark:bg-white/10 mb-4">
+                <TrendingUp className="h-8 w-8 text-black dark:text-white" />
               </div>
+              <div className="text-3xl sm:text-4xl md:text-5xl font-bold text-[var(--color-text-primary)] mb-2">500+</div>
+              <div className="text-sm sm:text-base text-[var(--color-text-secondary)] font-medium">Healthcare Companies</div>
+            </div>
+            <div className="text-center p-8 md:p-10 rounded-xl bg-white dark:bg-[var(--color-background-default)] border border-[var(--color-divider-gray)]/20 shadow-sm hover:shadow-md transition-shadow duration-300">
+              <div className="inline-flex items-center justify-center p-4 rounded-xl bg-black/10 dark:bg-white/10 mb-4">
+                <Award className="h-8 w-8 text-black dark:text-white" />
+              </div>
+              <div className="text-3xl sm:text-4xl md:text-5xl font-bold text-[var(--color-text-primary)] mb-2">$2.5B+</div>
+              <div className="text-sm sm:text-base text-[var(--color-text-secondary)] font-medium">Investment Data Tracked</div>
+            </div>
+            <div className="text-center p-8 md:p-10 rounded-xl bg-white dark:bg-[var(--color-background-default)] border border-[var(--color-divider-gray)]/20 shadow-sm hover:shadow-md transition-shadow duration-300">
+              <div className="inline-flex items-center justify-center p-4 rounded-xl bg-black/10 dark:bg-white/10 mb-4">
+                <Users className="h-8 w-8 text-black dark:text-white" />
+              </div>
+              <div className="text-3xl sm:text-4xl md:text-5xl font-bold text-[var(--color-text-primary)] mb-2">1000+</div>
+              <div className="text-sm sm:text-base text-[var(--color-text-secondary)] font-medium">Platform Users</div>
             </div>
           </div>
+          </div>
+        </section>
 
-          {/* Values */}
-          <div>
-            <div className="text-center mb-16">
-              <h2 className="text-4xl font-bold text-gray-900 dark:text-white mb-4 flex items-center justify-center gap-3">
-                <span className="w-1 h-12 bg-gradient-to-b from-[var(--color-primary-teal)] to-[var(--color-accent-sky)] rounded-full"></span>
+        {/* Values Section */}
+        <section 
+          className="mb-20 md:mb-24 lg:mb-32 py-16 md:py-20 lg:py-24 rounded-2xl transition-colors duration-500"
+          style={{ 
+            backgroundColor: theme === 'dark' ? 'var(--color-background-surface)' : '#F9F7F4'
+          }}
+        >
+          <div className="max-w-screen-2xl mx-auto px-6 md:px-8 lg:px-12 xl:px-16">
+            <div className="text-center mb-12 md:mb-16">
+              <h2 className="text-xl sm:text-2xl md:text-3xl font-semibold text-[var(--color-text-primary)] mb-4">
                 Our Values
               </h2>
-              <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+              <p className="text-base sm:text-lg text-[var(--color-text-secondary)] max-w-2xl mx-auto">
                 The principles that guide everything we do at Medarion
               </p>
             </div>
-            <div className="grid-4-col gap-6 sm:gap-8">
-              {values.map((value, index) => (
-                <div key={index} className="p-8 text-center">
-                  <div className="w-20 h-20 flex items-center justify-center mx-auto mb-6">
-                    <value.icon className="h-10 w-10 text-[var(--color-primary-teal)]" />
-                  </div>
-                  <h3 className="text-xl font-bold text-[var(--color-text-primary)] mb-4">{value.title}</h3>
-                  <p className="text-[var(--color-text-secondary)] leading-relaxed">{value.description}</p>
-                </div>
-              ))}
-          </div>
-        </div>
-
-
-        {/* Team */}
-        <div>
-            <div className="text-center mb-16">
-              <h2 className="text-4xl font-bold text-gray-900 dark:text-white mb-4 flex items-center justify-center gap-3">
-                <span className="w-1 h-12 bg-gradient-to-b from-[var(--color-primary-teal)] to-[var(--color-accent-sky)] rounded-full"></span>
-                Meet Our Team
-              </h2>
-              <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
-                The passionate leaders driving healthcare innovation across Africa
-              </p>
-            </div>
-          <div className="grid-4-col gap-6 sm:gap-8">
-            {team.map((member, index) => (
-                <div key={index} className="p-8 text-center">
-                  <div className="w-24 h-24 flex items-center justify-center mx-auto mb-6 text-4xl">
-                    {member.image}
-                  </div>
-                  <h3 className="text-xl font-bold text-[var(--color-text-primary)] mb-2">{member.name}</h3>
-                  <p className="text-[var(--color-primary-teal)] font-semibold mb-4">{member.role}</p>
-                  <p className="text-[var(--color-text-secondary)] mb-6 leading-relaxed">{member.bio}</p>
-                <a 
-                  href={`https://${member.linkedin}`} 
-                    className="inline-flex items-center gap-2 text-[var(--color-primary-teal)] dark:text-[var(--color-accent-sky)] hover:gap-3 transition-all duration-200 font-semibold"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  LinkedIn Profile
-                    <ArrowRight className="h-4 w-4" />
-                </a>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-10 lg:gap-12">
+            <div className="text-center p-8 md:p-10 lg:p-12 rounded-2xl border border-[var(--color-divider-gray)]/20 bg-white dark:bg-[var(--color-background-default)] shadow-sm hover:shadow-md transition-all duration-300">
+              <div className="inline-flex items-center justify-center p-4 rounded-xl bg-black/10 dark:bg-white/10 mb-6">
+                <Award className="h-10 w-10 text-black dark:text-white" />
               </div>
-            ))}
-          </div>
-        </div>
-
-          {/* CTA Section */}
-          <div className="p-12 text-center">
-            <div className="max-w-4xl mx-auto">
-              <h2 className="text-4xl font-bold text-[var(--color-text-primary)] mb-6">
-                Ready to Transform African Healthcare?
-              </h2>
-              <p className="text-xl text-[var(--color-text-secondary)] mb-8 leading-relaxed">
-                Join thousands of healthcare innovators, investors, and policymakers who trust Medarion 
-                for comprehensive African healthcare data and insights.
+              <h3 className="text-lg sm:text-xl font-semibold text-[var(--color-text-primary)] mb-4">Data Integrity</h3>
+              <p className="text-sm sm:text-base text-[var(--color-text-secondary)] leading-relaxed">
+                We maintain the highest standards of data accuracy and reliability, ensuring our users can make informed decisions.
               </p>
-              <div className="flex flex-row gap-4 justify-center">
-                <a 
-                  href="https://medarion.africa" 
-                  className="inline-flex items-center gap-2 bg-[var(--color-primary-teal)] text-white py-4 px-8 rounded-lg font-semibold hover:opacity-90 transition-all duration-200 text-lg"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  Visit Our Platform
-                  <ArrowRight className="h-5 w-5" />
-                </a>
-                <button className="inline-flex items-center gap-2 bg-white dark:bg-gray-800 text-[var(--color-primary-teal)] py-4 px-8 rounded-2xl font-semibold hover:bg-gray-50 dark:hover:bg-gray-700 transition-all duration-200 shadow-lg text-lg border-2 border-[var(--color-primary-teal)]">
-                  Learn More
-                  <Star className="h-5 w-5" />
-                </button>
             </div>
+            <div className="text-center p-8 md:p-10 lg:p-12 rounded-2xl border border-[var(--color-divider-gray)]/20 bg-white dark:bg-[var(--color-background-default)] shadow-sm hover:shadow-md transition-all duration-300">
+              <div className="inline-flex items-center justify-center p-4 rounded-xl bg-black/10 dark:bg-white/10 mb-6">
+                <Zap className="h-10 w-10 text-black dark:text-white" />
+              </div>
+              <h3 className="text-lg sm:text-xl font-semibold text-[var(--color-text-primary)] mb-4">Innovation</h3>
+              <p className="text-sm sm:text-base text-[var(--color-text-secondary)] leading-relaxed">
+                We leverage cutting-edge technology to solve complex challenges and drive meaningful change.
+              </p>
+            </div>
+            <div className="text-center p-8 md:p-10 lg:p-12 rounded-2xl border border-[var(--color-divider-gray)]/20 bg-white dark:bg-[var(--color-background-default)] shadow-sm hover:shadow-md transition-all duration-300">
+              <div className="inline-flex items-center justify-center p-4 rounded-xl bg-black/10 dark:bg-white/10 mb-6">
+                <Users className="h-10 w-10 text-black dark:text-white" />
+              </div>
+              <h3 className="text-lg sm:text-xl font-semibold text-[var(--color-text-primary)] mb-4">Collaboration</h3>
+              <p className="text-sm sm:text-base text-[var(--color-text-secondary)] leading-relaxed">
+                We believe in the power of partnerships and community to accelerate innovation across Africa.
+              </p>
             </div>
           </div>
-        </div>
+          </div>
+        </section>
+
+        {/* CTA Section */}
+        <section 
+          className="py-16 md:py-20 lg:py-24 rounded-2xl text-center transition-colors duration-500"
+          style={{ 
+            backgroundColor: theme === 'dark' ? 'var(--color-background-surface)' : '#F9F7F4'
+          }}
+        >
+          <div className="max-w-screen-2xl mx-auto px-6 md:px-8 lg:px-12 xl:px-16">
+            <div className="max-w-3xl mx-auto space-y-6">
+            <h2 className="text-xl sm:text-2xl md:text-3xl font-semibold text-[var(--color-text-primary)]">
+              Ready to transform Africa's ecosystem?
+            </h2>
+            <p className="text-base sm:text-lg text-[var(--color-text-secondary)] leading-relaxed">
+              Join thousands of innovators, investors, healthcare professionals, and policymakers leveraging Medarion for the most comprehensive AI-driven insights in Africa.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-4">
+              <a 
+                href="https://medarion.africa" 
+                className="inline-flex items-center gap-2 py-3 px-8 rounded-lg font-semibold hover:opacity-90 transition-all duration-200 text-base sm:text-lg shadow-md hover:shadow-lg"
+                style={{
+                  backgroundColor: 'var(--color-primary-teal)',
+                  color: theme === 'dark' ? '#000000' : '#FFFFFF'
+                }}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Visit Our Platform
+                <ArrowRight className="h-5 w-5" />
+              </a>
+              <a 
+                href="/contact" 
+                className="inline-flex items-center gap-2 bg-transparent text-black dark:text-white py-3 px-8 rounded-lg font-semibold hover:bg-black/10 dark:hover:bg-white/10 transition-all duration-200 text-base sm:text-lg border-2 border-black dark:border-white"
+              >
+                Contact Us
+                <Star className="h-5 w-5" />
+              </a>
+            </div>
+          </div>
+          </div>
+        </section>
       </div>
     </div>
   );

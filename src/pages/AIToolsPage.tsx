@@ -120,7 +120,7 @@ const AIToolsPage: React.FC = () => {
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'active': return 'bg-[var(--color-primary-teal)] text-white border border-[var(--color-primary-teal)]';
+      case 'active': return 'bg-black dark:bg-white text-white dark:text-black border border-black dark:border-white';
       case 'beta': return 'bg-blue-500 text-white dark:bg-blue-500 border border-blue-400';
       case 'coming_soon': return 'bg-amber-500 text-white dark:bg-amber-500 border border-amber-400';
       default: return 'bg-gray-500 text-white dark:bg-gray-500 border border-gray-400';
@@ -129,7 +129,7 @@ const AIToolsPage: React.FC = () => {
 
   const getTierColor = (tier: string) => {
     switch (tier) {
-      case 'free': return 'bg-[var(--color-primary-teal)] text-white border border-[var(--color-primary-teal)]';
+      case 'free': return 'bg-black dark:bg-white text-white dark:text-black border border-black dark:border-white';
       case 'paid': return 'bg-blue-500 text-white dark:bg-blue-500 border border-blue-400';
       case 'academic': return 'bg-purple-500 text-white dark:bg-purple-500 border border-purple-400';
       case 'enterprise': return 'bg-orange-500 text-white dark:bg-orange-500 border border-orange-400';
@@ -546,14 +546,14 @@ const AIToolsPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[var(--color-background-default)]">
-      <div className="max-w-7xl mx-auto px-6 lg:px-8 py-8">
+    <div className="w-full">
+      <div className="w-full">
         {/* Hero Header */}
         <div className="mb-8">
           <div className="card-glass p-6 shadow-soft mb-6">
             <div className="flex items-center gap-4 mb-4">
-              <div className="p-4 rounded-xl bg-[var(--color-primary-teal)] shadow-lg">
-                <Sparkles className="h-6 w-6 text-white" />
+              <div className="p-4 rounded-xl bg-black dark:bg-white shadow-lg">
+                <Sparkles className="h-6 w-6 text-white dark:text-black" />
               </div>
               <div>
                 <h1 className="text-3xl font-bold text-[var(--color-text-primary)]">AI Tools</h1>
@@ -623,7 +623,7 @@ const AIToolsPage: React.FC = () => {
         </div>
 
         {/* Tools Grid */}
-        <div className="grid grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+        <div className="grid grid-cols-2 grid-cols-3 gap-6 mb-8">
           {filteredTools.map((tool) => {
             const enabled = canAccessTool(tool);
             const Icon = iconMap[tool.id] || Bot;
@@ -649,8 +649,8 @@ const AIToolsPage: React.FC = () => {
 
                 {/* Icon */}
                 <div className="mb-4">
-                  <div className="w-12 h-12 rounded-xl bg-[var(--color-primary-teal)] flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-lg">
-                    <Icon className="h-6 w-6 text-white" />
+                  <div className="w-12 h-12 rounded-xl bg-black dark:bg-gray-700 flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-lg">
+                    <Icon className="h-6 w-6 text-white dark:text-white" />
                   </div>
                 </div>
 
@@ -707,8 +707,8 @@ const AIToolsPage: React.FC = () => {
         {runHistory.length > 0 && (
           <div className="card-glass p-6 shadow-soft mb-8">
             <div className="flex items-center gap-3 mb-4">
-              <div className="w-10 h-10 rounded-lg bg-[var(--color-primary-teal)] flex items-center justify-center shadow-lg">
-                <Clock className="h-5 w-5 text-white" />
+              <div className="w-10 h-10 rounded-lg bg-black dark:bg-white flex items-center justify-center shadow-lg">
+                <Clock className="h-5 w-5 text-white dark:text-black" />
               </div>
               <h3 className="text-lg font-bold text-[var(--color-text-primary)]">Recent Activity</h3>
             </div>
@@ -727,8 +727,8 @@ const AIToolsPage: React.FC = () => {
                   >
                     <div className="flex items-center gap-3">
                       {tool && iconMap[tool.id] ? (
-                        <div className="w-10 h-10 rounded-lg bg-[var(--color-primary-teal)] flex items-center justify-center shadow-lg">
-                          {React.createElement(iconMap[tool.id], { className: "h-5 w-5 text-white" })}
+                        <div className="w-10 h-10 rounded-lg bg-black dark:bg-white flex items-center justify-center shadow-lg">
+                          {React.createElement(iconMap[tool.id], { className: "h-5 w-5 text-white dark:text-black" })}
                         </div>
                       ) : null}
                       <div>
@@ -748,8 +748,8 @@ const AIToolsPage: React.FC = () => {
         {!aiPolicy.enabled && (
           <div className="card-glass p-8 shadow-soft mb-8 text-center border-2 border-[var(--color-primary-teal)]/20">
             <div className="flex items-center justify-center gap-3 mb-4">
-              <div className="w-12 h-12 rounded-xl bg-[var(--color-primary-teal)] flex items-center justify-center shadow-lg">
-                <Sparkles className="h-6 w-6 text-white" />
+              <div className="w-12 h-12 rounded-xl bg-black dark:bg-white flex items-center justify-center shadow-lg">
+                <Sparkles className="h-6 w-6 text-white dark:text-black" />
               </div>
               <h3 className="text-xl font-bold text-[var(--color-text-primary)]">Unlock AI Tools</h3>
             </div>
@@ -791,8 +791,8 @@ const AIToolsPage: React.FC = () => {
               <div className="sticky top-0 z-10 p-6 border-b border-[var(--color-divider-gray)]/50 card-glass backdrop-blur-lg flex-shrink-0">
                 <div className="flex items-start justify-between mb-4">
                   <div className="flex items-start gap-4">
-                    <div className="w-14 h-14 rounded-xl bg-[var(--color-primary-teal)] flex items-center justify-center shadow-lg">
-                      <ToolIcon className="h-7 w-7 text-white" />
+                    <div className="w-14 h-14 rounded-xl bg-black dark:bg-white flex items-center justify-center shadow-lg">
+                      <ToolIcon className="h-7 w-7 text-white dark:text-black" />
                     </div>
                     <div>
                       <div className="flex items-center gap-2 mb-2">
@@ -874,7 +874,7 @@ const AIToolsPage: React.FC = () => {
                     <h3 className="text-lg font-bold text-[var(--color-text-primary)] mb-4">Configure Parameters</h3>
                     <div className="grid grid-cols-2 gap-4">
                       {getToolParams(selectedTool).map((param) => (
-                        <div key={param.key} className={param.type === 'textarea' ? 'md:col-span-2' : ''}>
+                        <div key={param.key} className={param.type === 'textarea' ? 'col-span-2' : ''}>
                           <label className="block text-sm font-semibold text-[var(--color-text-primary)] mb-2">
                             {param.label}
                           </label>
@@ -891,7 +891,7 @@ const AIToolsPage: React.FC = () => {
                               type="file"
                               accept=".pdf"
                               onChange={(e) => setActionParams(prev => ({...prev, file: e.target.files?.[0]}))}
-                              className="w-full px-4 py-2.5 rounded-lg border border-[var(--color-divider-gray)] bg-[var(--color-background-surface)]/80 backdrop-blur-sm text-[var(--color-text-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary-teal)]/30 focus:border-[var(--color-primary-teal)] transition-all file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-[var(--color-primary-teal)] file:text-white hover:file:bg-[var(--color-primary-teal)]/90"
+                              className="w-full px-4 py-2.5 rounded-lg border border-[var(--color-divider-gray)] bg-[var(--color-background-surface)]/80 backdrop-blur-sm text-[var(--color-text-primary)] focus:outline-none focus:ring-2 focus:ring-black/30 dark:focus:ring-white/30 focus:border-black dark:focus:border-white transition-all file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-black dark:file:bg-white file:text-white dark:file:text-black hover:file:bg-black/90 dark:hover:file:bg-white/80"
                             />
                           ) : (
                             <input

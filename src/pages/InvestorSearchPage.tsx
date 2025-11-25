@@ -178,7 +178,7 @@ const InvestorSearchPage = () => {
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-2">
             <Search className="h-6 w-6 icon-primary" />
-            <h1 className="text-xl md:text-2xl font-bold text-[var(--color-text-primary)]">Investor Search</h1>
+            <h1 className="text-xl text-2xl font-bold text-[var(--color-text-primary)]">Investor Search</h1>
           </div>
           {canAI && (
             <button onClick={runAIMatch} className="btn-primary flex items-center space-x-2">
@@ -287,7 +287,7 @@ const InvestorSearchPage = () => {
             <div className="grid grid-cols-2 gap-4 mb-4">
               <div>
                 <p className="text-sm text-[var(--color-text-secondary)]">Total Invested</p>
-                <p className="text-lg font-bold text-[var(--color-accent-sky)]">${(investor.totalInvested / 1000000).toFixed(1)}M</p>
+                <p className="text-lg font-bold text-blue-600 dark:text-blue-400">${(investor.totalInvested / 1000000).toFixed(1)}M</p>
               </div>
               <div>
                 <p className="text-sm text-[var(--color-text-secondary)]">Avg Deal Size</p>
@@ -438,7 +438,7 @@ const InvestorSearchPage = () => {
                   <div className="space-y-2">
                     <div className="flex items-center space-x-2">
                       <Globe className="h-4 w-4 text-[var(--color-text-secondary)]" />
-                      <a href={showInvestorProfile.website} className="text-sm text-[var(--color-primary-teal)] hover:text-[var(--color-accent-sky)] hover:underline">
+                      <a href={showInvestorProfile.website} className="text-sm text-black dark:text-white hover:text-blue-600 dark:hover:text-blue-400 hover:underline">
                         {showInvestorProfile.website}
                       </a>
                     </div>
@@ -452,7 +452,7 @@ const InvestorSearchPage = () => {
                     </div>
                     <div className="flex items-center space-x-2">
                       <Linkedin className="h-4 w-4 text-[var(--color-text-secondary)]" />
-                      <a href={`https://${showInvestorProfile.linkedin}`} className="text-sm text-[var(--color-primary-teal)] hover:text-[var(--color-accent-sky)] hover:underline">
+                      <a href={`https://${showInvestorProfile.linkedin}`} className="text-sm text-black dark:text-white hover:text-blue-600 dark:hover:text-blue-400 hover:underline">
                         {showInvestorProfile.linkedin}
                       </a>
                     </div>
@@ -467,7 +467,7 @@ const InvestorSearchPage = () => {
                   <div className="grid grid-cols-2 gap-4 mb-4">
                     <div className="card-glass p-3 shadow-soft">
                       <p className="text-sm text-[var(--color-text-secondary)]">Total Invested</p>
-                      <p className="text-xl font-bold text-[var(--color-accent-sky)]">${(showInvestorProfile.totalInvested / 1000000).toFixed(1)}M</p>
+                      <p className="text-xl font-bold text-blue-600 dark:text-blue-400">${(showInvestorProfile.totalInvested / 1000000).toFixed(1)}M</p>
                     </div>
                     <div className="card-glass p-3 shadow-soft">
                       <p className="text-sm text-[var(--color-text-secondary)]">Deal Count</p>

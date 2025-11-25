@@ -56,9 +56,9 @@ const MonthlyGrantChart: React.FC<{ grants?: Grant[] }> = ({ grants = [] }) => {
   };
 
   return (
-    <div className="bg-white dark:bg-gray-800 p-4 md:p-6 rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm">
-      <h3 className="text-base md:text-lg font-semibold text-gray-900 dark:text-white mb-4">Monthly Grant & Funding</h3>
-      <div className="h-56 md:h-80">
+    <div className="bg-white dark:bg-gray-800 p-4 p-6 rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm">
+      <h3 className="text-base text-lg font-semibold text-gray-900 dark:text-white mb-4">Monthly Grant & Funding</h3>
+      <div className="h-56 h-80">
         <ResponsiveContainer width="100%" height="100%">
           <BarChart data={chartData} margin={{ top: 5, right: 16, left: 8, bottom: isSmall ? 10 : 30 }}>
             <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" className="dark:stroke-gray-600" />

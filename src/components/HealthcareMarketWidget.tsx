@@ -34,38 +34,38 @@ const HealthcareMarketWidget = () => {
   }, [countries, np]);
 
   return (
-    <div className="bg-white dark:bg-gray-800 p-4 md:p-6 rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm">
+    <div className="bg-white dark:bg-gray-800 p-4 p-6 rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm">
       <div className="flex items-center space-x-2 mb-4">
         <Activity className="h-5 w-5 text-primary-400" />
-        <h3 className="text-base md:text-lg font-semibold text-gray-900 dark:text-white">Healthcare Market Insights</h3>
+        <h3 className="text-base text-lg font-semibold text-gray-900 dark:text-white">Healthcare Market Insights</h3>
       </div>
       
       <div className="space-y-4">
-        <div className="grid grid-cols-2 gap-3 md:gap-4">
-          <div className="text-center p-2 md:p-3 bg-red-50 dark:bg-red-900/20 rounded-lg border border-red-200 dark:border-red-800">
-            <AlertTriangle className="h-5 w-5 md:h-6 md:w-6 text-red-500 mx-auto mb-2" />
-            <p className="text-xs md:text-sm text-red-700 dark:text-red-300 font-medium">High Mortality Markets</p>
+        <div className="grid grid-cols-2 gap-3 gap-4">
+          <div className="text-center p-2 p-3 bg-red-50 dark:bg-red-900/20 rounded-lg border border-red-200 dark:border-red-800">
+            <AlertTriangle className="h-5 w-5 h-6 w-6 text-red-500 mx-auto mb-2" />
+            <p className="text-xs text-sm text-red-700 dark:text-red-300 font-medium">High Mortality Markets</p>
             <p className="text-xs text-red-600 dark:text-red-400">Maternal & child health focus</p>
           </div>
           
-          <div className="text-center p-2 md:p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-800">
-            <Stethoscope className="h-5 w-5 md:h-6 md:w-6 text-blue-500 mx-auto mb-2" />
-            <p className="text-xs md:text-sm text-blue-700 dark:text-blue-300 font-medium">Physician Shortage</p>
+          <div className="text-center p-2 p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-800">
+            <Stethoscope className="h-5 w-5 h-6 w-6 text-blue-500 mx-auto mb-2" />
+            <p className="text-xs text-sm text-blue-700 dark:text-blue-300 font-medium">Physician Shortage</p>
             <p className="text-xs text-blue-600 dark:text-blue-400">Telemedicine opportunities</p>
           </div>
         </div>
 
         <div>
-          <h4 className="text-xs md:text-sm font-semibold text-gray-900 dark:text-white mb-3">Priority Markets by Health Needs</h4>
+          <h4 className="text-xs text-sm font-semibold text-gray-900 dark:text-white mb-3">Priority Markets by Health Needs</h4>
           <div className="space-y-2">
             {topChallenges.map((challenge, index) => (
-              <div key={`${challenge.country}-${index}`} className="flex items-center justify-between p-2 md:p-3 bg-gray-50 dark:bg-gray-700 rounded-lg border border-gray-200 dark:border-gray-600">
-                <div className="flex items-center space-x-2 md:space-x-3">
-                  <div className="w-5 h-5 md:w-6 md:h-6 bg-primary-600 rounded-full flex items-center justify-center text-white text-xs font-bold flex-shrink-0">
+              <div key={`${challenge.country}-${index}`} className="flex items-center justify-between p-2 p-3 bg-gray-50 dark:bg-gray-700 rounded-lg border border-gray-200 dark:border-gray-600">
+                <div className="flex items-center space-x-2 space-x-3">
+                  <div className="w-5 h-5 w-6 h-6 bg-primary-600 rounded-full flex items-center justify-center text-white text-xs font-bold flex-shrink-0">
                     {index + 1}
                   </div>
                   <div>
-                    <p className="text-xs md:text-sm font-medium text-gray-900 dark:text-white">{challenge.country}</p>
+                    <p className="text-xs text-sm font-medium text-gray-900 dark:text-white">{challenge.country}</p>
                     <p className="text-xs text-gray-600 dark:text-gray-400">
                       Market: {challenge.market_size.toFixed(1)}M people
                     </p>
@@ -91,21 +91,21 @@ const HealthcareMarketWidget = () => {
         </div>
 
         <div className="border-t border-gray-200 dark:border-gray-600 pt-4">
-          <div className="grid grid-cols-3 gap-2 md:gap-4 text-center">
+          <div className="grid grid-cols-3 gap-2 gap-4 text-center">
             <div>
-              <p className="text-base md:text-lg font-bold text-gray-900 dark:text-white">
+              <p className="text-base text-lg font-bold text-gray-900 dark:text-white">
                 {(totals.totalPop / 1_000_000_000).toFixed(1)}B
               </p>
               <p className="text-xs text-gray-600 dark:text-gray-400">Total Population</p>
             </div>
             <div>
-              <p className="text-base md:text-lg font-bold text-gray-900 dark:text-white">
+              <p className="text-base text-lg font-bold text-gray-900 dark:text-white">
                 ${Math.round(totals.avgSpend)}
               </p>
               <p className="text-xs text-gray-600 dark:text-gray-400">Avg Health Spend</p>
             </div>
             <div>
-              <p className="text-base md:text-lg font-bold text-gray-900 dark:text-white">
+              <p className="text-base text-lg font-bold text-gray-900 dark:text-white">
                 {totals.avgPhys.toFixed(1)}
               </p>
               <p className="text-xs text-gray-600 dark:text-gray-400">Physicians/10K</p>

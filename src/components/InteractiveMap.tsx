@@ -388,7 +388,7 @@ const InteractiveMap: React.FC<InteractiveMapProps> = ({
 
 			{selectedCountry && (
 				<div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-					<div className="bg-[var(--color-background-surface)] rounded-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto border border-[var(--color-divider-gray)]">
+					<div className="bg-[var(--color-background-surface)] rounded-lg max-w-2xl w-full max-h-[700px] overflow-y-auto border border-[var(--color-divider-gray)]">
 						<div className="p-6">
 							<div className="flex justify-between items-start mb-4">
 								<h3 className="text-xl font-semibold text-[var(--color-text-primary)]">{selectedCountry.name}</h3>
@@ -447,7 +447,7 @@ const InteractiveMap: React.FC<InteractiveMapProps> = ({
 									</div>
 								</div>
 
-								<div className="md:col-span-2">
+								<div className="col-span-2">
 									<h4 className="font-medium text-[var(--color-text-primary)] mb-3">Key Sectors</h4>
 									<div className="flex flex-wrap gap-2">
 										{selectedCountry.sectors.map((sector) => (
@@ -461,9 +461,9 @@ const InteractiveMap: React.FC<InteractiveMapProps> = ({
 									</div>
 								</div>
 
-								<div className="md:col-span-2">
+								<div className="col-span-2">
 									<h4 className="font-medium text-[var(--color-text-primary)] mb-3">Top Companies</h4>
-									<div className="grid grid-cols-2 md:grid-cols-4 gap-2">
+									<div className="grid grid-cols-2 grid-cols-4 gap-2">
 										{selectedCountry.topCompanies.map((company) => (
 											<span
 												key={company}
@@ -475,7 +475,7 @@ const InteractiveMap: React.FC<InteractiveMapProps> = ({
 									</div>
 								</div>
 
-								<div className="md:col-span-2">
+								<div className="col-span-2">
 									<h4 className="font-medium text-[var(--color-text-primary)] mb-3">Investment Focus</h4>
 									<div className="flex flex-wrap gap-2">
 										{selectedCountry.investmentTrends.focus.map((focus) => (
@@ -489,7 +489,7 @@ const InteractiveMap: React.FC<InteractiveMapProps> = ({
 									</div>
 								</div>
 
-								<div className="md:col-span-2">
+								<div className="col-span-2">
 									<h4 className="font-medium text-[var(--color-text-primary)] mb-3">Key Challenges</h4>
 									<div className="flex flex-wrap gap-2">
 										{selectedCountry.investmentTrends.challenges.map((challenge) => (

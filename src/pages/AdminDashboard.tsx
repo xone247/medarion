@@ -10,7 +10,7 @@ import {
   UserCheck, Globe, Shield, Zap, Target, DollarSign, Calendar,
   Edit, MoreVertical, UserX, UserCheck as UserCheckIcon, Key, 
   Search, Filter, Download, Upload, Ban, Unlock, Mail, Phone, MousePointer, X,
-  Building2, RefreshCw, Sparkles, Loader2, Image, Bell, Video, ExternalLink, Check, Send
+  Building2, RefreshCw, Sparkles, Loader2, Image, Bell, Video, ExternalLink, Check, Send, FileText
 } from 'lucide-react';
 import { ACCESS_MATRIX } from '../types/accessControl';
 import { adminApi, type BlogPost, type Advertisement, type UserOverride, type PlatformConfig, type AdminOverview, type SystemSetting, type User, type Module } from '../services/adminApi';
@@ -30,10 +30,10 @@ const RevenueByTierChart: React.FC<{
   // Handle empty or invalid data
   if (!data || data.length === 0) {
     return (
-      <div className="card-glass p-6 rounded-xl border border-[var(--color-divider-gray)] bg-[var(--color-background-surface)]">
-        <h3 className="text-lg font-semibold text-[var(--color-text-primary)] mb-4">{title}</h3>
-        <div className="text-center text-[var(--color-text-secondary)] py-8">
-          <p>No data available</p>
+      <div className="card-glass p-3 rounded-lg">
+        <h3 className="text-base font-semibold text-slate-700 dark:text-slate-200 mb-3">{title}</h3>
+        <div className="text-center text-slate-500 dark:text-slate-400 py-6">
+          <p className="text-xs">No data available</p>
         </div>
       </div>
     );
@@ -43,10 +43,10 @@ const RevenueByTierChart: React.FC<{
   const validData = data.filter(item => item && typeof item.value === 'number' && !isNaN(item.value));
   if (validData.length === 0) {
     return (
-      <div className="card-glass p-6 rounded-xl border border-[var(--color-divider-gray)] bg-[var(--color-background-surface)]">
-        <h3 className="text-lg font-semibold text-[var(--color-text-primary)] mb-4">{title}</h3>
-        <div className="text-center text-[var(--color-text-secondary)] py-8">
-          <p>No valid data available</p>
+      <div className="card-glass p-3 rounded-lg">
+        <h3 className="text-base font-semibold text-slate-700 dark:text-slate-200 mb-3">{title}</h3>
+        <div className="text-center text-slate-500 dark:text-slate-400 py-6">
+          <p className="text-xs">No valid data available</p>
         </div>
       </div>
     );
@@ -56,10 +56,10 @@ const RevenueByTierChart: React.FC<{
   const totalRevenue = validData.reduce((sum, item) => sum + (item.value || 0), 0);
   
   const tierColors = {
-    'Free': 'bg-gradient-to-r from-gray-400 to-gray-600',
-    'Pro': 'bg-gradient-to-r from-blue-500 to-blue-700',
-    'Enterprise': 'bg-gradient-to-r from-purple-500 to-purple-700',
-    'Academic': 'bg-gradient-to-r from-green-500 to-green-700'
+    'Free': 'bg-gradient-to-r from-slate-400 to-slate-500',
+    'Pro': 'bg-gradient-to-r from-cyan-500 to-teal-600',
+    'Enterprise': 'bg-gradient-to-r from-indigo-500 to-purple-600',
+    'Academic': 'bg-gradient-to-r from-emerald-500 to-green-600'
   };
   
   const tierIcons = {
@@ -70,42 +70,44 @@ const RevenueByTierChart: React.FC<{
   };
   
   return (
-    <div className="card-glass p-6 rounded-xl border border-[var(--color-divider-gray)] bg-[var(--color-background-surface)]">
-      <div className="flex items-center justify-between mb-6">
-        <h3 className="text-lg font-semibold text-[var(--color-text-primary)]">{title}</h3>
+    <div className="card-glass p-3 rounded-lg h-full flex flex-col">
+      <div className="flex items-center justify-between mb-3">
+        <h3 className="text-base font-semibold text-slate-700 dark:text-slate-200">{title}</h3>
         <div className="text-right">
-          <div className="text-2xl font-bold text-[var(--color-text-primary)]">${totalRevenue.toLocaleString()}</div>
-          <div className="text-sm text-[var(--color-text-secondary)]">Total Revenue</div>
+          <div className="text-xl font-bold text-slate-700 dark:text-slate-200">${totalRevenue.toLocaleString()}</div>
+          <div className="text-xs text-slate-500 dark:text-slate-400">Total Revenue</div>
         </div>
       </div>
       
-      <div className="space-y-4">
+      <div className="flex-1 flex flex-col">
+        <div className="space-y-2">
         {validData.map((item, index) => {
           const percentage = (item.value / maxValue) * 100;
           const revenuePercentage = totalRevenue > 0 ? (item.value / totalRevenue) * 100 : 0;
           
           return (
-            <div key={index} className="space-y-2">
+            <div key={index} className="space-y-1.5">
               <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <span className="text-lg">{tierIcons[item.label as keyof typeof tierIcons] || '💼'}</span>
-                  <span className="font-medium text-[var(--color-text-primary)]">{item.label}</span>
+                <div className="flex items-center gap-1.5">
+                  <span className="text-base">{tierIcons[item.label as keyof typeof tierIcons] || '💼'}</span>
+                  <span className="text-sm font-medium text-slate-700 dark:text-slate-200">{item.label}</span>
                 </div>
                 <div className="text-right">
-                  <div className="font-semibold text-[var(--color-text-primary)]">${item.value.toLocaleString()}</div>
-                  <div className="text-sm text-[var(--color-text-secondary)]">{revenuePercentage.toFixed(1)}%</div>
+                  <div className="text-sm font-semibold text-slate-700 dark:text-slate-200">${item.value.toLocaleString()}</div>
+                  <div className="text-xs text-slate-500 dark:text-slate-400">{revenuePercentage.toFixed(1)}%</div>
                 </div>
               </div>
               
-              <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-3">
+              <div className="w-full bg-slate-100 dark:bg-slate-700/30 rounded-full h-1.5">
                 <div 
-                  className={`h-3 rounded-full ${tierColors[item.label as keyof typeof tierColors] || 'bg-gray-500'}`}
+                  className={`h-1.5 rounded-full transition-all duration-500 ${tierColors[item.label as keyof typeof tierColors] || 'bg-slate-400'}`}
                   style={{ width: `${Math.max(percentage, 2)}%` }}
                 />
               </div>
             </div>
           );
         })}
+        </div>
       </div>
     </div>
   );
@@ -125,56 +127,70 @@ const StatCard: React.FC<{
   icon: React.ComponentType<any>;
   color?: 'primary' | 'success' | 'accent' | 'sky' | 'error';
 }> = ({ title, value, change, icon: Icon, color = 'primary' }) => {
+  // Modern, professional color palette - easy on the eyes
+  // Solid darker colors in light mode for white icon visibility, gradients for dark mode
   const colorClasses = {
     primary: {
-      bg: 'bg-[var(--color-primary-teal)]/10',
-      text: 'text-[var(--color-primary-teal)]',
-      iconBg: 'bg-[var(--color-primary-teal)]',
-      change: change >= 0 ? 'text-green-600' : 'text-red-600'
+      bg: 'bg-cyan-50/50 dark:bg-cyan-950/30',
+      text: 'text-slate-700 dark:text-slate-200',
+      iconBg: 'bg-teal-600 dark:bg-gradient-to-br dark:from-cyan-500 dark:to-teal-500',
+      hoverBg: 'from-cyan-500/10 to-teal-500/10 dark:from-cyan-500/15 dark:to-teal-500/15',
+      change: change >= 0 ? 'text-emerald-600 dark:text-emerald-400' : 'text-rose-600 dark:text-rose-400'
     },
     success: {
-      bg: 'bg-[var(--color-success)]/10',
-      text: 'text-[var(--color-success)]',
-      iconBg: 'bg-[var(--color-success)]',
-      change: change >= 0 ? 'text-green-600' : 'text-red-600'
+      bg: 'bg-emerald-50/50 dark:bg-emerald-950/30',
+      text: 'text-slate-700 dark:text-slate-200',
+      iconBg: 'bg-green-600 dark:bg-gradient-to-br dark:from-emerald-500 dark:to-green-500',
+      hoverBg: 'from-emerald-500/10 to-green-500/10 dark:from-emerald-500/15 dark:to-green-500/15',
+      change: change >= 0 ? 'text-emerald-600 dark:text-emerald-400' : 'text-rose-600 dark:text-rose-400'
     },
     accent: {
-      bg: 'bg-[var(--color-warning)]/10',
-      text: 'text-[var(--color-warning)]',
-      iconBg: 'bg-[var(--color-warning)]',
-      change: change >= 0 ? 'text-green-600' : 'text-red-600'
+      bg: 'bg-amber-50/50 dark:bg-amber-950/30',
+      text: 'text-slate-700 dark:text-slate-200',
+      iconBg: 'bg-orange-600 dark:bg-gradient-to-br dark:from-amber-500 dark:to-orange-500',
+      hoverBg: 'from-amber-500/10 to-orange-500/10 dark:from-amber-500/15 dark:to-orange-500/15',
+      change: change >= 0 ? 'text-emerald-600 dark:text-emerald-400' : 'text-rose-600 dark:text-rose-400'
     },
     sky: {
-      bg: 'bg-[var(--color-info)]/10',
-      text: 'text-[var(--color-info)]',
-      iconBg: 'bg-[var(--color-info)]',
-      change: change >= 0 ? 'text-green-600' : 'text-red-600'
+      bg: 'bg-indigo-50/50 dark:bg-indigo-950/30',
+      text: 'text-slate-700 dark:text-slate-200',
+      iconBg: 'bg-blue-600 dark:bg-gradient-to-br dark:from-indigo-500 dark:to-blue-500',
+      hoverBg: 'from-indigo-500/10 to-blue-500/10 dark:from-indigo-500/15 dark:to-blue-500/15',
+      change: change >= 0 ? 'text-emerald-600 dark:text-emerald-400' : 'text-rose-600 dark:text-rose-400'
     },
     error: {
-      bg: 'bg-[var(--color-error)]/10',
-      text: 'text-[var(--color-error)]',
-      iconBg: 'bg-[var(--color-error)]',
-      change: change >= 0 ? 'text-green-600' : 'text-red-600'
+      bg: 'bg-rose-50/50 dark:bg-rose-950/30',
+      text: 'text-slate-700 dark:text-slate-200',
+      iconBg: 'bg-pink-600 dark:bg-gradient-to-br dark:from-rose-500 dark:to-pink-500',
+      hoverBg: 'from-rose-500/10 to-pink-500/10 dark:from-rose-500/15 dark:to-pink-500/15',
+      change: change >= 0 ? 'text-emerald-600 dark:text-emerald-400' : 'text-rose-600 dark:text-rose-400'
     }
   };
 
   const classes = colorClasses[color];
 
   return (
-    <div className="card-glass p-6 rounded-xl border border-[var(--color-divider-gray)] bg-[var(--color-background-surface)] hover:shadow-lg transition-all duration-300">
-      <div className="flex items-center justify-between">
-        <div className="flex-1">
-          <p className="text-sm font-medium text-[var(--color-text-secondary)] mb-1">{title}</p>
-          <p className="text-3xl font-bold text-[var(--color-text-primary)] mb-2">{value}</p>
+    <div className={`card-glass p-3 rounded-lg hover:shadow-lg transition-all duration-200 group relative overflow-hidden h-full flex flex-col ${classes.bg}`}>
+      {/* Subtle gradient background on hover */}
+      <div className={`absolute inset-0 bg-gradient-to-br opacity-0 group-hover:opacity-100 transition-opacity duration-200 ${classes.hoverBg}`}></div>
+      
+      <div className="relative flex items-center justify-between flex-1">
+        <div className="flex-1 min-w-0">
+          <p className="text-xs font-medium text-slate-500 dark:text-slate-400 mb-1 uppercase tracking-wide">{title}</p>
+          <p className={`text-2xl font-bold mb-1.5 ${classes.text}`}>{value}</p>
           {change !== undefined && (
-            <div className={`flex items-center text-sm font-medium ${classes.change}`}>
-              {change >= 0 ? <TrendingUp className="h-4 w-4 mr-1" /> : <TrendingDown className="h-4 w-4 mr-1" />}
+            <div className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-semibold ${
+              change >= 0 
+                ? 'bg-emerald-100 dark:bg-emerald-500/20 text-emerald-700 dark:text-emerald-300' 
+                : 'bg-rose-100 dark:bg-rose-500/20 text-rose-700 dark:text-rose-300'
+            }`}>
+              {change >= 0 ? <TrendingUp className="h-3 w-3 mr-0.5" /> : <TrendingDown className="h-3 w-3 mr-0.5" />}
               {Math.abs(change)}%
             </div>
           )}
         </div>
-        <div className={`p-4 rounded-xl ${classes.iconBg} shadow-lg`}>
-          <Icon className="h-6 w-6 text-white" />
+        <div className={`p-2.5 rounded-lg ${classes.iconBg} flex-shrink-0 ml-3 shadow-md group-hover:scale-105 transition-transform duration-200`}>
+          <Icon className="h-5 w-5 text-white !text-white" />
         </div>
       </div>
     </div>
@@ -188,45 +204,41 @@ const SimpleBarChart: React.FC<{
 }> = ({ data, title, color = 'primary' }) => {
   const maxValue = Math.max(...data.map(d => d.value));
   
+  // Modern professional gradients
   const colorClasses = {
-    primary: 'bg-gradient-to-r from-[#00665C] to-[#00665C]',
-    success: 'bg-gradient-to-r from-[#00665C] to-[#00665C]',
-    accent: 'bg-gradient-to-r from-[#F4A300] to-[#F59E0B]',
-    sky: 'bg-gradient-to-r from-[#38BDF8] to-[#0EA5E9]'
+    primary: 'bg-gradient-to-r from-cyan-500 to-teal-600 dark:from-cyan-500 dark:to-teal-600',
+    success: 'bg-gradient-to-r from-emerald-500 to-green-600 dark:from-emerald-500 dark:to-green-600',
+    accent: 'bg-gradient-to-r from-amber-500 to-orange-500 dark:from-amber-500 dark:to-orange-500',
+    sky: 'bg-gradient-to-r from-indigo-500 to-blue-600 dark:from-indigo-500 dark:to-blue-600'
   };
   
   const colorMap = {
-    primary: '#00665C',
-    success: '#00665C',
-    accent: '#F4A300',
-    sky: '#38BDF8'
+    primary: '#06b6d4', // cyan-500
+    success: '#10b981', // emerald-500
+    accent: '#f59e0b', // amber-500
+    sky: '#6366f1' // indigo-500
   };
   
   return (
-    <div className="card-glass p-6 rounded-xl border border-[var(--color-divider-gray)] bg-[var(--color-background-surface)]">
-      <h3 className="text-lg font-semibold text-[var(--color-text-primary)] mb-6">{title}</h3>
-      <div className="space-y-4">
+    <div className="card-glass p-3 rounded-lg">
+      <h3 className="text-base font-semibold text-slate-700 dark:text-slate-200 mb-3">{title}</h3>
+      <div className="space-y-2">
         {data.map((item, index) => {
           const percentage = (item.value / maxValue) * 100;
           const barColor = colorMap[color];
           
           return (
-            <div key={index} className="space-y-2">
+            <div key={index} className="space-y-1.5">
               <div className="flex items-center justify-between">
-                <div className="text-sm font-medium text-[var(--color-text-primary)]">{item.label}</div>
-                <div className="text-sm font-semibold text-[var(--color-text-primary)]">{item.value}</div>
+                <div className="text-xs font-medium text-slate-700 dark:text-slate-200">{item.label}</div>
+                <div className="text-xs font-semibold text-slate-700 dark:text-slate-200">{item.value.toLocaleString()}</div>
               </div>
               <div className="relative">
-                <div className="w-full bg-[var(--color-neutral-taupe)] rounded-full h-4 overflow-hidden">
+                <div className="w-full bg-slate-100 dark:bg-slate-700/30 rounded-full h-2 overflow-hidden">
                   <div 
-                    className={`${colorClasses[color]} h-4 rounded-full transition-all duration-700 ease-out shadow-sm`}
+                    className={`${colorClasses[color]} h-2 rounded-full transition-all duration-700 ease-out`}
                     style={{ width: `${percentage}%` }}
                   />
-                </div>
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <span className="text-xs font-bold text-white drop-shadow-sm">
-                    {percentage > 15 ? `${percentage.toFixed(0)}%` : ''}
-                  </span>
                 </div>
               </div>
             </div>
@@ -245,10 +257,10 @@ const UserGrowthChart: React.FC<{
   // Handle empty or invalid data
   if (!data || data.length === 0) {
     return (
-      <div className="card-glass p-6 rounded-xl border border-[var(--color-divider-gray)] bg-[var(--color-background-surface)]">
-        <h3 className="text-lg font-semibold text-[var(--color-text-primary)] mb-4">{title}</h3>
-        <div className="text-center text-[var(--color-text-secondary)] py-8">
-          <p>No data available</p>
+      <div className="card-glass p-4 rounded-lg">
+        <h3 className="text-base font-semibold text-slate-700 dark:text-slate-200 mb-3">{title}</h3>
+        <div className="text-center text-slate-500 dark:text-slate-400 py-6">
+          <p className="text-sm">No data available</p>
         </div>
       </div>
     );
@@ -260,31 +272,29 @@ const UserGrowthChart: React.FC<{
   const avgGrowth = Math.floor(totalUsers / data.length);
   
   return (
-    <div className="card-glass p-6 rounded-xl border border-[var(--color-divider-gray)] bg-[var(--color-background-surface)] overflow-hidden relative">
-      {/* Background Pattern */}
-      <div className="absolute inset-0 opacity-5">
-        <div className="absolute inset-0 bg-gradient-to-br from-[var(--color-primary-teal)]/10 via-transparent to-[var(--color-accent-orange)]/10"></div>
-        <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-bl from-[var(--color-primary-teal)]/20 to-transparent rounded-full -translate-y-16 translate-x-16"></div>
-        <div className="absolute bottom-0 left-0 w-24 h-24 bg-gradient-to-tr from-[var(--color-accent-orange)]/20 to-transparent rounded-full translate-y-12 -translate-x-12"></div>
+    <div className="card-glass p-3 rounded-lg overflow-hidden relative h-full flex flex-col">
+      {/* Subtle Background Pattern */}
+      <div className="absolute inset-0 opacity-[0.03] dark:opacity-[0.05]">
+        <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/20 via-transparent to-teal-500/20"></div>
       </div>
       
       {/* Header */}
-      <div className="relative z-10 flex items-center justify-between mb-8">
+      <div className="relative z-10 flex items-center justify-between mb-3">
         <div>
-          <h3 className="text-xl font-bold text-[var(--color-text-primary)] mb-1">{title}</h3>
-          <p className="text-sm text-[var(--color-text-secondary)]">User acquisition over time</p>
+          <h3 className="text-base font-semibold text-slate-700 dark:text-slate-200 mb-0.5">{title}</h3>
+          <p className="text-xs text-slate-500 dark:text-slate-400">User acquisition over time</p>
         </div>
         <div className="text-right">
-          <div className="text-3xl font-bold bg-gradient-to-r from-[var(--color-primary-teal)] to-[var(--color-accent-orange)] bg-clip-text text-transparent">
+          <div className="text-xl font-bold text-slate-700 dark:text-slate-200">
             {totalUsers}
           </div>
-          <div className="text-sm text-[var(--color-text-secondary)]">Total Users</div>
+          <div className="text-xs text-slate-500 dark:text-slate-400">Total Users</div>
         </div>
       </div>
       
       {/* Modern Chart Area */}
-      <div className="relative z-10 mb-8">
-        <div className="flex items-end justify-between h-40 space-x-3">
+      <div className="relative z-10 mb-3 flex-1">
+        <div className="flex items-end justify-between h-24 space-x-1.5">
           {data.map((item, index) => {
             const height = (item.value / maxValue) * 100;
             const isHighest = item.value === maxValue;
@@ -292,35 +302,35 @@ const UserGrowthChart: React.FC<{
             
             return (
               <div key={index} className="flex flex-col items-center flex-1 group">
-                <div className="relative w-full flex justify-center mb-3">
+                <div className="relative w-full flex justify-center mb-2">
                   {/* Bar */}
                   <div 
-                    className={`relative rounded-t-2xl transition-all duration-700 ease-out shadow-lg hover:shadow-xl cursor-pointer group-hover:scale-105 ${
+                    className={`relative rounded-t-lg transition-all duration-700 ease-out shadow-md hover:shadow-lg cursor-pointer group-hover:scale-105 ${
                       isLatest 
-                        ? 'bg-gradient-to-t from-[var(--color-primary-teal)] to-[var(--color-accent-orange)]' 
-                        : 'bg-gradient-to-t from-[var(--color-primary-teal)]/80 to-[var(--color-primary-teal)]/40'
+                        ? 'bg-gradient-to-t from-cyan-600 to-teal-600' 
+                        : 'bg-gradient-to-t from-cyan-500 to-teal-500'
                     }`}
                     style={{ 
-                      height: `${Math.max(height, 12)}%`,
-                      width: '70%',
-                      minHeight: '12px'
+                      height: `${Math.max(height, 8)}%`,
+                      width: '75%',
+                      minHeight: '8px'
                     }}
                     title={`${item.label}: ${item.value} users`}
                   >
                     {/* Shine effect */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-transparent via-white/20 to-transparent rounded-t-2xl"></div>
+                    <div className="absolute inset-0 bg-gradient-to-t from-transparent via-white/20 to-transparent rounded-t-lg"></div>
                   </div>
                   
                   {/* Value label */}
                   {isHighest && (
-                    <div className="absolute -top-8 bg-[var(--color-text-primary)] text-white text-xs px-3 py-1 rounded-full shadow-lg font-medium">
+                    <div className="absolute -top-6 bg-teal-600 text-white text-xs px-2 py-0.5 rounded-full shadow-md font-medium">
                       {item.value}
                     </div>
                   )}
                   
                   {/* Latest indicator */}
                   {isLatest && (
-                    <div className="absolute -top-8 right-0 bg-[var(--color-accent-orange)] text-white text-xs px-2 py-1 rounded-full font-medium">
+                    <div className="absolute -top-6 right-0 bg-amber-500 text-white text-xs px-1.5 py-0.5 rounded-full font-medium">
                       Latest
                     </div>
                   )}
@@ -328,11 +338,11 @@ const UserGrowthChart: React.FC<{
                 
                 {/* Month label */}
                 <div className="text-center">
-                  <div className="text-sm font-semibold text-[var(--color-text-primary)] group-hover:text-[var(--color-primary-teal)] transition-colors">
+                  <div className="text-xs font-medium text-slate-700 dark:text-slate-200 group-hover:text-cyan-600 dark:group-hover:text-cyan-400 transition-colors">
                     {item.label}
                   </div>
-                  <div className="text-xs text-[var(--color-text-secondary)] mt-1">
-                    {item.value} users
+                  <div className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+                    {item.value}
                   </div>
                 </div>
               </div>
@@ -341,54 +351,45 @@ const UserGrowthChart: React.FC<{
         </div>
       </div>
       
-      {/* Enhanced Statistics Grid */}
-      <div className="relative z-10 grid grid-cols-3 gap-4">
-        <div className="bg-gradient-to-br from-[var(--color-primary-teal)]/10 to-[var(--color-primary-teal)]/5 p-4 rounded-xl border border-[var(--color-primary-teal)]/20">
-          <div className="flex items-center space-x-3">
-            <div className="p-2 bg-[var(--color-primary-teal)]/20 rounded-lg">
-              <TrendingUp className="h-5 w-5 text-[var(--color-primary-teal)]" />
+      {/* Enhanced Statistics Grid - Compact */}
+      <div className="relative z-10 grid grid-cols-3 gap-2">
+        <div className="bg-cyan-50/50 dark:bg-cyan-950/30 p-2 rounded-lg border border-cyan-100 dark:border-cyan-900/50">
+          <div className="flex items-center space-x-1.5">
+            <div className="p-1 bg-cyan-100 dark:bg-cyan-500/30 rounded">
+              <TrendingUp className="h-3.5 w-3.5 text-cyan-600 dark:text-cyan-400" />
             </div>
-            <div>
-              <div className="text-xs text-[var(--color-text-secondary)]">Peak Month</div>
-              <div className="font-bold text-[var(--color-text-primary)]">
+            <div className="min-w-0">
+              <div className="text-xs text-slate-500 dark:text-slate-400">Peak</div>
+              <div className="text-xs font-semibold text-slate-700 dark:text-slate-200 truncate">
                 {peakMonth?.label || 'N/A'}
               </div>
-              <div className="text-xs text-[var(--color-text-secondary)]">
-                {maxValue} users
+            </div>
+          </div>
+        </div>
+        
+        <div className="bg-emerald-50/50 dark:bg-emerald-950/30 p-2 rounded-lg border border-emerald-100 dark:border-emerald-900/50">
+          <div className="flex items-center space-x-1.5">
+            <div className="p-1 bg-emerald-100 dark:bg-emerald-500/30 rounded">
+              <Users className="h-3.5 w-3.5 text-emerald-600 dark:text-emerald-400" />
+            </div>
+            <div className="min-w-0">
+              <div className="text-xs text-slate-500 dark:text-slate-400">Growth</div>
+              <div className="text-xs font-semibold text-slate-700 dark:text-slate-200">
+                +{totalUsers}
               </div>
             </div>
           </div>
         </div>
         
-        <div className="bg-gradient-to-br from-green-500/10 to-green-500/5 p-4 rounded-xl border border-green-500/20">
-          <div className="flex items-center space-x-3">
-            <div className="p-2 bg-green-500/20 rounded-lg">
-              <Users className="h-5 w-5 text-green-500" />
+        <div className="bg-indigo-50/50 dark:bg-indigo-950/30 p-2 rounded-lg border border-indigo-100 dark:border-indigo-900/50">
+          <div className="flex items-center space-x-1.5">
+            <div className="p-1 bg-indigo-100 dark:bg-indigo-500/30 rounded">
+              <Activity className="h-3.5 w-3.5 text-indigo-600 dark:text-indigo-400" />
             </div>
-            <div>
-              <div className="text-xs text-[var(--color-text-secondary)]">Total Growth</div>
-              <div className="font-bold text-green-600">
-                +{totalUsers} users
-              </div>
-              <div className="text-xs text-[var(--color-text-secondary)]">
-                last {data.length} months
-              </div>
-            </div>
-          </div>
-        </div>
-        
-        <div className="bg-gradient-to-br from-blue-500/10 to-blue-500/5 p-4 rounded-xl border border-blue-500/20">
-          <div className="flex items-center space-x-3">
-            <div className="p-2 bg-blue-500/20 rounded-lg">
-              <Activity className="h-5 w-5 text-blue-500" />
-            </div>
-            <div>
-              <div className="text-xs text-[var(--color-text-secondary)]">Avg. Growth</div>
-              <div className="font-bold text-blue-600">
-                +{avgGrowth}/month
-              </div>
-              <div className="text-xs text-[var(--color-text-secondary)]">
-                consistent growth
+            <div className="min-w-0">
+              <div className="text-xs text-slate-500 dark:text-slate-400">Avg</div>
+              <div className="text-xs font-semibold text-slate-700 dark:text-slate-200">
+                +{avgGrowth}/mo
               </div>
             </div>
           </div>
@@ -406,10 +407,10 @@ const CustomPieChart: React.FC<{
   // Handle empty or invalid data
   if (!data || data.length === 0) {
     return (
-      <div className="card-glass p-6 rounded-xl border border-[var(--color-divider-gray)] bg-[var(--color-background-surface)]">
-        <h3 className="text-lg font-semibold text-[var(--color-text-primary)] mb-4">{title}</h3>
-        <div className="text-center text-[var(--color-text-secondary)] py-8">
-          <p>No data available</p>
+      <div className="card-glass p-3 rounded-lg">
+        <h3 className="text-base font-semibold text-slate-700 dark:text-slate-200 mb-3">{title}</h3>
+        <div className="text-center text-slate-500 dark:text-slate-400 py-6">
+          <p className="text-xs">No data available</p>
         </div>
       </div>
     );
@@ -419,30 +420,31 @@ const CustomPieChart: React.FC<{
   
   if (total === 0) {
     return (
-      <div className="card-glass p-6 rounded-xl border border-[var(--color-divider-gray)] bg-[var(--color-background-surface)]">
-        <h3 className="text-lg font-semibold text-[var(--color-text-primary)] mb-4">{title}</h3>
-        <div className="text-center text-[var(--color-text-secondary)] py-8">
-          <p>No data to display</p>
+      <div className="card-glass p-3 rounded-lg">
+        <h3 className="text-base font-semibold text-slate-700 dark:text-slate-200 mb-3">{title}</h3>
+        <div className="text-center text-slate-500 dark:text-slate-400 py-6">
+          <p className="text-xs">No data to display</p>
         </div>
       </div>
     );
   }
   
+  // Modern professional color palette
   const colorMap = {
-    'primary': '#00665C',
-    'success': '#00665C',
-    'accent': '#F4A300',
-    'sky': '#38BDF8',
-    'purple': '#8B5CF6',
-    'pink': '#EC4899',
-    'orange': '#F97316',
-    'teal': '#00665C',
-    'red': '#EF4444',
-    'blue': '#3B82F6',
-    'green': '#00665C',
-    'yellow': '#F59E0B',
-    'indigo': '#6366F1',
-    'gray': '#6B7280'
+    'primary': '#06b6d4', // cyan-500
+    'success': '#10b981', // emerald-500
+    'accent': '#f59e0b', // amber-500
+    'sky': '#6366f1', // indigo-500
+    'purple': '#8b5cf6', // violet-500
+    'pink': '#ec4899', // pink-500
+    'orange': '#f97316', // orange-500
+    'teal': '#14b8a6', // teal-500
+    'red': '#ef4444', // red-500
+    'blue': '#3b82f6', // blue-500
+    'green': '#10b981', // emerald-500
+    'yellow': '#eab308', // yellow-500
+    'indigo': '#6366f1', // indigo-500
+    'gray': '#6b7280' // gray-500
   };
   
   // Generate colors if not provided - use distinct colors for better visibility
@@ -453,13 +455,13 @@ const CustomPieChart: React.FC<{
   }));
   
   return (
-    <div className="card-glass p-4 rounded-xl border border-[var(--color-divider-gray)] bg-[var(--color-background-surface)]">
-      <h3 className="text-base font-semibold text-[var(--color-text-primary)] mb-3">{title}</h3>
-      <div className="flex items-center justify-center mb-4">
+    <div className="card-glass p-3 rounded-lg h-full flex flex-col">
+      <h3 className="text-base font-semibold text-slate-700 dark:text-slate-200 mb-3">{title}</h3>
+      <div className="flex items-center justify-center mb-3 flex-1">
         <div className="relative w-32 h-32">
           <svg className="w-full h-full transform -rotate-90" viewBox="0 0 100 100">
             {dataWithColors.filter(item => (item.value || 0) > 0).length === 0 ? (
-              <circle cx="50" cy="50" r="40" fill="#f3f4f6" stroke="#e5e7eb" strokeWidth="2" />
+              <circle cx="50" cy="50" r="40" fill="#e2e8f0" stroke="#cbd5e1" strokeWidth="2" />
             ) : (
               dataWithColors.filter(item => (item.value || 0) > 0).map((item, index) => {
               const value = item.value || 0;
@@ -517,26 +519,23 @@ const CustomPieChart: React.FC<{
           </svg>
           {/* Center circle for donut effect */}
           <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-            <div className="text-center">
-              <div className="text-lg font-bold text-[var(--color-text-primary)]">{total}</div>
-              <div className="text-xs text-[var(--color-text-secondary)]">Total</div>
-            </div>
+            <div className="text-xl font-bold text-slate-700 dark:text-slate-200">{total}</div>
           </div>
         </div>
       </div>
-      <div className="space-y-2">
+      <div className="space-y-1.5">
         {dataWithColors.map((item, index) => (
           <div key={index} className="flex items-center justify-between text-xs">
             <div className="flex items-center space-x-2">
               <div 
-                className="w-3 h-3 rounded-full shadow-sm" 
+                className="w-2.5 h-2.5 rounded-full shadow-sm" 
                 style={{ backgroundColor: colorMap[item.color as keyof typeof colorMap] || item.color }}
               />
-              <span className="text-[var(--color-text-secondary)] font-medium">{item.label}</span>
+              <span className="text-slate-600 dark:text-slate-400 font-medium">{item.label}</span>
             </div>
             <div className="text-right">
-              <div className="font-semibold text-[var(--color-text-primary)]">{item.value}</div>
-              <div className="text-xs text-[var(--color-text-secondary)]">
+              <div className="font-semibold text-slate-700 dark:text-slate-200">{item.value}</div>
+              <div className="text-xs text-slate-500 dark:text-slate-400">
                 {((item.value / total) * 100).toFixed(1)}%
               </div>
             </div>
@@ -561,24 +560,50 @@ const ActivityFeed: React.FC<{
     }
   };
 
+  const getIconColor = (iconType: string) => {
+    switch (iconType) {
+      case 'user': return 'bg-cyan-100 dark:bg-cyan-500/30 text-cyan-600 dark:text-cyan-400';
+      case 'login': return 'bg-emerald-100 dark:bg-emerald-500/30 text-emerald-600 dark:text-emerald-400';
+      case 'signup': return 'bg-indigo-100 dark:bg-indigo-500/30 text-indigo-600 dark:text-indigo-400';
+      case 'post': return 'bg-amber-100 dark:bg-amber-500/30 text-amber-600 dark:text-amber-400';
+      case 'payment': return 'bg-emerald-100 dark:bg-emerald-500/30 text-emerald-600 dark:text-emerald-400';
+      default: return 'bg-slate-100 dark:bg-slate-500/30 text-slate-600 dark:text-slate-400';
+    }
+  };
+
   return (
-    <div className="card-glass p-6 rounded-xl border border-[var(--color-divider-gray)] bg-[var(--color-background-surface)]">
-      <h3 className="text-lg font-semibold text-[var(--color-text-primary)] mb-4">Recent Activity</h3>
-      <div className="space-y-4">
-        {activities.map((activity, index) => {
-          const IconComponent = getActivityIcon(activity.icon);
-          return (
-            <div key={index} className="flex items-start space-x-3">
-              <div className="p-2 bg-primary-100 dark:bg-primary-900/20 rounded-lg">
-                <IconComponent className="h-4 w-4 text-primary-600 dark:text-primary-400" />
+    <div className="card-glass p-3 rounded-lg h-full flex flex-col">
+      <div className="flex items-center justify-between mb-3">
+        <h3 className="text-base font-semibold text-slate-700 dark:text-slate-200">Recent Activity</h3>
+        <button className="text-xs text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 transition-colors">
+          View All →
+        </button>
+      </div>
+      <div className="flex-1 flex flex-col">
+        <div className="space-y-2">
+        {activities.length === 0 ? (
+          <div className="text-center py-6 text-slate-500 dark:text-slate-400">
+            <Activity className="h-6 w-6 mx-auto mb-2 opacity-50" />
+            <p className="text-xs">No recent activity</p>
+          </div>
+        ) : (
+          activities.map((activity, index) => {
+            const IconComponent = getActivityIcon(activity.icon);
+            const iconColor = getIconColor(activity.icon);
+            return (
+              <div key={index} className="flex items-start space-x-2 p-2 card-glass rounded-lg hover:shadow-md transition-all duration-200 group">
+                <div className={`p-1.5 ${iconColor} rounded-lg transition-colors flex-shrink-0`}>
+                  <IconComponent className="h-3.5 w-3.5" />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <p className="text-xs text-slate-700 dark:text-slate-200 font-medium">{activity.message}</p>
+                  <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">{activity.time}</p>
+                </div>
               </div>
-              <div className="flex-1">
-                <p className="text-sm text-[var(--color-text-primary)]">{activity.message}</p>
-                <p className="text-xs text-[var(--color-text-secondary)]">{activity.time}</p>
-              </div>
-            </div>
-          );
-        })}
+            );
+          })
+        )}
+        </div>
       </div>
     </div>
   );
@@ -590,10 +615,10 @@ const AdminDashboard: React.FC = () => {
   const navigate = useNavigate();
   
   // Get initial tab from URL or default to 'overview'
-  const getInitialTab = (): 'overview'|'users'|'modules'|'blog'|'ads'|'data-management' => {
+  const getInitialTab = (): 'overview'|'users'|'modules'|'blog'|'ads'|'data-management'|'newsletter' => {
     const tabParam = searchParams.get('tab');
-    if (tabParam && ['overview', 'users', 'modules', 'blog', 'ads', 'data-management'].includes(tabParam)) {
-      return tabParam as 'overview'|'users'|'modules'|'blog'|'ads'|'data-management';
+    if (tabParam && ['overview', 'users', 'modules', 'blog', 'ads', 'data-management', 'newsletter'].includes(tabParam)) {
+      return tabParam as 'overview'|'users'|'modules'|'blog'|'ads'|'data-management'|'newsletter';
     }
     return 'overview';
   };
@@ -607,14 +632,14 @@ const AdminDashboard: React.FC = () => {
     return 'companies';
   };
   
-  const [activeTab, setActiveTab] = useState<'overview'|'users'|'modules'|'blog'|'ads'|'data-management'>(getInitialTab());
+  const [activeTab, setActiveTab] = useState<'overview'|'users'|'modules'|'blog'|'ads'|'data-management'|'newsletter'>(getInitialTab());
   const [selectedDataModule, setSelectedDataModule] = useState<'companies'|'deals'|'grants'|'investors'|'clinical-trials'|'regulatory'|'regulatory-ecosystem'|'public-markets'|'clinical-centers'|'investigators'|'nation-pulse'|'fundraising-crm'>(getInitialModule());
   
   // Update state when URL params change (e.g., on refresh or browser back/forward)
   useEffect(() => {
     const tabParam = searchParams.get('tab');
-    if (tabParam && ['overview', 'users', 'modules', 'blog', 'ads', 'data-management'].includes(tabParam)) {
-      setActiveTab(tabParam as 'overview'|'users'|'modules'|'blog'|'ads'|'data-management');
+    if (tabParam && ['overview', 'users', 'modules', 'blog', 'ads', 'data-management', 'newsletter'].includes(tabParam)) {
+      setActiveTab(tabParam as 'overview'|'users'|'modules'|'blog'|'ads'|'data-management'|'newsletter');
     }
     
     const moduleParam = searchParams.get('module');
@@ -624,7 +649,7 @@ const AdminDashboard: React.FC = () => {
   }, [searchParams]);
   
   // Function to update tab and URL
-  const handleTabChange = (tab: 'overview'|'users'|'modules'|'blog'|'ads'|'data-management') => {
+  const handleTabChange = (tab: 'overview'|'users'|'modules'|'blog'|'ads'|'data-management'|'newsletter') => {
     setActiveTab(tab);
     const newSearchParams = new URLSearchParams(searchParams);
     newSearchParams.set('tab', tab);
@@ -1696,92 +1721,6 @@ const AdminDashboard: React.FC = () => {
   };
 
   // AI Update Functions - Only runs when explicitly requested (pay-per-use)
-  const handleAIUpdate = async (module: string, count: number = 10) => {
-    try {
-      setAiUpdateStatus({
-        module,
-        status: 'updating',
-        message: `Updating ${module} with AI...`,
-        progress: 0
-      });
-
-      // Use relative path which will be proxied by Vite
-      const response = await fetch(`/api/ai/update/${module}`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('medarionAuthToken') || 'test-token'}`
-        },
-        body: JSON.stringify({ count })
-      });
-
-      if (!response.ok) {
-        const errorText = await response.text();
-        let errorMessage = `HTTP error! status: ${response.status}`;
-        try {
-          const errorData = JSON.parse(errorText);
-          errorMessage = errorData.error || errorData.message || errorMessage;
-        } catch {
-          errorMessage = errorText || errorMessage;
-        }
-        throw new Error(errorMessage);
-      }
-
-      const data = await response.json();
-      
-      // Handle warning case (AI not configured)
-      if (data.warning) {
-        setAiUpdateStatus({
-          module,
-          status: 'warning',
-          message: data.message || 'AI service is not configured',
-          progress: 0
-        });
-        setTimeout(() => {
-          setAiUpdateStatus({ module: '', status: 'idle', message: '', progress: 0 });
-        }, 5000);
-        return;
-      }
-      
-      if (data.success) {
-        setAiUpdateStatus({
-          module,
-          status: 'success',
-          message: `Successfully updated ${data.count || 0} ${module} records`,
-          progress: 100
-        });
-
-        // Refresh the current module data
-        if (selectedDataModule === module || selectedDataModule === module.replace('_', '-')) {
-          if (module === 'companies') fetchCompaniesData(companiesPage, companiesSearch || undefined);
-          else if (module === 'deals') fetchDealsData(dealsPage, dealsSearch || undefined);
-          else if (module === 'grants') fetchGrantsData(grantsPage, grantsSearch || undefined);
-          else if (module === 'investors') fetchInvestorsData(investorsPage, investorsSearch || undefined);
-          else if (module === 'clinical_trials') fetchTrialsData(trialsPage, trialsSearch || undefined);
-          else if (module === 'regulatory_bodies') fetchRegulatoryBodiesData(regulatoryBodiesPage, regulatoryBodiesSearch || undefined);
-          else if (module === 'public_stocks') fetchPublicMarketsData(publicMarketsPage, publicMarketsSearch || undefined);
-          else if (module === 'clinical_centers') fetchClinicalCentersData(clinicalCentersPage, clinicalCentersSearch || undefined);
-          else if (module === 'investigators') fetchInvestigatorsData(investigatorsPage, investigatorsSearch || undefined);
-        }
-
-        // Clear success message after 5 seconds
-        setTimeout(() => {
-          setAiUpdateStatus({ module: null, status: 'idle', message: '', progress: 0 });
-        }, 5000);
-      } else {
-        throw new Error(data.error || 'Update failed');
-      }
-    } catch (error: any) {
-      setAiUpdateStatus({
-        module,
-        status: 'error',
-        message: `Error: ${error.message || 'Failed to update'}`,
-        progress: 0
-      });
-      console.error('AI update error:', error);
-    }
-  };
-
   const handleBulkUpdate = async () => {
     try {
       setBulkUpdateStatus({
@@ -1876,10 +1815,103 @@ const AdminDashboard: React.FC = () => {
     }
   };
 
+  const handleAIUpdate = async (module: string, count: number = 10) => {
+    try {
+      setAiUpdateStatus({
+        module,
+        status: 'updating',
+        message: `Updating ${module} with AI...`,
+        progress: 0
+      });
+
+      // Use relative path which will be proxied by Vite
+      const response = await fetch(`/api/ai/update/${module}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('medarionAuthToken') || 'test-token'}`
+        },
+        body: JSON.stringify({ count })
+      });
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        let errorMessage = `HTTP error! status: ${response.status}`;
+        try {
+          const errorData = JSON.parse(errorText);
+          errorMessage = errorData.error || errorData.message || errorMessage;
+        } catch {
+          errorMessage = errorText || errorMessage;
+        }
+        throw new Error(errorMessage);
+      }
+
+      const data = await response.json();
+      
+      // Handle warning case (AI not configured)
+      if (data.warning) {
+        setAiUpdateStatus({
+          module,
+          status: 'warning',
+          message: data.message || 'AI service is not configured',
+          progress: 0
+        });
+        setTimeout(() => {
+          setAiUpdateStatus({ module: '', status: 'idle', message: '', progress: 0 });
+        }, 5000);
+        return;
+      }
+      
+      if (data.success) {
+        setAiUpdateStatus({
+          module,
+          status: 'success',
+          message: `Successfully updated ${data.count || 0} ${module} records`,
+          progress: 100
+        });
+
+        // Refresh the current module data
+        if (selectedDataModule === module || selectedDataModule === module.replace('_', '-')) {
+          if (module === 'companies') fetchCompaniesData(companiesPage, companiesSearch || undefined);
+          else if (module === 'deals') fetchDealsData(dealsPage, dealsSearch || undefined);
+          else if (module === 'grants') fetchGrantsData(grantsPage, grantsSearch || undefined);
+          else if (module === 'investors') fetchInvestorsData(investorsPage, investorsSearch || undefined);
+          else if (module === 'clinical_trials') fetchTrialsData(trialsPage, trialsSearch || undefined);
+          else if (module === 'regulatory_bodies') fetchRegulatoryBodiesData(regulatoryBodiesPage, regulatoryBodiesSearch || undefined);
+          else if (module === 'public_stocks') fetchPublicMarketsData(publicMarketsPage, publicMarketsSearch || undefined);
+          else if (module === 'clinical_centers') fetchClinicalCentersData(clinicalCentersPage, clinicalCentersSearch || undefined);
+          else if (module === 'investigators') fetchInvestigatorsData(investigatorsPage, investigatorsSearch || undefined);
+        }
+
+        // Clear success message after 5 seconds
+        setTimeout(() => {
+          setAiUpdateStatus({ module: null, status: 'idle', message: '', progress: 0 });
+        }, 5000);
+      } else {
+        throw new Error(data.error || 'Update failed');
+      }
+    } catch (error: any) {
+      setAiUpdateStatus({
+        module,
+        status: 'error',
+        message: `Error: ${error.message || 'Failed to update'}`,
+        progress: 0
+      });
+      console.error('AI update error:', error);
+    }
+  };
+
+  // Alias for handleBulkUpdate to match button onClick
+  const handleAIUpdateAll = handleBulkUpdate;
+
   // Load data when component mounts or tab changes
   useEffect(() => {
     if (activeTab === 'overview') {
       fetchOverviewData();
+      // Fetch recent users for overview
+      fetchUsersData(1);
+      // Fetch recent blog posts for overview
+      fetchBlogData(1);
     } else if (activeTab === 'users') {
       fetchUsersData();
     } else if (activeTab === 'blog') {
@@ -3594,11 +3626,11 @@ const AdminDashboard: React.FC = () => {
             onClick={() => handleTabChange(id as any)}
             className={`px-4 py-3 rounded-lg border-2 transition-all duration-200 flex items-center space-x-2 ${
               activeTab === id 
-                ? 'bg-[var(--color-primary-teal)] text-white border-[var(--color-primary-teal)] shadow-lg' 
-                : 'card-glass text-[var(--color-text-primary)] border-[var(--color-divider-gray)] hover:bg-[var(--color-background-default)] hover:border-[var(--color-primary-teal)]/50'
+                ? 'bg-slate-800 dark:bg-slate-700 text-white dark:text-white border-black dark:border-gray-600 shadow-lg' 
+                : 'card-glass text-slate-700 dark:text-slate-200 border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:bg-slate-800/30 hover:border-black dark:hover:border-white/50'
             }`}
           >
-            <Icon className="h-4 w-4"/>
+            <Icon className={`h-4 w-4 ${activeTab === id ? 'text-white dark:text-white' : 'text-slate-700 dark:text-slate-200'}`}/>
             <span className="font-medium">{label}</span>
           </button>
         ))}
@@ -3611,23 +3643,29 @@ const AdminDashboard: React.FC = () => {
             {loading && (
               <div className="flex items-center justify-center p-8">
                 <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
-                <span className="ml-2 text-[var(--color-text-secondary)]">Loading...</span>
+                <span className="ml-2 text-slate-500 dark:text-slate-400">Loading...</span>
               </div>
             )}
             
             {error && (
-              <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-4">
+              <div className="bg-red-50 dark:bg-red-500/40 border border-red-200 dark:border-red-500/50 rounded-lg p-4">
                 <div className="flex items-center">
                   <AlertCircle className="h-5 w-5 text-red-600 mr-2" />
-                  <span className="text-red-800 dark:text-red-200">{error}</span>
+                  <span className="text-red-800 dark:text-white">{error}</span>
                 </div>
               </div>
             )}
             
             {overviewData && !loading && (
-              <>
-            {/* Key Metrics */}
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
+              <div className="space-y-3">
+            {/* Page Header - Compact */}
+            <div className="mb-2">
+              <h1 className="text-2xl font-bold text-slate-700 dark:text-slate-200 mb-1">Dashboard Overview</h1>
+              <p className="text-sm text-slate-500 dark:text-slate-400">Welcome back! Here's what's happening with your platform.</p>
+            </div>
+
+            {/* Key Metrics - Compact Style */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2">
               <StatCard
                 title="Total Users"
                 value={overviewData?.userStats.totalUsers.toLocaleString() || '0'}
@@ -3658,16 +3696,18 @@ const AdminDashboard: React.FC = () => {
               />
             </div>
 
-            {/* Charts Row */}
-            <div className="grid grid-cols-2 gap-6">
-              <UserGrowthChart
-                data={overviewData?.userGrowth?.slice(-6).map(item => ({ 
-                  label: item.month || 'Unknown', 
-                  value: Number(item.users) || 0 
-                })).filter(item => item.value >= 0) || []}
-                title="User Growth (Last 6 Months)"
-                color="primary"
-              />
+            {/* Charts and Activity Row - 3 Columns */}
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-3">
+              <div className="lg:col-span-2">
+                <UserGrowthChart
+                  data={overviewData?.userGrowth?.slice(-6).map(item => ({ 
+                    label: item.month || 'Unknown', 
+                    value: Number(item.users) || 0 
+                  })).filter(item => item.value >= 0) || []}
+                  title="User Growth (Last 6 Months)"
+                  color="primary"
+                />
+              </div>
               <CustomPieChart
                 data={overviewData?.userRoles?.map((item, index) => ({
                   label: item.role || 'Unknown',
@@ -3678,8 +3718,8 @@ const AdminDashboard: React.FC = () => {
               />
             </div>
 
-            {/* Revenue and Activity Row */}
-            <div className="grid grid-cols-2 gap-6">
+            {/* Revenue, Activity, and Recent Users Row - 3 Columns */}
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-3">
               <RevenueByTierChart
                 data={overviewData?.revenueByTier?.map(item => ({ 
                   label: item.tier || 'Unknown', 
@@ -3688,443 +3728,592 @@ const AdminDashboard: React.FC = () => {
                 title="Revenue by Tier"
               />
               <ActivityFeed activities={overviewData?.recentActivity || []} />
-            </div>
-
-            {/* Additional Stats */}
-            <div className="grid grid-cols-3 gap-6">
-              <div className="card-glass p-6 rounded-xl border border-[var(--color-divider-gray)] bg-[var(--color-background-surface)]">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-sm font-medium text-[var(--color-text-secondary)]">New Users</p>
-                    <p className="text-2xl font-bold text-[var(--color-text-primary)]">{overviewData?.userStats.newUsersThisMonth || 0}</p>
-                    <p className="text-sm text-[var(--color-text-secondary)]">This month</p>
-                  </div>
-                  <div className="p-3 rounded-lg bg-primary-100 dark:bg-primary-900/20">
-                    <UserCheck className="h-6 w-6 text-primary-600 dark:text-primary-400" />
-                  </div>
-                </div>
-              </div>
-
-              <div className="card-glass p-6 rounded-xl border border-[var(--color-divider-gray)] bg-[var(--color-background-surface)]">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-sm font-medium text-[var(--color-text-secondary)]">Total Revenue</p>
-                    <p className="text-2xl font-bold text-[var(--color-text-primary)]">${overviewData?.revenueStats.totalRevenue.toLocaleString() || '0'}</p>
-                    <p className="text-sm text-[var(--color-text-secondary)]">All time</p>
-                  </div>
-                  <div className="p-3 rounded-lg bg-accent-100 dark:bg-accent-900/20">
-                    <DollarSign className="h-6 w-6 text-accent-600 dark:text-accent-400" />
-                  </div>
-                </div>
-              </div>
-
-              <div className="card-glass p-6 rounded-xl border border-[var(--color-divider-gray)] bg-[var(--color-background-surface)]">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-sm font-medium text-[var(--color-text-secondary)]">Conversion Rate</p>
-                    <p className="text-2xl font-bold text-[var(--color-text-primary)]">{overviewData?.metrics.conversion_rate || '12.5'}%</p>
-                    <p className="text-sm text-[var(--color-text-secondary)]">Overall</p>
-                  </div>
-                  <div className="p-3 rounded-lg bg-sky-100 dark:bg-sky-900/20">
-                    <Target className="h-6 w-6 text-sky-600 dark:text-sky-400" />
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* System Status */}
-            <div className="card-glass p-6 rounded-xl border border-[var(--color-divider-gray)] bg-[var(--color-background-surface)]">
-              <h3 className="text-lg font-semibold text-[var(--color-text-primary)] mb-4">System Status</h3>
-              <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-                <div className="flex items-center space-x-3">
-                  <div className="p-2 bg-success/20 rounded-lg">
-                    <CheckCircle className="h-5 w-5 text-success" />
-                  </div>
-                  <div>
-                    <p className="text-sm font-medium text-[var(--color-text-primary)]">Database</p>
-                    <p className="text-xs text-[var(--color-text-secondary)]">Online</p>
-                  </div>
-                </div>
-                <div className="flex items-center space-x-3">
-                  <div className="p-2 bg-success/20 rounded-lg">
-                    <CheckCircle className="h-5 w-5 text-success" />
-                  </div>
-                  <div>
-                    <p className="text-sm font-medium text-[var(--color-text-primary)]">API</p>
-                    <p className="text-xs text-[var(--color-text-secondary)]">Healthy</p>
-                  </div>
-                </div>
-                <div className="flex items-center space-x-3">
-                  <div className="p-2 bg-accent-100 dark:bg-accent-900/20 rounded-lg">
-                    <AlertCircle className="h-5 w-5 text-accent-600 dark:text-accent-400" />
-                  </div>
-                  <div>
-                    <p className="text-sm font-medium text-[var(--color-text-primary)]">Cache</p>
-                    <p className="text-xs text-[var(--color-text-secondary)]">Warning</p>
-                  </div>
-                </div>
-                <div className="flex items-center space-x-3">
-                  <div className="p-2 bg-primary-100 dark:bg-primary-900/20 rounded-lg">
-                    <CheckCircle className="h-5 w-5 text-primary-600 dark:text-primary-400" />
-                  </div>
-                  <div>
-                    <p className="text-sm font-medium text-[var(--color-text-primary)]">Storage</p>
-                    <p className="text-xs text-[var(--color-text-secondary)]">85% used</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Module Overview Section */}
-            <div className="card-glass p-6 rounded-xl border border-[var(--color-divider-gray)] bg-[var(--color-background-surface)]">
-              <h3 className="text-lg font-semibold text-[var(--color-text-primary)] mb-6">Module Overview</h3>
               
-              {/* Module Grid */}
-              <div className="grid grid-cols-2 lg:grid-cols-3 gap-6">
-                {/* Companies Module */}
-                <div className="bg-[var(--color-background-default)] p-4 rounded-lg border border-[var(--color-divider-gray)]">
-                  <div className="flex items-center justify-between mb-3">
-                    <h4 className="font-semibold text-[var(--color-text-primary)]">Companies</h4>
-                    <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+              {/* Recent Users Section */}
+              <div className="card-glass p-3 rounded-lg h-full flex flex-col">
+                <div className="flex items-center justify-between mb-3">
+                  <h3 className="text-base font-semibold text-slate-700 dark:text-slate-200">Recent Users</h3>
+                  <button 
+                    onClick={() => setActiveTab('users')}
+                    className="text-xs text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 transition-colors"
+                  >
+                    View All →
+                  </button>
+                </div>
+                <div className="space-y-2 flex-1">
+                  {usersData?.users && usersData.users.length > 0 ? (
+                    usersData.users.slice(0, 5).map((user, index) => (
+                      <div key={user.id || index} className="flex items-center justify-between p-2 card-glass rounded-lg hover:shadow-md transition-all">
+                        <div className="flex items-center space-x-2 min-w-0 flex-1">
+                          <div className="w-8 h-8 bg-teal-600 dark:bg-gradient-to-br dark:from-cyan-500 dark:to-teal-500 rounded-full flex items-center justify-center text-white !text-white text-xs font-semibold flex-shrink-0">
+                            {user.first_name?.charAt(0) || user.email?.charAt(0)?.toUpperCase() || 'U'}
+                          </div>
+                          <div className="min-w-0 flex-1">
+                            <div className="text-xs font-medium text-slate-700 dark:text-slate-200 truncate">
+                              {user.first_name && user.last_name ? `${user.first_name} ${user.last_name}` : user.email || 'Unknown User'}
+                            </div>
+                            <div className="text-xs text-slate-500 dark:text-slate-400 truncate">{user.email || 'No email'}</div>
+                          </div>
+                        </div>
+                        <span className={`text-xs px-1.5 py-0.5 rounded-full ${
+                          user.is_active 
+                            ? 'bg-emerald-100 dark:bg-emerald-500/40 text-emerald-700 dark:text-emerald-300'
+                            : 'bg-slate-100 dark:bg-slate-500/40 text-slate-700 dark:text-slate-300'
+                        }`}>
+                          {user.is_active ? 'Active' : 'Inactive'}
+                        </span>
+                      </div>
+                    ))
+                  ) : (
+                    <div className="text-xs text-slate-500 dark:text-slate-400 text-center py-4">No recent users</div>
+                  )}
+                </div>
+              </div>
+            </div>
+
+            {/* Additional Stats - Side by Side */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
+              <div className="card-glass p-3 rounded-lg hover:shadow-lg transition-all duration-200 group relative overflow-hidden h-full flex flex-col bg-cyan-50/50 dark:bg-cyan-950/30">
+                <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/10 to-teal-500/10 dark:from-cyan-500/15 dark:to-teal-500/15 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                <div className="relative flex items-center justify-between flex-1">
+                  <div className="min-w-0 flex-1">
+                    <p className="text-xs font-medium text-slate-500 dark:text-slate-400 mb-1 uppercase tracking-wide">New Users</p>
+                    <p className="text-2xl font-bold text-slate-700 dark:text-slate-200 mb-1">{overviewData?.userStats.newUsersThisMonth || 0}</p>
+                    <p className="text-xs text-slate-500 dark:text-slate-400">This month</p>
                   </div>
-                  <div className="space-y-2">
-                    <div className="flex justify-between text-sm">
-                      <span className="text-[var(--color-text-secondary)]">Total Companies</span>
-                      <span className="font-medium text-[var(--color-text-primary)]">
+                  <div className="p-2.5 rounded-lg bg-teal-600 dark:bg-gradient-to-br dark:from-cyan-500 dark:to-teal-500 shadow-md group-hover:scale-105 transition-transform duration-200 flex-shrink-0 ml-3">
+                    <UserCheck className="h-5 w-5 text-white !text-white" />
+                  </div>
+                </div>
+              </div>
+
+              <div className="card-glass p-3 rounded-lg hover:shadow-lg transition-all duration-200 group relative overflow-hidden h-full flex flex-col bg-emerald-50/50 dark:bg-emerald-950/30">
+                <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/10 to-green-500/10 dark:from-emerald-500/15 dark:to-green-500/15 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                <div className="relative flex items-center justify-between flex-1">
+                  <div className="min-w-0 flex-1">
+                    <p className="text-xs font-medium text-slate-500 dark:text-slate-400 mb-1 uppercase tracking-wide">Total Revenue</p>
+                    <p className="text-2xl font-bold text-slate-700 dark:text-slate-200 mb-1">${overviewData?.revenueStats.totalRevenue.toLocaleString() || '0'}</p>
+                    <p className="text-xs text-slate-500 dark:text-slate-400">All time</p>
+                  </div>
+                  <div className="p-2.5 rounded-lg bg-green-600 dark:bg-gradient-to-br dark:from-emerald-500 dark:to-green-500 shadow-md group-hover:scale-105 transition-transform duration-200 flex-shrink-0 ml-3">
+                    <DollarSign className="h-5 w-5 text-white !text-white" />
+                  </div>
+                </div>
+              </div>
+
+              <div className="card-glass p-3 rounded-lg hover:shadow-lg transition-all duration-200 group relative overflow-hidden h-full flex flex-col bg-amber-50/50 dark:bg-amber-950/30">
+                <div className="absolute inset-0 bg-gradient-to-br from-amber-500/10 to-orange-500/10 dark:from-amber-500/15 dark:to-orange-500/15 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                <div className="relative flex items-center justify-between flex-1">
+                  <div className="min-w-0 flex-1">
+                    <p className="text-xs font-medium text-slate-500 dark:text-slate-400 mb-1 uppercase tracking-wide">Conversion Rate</p>
+                    <p className="text-2xl font-bold text-slate-700 dark:text-slate-200 mb-1">{overviewData?.metrics.conversion_rate || '12.5'}%</p>
+                    <p className="text-xs text-slate-500 dark:text-slate-400">Overall</p>
+                  </div>
+                  <div className="p-2.5 rounded-lg bg-orange-600 dark:bg-gradient-to-br dark:from-amber-500 dark:to-orange-500 shadow-md group-hover:scale-105 transition-transform duration-200 flex-shrink-0 ml-3">
+                    <Target className="h-5 w-5 text-white !text-white" />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* System Status, Quick Actions, and Recent Blog Posts - 3 Columns */}
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-3">
+              {/* System Status - Compact Style */}
+              <div className="card-glass p-3 rounded-lg">
+                <h3 className="text-base font-semibold text-slate-700 dark:text-slate-200 mb-3">System Status</h3>
+                <div className="grid grid-cols-2 gap-3">
+                <div className="flex items-center space-x-3">
+                  <div className="p-2 bg-emerald-100 dark:bg-emerald-500/30 rounded-lg">
+                    <CheckCircle className="h-5 w-5 text-emerald-600 dark:text-emerald-400" />
+                  </div>
+                  <div>
+                    <p className="text-sm font-medium text-slate-700 dark:text-slate-200">Database</p>
+                    <p className="text-xs text-slate-500 dark:text-slate-400">Online</p>
+                  </div>
+                </div>
+                <div className="flex items-center space-x-3">
+                  <div className="p-2 bg-emerald-100 dark:bg-emerald-500/30 rounded-lg">
+                    <CheckCircle className="h-5 w-5 text-emerald-600 dark:text-emerald-400" />
+                  </div>
+                  <div>
+                    <p className="text-sm font-medium text-slate-700 dark:text-slate-200">API</p>
+                    <p className="text-xs text-slate-500 dark:text-slate-400">Healthy</p>
+                  </div>
+                </div>
+                <div className="flex items-center space-x-3">
+                  <div className="p-2 bg-rose-100 dark:bg-rose-500/30 rounded-lg">
+                    <AlertCircle className="h-5 w-5 text-rose-600 dark:text-rose-400" />
+                  </div>
+                  <div>
+                    <p className="text-sm font-medium text-slate-700 dark:text-slate-200">Cache</p>
+                    <p className="text-xs text-slate-500 dark:text-slate-400">Warning</p>
+                  </div>
+                </div>
+                <div className="flex items-center space-x-3">
+                  <div className="p-2 bg-indigo-100 dark:bg-indigo-500/30 rounded-lg">
+                    <CheckCircle className="h-5 w-5 text-indigo-600 dark:text-indigo-400" />
+                  </div>
+                  <div>
+                    <p className="text-sm font-medium text-slate-700 dark:text-slate-200">Storage</p>
+                    <p className="text-xs text-slate-500 dark:text-slate-400">85% used</p>
+                  </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Quick Actions Section */}
+              <div className="card-glass p-3 rounded-lg">
+                <h3 className="text-base font-semibold text-slate-700 dark:text-slate-200 mb-3">Quick Actions</h3>
+                <div className="space-y-2">
+                  <button 
+                    onClick={() => setActiveTab('users')}
+                    className="w-full flex items-center justify-between p-2.5 card-glass rounded-lg hover:shadow-md transition-all text-left group"
+                  >
+                    <div className="flex items-center space-x-2">
+                      <div className="p-1.5 bg-cyan-100 dark:bg-cyan-500/30 rounded-lg">
+                        <UsersIcon className="h-4 w-4 text-cyan-600 dark:text-cyan-400" />
+                      </div>
+                      <span className="text-sm font-medium text-slate-700 dark:text-slate-200">Manage Users</span>
+                    </div>
+                    <ArrowUp className="h-4 w-4 text-slate-400 group-hover:text-slate-700 dark:group-hover:text-slate-200 transition-colors" />
+                  </button>
+                  <button 
+                    onClick={() => setActiveTab('blog')}
+                    className="w-full flex items-center justify-between p-2.5 card-glass rounded-lg hover:shadow-md transition-all text-left group"
+                  >
+                    <div className="flex items-center space-x-2">
+                      <div className="p-1.5 bg-indigo-100 dark:bg-indigo-500/30 rounded-lg">
+                        <Newspaper className="h-4 w-4 text-indigo-600 dark:text-indigo-400" />
+                      </div>
+                      <span className="text-sm font-medium text-slate-700 dark:text-slate-200">Manage Blog</span>
+                    </div>
+                    <ArrowUp className="h-4 w-4 text-slate-400 group-hover:text-slate-700 dark:group-hover:text-slate-200 transition-colors" />
+                  </button>
+                  <button 
+                    onClick={() => setActiveTab('ads')}
+                    className="w-full flex items-center justify-between p-2.5 card-glass rounded-lg hover:shadow-md transition-all text-left group"
+                  >
+                    <div className="flex items-center space-x-2">
+                      <div className="p-1.5 bg-rose-100 dark:bg-rose-500/30 rounded-lg">
+                        <Megaphone className="h-4 w-4 text-rose-600 dark:text-rose-400" />
+                      </div>
+                      <span className="text-sm font-medium text-slate-700 dark:text-slate-200">Manage Ads</span>
+                    </div>
+                    <ArrowUp className="h-4 w-4 text-slate-400 group-hover:text-slate-700 dark:group-hover:text-slate-200 transition-colors" />
+                  </button>
+                  <button 
+                    onClick={() => setActiveTab('data-management')}
+                    className="w-full flex items-center justify-between p-2.5 card-glass rounded-lg hover:shadow-md transition-all text-left group"
+                  >
+                    <div className="flex items-center space-x-2">
+                      <div className="p-1.5 bg-emerald-100 dark:bg-emerald-500/30 rounded-lg">
+                        <Database className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
+                      </div>
+                      <span className="text-sm font-medium text-slate-700 dark:text-slate-200">Data Management</span>
+                    </div>
+                    <ArrowUp className="h-4 w-4 text-slate-400 group-hover:text-slate-700 dark:group-hover:text-slate-200 transition-colors" />
+                  </button>
+                </div>
+              </div>
+
+              {/* Recent Blog Posts Section */}
+              <div className="card-glass p-3 rounded-lg h-full flex flex-col">
+                <div className="flex items-center justify-between mb-3">
+                  <h3 className="text-base font-semibold text-slate-700 dark:text-slate-200">Recent Blog Posts</h3>
+                  <button 
+                    onClick={() => setActiveTab('blog')}
+                    className="text-xs text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 transition-colors"
+                  >
+                    View All →
+                  </button>
+                </div>
+                <div className="space-y-2 flex-1">
+                  {blogData?.posts && blogData.posts.length > 0 ? (
+                    blogData.posts.slice(0, 4).map((post, index) => (
+                      <div key={post.id || index} className="p-2 card-glass rounded-lg hover:shadow-md transition-all group">
+                        <div className="flex items-start justify-between">
+                          <div className="min-w-0 flex-1">
+                            <div className="text-xs font-medium text-slate-700 dark:text-slate-200 truncate mb-1 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
+                              {post.title || 'Untitled Post'}
+                            </div>
+                            <div className="flex items-center space-x-2 text-xs text-slate-500 dark:text-slate-400">
+                              <span>{post.category || 'General'}</span>
+                              <span>•</span>
+                              <span>{post.read_time || '5 min'}</span>
+                            </div>
+                          </div>
+                          <span className={`text-xs px-1.5 py-0.5 rounded-full ml-2 flex-shrink-0 ${
+                            post.status === 'published'
+                              ? 'bg-emerald-100 dark:bg-emerald-500/40 text-emerald-700 dark:text-emerald-300'
+                              : 'bg-amber-100 dark:bg-amber-500/40 text-amber-700 dark:text-amber-300'
+                          }`}>
+                            {post.status || 'draft'}
+                          </span>
+                        </div>
+                      </div>
+                    ))
+                  ) : (
+                    <div className="text-xs text-slate-500 dark:text-slate-400 text-center py-4">No blog posts yet</div>
+                  )}
+                </div>
+              </div>
+            </div>
+
+            {/* Module Overview and Performance Metrics - Side by Side */}
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-3">
+              {/* Module Overview Section - 2 columns */}
+              <div className="lg:col-span-2 card-glass p-3 rounded-lg">
+                <div className="flex items-center justify-between mb-3">
+                  <h3 className="text-base font-semibold text-slate-700 dark:text-slate-200">Module Overview</h3>
+                  <button className="text-xs text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 transition-colors">
+                    View All →
+                  </button>
+                </div>
+                
+                {/* Module Grid - More compact */}
+                <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-3 gap-2">
+                {/* Companies Module */}
+                <div className="card-glass p-3 rounded-lg hover:shadow-md transition-all duration-200 group h-full flex flex-col">
+                  <div className="flex items-center justify-between mb-2">
+                    <h4 className="text-sm font-semibold text-slate-700 dark:text-slate-200">Companies</h4>
+                    <div className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></div>
+                  </div>
+                  <div className="flex-1 flex flex-col">
+                    <div className="space-y-2">
+                    <div className="flex justify-between items-center">
+                      <span className="text-xs text-slate-500 dark:text-slate-400">Total Companies</span>
+                      <span className="text-base font-bold text-slate-700 dark:text-slate-200">
                         {overviewData?.moduleStats?.companies || 0}
                       </span>
                     </div>
-                    <div className="flex justify-between text-sm">
-                      <span className="text-[var(--color-text-secondary)]">Active</span>
-                      <span className="font-medium text-green-600">
+                    <div className="flex justify-between items-center">
+                      <span className="text-xs text-slate-500 dark:text-slate-400">Active</span>
+                      <span className="text-xs font-semibold text-emerald-600 dark:text-emerald-400">
                         {Math.floor((overviewData?.moduleStats?.companies || 0) * 0.95)}
                       </span>
                     </div>
-                    <div className="flex justify-between text-sm">
-                      <span className="text-[var(--color-text-secondary)]">New This Month</span>
-                      <span className="font-medium text-blue-600">
+                    <div className="flex justify-between items-center pt-2 border-t border-slate-200 dark:border-slate-700">
+                      <span className="text-xs text-slate-500 dark:text-slate-400">New This Month</span>
+                      <span className="text-xs font-semibold text-cyan-600 dark:text-cyan-400">
                         +{Math.floor((overviewData?.moduleStats?.companies || 0) * 0.02)}
                       </span>
+                    </div>
                     </div>
                   </div>
                 </div>
 
                 {/* Deals Module */}
-                <div className="bg-[var(--color-background-default)] p-4 rounded-lg border border-[var(--color-divider-gray)]">
-                  <div className="flex items-center justify-between mb-3">
-                    <h4 className="font-semibold text-[var(--color-text-primary)]">Deals</h4>
-                    <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                <div className="card-glass p-3 rounded-lg hover:shadow-md transition-all duration-200 group h-full flex flex-col">
+                  <div className="flex items-center justify-between mb-2">
+                    <h4 className="text-sm font-semibold text-slate-700 dark:text-slate-200">Deals</h4>
+                    <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
                   </div>
-                  <div className="space-y-2">
-                    <div className="flex justify-between text-sm">
-                      <span className="text-[var(--color-text-secondary)]">Total Deals</span>
-                      <span className="font-medium text-[var(--color-text-primary)]">
+                  <div className="flex-1 flex flex-col">
+                    <div className="space-y-2">
+                    <div className="flex justify-between items-center">
+                      <span className="text-sm text-slate-500 dark:text-slate-400">Total Deals</span>
+                      <span className="text-lg font-bold text-slate-700 dark:text-slate-200">
                         {overviewData?.moduleStats?.deals || 0}
                       </span>
                     </div>
-                    <div className="flex justify-between text-sm">
-                      <span className="text-[var(--color-text-secondary)]">Value</span>
-                      <span className="font-medium text-green-600">
+                    <div className="flex justify-between items-center">
+                      <span className="text-sm text-slate-500 dark:text-slate-400">Value</span>
+                      <span className="text-sm font-semibold text-emerald-600 dark:text-emerald-400">
                         ${((overviewData?.moduleStats?.deals || 0) * 7.2).toFixed(1)}M
                       </span>
                     </div>
-                    <div className="flex justify-between text-sm">
-                      <span className="text-[var(--color-text-secondary)]">This Month</span>
-                      <span className="font-medium text-blue-600">
+                    <div className="flex justify-between items-center pt-2 border-t border-slate-200 dark:border-slate-700">
+                      <span className="text-xs text-slate-500 dark:text-slate-400">This Month</span>
+                      <span className="text-xs font-semibold text-cyan-600 dark:text-cyan-400">
                         +{Math.floor((overviewData?.moduleStats?.deals || 0) * 0.05)}
                       </span>
+                    </div>
                     </div>
                   </div>
                 </div>
 
                 {/* Grants Module */}
-                <div className="bg-[var(--color-background-default)] p-4 rounded-lg border border-[var(--color-divider-gray)]">
-                  <div className="flex items-center justify-between mb-3">
-                    <h4 className="font-semibold text-[var(--color-text-primary)]">Grants</h4>
-                    <div className="w-2 h-2 bg-yellow-500 rounded-full"></div>
+                <div className="card-glass p-3 rounded-lg hover:shadow-md transition-all duration-200 group h-full flex flex-col">
+                  <div className="flex items-center justify-between mb-2">
+                    <h4 className="text-sm font-semibold text-slate-700 dark:text-slate-200">Grants</h4>
+                    <div className="w-2 h-2 bg-yellow-500 rounded-full animate-pulse"></div>
                   </div>
-                  <div className="space-y-2">
-                    <div className="flex justify-between text-sm">
-                      <span className="text-[var(--color-text-secondary)]">Available</span>
-                      <span className="font-medium text-[var(--color-text-primary)]">
+                  <div className="flex-1 flex flex-col">
+                    <div className="space-y-2">
+                    <div className="flex justify-between items-center">
+                      <span className="text-sm text-slate-500 dark:text-slate-400">Available</span>
+                      <span className="text-lg font-bold text-slate-700 dark:text-slate-200">
                         {overviewData?.moduleStats?.grants || 0}
                       </span>
                     </div>
-                    <div className="flex justify-between text-sm">
-                      <span className="text-[var(--color-text-secondary)]">Total Value</span>
-                      <span className="font-medium text-green-600">
+                    <div className="flex justify-between items-center">
+                      <span className="text-sm text-slate-500 dark:text-slate-400">Total Value</span>
+                      <span className="text-sm font-semibold text-emerald-600 dark:text-emerald-400">
                         ${((overviewData?.moduleStats?.grants || 0) * 0.3).toFixed(1)}M
                       </span>
                     </div>
-                    <div className="flex justify-between text-sm">
-                      <span className="text-[var(--color-text-secondary)]">Deadline Soon</span>
-                      <span className="font-medium text-orange-600">
+                    <div className="flex justify-between items-center pt-2 border-t border-slate-200 dark:border-slate-700">
+                      <span className="text-xs text-slate-500 dark:text-slate-400">Deadline Soon</span>
+                      <span className="text-xs font-semibold text-orange-600 dark:text-orange-400">
                         {Math.floor((overviewData?.moduleStats?.grants || 0) * 0.08)}
                       </span>
+                    </div>
                     </div>
                   </div>
                 </div>
 
                 {/* Clinical Trials Module */}
-                <div className="bg-[var(--color-background-default)] p-4 rounded-lg border border-[var(--color-divider-gray)]">
-                  <div className="flex items-center justify-between mb-3">
-                    <h4 className="font-semibold text-[var(--color-text-primary)]">Clinical Trials</h4>
-                    <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                <div className="card-glass p-3 rounded-lg hover:shadow-md transition-all duration-200 group h-full flex flex-col">
+                  <div className="flex items-center justify-between mb-2">
+                    <h4 className="text-sm font-semibold text-slate-700 dark:text-slate-200">Clinical Trials</h4>
+                    <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
                   </div>
-                  <div className="space-y-2">
-                    <div className="flex justify-between text-sm">
-                      <span className="text-[var(--color-text-secondary)]">Active Trials</span>
-                      <span className="font-medium text-[var(--color-text-primary)]">
+                  <div className="flex-1 flex flex-col">
+                    <div className="space-y-2">
+                    <div className="flex justify-between items-center">
+                      <span className="text-sm text-slate-500 dark:text-slate-400">Active Trials</span>
+                      <span className="text-lg font-bold text-slate-700 dark:text-slate-200">
                         {overviewData?.moduleStats?.clinical_trials || 0}
                       </span>
                     </div>
-                    <div className="flex justify-between text-sm">
-                      <span className="text-[var(--color-text-secondary)]">Recruiting</span>
-                      <span className="font-medium text-blue-600">
+                    <div className="flex justify-between items-center">
+                      <span className="text-sm text-slate-500 dark:text-slate-400">Recruiting</span>
+                      <span className="text-sm font-semibold text-cyan-600 dark:text-cyan-400">
                         {Math.floor((overviewData?.moduleStats?.clinical_trials || 0) * 0.38)}
                       </span>
                     </div>
-                    <div className="flex justify-between text-sm">
-                      <span className="text-[var(--color-text-secondary)]">Completed</span>
-                      <span className="font-medium text-green-600">
+                    <div className="flex justify-between items-center pt-2 border-t border-slate-200 dark:border-slate-700">
+                      <span className="text-xs text-slate-500 dark:text-slate-400">Completed</span>
+                      <span className="text-xs font-semibold text-emerald-600 dark:text-emerald-400">
                         {Math.floor((overviewData?.moduleStats?.clinical_trials || 0) * 1.75)}
                       </span>
+                    </div>
                     </div>
                   </div>
                 </div>
 
                 {/* Investors Module */}
-                <div className="bg-[var(--color-background-default)] p-4 rounded-lg border border-[var(--color-divider-gray)]">
-                  <div className="flex items-center justify-between mb-3">
-                    <h4 className="font-semibold text-[var(--color-text-primary)]">Investors</h4>
-                    <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                <div className="card-glass p-3 rounded-lg hover:shadow-md transition-all duration-200 group h-full flex flex-col">
+                  <div className="flex items-center justify-between mb-2">
+                    <h4 className="text-sm font-semibold text-slate-700 dark:text-slate-200">Investors</h4>
+                    <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
                   </div>
-                  <div className="space-y-2">
-                    <div className="flex justify-between text-sm">
-                      <span className="text-[var(--color-text-secondary)]">Total Investors</span>
-                      <span className="font-medium text-[var(--color-text-primary)]">
+                  <div className="flex-1 flex flex-col">
+                    <div className="space-y-2">
+                    <div className="flex justify-between items-center">
+                      <span className="text-sm text-slate-500 dark:text-slate-400">Total Investors</span>
+                      <span className="text-lg font-bold text-slate-700 dark:text-slate-200">
                         {overviewData?.moduleStats?.investors || 0}
                       </span>
                     </div>
-                    <div className="flex justify-between text-sm">
-                      <span className="text-[var(--color-text-secondary)]">Active</span>
-                      <span className="font-medium text-green-600">
+                    <div className="flex justify-between items-center">
+                      <span className="text-sm text-slate-500 dark:text-slate-400">Active</span>
+                      <span className="text-sm font-semibold text-emerald-600 dark:text-emerald-400">
                         {Math.floor((overviewData?.moduleStats?.investors || 0) * 0.85)}
                       </span>
                     </div>
-                    <div className="flex justify-between text-sm">
-                      <span className="text-[var(--color-text-secondary)]">New This Month</span>
-                      <span className="font-medium text-blue-600">
+                    <div className="flex justify-between items-center pt-2 border-t border-slate-200 dark:border-slate-700">
+                      <span className="text-xs text-slate-500 dark:text-slate-400">New This Month</span>
+                      <span className="text-xs font-semibold text-cyan-600 dark:text-cyan-400">
                         +{Math.floor((overviewData?.moduleStats?.investors || 0) * 0.02)}
                       </span>
+                    </div>
                     </div>
                   </div>
                 </div>
 
                 {/* Regulatory Module */}
-                <div className="bg-[var(--color-background-default)] p-4 rounded-lg border border-[var(--color-divider-gray)]">
-                  <div className="flex items-center justify-between mb-3">
-                    <h4 className="font-semibold text-[var(--color-text-primary)]">Regulatory</h4>
-                    <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+                <div className="card-glass p-3 rounded-lg hover:shadow-md transition-all duration-200 group h-full flex flex-col">
+                  <div className="flex items-center justify-between mb-2">
+                    <h4 className="text-sm font-semibold text-slate-700 dark:text-slate-200">Regulatory</h4>
+                    <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></div>
                   </div>
-                  <div className="space-y-2">
-                    <div className="flex justify-between text-sm">
-                      <span className="text-[var(--color-text-secondary)]">Regulations</span>
-                      <span className="font-medium text-[var(--color-text-primary)]">
+                  <div className="flex-1 flex flex-col">
+                    <div className="space-y-2">
+                    <div className="flex justify-between items-center">
+                      <span className="text-sm text-slate-500 dark:text-slate-400">Regulations</span>
+                      <span className="text-lg font-bold text-slate-700 dark:text-slate-200">
                         {overviewData?.moduleStats?.regulatory_bodies || 0}
                       </span>
                     </div>
-                    <div className="flex justify-between text-sm">
-                      <span className="text-[var(--color-text-secondary)]">Updated</span>
-                      <span className="font-medium text-green-600">
+                    <div className="flex justify-between items-center">
+                      <span className="text-sm text-slate-500 dark:text-slate-400">Updated</span>
+                      <span className="text-sm font-semibold text-emerald-600 dark:text-emerald-400">
                         {Math.floor((overviewData?.moduleStats?.regulatory_bodies || 0) * 0.02)}
                       </span>
                     </div>
-                    <div className="flex justify-between text-sm">
-                      <span className="text-[var(--color-text-secondary)]">Pending</span>
-                      <span className="font-medium text-orange-600">
+                    <div className="flex justify-between items-center pt-2 border-t border-slate-200 dark:border-slate-700">
+                      <span className="text-xs text-slate-500 dark:text-slate-400">Pending</span>
+                      <span className="text-xs font-semibold text-orange-600 dark:text-orange-400">
                         {Math.floor((overviewData?.moduleStats?.regulatory_bodies || 0) * 0.005)}
                       </span>
+                    </div>
                     </div>
                   </div>
                 </div>
               </div>
+              </div>
 
-              {/* Module Activity Summary */}
-              <div className="mt-6 pt-4 border-t border-[var(--color-divider-gray)]">
-                <h4 className="font-semibold text-[var(--color-text-primary)] mb-4">Recent Module Activity</h4>
-                <div className="space-y-3">
-                  <div className="flex items-center justify-between p-3 bg-[var(--color-background-default)] rounded-lg">
-                    <div className="flex items-center space-x-3">
-                      <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                      <span className="text-sm text-[var(--color-text-primary)]">New company registered: "MedTech Innovations"</span>
+              {/* Performance Metrics Section */}
+              <div className="card-glass p-3 rounded-lg h-full flex flex-col">
+                <h3 className="text-base font-semibold text-slate-700 dark:text-slate-200 mb-3">Performance Metrics</h3>
+                <div className="space-y-3 flex-1">
+                  <div className="p-2.5 card-glass rounded-lg">
+                    <div className="flex items-center justify-between mb-1.5">
+                      <span className="text-xs text-slate-500 dark:text-slate-400">Page Load Time</span>
+                      <span className="text-xs font-semibold text-emerald-600 dark:text-emerald-400">0.8s</span>
                     </div>
-                    <span className="text-xs text-[var(--color-text-secondary)]">2 hours ago</span>
+                    <div className="w-full bg-slate-200 dark:bg-slate-700/30 rounded-full h-1.5">
+                      <div className="bg-green-500 h-1.5 rounded-full" style={{ width: '85%' }}></div>
+                    </div>
                   </div>
-                  <div className="flex items-center justify-between p-3 bg-[var(--color-background-default)] rounded-lg">
-                    <div className="flex items-center space-x-3">
-                      <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
-                      <span className="text-sm text-[var(--color-text-primary)]">New deal posted: $2.5M Series A</span>
+                  <div className="p-2.5 card-glass rounded-lg">
+                    <div className="flex items-center justify-between mb-1.5">
+                      <span className="text-xs text-slate-500 dark:text-slate-400">API Response</span>
+                      <span className="text-xs font-semibold text-emerald-600 dark:text-emerald-400">120ms</span>
                     </div>
-                    <span className="text-xs text-[var(--color-text-secondary)]">4 hours ago</span>
+                    <div className="w-full bg-slate-200 dark:bg-slate-700/30 rounded-full h-1.5">
+                      <div className="bg-green-500 h-1.5 rounded-full" style={{ width: '92%' }}></div>
+                    </div>
                   </div>
-                  <div className="flex items-center justify-between p-3 bg-[var(--color-background-default)] rounded-lg">
-                    <div className="flex items-center space-x-3">
-                      <div className="w-2 h-2 bg-yellow-500 rounded-full"></div>
-                      <span className="text-sm text-[var(--color-text-primary)]">Grant deadline approaching: NIH R01</span>
+                  <div className="p-2.5 card-glass rounded-lg">
+                    <div className="flex items-center justify-between mb-1.5">
+                      <span className="text-xs text-slate-500 dark:text-slate-400">Uptime</span>
+                      <span className="text-xs font-semibold text-emerald-600 dark:text-emerald-400">99.9%</span>
                     </div>
-                    <span className="text-xs text-[var(--color-text-secondary)]">1 day ago</span>
+                    <div className="w-full bg-slate-200 dark:bg-slate-700/30 rounded-full h-1.5">
+                      <div className="bg-green-500 h-1.5 rounded-full" style={{ width: '99.9%' }}></div>
+                    </div>
+                  </div>
+                  <div className="p-2.5 card-glass rounded-lg">
+                    <div className="flex items-center justify-between mb-1.5">
+                      <span className="text-xs text-slate-500 dark:text-slate-400">Error Rate</span>
+                      <span className="text-xs font-semibold text-emerald-600 dark:text-emerald-400">0.01%</span>
+                    </div>
+                    <div className="w-full bg-slate-200 dark:bg-slate-700/30 rounded-full h-1.5">
+                      <div className="bg-green-500 h-1.5 rounded-full" style={{ width: '99%' }}></div>
+                    </div>
+                  </div>
+                  <div className="pt-2 border-t border-slate-200 dark:border-slate-700">
+                    <div className="flex items-center justify-between">
+                      <span className="text-xs text-slate-500 dark:text-slate-400">Active Sessions</span>
+                      <span className="text-sm font-bold text-slate-700 dark:text-slate-200">
+                        {overviewData?.userStats.activeUsers || 0}
+                      </span>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
 
-            {/* Ads Overview Section */}
-            <div className="card-glass p-6 rounded-xl border border-[var(--color-divider-gray)] bg-[var(--color-background-surface)]">
-              <div className="flex items-center justify-between mb-6">
+            {/* Ads Overview and Campaign Performance - Side by Side */}
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-3">
+              {/* Ads Overview Section - Compact Style - 2 columns */}
+              <div className="lg:col-span-2 card-glass p-3 rounded-lg">
+              <div className="flex items-center justify-between mb-3">
                 <div>
-                  <h3 className="text-xl font-bold text-[var(--color-text-primary)] mb-1">Advertisement Overview</h3>
-                  <p className="text-sm text-[var(--color-text-secondary)]">Campaign performance and ad management</p>
+                  <h3 className="text-base font-bold text-slate-700 dark:text-slate-200 mb-0.5">Advertisement Overview</h3>
+                  <p className="text-xs text-slate-500 dark:text-slate-400">Campaign performance and ad management</p>
                 </div>
-                <div className="flex items-center space-x-2">
-                  <div className="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
-                  <span className="text-sm text-green-600 font-medium">Live</span>
-                </div>
-              </div>
-              
-              {/* Ads Metrics Grid */}
-              <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-                <div className="bg-gradient-to-br from-blue-500/10 to-blue-500/5 p-4 rounded-xl border border-blue-500/20">
-                  <div className="flex items-center justify-between mb-3">
-                    <div className="p-2 bg-blue-500/20 rounded-lg">
-                      <Target className="h-5 w-5 text-blue-500" />
-                    </div>
-                    <span className="text-xs bg-blue-500/20 text-blue-600 px-2 py-1 rounded-full">Active</span>
-                  </div>
-                  <div className="text-2xl font-bold text-[var(--color-text-primary)] mb-1">
-                    {overviewData?.adsStats?.activeCampaigns || 0}
-                  </div>
-                  <div className="text-sm text-[var(--color-text-secondary)]">Active Campaigns</div>
-                  <div className="text-xs text-green-600 mt-1">Live campaigns</div>
-                </div>
-                
-                <div className="bg-gradient-to-br from-green-500/10 to-green-500/5 p-4 rounded-xl border border-green-500/20">
-                  <div className="flex items-center justify-between mb-3">
-                    <div className="p-2 bg-green-500/20 rounded-lg">
-                      <Eye className="h-5 w-5 text-green-500" />
-                    </div>
-                    <span className="text-xs bg-green-500/20 text-green-600 px-2 py-1 rounded-full">+12%</span>
-                  </div>
-                  <div className="text-2xl font-bold text-[var(--color-text-primary)] mb-1">
-                    {overviewData?.adsStats?.totalImpressions ? (overviewData.adsStats.totalImpressions / 1000).toFixed(1) + 'K' : '0'}
-                  </div>
-                  <div className="text-sm text-[var(--color-text-secondary)]">Total Impressions</div>
-                  <div className="text-xs text-green-600 mt-1">Last 30 days</div>
-                </div>
-                
-                <div className="bg-gradient-to-br from-purple-500/10 to-purple-500/5 p-4 rounded-xl border border-purple-500/20">
-                  <div className="flex items-center justify-between mb-3">
-                    <div className="p-2 bg-purple-500/20 rounded-lg">
-                      <MousePointer className="h-5 w-5 text-purple-500" />
-                    </div>
-                    <span className="text-xs bg-purple-500/20 text-purple-600 px-2 py-1 rounded-full">+8%</span>
-                  </div>
-                  <div className="text-2xl font-bold text-[var(--color-text-primary)] mb-1">
-                    {overviewData?.adsStats?.clickThroughRate || 0}%
-                  </div>
-                  <div className="text-sm text-[var(--color-text-secondary)]">Click-Through Rate</div>
-                  <div className="text-xs text-green-600 mt-1">Last 30 days</div>
-                </div>
-                
-                <div className="bg-gradient-to-br from-orange-500/10 to-orange-500/5 p-4 rounded-xl border border-orange-500/20">
-                  <div className="flex items-center justify-between mb-3">
-                    <div className="p-2 bg-orange-500/20 rounded-lg">
-                      <DollarSign className="h-5 w-5 text-orange-500" />
-                    </div>
-                    <span className="text-xs bg-orange-500/20 text-orange-600 px-2 py-1 rounded-full">+15%</span>
-                  </div>
-                  <div className="text-2xl font-bold text-[var(--color-text-primary)] mb-1">
-                    ${overviewData?.adsStats?.revenueGenerated ? (overviewData.adsStats.revenueGenerated / 1000).toFixed(1) + 'K' : '0'}
-                  </div>
-                  <div className="text-sm text-[var(--color-text-secondary)]">Revenue Generated</div>
-                  <div className="text-xs text-green-600 mt-1">From campaigns</div>
+                <div className="flex items-center space-x-2 px-2 py-1 bg-emerald-100 dark:bg-emerald-500/20 rounded-full">
+                  <div className="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse"></div>
+                  <span className="text-xs font-semibold text-emerald-700 dark:text-emerald-300">Live</span>
                 </div>
               </div>
               
-              {/* Campaign Performance Chart */}
-              <div className="mb-8">
-                <h4 className="text-lg font-semibold text-[var(--color-text-primary)] mb-4">Campaign Performance (Last 7 Days)</h4>
-                <div className="bg-[var(--color-background-default)] p-4 rounded-xl border border-[var(--color-divider-gray)]">
-                  <div className="flex items-end justify-between h-32 space-x-2">
-                    {[
-                      { day: 'Mon', impressions: 12000, clicks: 380, revenue: 1200 },
-                      { day: 'Tue', impressions: 15000, clicks: 450, revenue: 1500 },
-                      { day: 'Wed', impressions: 18000, clicks: 540, revenue: 1800 },
-                      { day: 'Thu', impressions: 22000, clicks: 660, revenue: 2200 },
-                      { day: 'Fri', impressions: 25000, clicks: 750, revenue: 2500 },
-                      { day: 'Sat', impressions: 20000, clicks: 600, revenue: 2000 },
-                      { day: 'Sun', impressions: 16000, clicks: 480, revenue: 1600 }
-                    ].map((item, index) => {
-                      const maxImpressions = 25000;
-                      const height = (item.impressions / maxImpressions) * 100;
-                      const isToday = index === 6;
-                      
-                      return (
-                        <div key={index} className="flex flex-col items-center flex-1 group">
-                          <div className="relative w-full flex justify-center mb-2">
-                            <div 
-                              className={`relative rounded-t-lg transition-all duration-500 ease-out shadow-md hover:shadow-lg cursor-pointer group-hover:scale-105 ${
-                                isToday 
-                                  ? 'bg-gradient-to-t from-[var(--color-primary-teal)] to-[var(--color-accent-orange)]' 
-                                  : 'bg-gradient-to-t from-blue-500/80 to-blue-500/40'
-                              }`}
-                              style={{ 
-                                height: `${Math.max(height, 8)}%`,
-                                width: '80%',
-                                minHeight: '8px'
-                              }}
-                              title={`${item.day}: ${item.impressions.toLocaleString()} impressions`}
-                            >
-                              <div className="absolute inset-0 bg-gradient-to-t from-transparent via-white/20 to-transparent rounded-t-lg"></div>
-                            </div>
-                          </div>
-                          <div className="text-center">
-                            <div className="text-xs font-medium text-[var(--color-text-primary)] group-hover:text-[var(--color-primary-teal)] transition-colors">
-                              {item.day}
-                            </div>
-                            <div className="text-xs text-[var(--color-text-secondary)]">
-                              {item.impressions > 1000 ? `${(item.impressions/1000).toFixed(0)}k` : item.impressions}
-                            </div>
-                          </div>
-                        </div>
-                      );
-                    })}
+              {/* Ads Metrics Grid - Compact Style */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2 mb-3">
+                <div className="card-glass p-3 rounded-lg hover:shadow-md transition-all duration-200 group h-full flex flex-col">
+                  <div className="flex items-center justify-between mb-2">
+                    <div className="p-2 bg-cyan-100 dark:bg-cyan-500/30 rounded-lg">
+                      <Target className="h-4 w-4 text-cyan-600 dark:text-cyan-400" />
+                    </div>
+                    <span className="text-xs bg-cyan-100 dark:bg-cyan-500/30 text-cyan-700 dark:text-cyan-300 px-1.5 py-0.5 rounded-full font-semibold">Active</span>
+                  </div>
+                  <div className="flex-1">
+                    <div className="text-xl font-bold text-slate-700 dark:text-slate-200 mb-0.5">
+                      {overviewData?.adsStats?.activeCampaigns || 0}
+                    </div>
+                    <div className="text-xs text-slate-500 dark:text-slate-400">Active Campaigns</div>
+                    <div className="text-xs text-emerald-600 dark:text-emerald-400 mt-0.5 font-medium">Live campaigns</div>
+                  </div>
+                </div>
+                
+                <div className="card-glass p-3 rounded-lg hover:shadow-md transition-all duration-200 group h-full flex flex-col">
+                  <div className="flex items-center justify-between mb-2">
+                    <div className="p-2 bg-emerald-100 dark:bg-emerald-500/30 rounded-lg">
+                      <Eye className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
+                    </div>
+                    <span className="text-xs bg-emerald-100 dark:bg-emerald-500/30 text-emerald-700 dark:text-emerald-300 px-1.5 py-0.5 rounded-full font-semibold">+12%</span>
+                  </div>
+                  <div className="flex-1">
+                    <div className="text-xl font-bold text-slate-700 dark:text-slate-200 mb-0.5">
+                      {overviewData?.adsStats?.totalImpressions ? (overviewData.adsStats.totalImpressions / 1000).toFixed(1) + 'K' : '0'}
+                    </div>
+                    <div className="text-xs text-slate-500 dark:text-slate-400">Total Impressions</div>
+                    <div className="text-xs text-emerald-600 dark:text-emerald-400 mt-0.5 font-medium">Last 30 days</div>
+                  </div>
+                </div>
+                
+                <div className="card-glass p-3 rounded-lg hover:shadow-md transition-all duration-200 group h-full flex flex-col">
+                  <div className="flex items-center justify-between mb-2">
+                    <div className="p-2 bg-purple-100 dark:!bg-purple-100 rounded-lg">
+                      <MousePointer className="h-4 w-4 text-purple-600 dark:text-purple-600" />
+                    </div>
+                    <span className="text-xs bg-purple-100 dark:!bg-purple-100 text-purple-700 dark:text-purple-700 px-1.5 py-0.5 rounded-full font-semibold">+8%</span>
+                  </div>
+                  <div className="flex-1">
+                    <div className="text-xl font-bold text-slate-700 dark:text-slate-200 mb-0.5">
+                      {overviewData?.adsStats?.clickThroughRate || 0}%
+                    </div>
+                    <div className="text-xs text-slate-500 dark:text-slate-400">Click-Through Rate</div>
+                    <div className="text-xs text-emerald-600 dark:text-emerald-400 mt-0.5 font-medium">Last 30 days</div>
+                  </div>
+                </div>
+                
+                <div className="card-glass p-3 rounded-lg hover:shadow-md transition-all duration-200 group h-full flex flex-col">
+                  <div className="flex items-center justify-between mb-2">
+                    <div className="p-2 bg-orange-100 dark:!bg-orange-100 rounded-lg">
+                      <DollarSign className="h-4 w-4 text-orange-600 dark:text-black" />
+                    </div>
+                    <span className="text-xs bg-orange-100 dark:!bg-orange-100 text-orange-700 dark:text-orange-700 px-1.5 py-0.5 rounded-full font-semibold">+15%</span>
+                  </div>
+                  <div className="flex-1">
+                    <div className="text-xl font-bold text-slate-700 dark:text-slate-200 mb-0.5">
+                      {`$${overviewData?.adsStats?.revenueGenerated ? (overviewData.adsStats.revenueGenerated / 1000).toFixed(1) + 'K' : '0'}`}
+                    </div>
+                    <div className="text-xs text-slate-500 dark:text-slate-400">Revenue Generated</div>
+                    <div className="text-xs text-emerald-600 dark:text-emerald-400 mt-0.5 font-medium">From campaigns</div>
                   </div>
                 </div>
               </div>
               
-              {/* Top Performing Campaigns */}
-              <div className="grid grid-cols-2 gap-6">
+              {/* Top Performing Campaigns and Placement Performance - 2 Columns */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
-                  <h4 className="text-lg font-semibold text-[var(--color-text-primary)] mb-4">Top Performing Campaigns</h4>
-                  <div className="space-y-3">
+                  <div className="flex items-center justify-between mb-2">
+                    <h4 className="text-xs font-semibold text-slate-700 dark:text-slate-200">Top Campaigns</h4>
+                    <button className="text-xs text-slate-500 dark:text-slate-400 hover:text-gray-900 dark:hover:text-white transition-colors">
+                      View All →
+                    </button>
+                  </div>
+                  <div className="space-y-1">
                     {[
                       { name: 'Healthcare Innovation Summit', impressions: '45.2K', ctr: '4.2%', revenue: '$2.1K', status: 'active' },
                       { name: 'MedTech Startup Showcase', impressions: '38.7K', ctr: '3.8%', revenue: '$1.8K', status: 'active' },
-                      { name: 'Clinical Research Opportunities', impressions: '32.1K', ctr: '3.5%', revenue: '$1.5K', status: 'active' },
-                      { name: 'Investment Round Announcement', impressions: '28.9K', ctr: '3.1%', revenue: '$1.3K', status: 'paused' }
+                      { name: 'Clinical Research Opportunities', impressions: '32.1K', ctr: '3.5%', revenue: '$1.5K', status: 'active' }
                     ].map((campaign, index) => (
-                      <div key={index} className="flex items-center justify-between p-3 bg-[var(--color-background-default)] rounded-lg border border-[var(--color-divider-gray)]">
-                        <div className="flex items-center space-x-3">
-                          <div className={`w-2 h-2 rounded-full ${campaign.status === 'active' ? 'bg-green-500' : 'bg-yellow-500'}`}></div>
-                          <div>
-                            <div className="text-sm font-medium text-[var(--color-text-primary)]">{campaign.name}</div>
-                            <div className="text-xs text-[var(--color-text-secondary)]">{campaign.impressions} impressions</div>
+                      <div key={index} className="flex items-center justify-between p-1.5 card-glass rounded-lg hover:shadow-md transition-all duration-200 group">
+                        <div className="flex items-center space-x-1.5 min-w-0 flex-1">
+                          <div className={`w-1.5 h-1.5 rounded-full flex-shrink-0 ${campaign.status === 'active' ? 'bg-emerald-500 animate-pulse' : 'bg-yellow-500'}`}></div>
+                          <div className="min-w-0 flex-1">
+                            <div className="text-xs font-medium text-slate-700 dark:text-slate-200 truncate">{campaign.name}</div>
+                            <div className="text-xs text-slate-500 dark:text-slate-400">{campaign.impressions}</div>
                           </div>
                         </div>
-                        <div className="text-right">
-                          <div className="text-sm font-semibold text-[var(--color-text-primary)]">{campaign.ctr}</div>
-                          <div className="text-xs text-[var(--color-text-secondary)]">{campaign.revenue}</div>
+                        <div className="text-right ml-1.5 flex-shrink-0">
+                          <div className="text-xs font-semibold text-slate-700 dark:text-slate-200">{campaign.ctr}</div>
+                          <div className="text-xs text-slate-500 dark:text-slate-400">{campaign.revenue}</div>
                         </div>
                       </div>
                     ))}
@@ -4132,88 +4321,149 @@ const AdminDashboard: React.FC = () => {
                 </div>
                 
                 <div>
-                  <h4 className="text-lg font-semibold text-[var(--color-text-primary)] mb-4">Ad Placement Performance</h4>
-                  <div className="space-y-4">
-                    <div className="flex items-center justify-between p-3 bg-[var(--color-background-default)] rounded-lg border border-[var(--color-divider-gray)]">
-                      <div className="flex items-center space-x-3">
-                        <div className="p-2 bg-blue-500/20 rounded-lg">
-                          <Newspaper className="h-4 w-4 text-blue-500" />
+                  <h4 className="text-xs font-semibold text-slate-700 dark:text-slate-200 mb-2">Placement Performance</h4>
+                  <div className="space-y-1">
+                    <div className="flex items-center justify-between p-1.5 card-glass rounded-lg hover:shadow-md transition-all duration-200 group">
+                      <div className="flex items-center space-x-1.5 min-w-0 flex-1">
+                        <div className="p-1 bg-cyan-100 dark:bg-cyan-500/30 rounded-lg flex-shrink-0">
+                          <Newspaper className="h-3 w-3 text-cyan-600 dark:text-cyan-400" />
                         </div>
-                        <div>
-                          <div className="text-sm font-medium text-[var(--color-text-primary)]">Header Banner</div>
-                          <div className="text-xs text-[var(--color-text-secondary)]">Top of page placement</div>
-                        </div>
-                      </div>
-                      <div className="text-right">
-                        <div className="text-sm font-semibold text-green-600">5.2% CTR</div>
-                        <div className="text-xs text-[var(--color-text-secondary)]">Best performing</div>
-                      </div>
-                    </div>
-                    
-                    <div className="flex items-center justify-between p-3 bg-[var(--color-background-default)] rounded-lg border border-[var(--color-divider-gray)]">
-                      <div className="flex items-center space-x-3">
-                        <div className="p-2 bg-green-500/20 rounded-lg">
-                          <Megaphone className="h-4 w-4 text-green-500" />
-                        </div>
-                        <div>
-                          <div className="text-sm font-medium text-[var(--color-text-primary)]">Sidebar Ads</div>
-                          <div className="text-xs text-[var(--color-text-secondary)]">Right sidebar placement</div>
+                        <div className="min-w-0 flex-1">
+                          <div className="text-xs font-medium text-slate-700 dark:text-slate-200">Header Banner</div>
+                          <div className="text-xs text-slate-500 dark:text-slate-400">Top placement</div>
                         </div>
                       </div>
-                      <div className="text-right">
-                        <div className="text-sm font-semibold text-blue-600">3.1% CTR</div>
-                        <div className="text-xs text-[var(--color-text-secondary)]">Good performance</div>
+                      <div className="text-right ml-1.5 flex-shrink-0">
+                        <div className="text-xs font-semibold text-emerald-600 dark:text-emerald-400">5.2%</div>
+                        <div className="text-xs text-slate-500 dark:text-slate-400">Best</div>
                       </div>
                     </div>
                     
-                    <div className="flex items-center justify-between p-3 bg-[var(--color-background-default)] rounded-lg border border-[var(--color-divider-gray)]">
-                      <div className="flex items-center space-x-3">
-                        <div className="p-2 bg-purple-500/20 rounded-lg">
-                          <Target className="h-4 w-4 text-purple-500" />
+                    <div className="flex items-center justify-between p-1.5 card-glass rounded-lg hover:shadow-md transition-all duration-200 group">
+                      <div className="flex items-center space-x-1.5 min-w-0 flex-1">
+                        <div className="p-1 bg-emerald-100 dark:bg-emerald-500/30 rounded-lg flex-shrink-0">
+                          <Megaphone className="h-3 w-3 text-emerald-600 dark:text-emerald-400" />
                         </div>
-                        <div>
-                          <div className="text-sm font-medium text-[var(--color-text-primary)]">In-Content Ads</div>
-                          <div className="text-xs text-[var(--color-text-secondary)]">Within article content</div>
+                        <div className="min-w-0 flex-1">
+                          <div className="text-xs font-medium text-slate-700 dark:text-slate-200">Sidebar Ads</div>
+                          <div className="text-xs text-slate-500 dark:text-slate-400">Side placement</div>
                         </div>
                       </div>
-                      <div className="text-right">
-                        <div className="text-sm font-semibold text-orange-600">2.8% CTR</div>
-                        <div className="text-xs text-[var(--color-text-secondary)]">Average performance</div>
+                      <div className="text-right ml-1.5 flex-shrink-0">
+                        <div className="text-xs font-semibold text-cyan-600 dark:text-cyan-400">3.1%</div>
+                        <div className="text-xs text-slate-500 dark:text-slate-400">Good</div>
+                      </div>
+                    </div>
+                    
+                    <div className="flex items-center justify-between p-1.5 card-glass rounded-lg hover:shadow-md transition-all duration-200 group">
+                      <div className="flex items-center space-x-1.5 min-w-0 flex-1">
+                        <div className="p-1 bg-purple-100 dark:!bg-purple-100 rounded-lg flex-shrink-0">
+                          <Target className="h-3 w-3 text-purple-600 dark:text-purple-600" />
+                        </div>
+                        <div className="min-w-0 flex-1">
+                          <div className="text-xs font-medium text-slate-700 dark:text-slate-200">In-Content</div>
+                          <div className="text-xs text-slate-500 dark:text-slate-400">Article content</div>
+                        </div>
+                      </div>
+                      <div className="text-right ml-1.5 flex-shrink-0">
+                        <div className="text-xs font-semibold text-orange-600 dark:text-orange-400">2.8%</div>
+                        <div className="text-xs text-slate-500 dark:text-slate-400">Avg</div>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
+              </div>
+
+              {/* Campaign Performance Chart - Compact Style */}
+              <div className="max-w-full">
+                <div className="card-glass p-3 rounded-lg">
+                  <h4 className="text-sm font-semibold text-slate-700 dark:text-slate-200 mb-3">Campaign Performance (Last 7 Days)</h4>
+                  <div className="card-glass p-3 rounded-lg bg-slate-50 dark:bg-slate-800/50">
+                    <div className="flex items-end justify-between h-32 space-x-2">
+                      {[
+                        { day: 'Mon', impressions: 12000, clicks: 380, revenue: 1200 },
+                        { day: 'Tue', impressions: 15000, clicks: 450, revenue: 1500 },
+                        { day: 'Wed', impressions: 18000, clicks: 540, revenue: 1800 },
+                        { day: 'Thu', impressions: 22000, clicks: 660, revenue: 2200 },
+                        { day: 'Fri', impressions: 25000, clicks: 750, revenue: 2500 },
+                        { day: 'Sat', impressions: 20000, clicks: 600, revenue: 2000 },
+                        { day: 'Sun', impressions: 16000, clicks: 480, revenue: 1600 }
+                      ].map((item, index) => {
+                        const maxImpressions = 25000;
+                        const height = (item.impressions / maxImpressions) * 100;
+                        const isToday = index === 6;
+                        
+                        return (
+                          <div key={index} className="flex flex-col items-center flex-1 group">
+                            <div className="relative w-full flex justify-center mb-2">
+                              <div 
+                                className={`relative rounded-t-lg transition-all duration-500 ease-out shadow-md hover:shadow-lg cursor-pointer group-hover:scale-105 ${
+                                  isToday 
+                                    ? 'bg-gradient-to-t from-blue-600 to-orange-500' 
+                                    : 'bg-gradient-to-t from-blue-500/80 to-blue-500/40'
+                                }`}
+                                style={{ 
+                                  height: `${Math.max(height, 8)}%`,
+                                  width: '80%',
+                                  minHeight: '8px'
+                                }}
+                                title={`${item.day}: ${item.impressions.toLocaleString()} impressions`}
+                              >
+                                <div className="absolute inset-0 bg-gradient-to-t from-transparent via-white/20 to-transparent rounded-t-lg"></div>
+                              </div>
+                            </div>
+                            <div className="text-center">
+                              <div className="text-xs font-medium text-slate-700 dark:text-slate-200 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+                                {item.day}
+                              </div>
+                              <div className="text-xs text-slate-500 dark:text-slate-400">
+                                {item.impressions > 1000 ? `${(item.impressions/1000).toFixed(0)}k` : item.impressions}
+                              </div>
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
-              </>
-            )}
+          </div>
+          )}
           </div>
         )}
 
 
         {activeTab==='users' && (
-          <div className="space-y-6">
+          <div className="space-y-3">
+            {/* Page Header - Compact */}
+            <div className="mb-2">
+              <h1 className="text-2xl font-bold text-slate-700 dark:text-slate-200 mb-1">User Management</h1>
+              <p className="text-sm text-slate-500 dark:text-slate-400">Manage all platform users and their access</p>
+            </div>
+
             {/* Enhanced User Management Header */}
-            <div className="card-glass p-6 rounded-xl">
-              <div className="flex items-center justify-between mb-6">
-                <h3 className="text-xl font-semibold text-[var(--color-text-primary)]">User Management</h3>
+            <div className="card-glass p-3 rounded-lg">
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="text-base font-semibold text-slate-700 dark:text-slate-200">User Management</h3>
                 <div className="flex items-center gap-3">
                   <button 
                     className="btn-outline px-4 py-2 rounded-lg flex items-center gap-2"
                     onClick={() => {/* TODO: Export users */}}
                   >
-                    <Download className="h-4 w-4"/>
+                    <Download className="h-4 w-4 text-white dark:text-white"/>
                     <span>Export</span>
                   </button>
                   <button className="btn-primary px-4 py-2 rounded-lg flex items-center gap-2" onClick={() => setShowAddUserModal(true)}>
-                    <Plus className="h-4 w-4"/>
+                    <Plus className="h-4 w-4 text-white dark:text-white"/>
                     <span>Add User</span>
                   </button>
                 </div>
               </div>
 
               {/* Search and Filters */}
-              <div className="grid grid-cols-4 gap-4 mb-6">
+              <div className="grid grid-cols-4 gap-3 mb-4">
                 <div className="relative">
                   <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400"/>
                   <input 
@@ -4263,28 +4513,28 @@ const AdminDashboard: React.FC = () => {
 
               {/* Bulk Actions */}
               {selectedUsers.length > 0 && (
-                <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4 mb-6">
+                <div className="card-glass bg-cyan-50/50 dark:bg-cyan-950/30 border border-cyan-200 dark:border-cyan-500/50 rounded-lg p-3 mb-4">
                   <div className="flex items-center justify-between">
-                    <span className="text-blue-800 dark:text-blue-200 font-medium">
+                    <span className="text-blue-800 dark:text-white font-medium">
                       {selectedUsers.length} user(s) selected
                     </span>
                     <div className="flex items-center gap-2">
                       <button 
-                        className="btn-outline px-3 py-2 rounded-lg text-green-600 hover:bg-green-50 dark:hover:bg-green-900/20"
+                        className="btn-outline px-3 py-2 rounded-lg text-green-600 dark:text-white hover:bg-green-50 dark:hover:bg-green-900/20"
                         onClick={() => handleBulkAction('activate')}
                       >
                         <UserCheckIcon className="h-4 w-4"/>
                         <span>Activate</span>
                       </button>
                       <button 
-                        className="btn-outline px-3 py-2 rounded-lg text-yellow-600 hover:bg-yellow-50 dark:hover:bg-yellow-900/20"
+                        className="btn-outline px-3 py-2 rounded-lg text-yellow-600 dark:text-white hover:bg-yellow-50 dark:hover:bg-yellow-900/20"
                         onClick={() => handleBulkAction('deactivate')}
                       >
                         <UserX className="h-4 w-4"/>
                         <span>Deactivate</span>
                       </button>
                       <button 
-                        className="btn-outline px-3 py-2 rounded-lg text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20"
+                        className="btn-outline px-3 py-2 rounded-lg text-red-600 dark:text-white hover:bg-red-50 dark:hover:bg-red-900/20"
                         onClick={() => handleBulkAction('block')}
                       >
                         <Ban className="h-4 w-4"/>
@@ -4297,10 +4547,10 @@ const AdminDashboard: React.FC = () => {
             </div>
 
             {/* Users Table */}
-            <div className="card-glass rounded-xl overflow-hidden">
+            <div className="card-glass rounded-lg overflow-hidden">
               <div className="overflow-x-auto">
                 <table className="w-full">
-                  <thead className="bg-[var(--color-background-surface)] border-b border-[var(--color-divider-gray)]">
+                  <thead className="bg-slate-50 dark:bg-slate-800/50 border-b border-slate-200 dark:border-slate-700">
                     <tr>
                       <th className="px-4 py-3 text-left">
                         <input 
@@ -4310,18 +4560,18 @@ const AdminDashboard: React.FC = () => {
                           className="rounded"
                         />
                       </th>
-                      <th className="px-4 py-3 text-left text-sm font-medium text-[var(--color-text-primary)]">User</th>
-                      <th className="px-4 py-3 text-left text-sm font-medium text-[var(--color-text-primary)]">Role</th>
-                      <th className="px-4 py-3 text-left text-sm font-medium text-[var(--color-text-primary)]">Tier</th>
-                      <th className="px-4 py-3 text-left text-sm font-medium text-[var(--color-text-primary)]">Status</th>
-                      <th className="px-4 py-3 text-left text-sm font-medium text-[var(--color-text-primary)]">Verified</th>
-                      <th className="px-4 py-3 text-left text-sm font-medium text-[var(--color-text-primary)]">Joined</th>
-                      <th className="px-4 py-3 text-left text-sm font-medium text-[var(--color-text-primary)]">Actions</th>
+                      <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700 dark:text-slate-200">User</th>
+                      <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700 dark:text-slate-200">Role</th>
+                      <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700 dark:text-slate-200">Tier</th>
+                      <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700 dark:text-slate-200">Status</th>
+                      <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700 dark:text-slate-200">Verified</th>
+                      <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700 dark:text-slate-200">Joined</th>
+                      <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700 dark:text-slate-200">Actions</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-[var(--color-divider-gray)]">
+                  <tbody className="divide-y divide-slate-200 dark:divide-slate-700">
                     {usersData?.users.map(user => (
-                      <tr key={user.id} className="hover:bg-[var(--color-background-default)] transition-colors">
+                      <tr key={user.id} className="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
                         <td className="px-4 py-3">
                           <input 
                             type="checkbox" 
@@ -4332,68 +4582,68 @@ const AdminDashboard: React.FC = () => {
                         </td>
                         <td className="px-4 py-3">
                           <div className="flex items-center gap-3">
-                            <div className="w-10 h-10 bg-[var(--color-primary-teal)] rounded-full flex items-center justify-center text-white font-semibold">
+                            <div className="w-10 h-10 bg-teal-600 dark:bg-gradient-to-br dark:from-cyan-500 dark:to-teal-500 rounded-full flex items-center justify-center text-white !text-white font-semibold">
                               {user.first_name?.charAt(0) || user.email.charAt(0).toUpperCase()}
                             </div>
                             <div>
-                              <div className="font-medium text-[var(--color-text-primary)]">
+                              <div className="font-medium text-slate-700 dark:text-slate-200">
                                 {user.first_name && user.last_name ? `${user.first_name} ${user.last_name}` : user.email}
                               </div>
-                              <div className="text-sm text-[var(--color-text-secondary)]">{user.email}</div>
+                              <div className="text-sm text-slate-500 dark:text-slate-400">{user.email}</div>
                             </div>
                           </div>
                         </td>
                         <td className="px-4 py-3">
-                          <span className="px-2 py-1 bg-blue-100 dark:bg-blue-900/20 text-blue-800 dark:text-blue-200 rounded-full text-sm">
+                          <span className="px-2 py-1 bg-indigo-100 dark:bg-indigo-500/40 text-indigo-700 dark:text-indigo-300 rounded-full text-xs font-medium">
                             {user.role?.replace('_', ' ') || 'No role'}
                           </span>
                         </td>
                         <td className="px-4 py-3">
-                          <span className="px-2 py-1 bg-green-100 dark:bg-green-900/20 text-green-800 dark:text-green-200 rounded-full text-sm">
+                          <span className="px-2 py-1 bg-emerald-100 dark:bg-emerald-500/40 text-emerald-700 dark:text-emerald-300 rounded-full text-xs font-medium">
                             {user.account_tier || 'No tier'}
                           </span>
                         </td>
                         <td className="px-4 py-3">
-                          <span className={`px-2 py-1 rounded-full text-sm ${
+                          <span className={`px-2 py-1 rounded-full text-xs font-medium ${
                             user.is_active 
-                              ? 'bg-green-100 dark:bg-green-900/20 text-green-800 dark:text-green-200'
-                              : 'bg-red-100 dark:bg-red-900/20 text-red-800 dark:text-red-200'
+                              ? 'bg-emerald-100 dark:bg-emerald-500/40 text-emerald-700 dark:text-emerald-300'
+                              : 'bg-slate-100 dark:bg-slate-500/40 text-slate-700 dark:text-slate-300'
                           }`}>
                             {user.is_active ? 'Active' : 'Inactive'}
                           </span>
                         </td>
                         <td className="px-4 py-3">
-                          <span className={`px-2 py-1 rounded-full text-sm ${
+                          <span className={`px-2 py-1 rounded-full text-xs font-medium ${
                             user.is_verified 
-                              ? 'bg-green-100 dark:bg-green-900/20 text-green-800 dark:text-green-200'
-                              : 'bg-gray-100 dark:bg-gray-900/20 text-gray-800 dark:text-gray-200'
+                              ? 'bg-emerald-100 dark:bg-emerald-500/40 text-emerald-700 dark:text-emerald-300'
+                              : 'bg-slate-100 dark:bg-slate-500/40 text-slate-700 dark:text-slate-300'
                           }`}>
                             {user.is_verified ? 'Verified' : 'Unverified'}
                           </span>
                         </td>
-                        <td className="px-4 py-3 text-sm text-[var(--color-text-secondary)]">
+                        <td className="px-4 py-3 text-sm text-slate-500 dark:text-slate-400">
                           {new Date(user.created_at).toLocaleDateString()}
                         </td>
                         <td className="px-4 py-3">
                           <div className="flex items-center gap-2">
                             <button 
-                              className="btn-outline px-2 py-1 rounded text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/20"
+                              className="btn-outline px-2 py-1 rounded text-blue-600 dark:text-white hover:bg-blue-50 dark:hover:bg-blue-900/20"
                               onClick={() => handleEditUser(user)}
                             >
-                              <Edit className="h-4 w-4"/>
+                              <Edit className="h-4 w-4 text-blue-600 dark:text-white"/>
                             </button>
                             <div className="relative">
                               <button 
-                                className="btn-outline px-2 py-1 rounded text-gray-600 hover:bg-gray-50 dark:hover:bg-gray-900/20"
+                                className="btn-outline px-2 py-1 rounded text-gray-600 dark:text-white hover:bg-gray-50 dark:hover:bg-gray-900/20"
                                 onClick={() => setShowUserActionsMenu(showUserActionsMenu === user.id ? null : user.id)}
                               >
-                                <MoreVertical className="h-4 w-4"/>
+                                <MoreVertical className="h-4 w-4 text-gray-600 dark:text-white"/>
                               </button>
                               {showUserActionsMenu === user.id && (
-                                <div className="absolute right-0 top-full mt-1 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg z-10 min-w-[200px]">
+                                <div className="absolute right-0 top-full mt-1 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg shadow-lg z-10 min-w-[200px]">
                                   <div className="py-1">
                                     <button 
-                                      className="w-full px-3 py-2 text-left text-sm hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center gap-2"
+                                      className="w-full px-3 py-2 text-left text-sm hover:bg-slate-100 dark:hover:bg-slate-700/50 flex items-center gap-2"
                                       onClick={() => {
                                         handleVerifyUser(user.id, !user.is_verified);
                                         setShowUserActionsMenu(null);
@@ -4403,7 +4653,7 @@ const AdminDashboard: React.FC = () => {
                                       {user.is_verified ? 'Unverify' : 'Verify'}
                                     </button>
                                     <button 
-                                      className="w-full px-3 py-2 text-left text-sm hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center gap-2"
+                                      className="w-full px-3 py-2 text-left text-sm hover:bg-slate-100 dark:hover:bg-slate-700/50 flex items-center gap-2"
                                       onClick={() => {
                                         handleUserStatusChange(user.id, user.is_active ? 'deactivate' : 'activate');
                                         setShowUserActionsMenu(null);
@@ -4413,7 +4663,7 @@ const AdminDashboard: React.FC = () => {
                                       {user.is_active ? 'Deactivate' : 'Activate'}
                                     </button>
                                     <button 
-                                      className="w-full px-3 py-2 text-left text-sm hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center gap-2"
+                                      className="w-full px-3 py-2 text-left text-sm hover:bg-slate-100 dark:hover:bg-slate-700/50 flex items-center gap-2"
                                       onClick={() => {
                                         handleResetPassword(user.id);
                                         setShowUserActionsMenu(null);
@@ -4423,7 +4673,7 @@ const AdminDashboard: React.FC = () => {
                                       Reset Password
                                     </button>
                                     <button 
-                                      className="w-full px-3 py-2 text-left text-sm hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center gap-2 text-red-600"
+                                      className="w-full px-3 py-2 text-left text-sm hover:bg-slate-100 dark:hover:bg-slate-700/50 flex items-center gap-2 text-red-600"
                                       onClick={() => {
                                         handleUserStatusChange(user.id, 'block');
                                         setShowUserActionsMenu(null);
@@ -4446,8 +4696,8 @@ const AdminDashboard: React.FC = () => {
               
               {/* Pagination */}
               {usersData?.pagination && (
-                <div className="px-4 py-3 border-t border-[var(--color-divider-gray)] flex items-center justify-between">
-                  <div className="text-sm text-[var(--color-text-secondary)]">
+                <div className="px-3 py-3 border-t border-slate-200 dark:border-slate-700 flex items-center justify-between">
+                  <div className="text-sm text-slate-500 dark:text-slate-400">
                     Showing {((usersData.pagination.page - 1) * usersData.pagination.limit) + 1} to {Math.min(usersData.pagination.page * usersData.pagination.limit, usersData.pagination.total)} of {usersData.pagination.total} users
                   </div>
                   <div className="flex items-center gap-2">
@@ -4458,7 +4708,7 @@ const AdminDashboard: React.FC = () => {
                     >
                       Previous
                     </button>
-                    <span className="px-3 py-2 bg-[var(--color-background-surface)] rounded-lg text-sm">
+                    <span className="px-3 py-2 bg-slate-50 dark:bg-slate-800/50 rounded-lg text-sm">
                       Page {usersData.pagination.page} of {usersData.pagination.pages}
                     </span>
                     <button 
@@ -4476,22 +4726,20 @@ const AdminDashboard: React.FC = () => {
         )}
 
         {activeTab==='modules' && (
-          <div className="space-y-6">
-            {/* Header */}
-            <div className="flex items-center justify-between">
-              <div>
-                <h2 className="text-2xl font-bold text-[var(--color-text-primary)]">Module Management</h2>
-                <p className="text-sm text-[var(--color-text-secondary)] mt-1">Manage all platform modules and their configurations</p>
-              </div>
+          <div className="space-y-3">
+            {/* Page Header - Compact */}
+            <div className="mb-2">
+              <h1 className="text-2xl font-bold text-slate-700 dark:text-slate-200 mb-1">Module Management</h1>
+              <p className="text-sm text-slate-500 dark:text-slate-400">Manage all platform modules and their configurations</p>
             </div>
 
             {/* Create New Module */}
-            <div id="create-module-section" className="card-glass p-6 rounded-xl">
-              <h3 className="text-lg font-semibold text-[var(--color-text-primary)] mb-4">Create New Module</h3>
+            <div id="create-module-section" className="card-glass p-3 rounded-lg">
+              <h3 className="text-base font-semibold text-slate-700 dark:text-slate-200 mb-3">Create New Module</h3>
               <div className="grid grid-cols-2 gap-4">
                 <input className="input" placeholder="Module ID (e.g., new_module)" value={draftModule.module_id} onChange={e=>setDraftModule(prev=>({...prev, module_id:e.target.value}))}/>
                 <input className="input" placeholder="Module Name" value={draftModule.name} onChange={e=>setDraftModule(prev=>({...prev, name:e.target.value}))}/>
-                <textarea className="input md:col-span-2" placeholder="Description" value={draftModule.description||''} onChange={e=>setDraftModule(prev=>({...prev, description:e.target.value}))} rows={2}/>
+                <textarea className="input col-span-2" placeholder="Description" value={draftModule.description||''} onChange={e=>setDraftModule(prev=>({...prev, description:e.target.value}))} rows={2}/>
                 <input className="input" placeholder="Component Name" value={draftModule.component||''} onChange={e=>setDraftModule(prev=>({...prev, component:e.target.value}))}/>
                 <input className="input" placeholder="Icon (e.g., BarChart3)" value={draftModule.icon||''} onChange={e=>setDraftModule(prev=>({...prev, icon:e.target.value}))}/>
                 <select className="input" value={draftModule.category} onChange={e=>setDraftModule(prev=>({...prev, category:e.target.value as any}))}>
@@ -4509,19 +4757,19 @@ const AdminDashboard: React.FC = () => {
                 </select>
                 <input type="number" className="input" placeholder="Display Order" value={draftModule.display_order||0} onChange={e=>setDraftModule(prev=>({...prev, display_order:parseInt(e.target.value)||0}))}/>
                 <input className="input" placeholder="Data Source" value={draftModule.data_source||''} onChange={e=>setDraftModule(prev=>({...prev, data_source:e.target.value}))}/>
-                <div className="md:col-span-2 flex items-center gap-4">
+                <div className="col-span-2 flex items-center gap-4">
                   <label className="flex items-center gap-2 cursor-pointer">
                     <input type="checkbox" checked={draftModule.is_enabled} onChange={e=>setDraftModule(prev=>({...prev, is_enabled:e.target.checked}))} className="w-4 h-4"/>
-                    <span className="text-sm text-[var(--color-text-primary)]">Enabled</span>
+                    <span className="text-sm text-slate-700 dark:text-slate-200">Enabled</span>
                   </label>
                   <label className="flex items-center gap-2 cursor-pointer">
                     <input type="checkbox" checked={draftModule.is_core} onChange={e=>setDraftModule(prev=>({...prev, is_core:e.target.checked}))} className="w-4 h-4"/>
-                    <span className="text-sm text-[var(--color-text-primary)]">Core Module</span>
+                    <span className="text-sm text-slate-700 dark:text-slate-200">Core Module</span>
                   </label>
                 </div>
-                <div className="md:col-span-2 flex justify-end">
+                <div className="col-span-2 flex justify-end">
                   <button className="btn-primary px-4 py-2 rounded-lg flex items-center gap-2" onClick={handleCreateModule}>
-                    <Plus className="h-4 w-4"/>
+                    <Plus className="h-4 w-4 text-white dark:text-white"/>
                     <span>Create Module</span>
                   </button>
                 </div>
@@ -4529,7 +4777,7 @@ const AdminDashboard: React.FC = () => {
             </div>
 
             {/* Search and Filters */}
-            <div className="card-glass p-4 rounded-xl">
+            <div className="card-glass p-3 rounded-lg">
               <div className="grid grid-cols-4 gap-3">
                 <div className="relative">
                   <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400"/>
@@ -4557,9 +4805,9 @@ const AdminDashboard: React.FC = () => {
 
             {/* Bulk Actions */}
             {selectedModules.length > 0 && (
-              <div className="card-glass p-4 rounded-xl bg-blue-50 dark:bg-blue-900/20">
+              <div className="card-glass p-3 rounded-lg bg-cyan-50/50 dark:bg-cyan-950/30">
                 <div className="flex items-center justify-between">
-                  <span className="text-sm font-medium text-[var(--color-text-primary)]">
+                  <span className="text-sm font-medium text-slate-700 dark:text-slate-200">
                     {selectedModules.length} module(s) selected
                   </span>
                   <div className="flex items-center gap-2">
@@ -4569,7 +4817,7 @@ const AdminDashboard: React.FC = () => {
                     <button className="btn-outline px-3 py-2 rounded-lg text-sm" onClick={()=>handleBulkModuleOperation('disable')}>
                       Disable
                     </button>
-                    <button className="btn-outline px-3 py-2 rounded-lg text-sm text-red-600 hover:bg-red-50" onClick={()=>handleBulkModuleOperation('delete')}>
+                    <button className="btn-outline px-3 py-2 rounded-lg text-sm text-red-600 dark:text-white hover:bg-red-50 dark:hover:bg-red-900/20" onClick={()=>handleBulkModuleOperation('delete')}>
                       Delete
                     </button>
                   </div>
@@ -4578,62 +4826,62 @@ const AdminDashboard: React.FC = () => {
             )}
 
             {/* Modules Table */}
-            <div className="card-glass rounded-xl overflow-hidden">
-              <div className="p-4 border-b border-[var(--color-divider-gray)]">
-                <h3 className="text-lg font-semibold text-[var(--color-text-primary)]">Modules ({filteredModules.length})</h3>
-                <p className="text-sm text-[var(--color-text-secondary)]">Manage your platform modules</p>
+            <div className="card-glass rounded-lg overflow-hidden">
+              <div className="p-3 border-b border-slate-200 dark:border-slate-700">
+                <h3 className="text-base font-semibold text-slate-700 dark:text-slate-200">Modules ({filteredModules.length})</h3>
+                <p className="text-sm text-slate-500 dark:text-slate-400">Manage your platform modules</p>
               </div>
               <div className="overflow-x-auto">
                 <table className="w-full">
-                  <thead className="bg-[var(--color-background-surface)] border-b border-[var(--color-divider-gray)]">
+                  <thead className="bg-slate-50 dark:bg-slate-800/50 border-b border-slate-200 dark:border-slate-700">
                     <tr>
                       <th className="px-4 py-3 text-left">
                         <input type="checkbox" checked={selectedModules.length === filteredModules.length && filteredModules.length > 0} onChange={handleSelectAllModules} className="w-4 h-4"/>
                       </th>
-                      <th className="px-4 py-3 text-left text-sm font-medium text-[var(--color-text-primary)]">Module</th>
-                      <th className="px-4 py-3 text-left text-sm font-medium text-[var(--color-text-primary)]">Category</th>
-                      <th className="px-4 py-3 text-left text-sm font-medium text-[var(--color-text-primary)]">Tier</th>
-                      <th className="px-4 py-3 text-left text-sm font-medium text-[var(--color-text-primary)]">Order</th>
-                      <th className="px-4 py-3 text-left text-sm font-medium text-[var(--color-text-primary)]">Status</th>
-                      <th className="px-4 py-3 text-left text-sm font-medium text-[var(--color-text-primary)]">Core</th>
-                      <th className="px-4 py-3 text-left text-sm font-medium text-[var(--color-text-primary)]">Actions</th>
+                      <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700 dark:text-slate-200">Module</th>
+                      <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700 dark:text-slate-200">Category</th>
+                      <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700 dark:text-slate-200">Tier</th>
+                      <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700 dark:text-slate-200">Order</th>
+                      <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700 dark:text-slate-200">Status</th>
+                      <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700 dark:text-slate-200">Core</th>
+                      <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700 dark:text-slate-200">Actions</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-[var(--color-divider-gray)]">
+                  <tbody className="divide-y divide-slate-200 dark:divide-slate-700">
                     {filteredModules.map(module => (
-                      <tr key={module.id} className="hover:bg-[var(--color-background-default)] transition-colors">
+                      <tr key={module.id} className="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
                         <td className="px-4 py-3">
                           <input type="checkbox" checked={selectedModules.includes(module.id)} onChange={()=>handleSelectModule(module.id)} className="w-4 h-4" disabled={module.is_core}/>
                         </td>
                         <td className="px-4 py-3">
                           <div>
-                            <div className="font-medium text-[var(--color-text-primary)]">{module.name}</div>
-                            <div className="text-sm text-[var(--color-text-secondary)]">{module.module_id}</div>
+                            <div className="font-medium text-slate-700 dark:text-slate-200">{module.name}</div>
+                            <div className="text-sm text-slate-500 dark:text-slate-400">{module.module_id}</div>
                             {module.description && (
-                              <div className="text-xs text-[var(--color-text-secondary)] mt-1">{module.description.substring(0, 60)}...</div>
+                              <div className="text-xs text-slate-500 dark:text-slate-400 mt-1">{module.description.substring(0, 60)}...</div>
                             )}
                           </div>
                         </td>
                         <td className="px-4 py-3">
-                          <span className="px-2 py-1 bg-blue-100 dark:bg-blue-900/20 text-blue-800 dark:text-blue-200 rounded-full text-xs font-medium">
+                          <span className="px-2 py-1 bg-indigo-100 dark:bg-indigo-500/40 text-indigo-700 dark:text-indigo-300 rounded-full text-xs font-medium">
                             {module.category}
                           </span>
                         </td>
                         <td className="px-4 py-3">
-                          <span className="px-2 py-1 bg-purple-100 dark:bg-purple-900/20 text-purple-800 dark:text-purple-200 rounded-full text-xs font-medium">
+                          <span className="px-2 py-1 bg-amber-100 dark:bg-amber-500/40 text-amber-700 dark:text-amber-300 rounded-full text-xs font-medium">
                             {module.required_tier}
                           </span>
                         </td>
                         <td className="px-4 py-3">
-                          <span className="text-sm text-[var(--color-text-primary)]">{module.display_order}</span>
+                          <span className="text-sm text-slate-700 dark:text-slate-200">{module.display_order}</span>
                         </td>
                         <td className="px-4 py-3">
                           <button 
                             onClick={() => handleToggleModuleStatus(module.id, module.is_enabled)}
                             className={`px-3 py-1 rounded-full text-xs font-medium transition-colors ${
                               module.is_enabled
-                                ? 'bg-green-100 dark:bg-green-900/20 text-green-800 dark:text-green-200'
-                                : 'bg-gray-100 dark:bg-gray-900/20 text-gray-800 dark:text-gray-200'
+                                ? 'bg-emerald-100 dark:bg-emerald-500/40 text-emerald-700 dark:text-emerald-300'
+                                : 'bg-slate-100 dark:bg-slate-500/40 text-slate-700 dark:text-slate-200'
                             }`}
                           >
                             {module.is_enabled ? 'Enabled' : 'Disabled'}
@@ -4641,24 +4889,24 @@ const AdminDashboard: React.FC = () => {
                         </td>
                         <td className="px-4 py-3">
                           {module.is_core ? (
-                            <span className="px-2 py-1 bg-orange-100 dark:bg-orange-900/20 text-orange-800 dark:text-orange-200 rounded-full text-xs font-medium">
+                            <span className="px-2 py-1 bg-amber-100 dark:bg-amber-500/40 text-amber-700 dark:text-amber-300 rounded-full text-xs font-medium">
                               Core
                             </span>
                           ) : (
-                            <span className="text-xs text-[var(--color-text-secondary)]">-</span>
+                            <span className="text-xs text-slate-500 dark:text-slate-400">-</span>
                           )}
                         </td>
                         <td className="px-4 py-3">
                           <div className="flex items-center gap-2">
                             <button 
-                              className="btn-outline px-2 py-1 rounded text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/20"
+                              className="btn-outline px-2 py-1 rounded text-blue-600 dark:text-white hover:bg-blue-50 dark:hover:bg-blue-900/20"
                               onClick={() => handleEditModule(module)}
                             >
                               <Edit className="h-4 w-4"/>
                             </button>
                             {!module.is_core && (
                               <button 
-                                className="btn-outline px-2 py-1 rounded text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20" 
+                                className="btn-outline px-2 py-1 rounded text-red-600 dark:text-white hover:bg-red-50 dark:hover:bg-red-900/20" 
                                 onClick={() => handleDeleteModule(module.id)}
                               >
                                 <Trash2 className="h-4 w-4"/>
@@ -4671,7 +4919,7 @@ const AdminDashboard: React.FC = () => {
                   </tbody>
                 </table>
                 {filteredModules.length === 0 && (
-                  <div className="p-8 text-center text-[var(--color-text-secondary)]">
+                  <div className="p-8 text-center text-slate-500 dark:text-slate-400">
                     No modules found. Create your first module above.
                   </div>
                 )}
@@ -4679,8 +4927,8 @@ const AdminDashboard: React.FC = () => {
               
               {/* Pagination */}
               {modulesPagination.pages > 1 && (
-                <div className="p-4 border-t border-[var(--color-divider-gray)] flex items-center justify-between">
-                  <span className="text-sm text-[var(--color-text-secondary)]">
+                <div className="p-3 border-t border-slate-200 dark:border-slate-700 flex items-center justify-between">
+                  <span className="text-sm text-slate-500 dark:text-slate-400">
                     Page {modulesPagination.page} of {modulesPagination.pages} ({modulesPagination.total} total)
                   </span>
                   <div className="flex items-center gap-2">
@@ -4691,7 +4939,7 @@ const AdminDashboard: React.FC = () => {
                     >
                       Previous
                     </button>
-                    <span className="text-sm text-[var(--color-text-secondary)]">
+                    <span className="text-sm text-slate-500 dark:text-slate-400">
                       Page {modulesPagination.page} of {modulesPagination.pages}
                     </span>
                     <button 
@@ -4711,9 +4959,9 @@ const AdminDashboard: React.FC = () => {
         {/* Module Edit Modal */}
         {showModuleEditModal && editingModule && (
           <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-            <div className="bg-white dark:bg-gray-800 rounded-xl p-6 w-full max-w-3xl mx-4 max-h-[90vh] overflow-y-auto">
+            <div className="bg-white dark:bg-slate-800 rounded-xl p-6 w-full max-w-3xl mx-4 max-h-[700px] overflow-y-auto">
               <div className="flex items-center justify-between mb-6">
-                <h3 className="text-xl font-semibold text-[var(--color-text-primary)]">Edit Module</h3>
+                <h3 className="text-xl font-semibold text-slate-700 dark:text-slate-200">Edit Module</h3>
                 <button 
                   className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
                   onClick={() => {
@@ -4731,7 +4979,7 @@ const AdminDashboard: React.FC = () => {
               }}>
                 <div className="grid grid-cols-2 gap-4 mb-4">
                   <div>
-                    <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">Module ID</label>
+                    <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2">Module ID</label>
                     <input 
                       className="input w-full" 
                       value={editingModule.module_id} 
@@ -4741,7 +4989,7 @@ const AdminDashboard: React.FC = () => {
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">Name</label>
+                    <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2">Name</label>
                     <input 
                       className="input w-full" 
                       value={editingModule.name || ''} 
@@ -4749,8 +4997,8 @@ const AdminDashboard: React.FC = () => {
                       required
                     />
                   </div>
-                  <div className="md:col-span-2">
-                    <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">Description</label>
+                  <div className="col-span-2">
+                    <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2">Description</label>
                     <textarea 
                       className="input w-full" 
                       value={editingModule.description || ''} 
@@ -4759,7 +5007,7 @@ const AdminDashboard: React.FC = () => {
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">Component</label>
+                    <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2">Component</label>
                     <input 
                       className="input w-full" 
                       value={editingModule.component || ''} 
@@ -4767,7 +5015,7 @@ const AdminDashboard: React.FC = () => {
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">Icon</label>
+                    <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2">Icon</label>
                     <input 
                       className="input w-full" 
                       value={editingModule.icon || ''} 
@@ -4775,7 +5023,7 @@ const AdminDashboard: React.FC = () => {
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">Category</label>
+                    <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2">Category</label>
                     <select 
                       className="input w-full" 
                       value={editingModule.category} 
@@ -4789,7 +5037,7 @@ const AdminDashboard: React.FC = () => {
                     </select>
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">Required Tier</label>
+                    <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2">Required Tier</label>
                     <select 
                       className="input w-full" 
                       value={editingModule.required_tier} 
@@ -4802,7 +5050,7 @@ const AdminDashboard: React.FC = () => {
                     </select>
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">Display Order</label>
+                    <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2">Display Order</label>
                     <input 
                       type="number"
                       className="input w-full" 
@@ -4811,14 +5059,14 @@ const AdminDashboard: React.FC = () => {
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">Data Source</label>
+                    <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2">Data Source</label>
                     <input 
                       className="input w-full" 
                       value={editingModule.data_source || ''} 
                       onChange={e => setEditingModule(prev => prev ? {...prev, data_source: e.target.value} : null)}
                     />
                   </div>
-                  <div className="md:col-span-2 flex items-center gap-4">
+                  <div className="col-span-2 flex items-center gap-4">
                     <label className="flex items-center gap-2 cursor-pointer">
                       <input 
                         type="checkbox" 
@@ -4826,7 +5074,7 @@ const AdminDashboard: React.FC = () => {
                         onChange={e => setEditingModule(prev => prev ? {...prev, is_enabled: e.target.checked} : null)}
                         className="w-4 h-4"
                       />
-                      <span className="text-sm text-[var(--color-text-primary)]">Enabled</span>
+                      <span className="text-sm text-slate-700 dark:text-slate-200">Enabled</span>
                     </label>
                     <label className="flex items-center gap-2 cursor-pointer">
                       <input 
@@ -4836,7 +5084,7 @@ const AdminDashboard: React.FC = () => {
                         disabled
                         className="w-4 h-4 opacity-50"
                       />
-                      <span className="text-sm text-[var(--color-text-primary)]">Core Module (cannot be changed)</span>
+                      <span className="text-sm text-slate-700 dark:text-slate-200">Core Module (cannot be changed)</span>
                     </label>
                   </div>
                 </div>
@@ -4856,7 +5104,7 @@ const AdminDashboard: React.FC = () => {
                     type="submit"
                     className="btn-primary px-4 py-2 rounded-lg flex items-center gap-2"
                   >
-                    <Save className="h-4 w-4"/>
+                    <Save className="h-4 w-4 text-white dark:text-white"/>
                     <span>Save Changes</span>
                   </button>
                 </div>
@@ -4866,7 +5114,7 @@ const AdminDashboard: React.FC = () => {
         )}
 
         {activeTab==='blog' && (
-          <div className="space-y-6">
+          <div className="space-y-3">
             {showEditor ? (
             <div>
               <BlogEditor
@@ -4885,12 +5133,15 @@ const AdminDashboard: React.FC = () => {
               </div>
             ) : (
               <>
+                {/* Page Header - Compact */}
+                <div className="mb-2">
+                  <h1 className="text-2xl font-bold text-slate-700 dark:text-slate-200 mb-1">Blog Management</h1>
+                  <p className="text-sm text-slate-500 dark:text-slate-400">Create and manage your blog content</p>
+                </div>
+
                 {/* Create New Post Button */}
                 <div className="flex justify-between items-center">
-                  <div>
-                    <h2 className="text-2xl font-bold text-[var(--color-text-primary)]">Blog Management</h2>
-                    <p className="text-[var(--color-text-secondary)]">Create and manage your blog content</p>
-                  </div>
+                  <div></div>
                   <div className="flex items-center gap-3">
                     <button
                       onClick={() => setShowCategoryManager(true)}
@@ -4903,32 +5154,32 @@ const AdminDashboard: React.FC = () => {
                       onClick={() => setShowEditor(true)}
                       className="btn-primary px-6 py-3 rounded-lg flex items-center gap-2"
                     >
-                      <Plus className="h-5 w-5" />
+                      <Plus className="h-5 w-5 text-white dark:text-white" />
                       <span>Create New Post</span>
                     </button>
                   </div>
                 </div>
 
                 {/* Blog Posts List - Always visible */}
-                <div className="card-glass rounded-xl overflow-hidden">
-                  <div className="p-4 border-b border-[var(--color-divider-gray)]">
-                    <h3 className="text-lg font-semibold text-[var(--color-text-primary)]">Blog Posts ({blogPosts.length})</h3>
-                    <p className="text-sm text-[var(--color-text-secondary)]">Manage your blog content</p>
+                <div className="card-glass rounded-lg overflow-hidden">
+                  <div className="p-3 border-b border-slate-200 dark:border-slate-700">
+                    <h3 className="text-base font-semibold text-slate-700 dark:text-slate-200">Blog Posts ({blogPosts.length})</h3>
+                    <p className="text-sm text-slate-500 dark:text-slate-400">Manage your blog content</p>
                   </div>
                   {loading && blogPosts.length === 0 ? (
-                    <div className="p-8 text-center text-[var(--color-text-secondary)]">
-                      <Loader2 className="h-8 w-8 mx-auto mb-3 animate-spin opacity-50" />
-                      <p>Loading blog posts...</p>
+                    <div className="p-6 text-center text-slate-500 dark:text-slate-400">
+                      <Loader2 className="h-6 w-6 mx-auto mb-2 animate-spin opacity-50" />
+                      <p className="text-sm">Loading blog posts...</p>
                     </div>
                   ) : (
-                    <div className="divide-y divide-[var(--color-divider-gray)]">
+                    <div className="divide-y divide-slate-200 dark:divide-slate-700">
                       {blogPosts.filter(p => p && p.id).map(p => (
-                        <div key={p.id} className="p-4 hover:bg-[var(--color-background-default)] transition-colors">
-                          <div className="flex items-start justify-between">
-                            <div className="flex-1">
-                              <div className="flex items-center gap-3 mb-2">
+                        <div key={p.id} className="p-3 hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+                          <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3">
+                            <div className="flex-1 min-w-0">
+                              <div className="flex flex-wrap items-center gap-2 mb-2">
                                 <h4 
-                                  className="font-semibold text-[var(--color-text-primary)] cursor-pointer hover:text-[var(--color-primary-teal)] transition-colors"
+                                  className="font-semibold text-sm sm:text-base text-slate-700 dark:text-slate-200 cursor-pointer hover:text-teal-600 dark:hover:text-teal-400 transition-colors flex-shrink-0"
                                   onClick={() => {
                                     const blogUrl = p.slug 
                                       ? `/blog/${p.slug}` 
@@ -4939,64 +5190,68 @@ const AdminDashboard: React.FC = () => {
                                 >
                                   {p.title}
                                 </h4>
-                                {p.status === 'published' && (
-                                  <span className="px-2 py-1 bg-green-100 dark:bg-green-900/20 text-green-800 dark:text-green-200 rounded-full text-xs font-medium">
-                                    Published
-                                  </span>
-                                )}
-                                {p.status === 'draft' && (
-                                  <span className="px-2 py-1 bg-yellow-100 dark:bg-yellow-900/20 text-yellow-800 dark:text-yellow-200 rounded-full text-xs font-medium">
-                                    Draft
-                                  </span>
-                                )}
-                                {p.featured && (
-                                  <span className="px-2 py-1 bg-blue-100 dark:bg-blue-900/20 text-blue-800 dark:text-blue-200 rounded-full text-xs font-medium">
-                                    Featured
-                                  </span>
-                                )}
+                                <div className="flex items-center gap-1.5 flex-wrap">
+                                  {p.status === 'published' && (
+                                    <span className="px-2 py-0.5 bg-emerald-100 dark:bg-emerald-500/40 text-emerald-700 dark:text-emerald-300 rounded-full text-xs font-medium whitespace-nowrap">
+                                      Published
+                                    </span>
+                                  )}
+                                  {p.status === 'draft' && (
+                                    <span className="px-2 py-0.5 bg-amber-100 dark:bg-amber-500/40 text-amber-700 dark:text-amber-300 rounded-full text-xs font-medium whitespace-nowrap">
+                                      Draft
+                                    </span>
+                                  )}
+                                  {p.featured && (
+                                    <span className="px-2 py-0.5 bg-indigo-100 dark:bg-indigo-500/40 text-indigo-700 dark:text-indigo-300 rounded-full text-xs font-medium whitespace-nowrap">
+                                      Featured
+                                    </span>
+                                  )}
+                                </div>
                               </div>
-                              <p className="text-sm text-[var(--color-text-secondary)] mb-2 line-clamp-2">{p.excerpt}</p>
-                              <div className="flex items-center gap-4 text-sm text-[var(--color-text-secondary)]">
-                                <span className="flex items-center gap-1">
-                                  <UsersIcon className="h-4 w-4"/>
-                                  Author {p.author_id}
+                              <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mb-2 line-clamp-2">{p.excerpt}</p>
+                              <div className="flex flex-wrap items-center gap-2 sm:gap-3 text-xs sm:text-sm text-slate-500 dark:text-slate-400">
+                                <span className="flex items-center gap-1 whitespace-nowrap">
+                                  <UsersIcon className="h-3 w-3 sm:h-4 sm:w-4 flex-shrink-0"/>
+                                  <span className="truncate">Author {p.author_id}</span>
                                 </span>
-                                <span className="flex items-center gap-1">
-                                  <Calendar className="h-4 w-4"/>
-                                  {p.published_at ? new Date(p.published_at).toLocaleDateString() : 'Not published'}
+                                <span className="flex items-center gap-1 whitespace-nowrap">
+                                  <Calendar className="h-3 w-3 sm:h-4 sm:w-4 flex-shrink-0"/>
+                                  <span className="truncate">{p.published_at ? new Date(p.published_at).toLocaleDateString() : 'Not published'}</span>
                                 </span>
-                                <span className="px-2 py-1 bg-blue-100 dark:bg-blue-900/20 text-blue-800 dark:text-blue-200 rounded-full">
+                                <span className="px-2 py-0.5 bg-indigo-100 dark:bg-indigo-500/40 text-indigo-700 dark:text-indigo-300 rounded-full text-xs font-medium whitespace-nowrap">
                                   {p.category}
                                 </span>
-                                <span className="px-2 py-1 bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-200 rounded-full">
+                                <span className="px-2 py-0.5 bg-slate-100 dark:bg-slate-500/40 text-slate-700 dark:text-slate-200 rounded-full text-xs font-medium whitespace-nowrap">
                                   {p.read_time || '5 min read'}
                                 </span>
                               </div>
                             </div>
-                            <div className="flex items-center gap-2">
+                            <div className="flex items-center gap-2 flex-shrink-0 sm:self-start">
                               <button 
-                                className="btn-outline px-3 py-2 rounded-lg flex items-center gap-2 text-[var(--color-primary-teal)] hover:bg-[var(--color-primary-teal)]/10" 
+                                className="btn-outline px-2 sm:px-3 py-1.5 sm:py-2 rounded-lg flex items-center gap-1.5 sm:gap-2 text-xs sm:text-sm" 
                                 onClick={() => handleEditBlogPost(p)}
+                                title="Edit"
                               >
-                                <Edit className="h-4 w-4"/>
-                                <span>Edit</span>
+                                <Edit className="h-3.5 w-3.5 sm:h-4 sm:w-4"/>
+                                <span className="hidden sm:inline">Edit</span>
                               </button>
                               <button 
-                                className="btn-outline px-3 py-2 rounded-lg flex items-center gap-2 text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20" 
+                                className="btn-outline px-2 sm:px-3 py-1.5 sm:py-2 rounded-lg flex items-center gap-1.5 sm:gap-2 text-red-600 dark:text-white hover:bg-red-50 dark:hover:bg-red-900/20 text-xs sm:text-sm" 
                                 onClick={() => handleDeleteBlogPost(p.id)}
+                                title="Delete"
                               >
-                                <Trash2 className="h-4 w-4"/>
-                                <span>Delete</span>
+                                <Trash2 className="h-3.5 w-3.5 sm:h-4 sm:w-4"/>
+                                <span className="hidden sm:inline">Delete</span>
                               </button>
                             </div>
                           </div>
                         </div>
                       ))}
                       {blogPosts.length === 0 && (
-                        <div className="p-8 text-center text-[var(--color-text-secondary)]">
-                          <Newspaper className="h-12 w-12 mx-auto mb-3 opacity-50" />
-                          <p>No blog posts yet</p>
-                          <p className="text-sm">Create your first blog post to get started</p>
+                        <div className="p-6 text-center text-slate-500 dark:text-slate-400">
+                          <Newspaper className="h-8 w-8 mx-auto mb-2 opacity-50" />
+                          <p className="text-sm font-medium">No blog posts yet</p>
+                          <p className="text-xs">Create your first blog post to get started</p>
                         </div>
                       )}
                     </div>
@@ -5004,15 +5259,15 @@ const AdminDashboard: React.FC = () => {
                 </div>
 
                 {/* Video Management Section */}
-                <div className="card-glass rounded-xl overflow-hidden mt-6">
-                  <div className="p-4 border-b border-[var(--color-divider-gray)]">
-                    <h3 className="text-lg font-semibold text-[var(--color-text-primary)]">Video Management ({videos.length})</h3>
-                    <p className="text-sm text-[var(--color-text-secondary)]">Manage videos for the blog page video section</p>
+                <div className="card-glass rounded-lg overflow-hidden mt-3">
+                  <div className="p-3 border-b border-slate-200 dark:border-slate-700">
+                    <h3 className="text-base font-semibold text-slate-700 dark:text-slate-200">Video Management ({videos.length})</h3>
+                    <p className="text-sm text-slate-500 dark:text-slate-400">Manage videos for the blog page video section</p>
                   </div>
                   
                   {/* Create/Edit Video Form */}
-                  <div className="p-6 border-b border-[var(--color-divider-gray)] bg-[var(--color-background-default)]">
-                    <h4 className="text-md font-semibold text-[var(--color-text-primary)] mb-4">
+                  <div className="p-3 border-b border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/30">
+                    <h4 className="text-sm font-semibold text-slate-700 dark:text-slate-200 mb-3">
                       {editingVideo ? 'Edit Video' : 'Create New Video'}
                     </h4>
                     <div className="grid grid-cols-2 gap-4">
@@ -5028,7 +5283,7 @@ const AdminDashboard: React.FC = () => {
                         value={draftVideo.video_url} 
                         onChange={e => setDraftVideo(prev => ({ ...prev, video_url: e.target.value }))}
                       />
-                      <div className="md:col-span-2">
+                      <div className="col-span-2">
                         <textarea 
                           className="input min-h-[100px]" 
                           placeholder="Description" 
@@ -5050,10 +5305,10 @@ const AdminDashboard: React.FC = () => {
                             onChange={e => setDraftVideo(prev => ({ ...prev, is_active: e.target.checked }))}
                             className="rounded"
                           />
-                          <span className="text-sm text-[var(--color-text-secondary)]">Active</span>
+                          <span className="text-sm text-slate-500 dark:text-slate-400">Active</span>
                         </label>
                         <div className="flex items-center gap-2">
-                          <label className="text-sm text-[var(--color-text-secondary)]">Display Order:</label>
+                          <label className="text-sm text-slate-500 dark:text-slate-400">Display Order:</label>
                           <input 
                             type="number" 
                             className="input w-20" 
@@ -5062,7 +5317,7 @@ const AdminDashboard: React.FC = () => {
                           />
                         </div>
                       </div>
-                      <div className="md:col-span-2 flex items-center gap-2">
+                      <div className="col-span-2 flex items-center gap-2">
                         {editingVideo ? (
                           <>
                             <button 
@@ -5104,47 +5359,47 @@ const AdminDashboard: React.FC = () => {
                   </div>
 
                   {/* Videos List */}
-                  <div className="divide-y divide-[var(--color-divider-gray)]">
+                  <div className="divide-y divide-slate-200 dark:divide-slate-700">
                     {loading && videos.length === 0 ? (
-                      <div className="p-8 text-center text-[var(--color-text-secondary)]">
+                      <div className="p-8 text-center text-slate-500 dark:text-slate-400">
                         <Loader2 className="h-8 w-8 mx-auto mb-3 animate-spin opacity-50" />
                         <p>Loading videos...</p>
                       </div>
                     ) : videos.length === 0 ? (
-                      <div className="p-8 text-center text-[var(--color-text-secondary)]">
+                      <div className="p-8 text-center text-slate-500 dark:text-slate-400">
                         <Video className="h-12 w-12 mx-auto mb-3 opacity-50" />
                         <p>No videos yet</p>
                         <p className="text-sm">Create your first video to get started</p>
                       </div>
                     ) : (
                       videos.map((video) => (
-                        <div key={video.id} className="p-4 hover:bg-[var(--color-background-default)] transition-colors">
+                        <div key={video.id} className="p-4 hover:bg-slate-50 dark:bg-slate-800/30 transition-colors">
                           <div className="flex items-start justify-between">
                             <div className="flex-1">
                               <div className="flex items-center gap-3 mb-2">
-                                <h4 className="font-semibold text-[var(--color-text-primary)]">{video.title}</h4>
+                                <h4 className="font-semibold text-slate-700 dark:text-slate-200">{video.title}</h4>
                                 {video.is_active ? (
-                                  <span className="px-2 py-1 bg-green-100 dark:bg-green-900/20 text-green-800 dark:text-green-200 rounded-full text-xs font-medium">
+                                  <span className="px-2 py-1 bg-emerald-100 dark:bg-emerald-500/40 text-emerald-700 dark:text-emerald-300 rounded-full text-xs font-medium">
                                     Active
                                   </span>
                                 ) : (
-                                  <span className="px-2 py-1 bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-200 rounded-full text-xs font-medium">
+                                  <span className="px-2 py-1 bg-slate-100 dark:bg-slate-500/40 text-slate-700 dark:text-slate-200 rounded-full text-xs font-medium">
                                     Inactive
                                   </span>
                                 )}
-                                <span className="px-2 py-1 bg-blue-100 dark:bg-blue-900/20 text-blue-800 dark:text-blue-200 rounded-full text-xs">
+                                <span className="px-2 py-1 bg-indigo-100 dark:bg-indigo-500/40 text-indigo-700 dark:text-indigo-300 rounded-full text-xs">
                                   Order: {video.display_order}
                                 </span>
                               </div>
                               {video.description && (
-                                <p className="text-sm text-[var(--color-text-secondary)] mb-2 line-clamp-2">{video.description}</p>
+                                <p className="text-sm text-slate-500 dark:text-slate-400 mb-2 line-clamp-2">{video.description}</p>
                               )}
-                              <div className="flex items-center gap-4 text-sm text-[var(--color-text-secondary)]">
+                              <div className="flex items-center gap-4 text-sm text-slate-500 dark:text-slate-400">
                                 <a 
                                   href={video.video_url} 
                                   target="_blank" 
                                   rel="noopener noreferrer"
-                                  className="text-[var(--color-primary-teal)] hover:underline flex items-center gap-1"
+                                  className="text-teal-600 dark:text-teal-400 hover:underline flex items-center gap-1"
                                 >
                                   <ExternalLink className="h-4 w-4" />
                                   View Video
@@ -5157,14 +5412,14 @@ const AdminDashboard: React.FC = () => {
                             </div>
                             <div className="flex items-center gap-2">
                               <button 
-                                className="btn-outline px-3 py-2 rounded-lg flex items-center gap-2 text-[var(--color-primary-teal)] hover:bg-[var(--color-primary-teal)]/10" 
+                                className="btn-outline px-3 py-2 rounded-lg flex items-center gap-2" 
                                 onClick={() => handleEditVideo(video)}
                               >
                                 <Edit className="h-4 w-4"/>
                                 <span>Edit</span>
                               </button>
                               <button 
-                                className="btn-outline px-3 py-2 rounded-lg flex items-center gap-2 text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20" 
+                                className="btn-outline px-3 py-2 rounded-lg flex items-center gap-2 text-red-600 dark:text-white hover:bg-red-50 dark:hover:bg-red-900/20" 
                                 onClick={() => handleDeleteVideo(video.id, video.title)}
                               >
                                 <Trash2 className="h-4 w-4"/>
@@ -5184,70 +5439,81 @@ const AdminDashboard: React.FC = () => {
         )}
 
         {activeTab==='newsletter' && (
-          <div className="space-y-6">
+          <div className="space-y-3">
+            {/* Page Header - Compact */}
+            <div className="mb-2">
+              <h1 className="text-2xl font-bold text-slate-700 dark:text-slate-200 mb-1">Newsletter Management</h1>
+              <p className="text-sm text-slate-500 dark:text-slate-400">Manage subscribers, campaigns, and email settings</p>
+            </div>
+
             {/* Header */}
             <div className="flex justify-between items-center">
-              <div>
-                <h2 className="text-2xl font-bold text-[var(--color-text-primary)]">Newsletter Management</h2>
-                <p className="text-[var(--color-text-secondary)]">Manage subscribers, campaigns, and email settings</p>
-              </div>
+              <div></div>
               <button
                 onClick={handleCreateCampaign}
                 className="btn-primary px-6 py-3 rounded-lg flex items-center gap-2"
               >
-                <Plus className="h-5 w-5" />
+                <Plus className="h-5 w-5 text-white dark:text-white" />
                 <span>Create Campaign</span>
               </button>
             </div>
 
             {/* Statistics Cards */}
             {newsletterStats && (
-              <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-                <div className="card-glass p-4 rounded-xl border border-[var(--color-divider-gray)]">
+              <div className="grid grid-cols-2 lg:grid-cols-4 gap-2">
+                <div className="card-glass p-3 rounded-lg border border-slate-200 dark:border-slate-700">
                   <div className="flex items-center justify-between">
                     <div>
-                      <p className="text-sm text-[var(--color-text-secondary)]">Total Subscribers</p>
-                      <p className="text-2xl font-bold text-[var(--color-text-primary)] mt-1">{newsletterStats.total || 0}</p>
+                      <p className="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wide">Total Subscribers</p>
+                      <p className="text-2xl font-bold text-slate-700 dark:text-slate-200 mt-1">{newsletterStats.total || 0}</p>
                     </div>
-                    <Mail className="h-8 w-8 text-[var(--color-primary-teal)] opacity-50" />
+                    <div className="p-2.5 rounded-lg bg-teal-600 dark:bg-gradient-to-br dark:from-cyan-500 dark:to-teal-500 shadow-md">
+                      <Mail className="h-5 w-5 text-white !text-white" />
+                    </div>
                   </div>
                 </div>
-                <div className="card-glass p-4 rounded-xl border border-[var(--color-divider-gray)]">
+                <div className="card-glass p-3 rounded-lg border border-slate-200 dark:border-slate-700">
                   <div className="flex items-center justify-between">
                     <div>
-                      <p className="text-sm text-[var(--color-text-secondary)]">Active</p>
-                      <p className="text-2xl font-bold text-green-600 dark:text-green-400 mt-1">{newsletterStats.active || 0}</p>
+                      <p className="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wide">Active</p>
+                      <p className="text-2xl font-bold text-slate-700 dark:text-slate-200 mt-1">{newsletterStats.active || 0}</p>
                     </div>
-                    <CheckCircle className="h-8 w-8 text-green-600 dark:text-green-400 opacity-50" />
+                    <div className="p-2.5 rounded-lg bg-emerald-600 dark:bg-gradient-to-br dark:from-emerald-500 dark:to-green-500 shadow-md">
+                      <CheckCircle className="h-5 w-5 text-white !text-white" />
+                    </div>
                   </div>
                 </div>
-                <div className="card-glass p-4 rounded-xl border border-[var(--color-divider-gray)]">
+                <div className="card-glass p-3 rounded-lg border border-slate-200 dark:border-slate-700">
                   <div className="flex items-center justify-between">
                     <div>
-                      <p className="text-sm text-[var(--color-text-secondary)]">This Week</p>
-                      <p className="text-2xl font-bold text-[var(--color-text-primary)] mt-1">{newsletterStats.this_week || 0}</p>
+                      <p className="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wide">This Week</p>
+                      <p className="text-2xl font-bold text-slate-700 dark:text-slate-200 mt-1">{newsletterStats.this_week || 0}</p>
                     </div>
-                    <TrendingUp className="h-8 w-8 text-[var(--color-primary-teal)] opacity-50" />
+                    <div className="p-2.5 rounded-lg bg-teal-600 dark:bg-gradient-to-br dark:from-cyan-500 dark:to-teal-500 shadow-md">
+                      <TrendingUp className="h-5 w-5 text-white !text-white" />
+                    </div>
                   </div>
                 </div>
-                <div className="card-glass p-4 rounded-xl border border-[var(--color-divider-gray)]">
+                <div className="card-glass p-3 rounded-lg border border-slate-200 dark:border-slate-700">
                   <div className="flex items-center justify-between">
                     <div>
-                      <p className="text-sm text-[var(--color-text-secondary)]">This Month</p>
-                      <p className="text-2xl font-bold text-[var(--color-text-primary)] mt-1">{newsletterStats.this_month || 0}</p>
+                      <p className="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wide">This Month</p>
+                      <p className="text-2xl font-bold text-slate-700 dark:text-slate-200 mt-1">{newsletterStats.this_month || 0}</p>
                     </div>
-                    <Calendar className="h-8 w-8 text-[var(--color-primary-teal)] opacity-50" />
+                    <div className="p-2.5 rounded-lg bg-teal-600 dark:bg-gradient-to-br dark:from-cyan-500 dark:to-teal-500 shadow-md">
+                      <Calendar className="h-5 w-5 text-white !text-white" />
+                    </div>
                   </div>
                 </div>
               </div>
             )}
 
             {/* Email Configuration */}
-            <div className="card-glass rounded-xl overflow-hidden border border-[var(--color-divider-gray)]">
-              <div className="p-4 border-b border-[var(--color-divider-gray)] flex items-center justify-between">
+            <div className="card-glass rounded-lg overflow-hidden border border-slate-200 dark:border-slate-700">
+              <div className="p-3 border-b border-slate-200 dark:border-slate-700 flex items-center justify-between">
                 <div>
-                  <h3 className="text-lg font-semibold text-[var(--color-text-primary)]">Email Configuration</h3>
-                  <p className="text-sm text-[var(--color-text-secondary)] mt-1">Configure SMTP settings for sending newsletters</p>
+                  <h3 className="text-base font-semibold text-slate-700 dark:text-slate-200">Email Configuration</h3>
+                  <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">Configure SMTP settings for sending newsletters</p>
                 </div>
                 <button
                   onClick={() => {
@@ -5264,10 +5530,10 @@ const AdminDashboard: React.FC = () => {
               </div>
               
               {showEmailConfig && (
-                <div className="p-6 space-y-4">
+                <div className="p-3 space-y-3">
                   <div className="grid grid-cols-2 gap-4">
                     <div>
-                      <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">SMTP Host *</label>
+                      <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2">SMTP Host *</label>
                       <input
                         type="text"
                         className="input w-full"
@@ -5277,7 +5543,7 @@ const AdminDashboard: React.FC = () => {
                       />
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">SMTP Port *</label>
+                      <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2">SMTP Port *</label>
                       <input
                         type="number"
                         className="input w-full"
@@ -5287,7 +5553,7 @@ const AdminDashboard: React.FC = () => {
                       />
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">SMTP Username *</label>
+                      <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2">SMTP Username *</label>
                       <input
                         type="text"
                         className="input w-full"
@@ -5297,7 +5563,7 @@ const AdminDashboard: React.FC = () => {
                       />
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">SMTP Password *</label>
+                      <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2">SMTP Password *</label>
                       <input
                         type="password"
                         className="input w-full"
@@ -5307,7 +5573,7 @@ const AdminDashboard: React.FC = () => {
                       />
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">From Email *</label>
+                      <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2">From Email *</label>
                       <input
                         type="email"
                         className="input w-full"
@@ -5317,7 +5583,7 @@ const AdminDashboard: React.FC = () => {
                       />
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">From Name *</label>
+                      <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2">From Name *</label>
                       <input
                         type="text"
                         className="input w-full"
@@ -5327,7 +5593,7 @@ const AdminDashboard: React.FC = () => {
                       />
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">Reply-To Email</label>
+                      <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2">Reply-To Email</label>
                       <input
                         type="email"
                         className="input w-full"
@@ -5344,12 +5610,12 @@ const AdminDashboard: React.FC = () => {
                           onChange={(e) => setEmailConfigForm(prev => ({ ...prev, smtp_secure: e.target.checked }))}
                           className="rounded"
                         />
-                        <span className="text-sm text-[var(--color-text-secondary)]">Use SSL/TLS (Secure)</span>
+                        <span className="text-sm text-slate-500 dark:text-slate-400">Use SSL/TLS (Secure)</span>
                       </label>
                     </div>
                   </div>
                   
-                  <div className="flex items-center gap-3 pt-4 border-t border-[var(--color-divider-gray)]">
+                  <div className="flex items-center gap-3 pt-4 border-t border-slate-200 dark:border-slate-700">
                     <button
                       onClick={handleSaveEmailConfig}
                       className="btn-primary px-6 py-2 rounded-lg flex items-center gap-2"
@@ -5378,8 +5644,8 @@ const AdminDashboard: React.FC = () => {
                   </div>
                   
                   {emailConfig && (
-                    <div className="p-4 bg-green-50 dark:bg-green-900/20 rounded-lg border border-green-200 dark:border-green-800">
-                      <p className="text-sm text-green-800 dark:text-green-200">
+                    <div className="p-4 bg-green-50 dark:bg-green-500/40 rounded-lg border border-green-200 dark:border-green-500/50">
+                      <p className="text-sm text-green-800 dark:text-white">
                         ✓ Email configuration is active. New subscribers will receive welcome emails automatically.
                       </p>
                     </div>
@@ -5389,46 +5655,46 @@ const AdminDashboard: React.FC = () => {
             </div>
 
             {/* Campaigns Section */}
-            <div className="card-glass rounded-xl overflow-hidden border border-[var(--color-divider-gray)]">
-              <div className="p-4 border-b border-[var(--color-divider-gray)]">
-                <h3 className="text-lg font-semibold text-[var(--color-text-primary)]">
+            <div className="card-glass rounded-lg overflow-hidden border border-slate-200 dark:border-slate-700">
+              <div className="p-3 border-b border-slate-200 dark:border-slate-700">
+                <h3 className="text-base font-semibold text-slate-700 dark:text-slate-200">
                   Newsletter Campaigns ({newsletterCampaigns.length})
                 </h3>
               </div>
 
               {newsletterCampaigns.length === 0 ? (
-                <div className="p-8 text-center text-[var(--color-text-secondary)]">
+                <div className="p-8 text-center text-slate-500 dark:text-slate-400">
                   <Mail className="h-12 w-12 mx-auto mb-3 opacity-50" />
                   <p>No campaigns yet</p>
                   <p className="text-sm mt-1">Create your first newsletter campaign to get started</p>
                 </div>
               ) : (
-                <div className="divide-y divide-[var(--color-divider-gray)]">
+                <div className="divide-y divide-slate-200 dark:divide-slate-700">
                   {newsletterCampaigns.map((campaign) => (
-                    <div key={campaign.id} className="p-4 hover:bg-[var(--color-background-default)] transition-colors">
+                    <div key={campaign.id} className="p-4 hover:bg-slate-50 dark:bg-slate-800/30 transition-colors">
                       <div className="flex items-start justify-between">
                         <div className="flex-1">
                           <div className="flex items-center gap-3 mb-2">
-                            <h4 className="font-semibold text-[var(--color-text-primary)]">{campaign.title}</h4>
+                            <h4 className="font-semibold text-slate-700 dark:text-slate-200">{campaign.title}</h4>
                             <span className={`px-2 py-1 rounded-full text-xs font-medium ${
                               campaign.status === 'sent' 
-                                ? 'bg-green-100 dark:bg-green-900/20 text-green-800 dark:text-green-200'
+                                ? 'bg-emerald-100 dark:bg-emerald-500/40 text-emerald-700 dark:text-emerald-300'
                                 : campaign.status === 'scheduled'
-                                ? 'bg-blue-100 dark:bg-blue-900/20 text-blue-800 dark:text-blue-200'
-                                : 'bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-200'
+                                ? 'bg-indigo-100 dark:bg-indigo-500/40 text-indigo-700 dark:text-indigo-300'
+                                : 'bg-slate-100 dark:bg-slate-500/40 text-slate-700 dark:text-slate-200'
                             }`}>
                               {campaign.status === 'sent' ? 'Sent' : campaign.status === 'scheduled' ? 'Scheduled' : 'Draft'}
                             </span>
                           </div>
-                          <p className="text-sm text-[var(--color-text-secondary)] mb-2">
+                          <p className="text-sm text-slate-500 dark:text-slate-400 mb-2">
                             <strong>Subject:</strong> {campaign.subject}
                           </p>
                           {campaign.preview_text && (
-                            <p className="text-xs text-[var(--color-text-secondary)] mb-2 italic">
+                            <p className="text-xs text-slate-500 dark:text-slate-400 mb-2 italic">
                               {campaign.preview_text}
                             </p>
                           )}
-                          <div className="flex items-center gap-4 text-xs text-[var(--color-text-secondary)]">
+                          <div className="flex items-center gap-4 text-xs text-slate-500 dark:text-slate-400">
                             <span className="flex items-center gap-1">
                               <Calendar className="h-3 w-3" />
                               Created: {campaign.created_at ? new Date(campaign.created_at).toLocaleDateString() : 'N/A'}
@@ -5450,14 +5716,14 @@ const AdminDashboard: React.FC = () => {
                         <div className="flex items-center gap-2">
                           <button
                             onClick={() => handleEditCampaign(campaign)}
-                            className="btn-outline px-3 py-2 rounded-lg flex items-center gap-2 text-[var(--color-primary-teal)] hover:bg-[var(--color-primary-teal)]/10"
+                            className="btn-outline px-3 py-2 rounded-lg flex items-center gap-2"
                           >
                             <Edit className="h-4 w-4" />
                             <span>Edit</span>
                           </button>
                           <button
                             onClick={() => handleDeleteCampaign(campaign.id, campaign.title)}
-                            className="btn-outline px-3 py-2 rounded-lg flex items-center gap-2 text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20"
+                            className="btn-outline px-3 py-2 rounded-lg flex items-center gap-2 text-red-600 dark:text-white hover:bg-red-50 dark:hover:bg-red-900/20"
                           >
                             <Trash2 className="h-4 w-4" />
                             <span>Delete</span>
@@ -5471,18 +5737,18 @@ const AdminDashboard: React.FC = () => {
             </div>
 
             {/* Subscribers Section */}
-            <div className="card-glass rounded-xl overflow-hidden border border-[var(--color-divider-gray)]">
-              <div className="p-4 border-b border-[var(--color-divider-gray)]">
-                <h3 className="text-lg font-semibold text-[var(--color-text-primary)]">
+            <div className="card-glass rounded-lg overflow-hidden border border-slate-200 dark:border-slate-700">
+              <div className="p-3 border-b border-slate-200 dark:border-slate-700">
+                <h3 className="text-base font-semibold text-slate-700 dark:text-slate-200">
                   Subscribers ({newsletterSubscribers.length})
                 </h3>
               </div>
 
               {/* Filters */}
-              <div className="p-4 border-b border-[var(--color-divider-gray)] bg-[var(--color-background-default)]">
+              <div className="p-4 border-b border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/30">
                 <div className="flex flex-row gap-4">
                   <div className="flex-1 relative">
-                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-[var(--color-text-secondary)]" />
+                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-slate-500 dark:text-slate-400" />
                     <input
                       type="text"
                       placeholder="Search by email, name, or company..."
@@ -5496,7 +5762,7 @@ const AdminDashboard: React.FC = () => {
                           fetchNewsletterData(1, newsletterSearch || undefined, newsletterStatus);
                         }
                       }}
-                      className="w-full pl-10 pr-4 py-2 rounded-lg border border-[var(--color-divider-gray)] bg-[var(--color-background-surface)] text-[var(--color-text-primary)] focus:ring-2 focus:ring-[var(--color-primary-teal)] focus:border-transparent"
+                      className="w-full pl-10 pr-4 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50 text-slate-700 dark:text-slate-200 focus:ring-2 focus:ring-teal-600 dark:focus:ring-teal-400 focus:border-transparent"
                     />
                   </div>
                   <div className="flex gap-2">
@@ -5507,7 +5773,7 @@ const AdminDashboard: React.FC = () => {
                         setNewsletterPage(1);
                         fetchNewsletterData(1, newsletterSearch || undefined, e.target.value);
                       }}
-                      className="px-4 py-2 rounded-lg border border-[var(--color-divider-gray)] bg-[var(--color-background-surface)] text-[var(--color-text-primary)] focus:ring-2 focus:ring-[var(--color-primary-teal)] focus:border-transparent"
+                      className="px-4 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50 text-slate-700 dark:text-slate-200 focus:ring-2 focus:ring-teal-600 dark:focus:ring-teal-400 focus:border-transparent"
                     >
                       <option value="all">All Status</option>
                       <option value="active">Active Only</option>
@@ -5525,12 +5791,12 @@ const AdminDashboard: React.FC = () => {
               </div>
 
               {loading && newsletterSubscribers.length === 0 ? (
-                <div className="p-8 text-center text-[var(--color-text-secondary)]">
+                <div className="p-8 text-center text-slate-500 dark:text-slate-400">
                   <Loader2 className="h-8 w-8 mx-auto mb-3 animate-spin opacity-50" />
                   <p>Loading subscribers...</p>
                 </div>
               ) : newsletterSubscribers.length === 0 ? (
-                <div className="p-8 text-center text-[var(--color-text-secondary)]">
+                <div className="p-8 text-center text-slate-500 dark:text-slate-400">
                   <Mail className="h-12 w-12 mx-auto mb-3 opacity-50" />
                   <p>No subscribers found</p>
                   <p className="text-sm mt-1">
@@ -5538,41 +5804,41 @@ const AdminDashboard: React.FC = () => {
                   </p>
                 </div>
               ) : (
-                <div className="divide-y divide-[var(--color-divider-gray)]">
+                <div className="divide-y divide-slate-200 dark:divide-slate-700">
                   {newsletterSubscribers.map((subscriber) => (
-                    <div key={subscriber.id} className="p-4 hover:bg-[var(--color-background-default)] transition-colors">
+                    <div key={subscriber.id} className="p-4 hover:bg-slate-50 dark:bg-slate-800/30 transition-colors">
                       <div className="flex items-start justify-between">
                         <div className="flex-1">
                           <div className="flex items-center gap-3 mb-2">
-                            <div className="w-10 h-10 bg-[var(--color-primary-teal)] rounded-full flex items-center justify-center text-white font-semibold">
+                            <div className="w-10 h-10 bg-slate-800 dark:bg-slate-700 rounded-full flex items-center justify-center text-white dark:text-white font-semibold">
                               {subscriber.email.charAt(0).toUpperCase()}
                             </div>
                             <div className="flex-1">
                               <div className="flex items-center gap-2">
-                                <h4 className="font-semibold text-[var(--color-text-primary)]">{subscriber.email}</h4>
+                                <h4 className="font-semibold text-slate-700 dark:text-slate-200">{subscriber.email}</h4>
                                 {subscriber.is_active ? (
-                                  <span className="px-2 py-1 bg-green-100 dark:bg-green-900/20 text-green-800 dark:text-green-200 rounded-full text-xs font-medium">
+                                  <span className="px-2 py-1 bg-emerald-100 dark:bg-emerald-500/40 text-emerald-700 dark:text-emerald-300 rounded-full text-xs font-medium">
                                     Active
                                   </span>
                                 ) : (
-                                  <span className="px-2 py-1 bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-200 rounded-full text-xs font-medium">
+                                  <span className="px-2 py-1 bg-slate-100 dark:bg-slate-500/40 text-slate-700 dark:text-slate-200 rounded-full text-xs font-medium">
                                     Inactive
                                   </span>
                                 )}
                               </div>
                               {subscriber.name && (
-                                <p className="text-sm text-[var(--color-text-secondary)] mt-1">{subscriber.name}</p>
+                                <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">{subscriber.name}</p>
                               )}
                               {subscriber.company && (
-                                <p className="text-xs text-[var(--color-text-secondary)] mt-1">Company: {subscriber.company}</p>
+                                <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">Company: {subscriber.company}</p>
                               )}
-                              <div className="flex items-center gap-4 text-xs text-[var(--color-text-secondary)] mt-2">
+                              <div className="flex items-center gap-4 text-xs text-slate-500 dark:text-slate-400 mt-2">
                                 <span className="flex items-center gap-1">
                                   <Calendar className="h-3 w-3" />
                                   Subscribed: {subscriber.subscribed_at ? new Date(subscriber.subscribed_at).toLocaleDateString() : 'N/A'}
                                 </span>
                                 {subscriber.unsubscribed_at && (
-                                  <span className="flex items-center gap-1 text-red-600 dark:text-red-400">
+                                  <span className="flex items-center gap-1 text-red-600 dark:text-white">
                                     Unsubscribed: {new Date(subscriber.unsubscribed_at).toLocaleDateString()}
                                   </span>
                                 )}
@@ -5583,14 +5849,14 @@ const AdminDashboard: React.FC = () => {
                         <div className="flex items-center gap-2">
                           <button
                             onClick={() => setEditingSubscriber(subscriber)}
-                            className="btn-outline px-3 py-2 rounded-lg flex items-center gap-2 text-[var(--color-primary-teal)] hover:bg-[var(--color-primary-teal)]/10"
+                            className="btn-outline px-3 py-2 rounded-lg flex items-center gap-2"
                           >
                             <Edit className="h-4 w-4" />
                             <span>Edit</span>
                           </button>
                           <button
                             onClick={() => handleDeleteSubscriber(subscriber.id, subscriber.email)}
-                            className="btn-outline px-3 py-2 rounded-lg flex items-center gap-2 text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20"
+                            className="btn-outline px-3 py-2 rounded-lg flex items-center gap-2 text-red-600 dark:text-white hover:bg-red-50 dark:hover:bg-red-900/20"
                           >
                             <Trash2 className="h-4 w-4" />
                             <span>Delete</span>
@@ -5606,41 +5872,39 @@ const AdminDashboard: React.FC = () => {
         )}
 
         {activeTab==='ads' && (
-          <div className="space-y-6">
-        {/* Header (single action moved to the form below) */}
-        <div className="flex items-center justify-between">
-          <div>
-            <h2 className="text-2xl font-bold text-[var(--color-text-primary)]">Advertisement Management</h2>
-            <p className="text-sm text-[var(--color-text-secondary)] mt-1">Manage all advertisements across the platform</p>
-          </div>
-        </div>
+          <div className="space-y-3">
+            {/* Page Header - Compact */}
+            <div className="mb-2">
+              <h1 className="text-2xl font-bold text-slate-700 dark:text-slate-200 mb-1">Advertisement Management</h1>
+              <p className="text-sm text-slate-500 dark:text-slate-400">Manage all advertisements across the platform</p>
+            </div>
 
             {/* Search and Filters moved below near the list */}
 
             {/* Create New Ad */}
-            <div id="create-ad-section" className="card-glass p-6 rounded-xl">
-              <h3 className="text-lg font-semibold text-[var(--color-text-primary)] mb-4">Create New Advertisement</h3>
+            <div id="create-ad-section" className="card-glass p-3 rounded-lg">
+              <h3 className="text-base font-semibold text-slate-700 dark:text-slate-200 mb-3">Create New Advertisement</h3>
               <div className="grid grid-cols-2 gap-4">
                 <input className="input" placeholder="Ad Title" value={draftAd.title} onChange={e=>setDraftAd(prev=>({...prev, title:e.target.value}))}/>
                 <input className="input" placeholder="Advertiser Name" value={draftAd.advertiser||''} onChange={e=>setDraftAd(prev=>({...prev, advertiser:e.target.value}))}/>
-                <div className="md:col-span-2 grid grid-cols-3 gap-3">
-                  <input className="input lg:col-span-2" placeholder="Image URL" value={draftAd.imageUrl} onChange={e=>setDraftAd(prev=>({...prev, imageUrl:e.target.value}))}/>
+                <div className="col-span-2 grid grid-cols-3 gap-3">
+                  <input className="input col-span-2" placeholder="Image URL" value={draftAd.imageUrl} onChange={e=>setDraftAd(prev=>({...prev, imageUrl:e.target.value}))}/>
                   {/* Use ImageUploadModal for consistent upload experience */}
                   <button
                     type="button"
                     onClick={() => setShowAdImageModal(true)}
-                    className="inline-flex items-center justify-center rounded-xl border border-[var(--color-divider-gray)] bg-[var(--color-background-surface)] px-4 py-2 cursor-pointer shadow-sm hover:bg-[var(--color-background-default)] transition-colors"
+                    className="inline-flex items-center justify-center rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50 px-4 py-2 cursor-pointer shadow-sm hover:bg-slate-50 dark:bg-slate-800/30 transition-colors"
                   >
-                    <Upload className="h-4 w-4 mr-2"/>
+                    <Upload className="h-4 w-4 mr-2 text-white dark:text-white"/>
                     <span>{draftAd.imageUrl ? 'Replace Image' : 'Upload Image'}</span>
                   </button>
                 </div>
                 <input className="input" placeholder="Call-to-Action Text" value={draftAd.ctaText} onChange={e=>setDraftAd(prev=>({...prev, ctaText:e.target.value}))}/>
                 <input className="input" placeholder="Target URL" value={draftAd.targetUrl} onChange={e=>setDraftAd(prev=>({...prev, targetUrl:e.target.value}))}/>
                 
-                <div className="md:col-span-2">
-                  <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">Ad Placements</label>
-                  <div className="grid grid-cols-2 md:grid-cols-7 gap-3">
+                <div className="col-span-2">
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2">Ad Placements</label>
+                  <div className="grid grid-cols-2 grid-cols-7 gap-3">
                     {(['blog_top','blog_inline','blog_sidebar','blog_grid','blog_bottom','dashboard_sidebar','dashboard_inline'] as AdPlacement[]).map(pl => {
                       const active = draftAd.placements.includes(pl);
                       return (
@@ -5654,8 +5918,8 @@ const AdminDashboard: React.FC = () => {
                           }}
                           className={`px-3 py-2 rounded-lg border text-sm transition-all ${
                             active
-                              ? 'border-[var(--color-primary-teal)] bg-[color-mix(in_srgb,var(--color-primary-teal),white_92%)] text-[var(--color-primary-teal)] shadow-sm'
-                              : 'border-[var(--color-divider-gray)] text-[var(--color-text-secondary)] hover:bg-[var(--color-background-default)]'
+                              ? 'border-black dark:border-gray-600 bg-black/10 dark:bg-gray-700/50 text-black dark:text-white shadow-sm'
+                              : 'border-slate-200 dark:border-slate-700 text-slate-500 dark:text-slate-400 hover:bg-slate-50 dark:bg-slate-800/30'
                           }`}
                         >
                           {pl.replace('_', ' ')}
@@ -5665,16 +5929,16 @@ const AdminDashboard: React.FC = () => {
                   </div>
                 </div>
                 
-                <div className="md:col-span-2 flex items-center justify-between">
+                <div className="col-span-2 flex items-center justify-between">
                   <div className="flex items-center gap-2">
-                    <span className="text-sm font-medium text-[var(--color-text-primary)]">Category:</span>
+                    <span className="text-sm font-medium text-slate-700 dark:text-slate-200">Category:</span>
                     <select className="input" value={draftAd.category} onChange={e=>setDraftAd(prev=>({...prev, category: e.target.value as AdCategory}))}>
                       <option value="blog_general">Blog General</option>
                       <option value="dashboard_personalized">Dashboard Personalized</option>
                     </select>
                   </div>
                   <button className="btn-primary px-4 py-2 rounded-lg flex items-center gap-2" onClick={handleCreateAdvertisement}>
-                    <Plus className="h-4 w-4"/>
+                    <Plus className="h-4 w-4 text-white dark:text-white"/>
                     <span>Create Ad</span>
                   </button>
                 </div>
@@ -5707,58 +5971,58 @@ const AdminDashboard: React.FC = () => {
 
             {/* Ads Table */}
             <div className="card-glass rounded-xl overflow-hidden">
-              <div className="p-4 border-b border-[var(--color-divider-gray)]">
-                <h3 className="text-lg font-semibold text-[var(--color-text-primary)]">Advertisements ({filteredAds.length})</h3>
-                <p className="text-sm text-[var(--color-text-secondary)]">Manage your advertising content</p>
+              <div className="p-4 border-b border-slate-200 dark:border-slate-700">
+                <h3 className="text-lg font-semibold text-slate-700 dark:text-slate-200">Advertisements ({filteredAds.length})</h3>
+                <p className="text-sm text-slate-500 dark:text-slate-400">Manage your advertising content</p>
               </div>
               <div className="overflow-x-auto">
                 <table className="w-full">
-                  <thead className="bg-[var(--color-background-surface)] border-b border-[var(--color-divider-gray)]">
+                  <thead className="bg-slate-50 dark:bg-slate-800/50 dark:bg-slate-50 dark:bg-slate-800/50 border-b border-slate-200 dark:border-slate-700">
                     <tr>
-                      <th className="px-4 py-3 text-left text-sm font-medium text-[var(--color-text-primary)]">Ad</th>
-                      <th className="px-4 py-3 text-left text-sm font-medium text-[var(--color-text-primary)]">Advertiser</th>
-                      <th className="px-4 py-3 text-left text-sm font-medium text-[var(--color-text-primary)]">Category</th>
-                      <th className="px-4 py-3 text-left text-sm font-medium text-[var(--color-text-primary)]">Placements</th>
-                      <th className="px-4 py-3 text-left text-sm font-medium text-[var(--color-text-primary)]">Priority</th>
-                      <th className="px-4 py-3 text-left text-sm font-medium text-[var(--color-text-primary)]">Status</th>
-                      <th className="px-4 py-3 text-left text-sm font-medium text-[var(--color-text-primary)]">Actions</th>
+                      <th className="px-4 py-3 text-left text-sm font-medium text-slate-700 dark:text-slate-200">Ad</th>
+                      <th className="px-4 py-3 text-left text-sm font-medium text-slate-700 dark:text-slate-200">Advertiser</th>
+                      <th className="px-4 py-3 text-left text-sm font-medium text-slate-700 dark:text-slate-200">Category</th>
+                      <th className="px-4 py-3 text-left text-sm font-medium text-slate-700 dark:text-slate-200">Placements</th>
+                      <th className="px-4 py-3 text-left text-sm font-medium text-slate-700 dark:text-slate-200">Priority</th>
+                      <th className="px-4 py-3 text-left text-sm font-medium text-slate-700 dark:text-slate-200">Status</th>
+                      <th className="px-4 py-3 text-left text-sm font-medium text-slate-700 dark:text-slate-200">Actions</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-[var(--color-divider-gray)]">
+                  <tbody className="divide-y divide-slate-200 dark:divide-slate-700">
                     {paginatedAds.map(ad => (
-                      <tr key={ad.id} className="hover:bg-[var(--color-background-default)] transition-colors">
+                      <tr key={ad.id} className="hover:bg-slate-50 dark:bg-slate-800/30 transition-colors">
                         <td className="px-4 py-3">
                           <div className="flex items-center gap-3">
                             {ad.image_url && (
                               <img src={ad.image_url} alt={ad.title} className="w-16 h-16 object-cover rounded-lg" />
                             )}
                             <div>
-                              <div className="font-medium text-[var(--color-text-primary)]">{ad.title}</div>
-                              <div className="text-sm text-[var(--color-text-secondary)]">{ad.cta_text || 'No CTA'}</div>
+                              <div className="font-medium text-slate-700 dark:text-slate-200">{ad.title}</div>
+                              <div className="text-sm text-slate-500 dark:text-slate-400">{ad.cta_text || 'No CTA'}</div>
                         </div>
                         </div>
                         </td>
-                        <td className="px-4 py-3 text-sm text-[var(--color-text-primary)]">
+                        <td className="px-4 py-3 text-sm text-slate-700 dark:text-slate-200">
                           {ad.advertiser || 'Unknown'}
                         </td>
                         <td className="px-4 py-3">
-                          <span className="px-2 py-1 bg-blue-100 dark:bg-blue-900/20 text-blue-800 dark:text-blue-200 rounded-full text-xs font-medium">
+                          <span className="px-2 py-1 bg-indigo-100 dark:bg-indigo-500/40 text-indigo-700 dark:text-indigo-300 rounded-full text-xs font-medium">
                             {ad.category.replace('_', ' ')}
                           </span>
                         </td>
                         <td className="px-4 py-3">
                           <div className="flex flex-wrap gap-1">
                             {Array.isArray(ad.placements) ? ad.placements.map((placement: string) => (
-                            <span key={placement} className="px-2 py-1 bg-green-100 dark:bg-green-900/20 text-green-800 dark:text-green-200 rounded-full text-xs">
+                            <span key={placement} className="px-2 py-1 bg-emerald-100 dark:bg-emerald-500/40 text-emerald-700 dark:text-emerald-300 rounded-full text-xs">
                               {placement.replace('_', ' ')}
                             </span>
                             )) : (
-                              <span className="text-xs text-[var(--color-text-secondary)]">None</span>
+                              <span className="text-xs text-slate-500 dark:text-slate-400">None</span>
                             )}
                         </div>
                         </td>
                         <td className="px-4 py-3">
-                          <span className="px-2 py-1 bg-purple-100 dark:bg-purple-900/20 text-purple-800 dark:text-purple-200 rounded-full text-xs font-medium">
+                          <span className="px-2 py-1 bg-violet-100 dark:bg-violet-500/40 text-violet-700 dark:text-violet-300 rounded-full text-xs font-medium">
                             {ad.priority || 0}
                           </span>
                         </td>
@@ -5767,8 +6031,8 @@ const AdminDashboard: React.FC = () => {
                             onClick={() => handleToggleAdStatus(ad.id, ad.is_active)}
                             className={`px-3 py-1 rounded-full text-xs font-medium transition-colors ${
                               ad.is_active
-                                ? 'bg-green-100 dark:bg-green-900/20 text-green-800 dark:text-green-200'
-                                : 'bg-gray-100 dark:bg-gray-900/20 text-gray-800 dark:text-gray-200'
+                                ? 'bg-emerald-100 dark:bg-emerald-500/40 text-emerald-700 dark:text-emerald-300'
+                                : 'bg-slate-100 dark:bg-slate-500/40 text-slate-700 dark:text-slate-200'
                             }`}
                           >
                             {ad.is_active ? 'Active' : 'Inactive'}
@@ -5777,13 +6041,13 @@ const AdminDashboard: React.FC = () => {
                         <td className="px-4 py-3">
                           <div className="flex items-center gap-2">
                             <button 
-                              className="btn-outline px-2 py-1 rounded text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/20"
+                              className="btn-outline px-2 py-1 rounded text-blue-600 dark:text-white hover:bg-blue-50 dark:hover:bg-blue-900/20"
                               onClick={() => handleEditAd(ad)}
                             >
                               <Edit className="h-4 w-4"/>
                             </button>
                             <button 
-                              className="btn-outline px-2 py-1 rounded text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20" 
+                              className="btn-outline px-2 py-1 rounded text-red-600 dark:text-white hover:bg-red-50 dark:hover:bg-red-900/20" 
                               onClick={() => handleDeleteAdvertisement(ad.id)}
                       >
                         <Trash2 className="h-4 w-4"/>
@@ -5796,7 +6060,7 @@ const AdminDashboard: React.FC = () => {
                 </table>
                 
                 {paginatedAds.length === 0 && (
-                  <div className="p-8 text-center text-[var(--color-text-secondary)]">
+                  <div className="p-8 text-center text-slate-500 dark:text-slate-400">
                     <Megaphone className="h-12 w-12 mx-auto mb-3 opacity-50" />
                     <p>No advertisements found</p>
                     <p className="text-sm">Create your first ad or adjust your filters</p>
@@ -5806,8 +6070,8 @@ const AdminDashboard: React.FC = () => {
               
               {/* Pagination */}
               {totalAdPages > 1 && (
-                <div className="px-4 py-3 border-t border-[var(--color-divider-gray)] flex items-center justify-between">
-                  <div className="text-sm text-[var(--color-text-secondary)]">
+                <div className="px-3 py-3 border-t border-slate-200 dark:border-slate-700 flex items-center justify-between">
+                  <div className="text-sm text-slate-500 dark:text-slate-400">
                     Showing {((safeAdPage - 1) * adsPageSize) + 1} to {Math.min(safeAdPage * adsPageSize, filteredAds.length)} of {filteredAds.length} ads
                   </div>
                   <div className="flex items-center gap-2">
@@ -5818,7 +6082,7 @@ const AdminDashboard: React.FC = () => {
                     >
                       Previous
                     </button>
-                    <span className="px-3 py-2 bg-[var(--color-background-surface)] rounded-lg text-sm">
+                    <span className="px-3 py-2 bg-slate-50 dark:bg-slate-800/50 rounded-lg text-sm">
                       Page {safeAdPage} of {totalAdPages}
                     </span>
                     <button 
@@ -5837,40 +6101,40 @@ const AdminDashboard: React.FC = () => {
             <div className="mt-12">
               <div className="flex items-center justify-between mb-6">
                 <div>
-                  <h2 className="text-2xl font-bold text-[var(--color-text-primary)]">Announcements Management</h2>
-                  <p className="text-sm text-[var(--color-text-secondary)] mt-1">Manage announcements for paid account users</p>
+                  <h2 className="text-2xl font-bold text-slate-700 dark:text-slate-200">Announcements Management</h2>
+                  <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">Manage announcements for paid account users</p>
                 </div>
               </div>
 
               {/* Create New Announcement */}
               <div id="create-announcement-section" className="card-glass p-6 rounded-xl mb-6">
-                <h3 className="text-lg font-semibold text-[var(--color-text-primary)] mb-4">Create New Announcement</h3>
+                <h3 className="text-lg font-semibold text-slate-700 dark:text-slate-200 mb-4">Create New Announcement</h3>
                 <div className="grid grid-cols-2 gap-4">
                   <input className="input" placeholder="Announcement Title *" value={draftAnnouncement.title} onChange={e=>setDraftAnnouncement(prev=>({...prev, title:e.target.value}))}/>
                   <div className="flex items-center gap-2">
-                    <span className="text-sm font-medium text-[var(--color-text-primary)]">Placement:</span>
+                    <span className="text-sm font-medium text-slate-700 dark:text-slate-200">Placement:</span>
                     <select className="input" value={draftAnnouncement.placement} onChange={e=>setDraftAnnouncement(prev=>({...prev, placement: e.target.value as 'blog_sidebar' | 'dashboard_sidebar'}))}>
                       <option value="blog_sidebar">Blog Sidebar</option>
                       <option value="dashboard_sidebar">Dashboard Sidebar</option>
                     </select>
                   </div>
-                  <div className="md:col-span-2">
+                  <div className="col-span-2">
                     <textarea className="input" placeholder="Announcement Message *" rows={3} value={draftAnnouncement.message} onChange={e=>setDraftAnnouncement(prev=>({...prev, message:e.target.value}))}/>
                   </div>
-                  <div className="md:col-span-2">
-                    <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">Image</label>
+                  <div className="col-span-2">
+                    <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2">Image</label>
                     {draftAnnouncement.imageUrl && (
-                      <div className="mb-3 p-4 bg-green-50 dark:bg-green-900/20 rounded-lg border border-green-200 dark:border-green-800">
+                      <div className="mb-3 p-4 bg-green-50 dark:bg-green-500/40 rounded-lg border border-green-200 dark:border-green-500/50">
                         <div className="flex items-start justify-between gap-3 mb-3">
                           <div className="flex-1 min-w-0">
-                            <p className="text-sm font-medium text-green-800 dark:text-green-200 mb-2">
+                            <p className="text-sm font-medium text-green-800 dark:text-white mb-2">
                               ✓ Current Image
                             </p>
                             <a
                               href={draftAnnouncement.imageUrl}
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="text-sm text-green-700 dark:text-green-300 hover:underline break-all"
+                              className="text-sm text-green-700 dark:text-white hover:underline break-all"
                             >
                               {draftAnnouncement.imageUrl}
                             </a>
@@ -5878,7 +6142,7 @@ const AdminDashboard: React.FC = () => {
                           <button
                             type="button"
                             onClick={() => setDraftAnnouncement(prev => ({ ...prev, imageUrl: '' }))}
-                            className="flex-shrink-0 p-1.5 text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 rounded transition-colors"
+                            className="flex-shrink-0 p-1.5 text-red-600 dark:text-white hover:bg-red-50 dark:hover:bg-red-900/20 rounded transition-colors"
                             title="Remove image"
                           >
                             <X className="h-4 w-4" />
@@ -5910,13 +6174,13 @@ const AdminDashboard: React.FC = () => {
                   <input className="input" placeholder="Action URL (optional)" value={draftAnnouncement.actionUrl} onChange={e=>setDraftAnnouncement(prev=>({...prev, actionUrl:e.target.value}))}/>
                   <input className="input" placeholder="Action Text (optional, e.g., 'Learn More')" value={draftAnnouncement.actionText} onChange={e=>setDraftAnnouncement(prev=>({...prev, actionText:e.target.value}))}/>
                   <input className="input" type="datetime-local" placeholder="Expires At (optional)" value={draftAnnouncement.expiresAt} onChange={e=>setDraftAnnouncement(prev=>({...prev, expiresAt:e.target.value}))}/>
-                  <div className="md:col-span-2 flex items-center gap-2">
+                  <div className="col-span-2 flex items-center gap-2">
                     <input type="checkbox" checked={draftAnnouncement.sendNotification} onChange={e=>setDraftAnnouncement(prev=>({...prev, sendNotification:e.target.checked}))} className="w-4 h-4"/>
-                    <label className="text-sm text-[var(--color-text-primary)]">Send notification to all users</label>
+                    <label className="text-sm text-slate-700 dark:text-slate-200">Send notification to all users</label>
                   </div>
-                  <div className="md:col-span-2 flex justify-end">
+                  <div className="col-span-2 flex justify-end">
                     <button className="btn-primary px-4 py-2 rounded-lg flex items-center gap-2" onClick={handleCreateAnnouncement} disabled={!draftAnnouncement.title || !draftAnnouncement.message}>
-                      <Plus className="h-4 w-4"/>
+                      <Plus className="h-4 w-4 text-white dark:text-white"/>
                       <span>Create Announcement</span>
                     </button>
                   </div>
@@ -5944,41 +6208,41 @@ const AdminDashboard: React.FC = () => {
 
               {/* Announcements Table */}
               <div className="card-glass rounded-xl overflow-hidden">
-                <div className="p-4 border-b border-[var(--color-divider-gray)]">
-                  <h3 className="text-lg font-semibold text-[var(--color-text-primary)]">Announcements ({filteredAnnouncements.length})</h3>
-                  <p className="text-sm text-[var(--color-text-secondary)]">Manage announcements for paid account users</p>
+                <div className="p-4 border-b border-slate-200 dark:border-slate-700">
+                  <h3 className="text-lg font-semibold text-slate-700 dark:text-slate-200">Announcements ({filteredAnnouncements.length})</h3>
+                  <p className="text-sm text-slate-500 dark:text-slate-400">Manage announcements for paid account users</p>
                 </div>
                 <div className="overflow-x-auto">
                   <table className="w-full">
-                    <thead className="bg-[var(--color-background-surface)] border-b border-[var(--color-divider-gray)]">
+                    <thead className="bg-slate-50 dark:bg-slate-800/50 dark:bg-slate-50 dark:bg-slate-800/50 border-b border-slate-200 dark:border-slate-700">
                       <tr>
-                        <th className="px-4 py-3 text-left text-sm font-medium text-[var(--color-text-primary)]">Announcement</th>
-                        <th className="px-4 py-3 text-left text-sm font-medium text-[var(--color-text-primary)]">Placement</th>
-                        <th className="px-4 py-3 text-left text-sm font-medium text-[var(--color-text-primary)]">Expires</th>
-                        <th className="px-4 py-3 text-left text-sm font-medium text-[var(--color-text-primary)]">Status</th>
-                        <th className="px-4 py-3 text-left text-sm font-medium text-[var(--color-text-primary)]">Actions</th>
+                        <th className="px-4 py-3 text-left text-sm font-medium text-slate-700 dark:text-slate-200">Announcement</th>
+                        <th className="px-4 py-3 text-left text-sm font-medium text-slate-700 dark:text-slate-200">Placement</th>
+                        <th className="px-4 py-3 text-left text-sm font-medium text-slate-700 dark:text-slate-200">Expires</th>
+                        <th className="px-4 py-3 text-left text-sm font-medium text-slate-700 dark:text-slate-200">Status</th>
+                        <th className="px-4 py-3 text-left text-sm font-medium text-slate-700 dark:text-slate-200">Actions</th>
                       </tr>
                     </thead>
-                    <tbody className="divide-y divide-[var(--color-divider-gray)]">
+                    <tbody className="divide-y divide-slate-200 dark:divide-slate-700">
                       {paginatedAnnouncements.map(ann => (
-                        <tr key={ann.id} className="hover:bg-[var(--color-background-default)] transition-colors">
+                        <tr key={ann.id} className="hover:bg-slate-50 dark:bg-slate-800/30 transition-colors">
                           <td className="px-4 py-3">
                             <div className="flex items-start gap-3">
                               {ann.image_url && (
                                 <img src={ann.image_url} alt={ann.title} className="w-16 h-16 object-cover rounded-lg" />
                               )}
                               <div>
-                                <div className="font-medium text-[var(--color-text-primary)]">{ann.title}</div>
-                                <div className="text-sm text-[var(--color-text-secondary)] line-clamp-2">{ann.message}</div>
+                                <div className="font-medium text-slate-700 dark:text-slate-200">{ann.title}</div>
+                                <div className="text-sm text-slate-500 dark:text-slate-400 line-clamp-2">{ann.message}</div>
                               </div>
                             </div>
                           </td>
                           <td className="px-4 py-3">
-                            <span className="px-2 py-1 bg-blue-100 dark:bg-blue-900/20 text-blue-800 dark:text-blue-200 rounded-full text-xs font-medium">
+                            <span className="px-2 py-1 bg-indigo-100 dark:bg-indigo-500/40 text-indigo-700 dark:text-indigo-300 rounded-full text-xs font-medium">
                               {ann.placement.replace('_', ' ')}
                             </span>
                           </td>
-                          <td className="px-4 py-3 text-sm text-[var(--color-text-secondary)]">
+                          <td className="px-4 py-3 text-sm text-slate-500 dark:text-slate-400">
                             {ann.expires_at ? new Date(ann.expires_at).toLocaleDateString() : 'Never'}
                           </td>
                           <td className="px-4 py-3">
@@ -5986,8 +6250,8 @@ const AdminDashboard: React.FC = () => {
                               onClick={() => handleToggleAnnouncementStatus(ann.id, ann.is_active)}
                               className={`px-3 py-1 rounded-full text-xs font-medium transition-colors ${
                                 ann.is_active
-                                  ? 'bg-green-100 dark:bg-green-900/20 text-green-800 dark:text-green-200'
-                                  : 'bg-gray-100 dark:bg-gray-900/20 text-gray-800 dark:text-gray-200'
+                                  ? 'bg-emerald-100 dark:bg-emerald-500/40 text-emerald-700 dark:text-emerald-300'
+                                  : 'bg-slate-100 dark:bg-slate-500/40 text-slate-700 dark:text-slate-200'
                               }`}
                             >
                               {ann.is_active ? 'Active' : 'Inactive'}
@@ -5996,13 +6260,13 @@ const AdminDashboard: React.FC = () => {
                           <td className="px-4 py-3">
                             <div className="flex items-center gap-2">
                               <button 
-                                className="btn-outline px-2 py-1 rounded text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/20"
+                                className="btn-outline px-2 py-1 rounded text-blue-600 dark:text-white hover:bg-blue-50 dark:hover:bg-blue-900/20"
                                 onClick={() => handleEditAnnouncement(ann)}
                               >
                                 <Edit className="h-4 w-4"/>
                               </button>
                               <button 
-                                className="btn-outline px-2 py-1 rounded text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20" 
+                                className="btn-outline px-2 py-1 rounded text-red-600 dark:text-white hover:bg-red-50 dark:hover:bg-red-900/20" 
                                 onClick={() => handleDeleteAnnouncement(ann.id)}
                               >
                                 <Trash2 className="h-4 w-4"/>
@@ -6015,7 +6279,7 @@ const AdminDashboard: React.FC = () => {
                   </table>
                   
                   {paginatedAnnouncements.length === 0 && (
-                    <div className="p-8 text-center text-[var(--color-text-secondary)]">
+                    <div className="p-8 text-center text-slate-500 dark:text-slate-400">
                       <Bell className="h-12 w-12 mx-auto mb-3 opacity-50" />
                       <p>No announcements found</p>
                       <p className="text-sm">Create your first announcement or adjust your filters</p>
@@ -6025,8 +6289,8 @@ const AdminDashboard: React.FC = () => {
                 
                 {/* Pagination */}
                 {totalAnnouncementPages > 1 && (
-                  <div className="px-4 py-3 border-t border-[var(--color-divider-gray)] flex items-center justify-between">
-                    <div className="text-sm text-[var(--color-text-secondary)]">
+                  <div className="px-3 py-3 border-t border-slate-200 dark:border-slate-700 flex items-center justify-between">
+                    <div className="text-sm text-slate-500 dark:text-slate-400">
                       Showing {((safeAnnouncementPage - 1) * announcementsPageSize) + 1} to {Math.min(safeAnnouncementPage * announcementsPageSize, filteredAnnouncements.length)} of {filteredAnnouncements.length} announcements
                     </div>
                     <div className="flex items-center gap-2">
@@ -6037,7 +6301,7 @@ const AdminDashboard: React.FC = () => {
                       >
                         Previous
                       </button>
-                      <span className="px-3 py-2 bg-[var(--color-background-surface)] rounded-lg text-sm">
+                      <span className="px-3 py-2 bg-slate-50 dark:bg-slate-800/50 rounded-lg text-sm">
                         Page {safeAnnouncementPage} of {totalAnnouncementPages}
                       </span>
                       <button 
@@ -6055,15 +6319,188 @@ const AdminDashboard: React.FC = () => {
           </div>
         )}
 
+        {/* Data Management Tab */}
+        {activeTab === 'data-management' && (
+          <div className="space-y-3 pb-8 mb-8">
+            {/* Page Header - Compact */}
+            <div className="mb-2">
+              <h1 className="text-2xl font-bold text-slate-700 dark:text-slate-200 mb-1">Data Management</h1>
+              <p className="text-sm text-slate-500 dark:text-slate-400">Manage all data modules and their content</p>
+            </div>
+
+            {/* AI Update Controls - Only runs when requested (pay-per-use) */}
+            <div className="card-glass p-3 rounded-lg bg-gradient-to-br from-cyan-50/50 to-teal-50/50 dark:from-cyan-950/30 dark:to-teal-950/30 border border-slate-200 dark:border-slate-700">
+              <div className="flex items-center justify-between mb-3">
+                <div className="flex items-center gap-3">
+                  <div className="p-2 rounded-lg bg-teal-600 dark:bg-gradient-to-br dark:from-cyan-500 dark:to-teal-500">
+                    <Sparkles className="h-5 w-5 text-white !text-white" />
+                  </div>
+                  <div>
+                    <h3 className="text-base font-semibold text-slate-700 dark:text-slate-200">AI Data Update</h3>
+                    <p className="text-sm text-slate-500 dark:text-slate-400">Update data modules with AI-powered insights (Pay-per-use)</p>
+                  </div>
+                </div>
+                <button
+                  className="btn-primary-elevated flex items-center gap-2 px-4 py-2 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed"
+                  onClick={handleAIUpdateAll}
+                  disabled={bulkUpdateStatus.status === 'updating'}
+                >
+                  {bulkUpdateStatus.status === 'updating' ? (
+                    <>
+                      <Loader2 className="h-4 w-4 animate-spin text-white dark:text-white" />
+                      <span>Updating...</span>
+                    </>
+                  ) : (
+                    <>
+                      <Sparkles className="h-4 w-4 text-white dark:text-white" />
+                      <span>Update All</span>
+                    </>
+                  )}
+                </button>
+              </div>
+            </div>
+
+            {/* Module Selector */}
+            <div className="card-glass p-3 rounded-lg border border-slate-200 dark:border-slate-700">
+              <h3 className="text-base font-semibold text-slate-700 dark:text-slate-200 mb-3">Select Data Module</h3>
+              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-3">
+                <button
+                  onClick={() => handleModuleChange('companies')}
+                  className={`p-4 rounded-lg border-2 transition-all duration-200 flex flex-col items-center gap-2 ${
+                    selectedDataModule === 'companies'
+                      ? 'bg-slate-800 dark:bg-slate-700 text-white dark:text-white border-black dark:border-gray-600 shadow-lg'
+                      : 'card-glass text-slate-700 dark:text-slate-200 border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:bg-slate-800/30 hover:border-black dark:hover:border-white/50'
+                  }`}
+                >
+                  <Building2 className="h-6 w-6" />
+                  <span className="text-sm font-medium">Companies</span>
+                </button>
+                <button
+                  onClick={() => handleModuleChange('deals')}
+                  className={`p-4 rounded-lg border-2 transition-all duration-200 flex flex-col items-center gap-2 ${
+                    selectedDataModule === 'deals'
+                      ? 'bg-slate-800 dark:bg-slate-700 text-white dark:text-white border-black dark:border-gray-600 shadow-lg'
+                      : 'card-glass text-slate-700 dark:text-slate-200 border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:bg-slate-800/30 hover:border-black dark:hover:border-white/50'
+                  }`}
+                >
+                  <DollarSign className="h-6 w-6" />
+                  <span className="text-sm font-medium">Deals</span>
+                </button>
+                <button
+                  onClick={() => handleModuleChange('grants')}
+                  className={`p-4 rounded-lg border-2 transition-all duration-200 flex flex-col items-center gap-2 ${
+                    selectedDataModule === 'grants'
+                      ? 'bg-slate-800 dark:bg-slate-700 text-white dark:text-white border-black dark:border-gray-600 shadow-lg'
+                      : 'card-glass text-slate-700 dark:text-slate-200 border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:bg-slate-800/30 hover:border-black dark:hover:border-white/50'
+                  }`}
+                >
+                  <Target className="h-6 w-6" />
+                  <span className="text-sm font-medium">Grants</span>
+                </button>
+                <button
+                  onClick={() => handleModuleChange('investors')}
+                  className={`p-4 rounded-lg border-2 transition-all duration-200 flex flex-col items-center gap-2 ${
+                    selectedDataModule === 'investors'
+                      ? 'bg-slate-800 dark:bg-slate-700 text-white dark:text-white border-black dark:border-gray-600 shadow-lg'
+                      : 'card-glass text-slate-700 dark:text-slate-200 border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:bg-slate-800/30 hover:border-black dark:hover:border-white/50'
+                  }`}
+                >
+                  <Users className="h-6 w-6" />
+                  <span className="text-sm font-medium">Investors</span>
+                </button>
+                <button
+                  onClick={() => handleModuleChange('clinical-trials')}
+                  className={`p-4 rounded-lg border-2 transition-all duration-200 flex flex-col items-center gap-2 ${
+                    selectedDataModule === 'clinical-trials'
+                      ? 'bg-slate-800 dark:bg-slate-700 text-white dark:text-white border-black dark:border-gray-600 shadow-lg'
+                      : 'card-glass text-slate-700 dark:text-slate-200 border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:bg-slate-800/30 hover:border-black dark:hover:border-white/50'
+                  }`}
+                >
+                  <Activity className="h-6 w-6" />
+                  <span className="text-sm font-medium">Clinical Trials</span>
+                </button>
+                <button
+                  onClick={() => handleModuleChange('regulatory-ecosystem')}
+                  className={`p-4 rounded-lg border-2 transition-all duration-200 flex flex-col items-center gap-2 ${
+                    selectedDataModule === 'regulatory-ecosystem'
+                      ? 'bg-slate-800 dark:bg-slate-700 text-white dark:text-white border-black dark:border-gray-600 shadow-lg'
+                      : 'card-glass text-slate-700 dark:text-slate-200 border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:bg-slate-800/30 hover:border-black dark:hover:border-white/50'
+                  }`}
+                >
+                  <Shield className="h-6 w-6" />
+                  <span className="text-sm font-medium">Regulatory</span>
+                </button>
+                <button
+                  onClick={() => handleModuleChange('public-markets')}
+                  className={`p-4 rounded-lg border-2 transition-all duration-200 flex flex-col items-center gap-2 ${
+                    selectedDataModule === 'public-markets'
+                      ? 'bg-slate-800 dark:bg-slate-700 text-white dark:text-white border-black dark:border-gray-600 shadow-lg'
+                      : 'card-glass text-slate-700 dark:text-slate-200 border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:bg-slate-800/30 hover:border-black dark:hover:border-white/50'
+                  }`}
+                >
+                  <TrendingUp className="h-6 w-6" />
+                  <span className="text-sm font-medium">Public Markets</span>
+                </button>
+                <button
+                  onClick={() => handleModuleChange('clinical-centers')}
+                  className={`p-4 rounded-lg border-2 transition-all duration-200 flex flex-col items-center gap-2 ${
+                    selectedDataModule === 'clinical-centers'
+                      ? 'bg-slate-800 dark:bg-slate-700 text-white dark:text-white border-black dark:border-gray-600 shadow-lg'
+                      : 'card-glass text-slate-700 dark:text-slate-200 border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:bg-slate-800/30 hover:border-black dark:hover:border-white/50'
+                  }`}
+                >
+                  <Globe className="h-6 w-6" />
+                  <span className="text-sm font-medium">Clinical Centers</span>
+                </button>
+                <button
+                  onClick={() => handleModuleChange('investigators')}
+                  className={`p-4 rounded-lg border-2 transition-all duration-200 flex flex-col items-center gap-2 ${
+                    selectedDataModule === 'investigators'
+                      ? 'bg-slate-800 dark:bg-slate-700 text-white dark:text-white border-black dark:border-gray-600 shadow-lg'
+                      : 'card-glass text-slate-700 dark:text-slate-200 border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:bg-slate-800/30 hover:border-black dark:hover:border-white/50'
+                  }`}
+                >
+                  <UserCheck className="h-6 w-6" />
+                  <span className="text-sm font-medium">Investigators</span>
+                </button>
+                <button
+                  onClick={() => handleModuleChange('nation-pulse')}
+                  className={`p-4 rounded-lg border-2 transition-all duration-200 flex flex-col items-center gap-2 ${
+                    selectedDataModule === 'nation-pulse'
+                      ? 'bg-slate-800 dark:bg-slate-700 text-white dark:text-white border-black dark:border-gray-600 shadow-lg'
+                      : 'card-glass text-slate-700 dark:text-slate-200 border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:bg-slate-800/30 hover:border-black dark:hover:border-white/50'
+                  }`}
+                >
+                  <BarChart3 className="h-6 w-6" />
+                  <span className="text-sm font-medium">Nation Pulse</span>
+                </button>
+                <button
+                  onClick={() => handleModuleChange('fundraising-crm')}
+                  className={`p-4 rounded-lg border-2 transition-all duration-200 flex flex-col items-center gap-2 ${
+                    selectedDataModule === 'fundraising-crm'
+                      ? 'bg-slate-800 dark:bg-slate-700 text-white dark:text-white border-black dark:border-gray-600 shadow-lg'
+                      : 'card-glass text-slate-700 dark:text-slate-200 border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:bg-slate-800/30 hover:border-black dark:hover:border-white/50'
+                  }`}
+                >
+                  <Database className="h-6 w-6" />
+                  <span className="text-sm font-medium">Fundraising CRM</span>
+                </button>
+              </div>
+            </div>
+
+            {/* Data Tables - Will be rendered here based on selectedDataModule */}
+            {/* Note: The actual data tables are rendered after line 6339, outside this section */}
+            {/* They need to be moved here or conditionally rendered when activeTab === 'data-management' */}
+          </div>
+        )}
+
       </div>
 
-      {/* User Edit Modal */}
-      {/* Add User Modal */}
       {showAddUserModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white dark:bg-gray-800 rounded-xl p-6 w-full max-w-2xl mx-4 max-h-[90vh] overflow-y-auto">
+          <div className="bg-white dark:bg-slate-800 rounded-xl p-6 w-full max-w-2xl mx-4 max-h-[700px] overflow-y-auto">
             <div className="flex items-center justify-between mb-6">
-              <h3 className="text-xl font-semibold text-[var(--color-text-primary)]">Add New User</h3>
+              <h3 className="text-xl font-semibold text-slate-700 dark:text-slate-200">Add New User</h3>
               <button 
                 className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
                 onClick={() => {
@@ -6093,44 +6530,34 @@ const AdminDashboard: React.FC = () => {
             }} className="space-y-4">
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">Email *</label>
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2">Email *</label>
                   <input 
                     className="input w-full" 
                     type="email"
                     required
                     value={newUser.email} 
-                    onChange={e => {
-                      const email = e.target.value;
-                      setNewUser(prev => ({
-                        ...prev, 
-                        email: email,
-                        username: prev.username || email.split('@')[0] // Auto-generate username from email
-                      }));
-                    }}
-                    placeholder="user@example.com"
+                    onChange={e => setNewUser(prev => ({...prev, email: e.target.value}))}
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">Username</label>
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2">Username</label>
                   <input 
                     className="input w-full" 
                     value={newUser.username} 
                     onChange={e => setNewUser(prev => ({...prev, username: e.target.value}))}
-                    placeholder="Auto-generated from email"
+                    placeholder="Auto-generated from email if empty"
                   />
-                  <p className="text-xs text-[var(--color-text-secondary)] mt-1">Leave empty to auto-generate from email</p>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">Full Name</label>
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2">Full Name</label>
                   <input 
                     className="input w-full" 
                     value={newUser.fullName} 
                     onChange={e => setNewUser(prev => ({...prev, fullName: e.target.value}))}
-                    placeholder="John Doe"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">Role *</label>
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2">Role *</label>
                   <select 
                     className="input w-full" 
                     required
@@ -6146,12 +6573,13 @@ const AdminDashboard: React.FC = () => {
                   </select>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">Account Tier</label>
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2">Account Tier</label>
                   <select 
                     className="input w-full" 
                     value={newUser.accountTier} 
                     onChange={e => setNewUser(prev => ({...prev, accountTier: e.target.value}))}
                   >
+                    <option value="">Select Tier</option>
                     <option value="free">Free</option>
                     <option value="paid">Paid</option>
                     <option value="enterprise">Enterprise</option>
@@ -6159,46 +6587,48 @@ const AdminDashboard: React.FC = () => {
                   </select>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">Company Name</label>
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2">Company</label>
                   <input 
                     className="input w-full" 
                     value={newUser.companyName} 
                     onChange={e => setNewUser(prev => ({...prev, companyName: e.target.value}))}
-                    placeholder="Company Name"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">Phone</label>
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2">Phone</label>
                   <input 
                     className="input w-full" 
                     value={newUser.phone} 
                     onChange={e => setNewUser(prev => ({...prev, phone: e.target.value}))}
-                    placeholder="+1234567890"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">Country</label>
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2">Country</label>
                   <input 
                     className="input w-full" 
                     value={newUser.country} 
                     onChange={e => setNewUser(prev => ({...prev, country: e.target.value}))}
-                    placeholder="Country"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">City</label>
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2">City</label>
                   <input 
                     className="input w-full" 
                     value={newUser.city} 
                     onChange={e => setNewUser(prev => ({...prev, city: e.target.value}))}
-                    placeholder="City"
                   />
                 </div>
               </div>
-              <div className="p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-800">
-                <p className="text-sm text-blue-800 dark:text-blue-200">
-                  <strong>Note:</strong> A temporary password (TempPassword123!) will be set. The user should change it on first login.
-                </p>
+
+              <div className="flex items-center gap-6">
+                <label className="flex items-center gap-2">
+                  <input 
+                    type="checkbox" 
+                    checked={newUser.isAdmin} 
+                    onChange={e => setNewUser(prev => ({...prev, isAdmin: e.target.checked}))}
+                  />
+                  <span className="text-sm">Admin User</span>
+                </label>
               </div>
 
               <div className="flex items-center justify-end gap-3 pt-4">
@@ -6209,10 +6639,14 @@ const AdminDashboard: React.FC = () => {
                     setShowAddUserModal(false);
                     setNewUser({
                       email: '',
+                      username: '',
                       role: '',
                       accountTier: '',
                       fullName: '',
                       companyName: '',
+                      phone: '',
+                      country: '',
+                      city: '',
                       isAdmin: false,
                       appRoles: []
                     });
@@ -6223,19 +6657,9 @@ const AdminDashboard: React.FC = () => {
                 <button 
                   type="submit"
                   className="btn-primary px-4 py-2 rounded-lg flex items-center gap-2"
-                  disabled={loading}
                 >
-                  {loading ? (
-                    <>
-                      <Loader2 className="h-4 w-4 animate-spin"/>
-                      <span>Creating...</span>
-                    </>
-                  ) : (
-                    <>
-                      <Plus className="h-4 w-4"/>
-                      <span>Create User</span>
-                    </>
-                  )}
+                  <Save className="h-4 w-4"/>
+                  <span>Create User</span>
                 </button>
               </div>
             </form>
@@ -6243,11 +6667,12 @@ const AdminDashboard: React.FC = () => {
         </div>
       )}
 
+      {/* User Edit Modal */}
       {showUserEditModal && editingUser && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white dark:bg-gray-800 rounded-xl p-6 w-full max-w-2xl mx-4 max-h-[90vh] overflow-y-auto">
+          <div className="bg-white dark:bg-slate-800 rounded-xl p-6 w-full max-w-2xl mx-4 max-h-[700px] overflow-y-auto">
             <div className="flex items-center justify-between mb-6">
-              <h3 className="text-xl font-semibold text-[var(--color-text-primary)]">Edit User</h3>
+              <h3 className="text-xl font-semibold text-slate-700 dark:text-slate-200">Edit User</h3>
               <button 
                 className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
                 onClick={() => {
@@ -6267,7 +6692,7 @@ const AdminDashboard: React.FC = () => {
             }} className="space-y-4">
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">First Name</label>
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2">First Name</label>
                   <input 
                     className="input w-full" 
                     value={editingUser.first_name || ''} 
@@ -6275,7 +6700,7 @@ const AdminDashboard: React.FC = () => {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">Last Name</label>
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2">Last Name</label>
                   <input 
                     className="input w-full" 
                     value={editingUser.last_name || ''} 
@@ -6283,7 +6708,7 @@ const AdminDashboard: React.FC = () => {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">Email</label>
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2">Email</label>
                   <input 
                     className="input w-full" 
                     type="email"
@@ -6292,7 +6717,7 @@ const AdminDashboard: React.FC = () => {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">Phone</label>
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2">Phone</label>
                   <input 
                     className="input w-full" 
                     value={editingUser.phone || ''} 
@@ -6300,7 +6725,7 @@ const AdminDashboard: React.FC = () => {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">Company</label>
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2">Company</label>
                   <input 
                     className="input w-full" 
                     value={editingUser.company_name || ''} 
@@ -6308,7 +6733,7 @@ const AdminDashboard: React.FC = () => {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">Country</label>
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2">Country</label>
                   <input 
                     className="input w-full" 
                     value={editingUser.country || ''} 
@@ -6316,7 +6741,7 @@ const AdminDashboard: React.FC = () => {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">City</label>
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2">City</label>
                   <input 
                     className="input w-full" 
                     value={editingUser.city || ''} 
@@ -6324,7 +6749,7 @@ const AdminDashboard: React.FC = () => {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">Role</label>
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2">Role</label>
                   <select 
                     className="input w-full" 
                     value={editingUser.role || ''} 
@@ -6339,7 +6764,7 @@ const AdminDashboard: React.FC = () => {
                   </select>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">Account Tier</label>
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2">Account Tier</label>
                   <select 
                     className="input w-full" 
                     value={editingUser.account_tier || ''} 
@@ -6355,7 +6780,7 @@ const AdminDashboard: React.FC = () => {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">Bio</label>
+                <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2">Bio</label>
                 <textarea 
                   className="input w-full h-24" 
                   value={editingUser.bio || ''} 
@@ -6418,9 +6843,9 @@ const AdminDashboard: React.FC = () => {
       {/* Ad Edit Modal */}
       {showAdEditModal && (editingAd || editingAnnouncement) && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white dark:bg-gray-800 rounded-xl p-6 w-full max-w-3xl mx-4 max-h-[90vh] overflow-y-auto">
+          <div className="bg-white dark:bg-slate-800 rounded-xl p-6 w-full max-w-3xl mx-4 max-h-[700px] overflow-y-auto">
             <div className="flex items-center justify-between mb-6">
-              <h3 className="text-xl font-semibold text-[var(--color-text-primary)]">
+              <h3 className="text-xl font-semibold text-slate-700 dark:text-slate-200">
                 {editingAnnouncement ? 'Edit Announcement' : 'Edit Advertisement'}
               </h3>
               <button 
@@ -6443,8 +6868,8 @@ const AdminDashboard: React.FC = () => {
               <div className="grid grid-cols-2 gap-4 mb-4">
                 {editingAnnouncement ? (
                   <>
-                    <div className="md:col-span-2">
-                      <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">Title</label>
+                    <div className="col-span-2">
+                      <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2">Title</label>
                       <input 
                         className="input w-full" 
                         value={editingAnnouncement.title || ''} 
@@ -6452,8 +6877,8 @@ const AdminDashboard: React.FC = () => {
                         required
                       />
                     </div>
-                    <div className="md:col-span-2">
-                      <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">Message</label>
+                    <div className="col-span-2">
+                      <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2">Message</label>
                       <textarea 
                         className="input w-full min-h-[100px]" 
                         value={editingAnnouncement.message || ''} 
@@ -6462,21 +6887,21 @@ const AdminDashboard: React.FC = () => {
                         required
                       />
                     </div>
-                    <div className="md:col-span-2">
-                      <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">Image</label>
+                    <div className="col-span-2">
+                      <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2">Image</label>
                       {/* Current Image Display */}
                       {editingAnnouncement.image_url && (
-                        <div className="mb-3 p-4 bg-green-50 dark:bg-green-900/20 rounded-lg border border-green-200 dark:border-green-800">
+                        <div className="mb-3 p-4 bg-green-50 dark:bg-green-500/40 rounded-lg border border-green-200 dark:border-green-500/50">
                           <div className="flex items-start justify-between gap-3 mb-3">
                             <div className="flex-1 min-w-0">
-                              <p className="text-sm font-medium text-green-800 dark:text-green-200 mb-2">
+                              <p className="text-sm font-medium text-green-800 dark:text-white mb-2">
                                 ✓ Current Image
                               </p>
                               <a
                                 href={editingAnnouncement.image_url}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="text-sm text-green-700 dark:text-green-300 hover:underline break-all"
+                                className="text-sm text-green-700 dark:text-white hover:underline break-all"
                               >
                                 {editingAnnouncement.image_url}
                               </a>
@@ -6484,7 +6909,7 @@ const AdminDashboard: React.FC = () => {
                             <button
                               type="button"
                               onClick={() => setEditingAnnouncement(prev => prev ? { ...prev, image_url: '' } : null)}
-                              className="flex-shrink-0 p-1.5 text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 rounded transition-colors"
+                              className="flex-shrink-0 p-1.5 text-red-600 dark:text-white hover:bg-red-50 dark:hover:bg-red-900/20 rounded transition-colors"
                               title="Remove image"
                             >
                               <X className="h-4 w-4" />
@@ -6515,7 +6940,7 @@ const AdminDashboard: React.FC = () => {
                       </button>
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">Action URL</label>
+                      <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2">Action URL</label>
                       <input 
                         className="input w-full" 
                         value={editingAnnouncement.action_url || ''} 
@@ -6523,7 +6948,7 @@ const AdminDashboard: React.FC = () => {
                       />
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">Action Text</label>
+                      <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2">Action Text</label>
                       <input 
                         className="input w-full" 
                         value={editingAnnouncement.action_text || ''} 
@@ -6531,7 +6956,7 @@ const AdminDashboard: React.FC = () => {
                       />
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">Placement</label>
+                      <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2">Placement</label>
                       <select 
                         className="input w-full" 
                         value={editingAnnouncement.placement || 'blog_sidebar'} 
@@ -6542,7 +6967,7 @@ const AdminDashboard: React.FC = () => {
                       </select>
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">Expires At</label>
+                      <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2">Expires At</label>
                       <input 
                         type="datetime-local"
                         className="input w-full" 
@@ -6558,14 +6983,14 @@ const AdminDashboard: React.FC = () => {
                           onChange={e => setEditingAnnouncement(prev => prev ? {...prev, is_active: e.target.checked} : null)}
                           className="w-4 h-4"
                         />
-                        <span className="text-sm font-medium text-[var(--color-text-primary)]">Active</span>
+                        <span className="text-sm font-medium text-slate-700 dark:text-slate-200">Active</span>
                       </label>
                     </div>
                   </>
                 ) : (
                   <>
                     <div>
-                      <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">Title</label>
+                      <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2">Title</label>
                       <input 
                         className="input w-full" 
                         value={editingAd.title || ''} 
@@ -6574,28 +6999,28 @@ const AdminDashboard: React.FC = () => {
                       />
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">Advertiser</label>
+                      <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2">Advertiser</label>
                       <input 
                         className="input w-full" 
                         value={editingAd.advertiser || ''} 
                         onChange={e => setEditingAd(prev => prev ? {...prev, advertiser: e.target.value} : null)}
                       />
                     </div>
-                    <div className="md:col-span-2">
-                      <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">Image</label>
+                    <div className="col-span-2">
+                      <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2">Image</label>
                       {/* Current Image Display */}
                       {editingAd.image_url && (
-                    <div className="mb-3 p-4 bg-green-50 dark:bg-green-900/20 rounded-lg border border-green-200 dark:border-green-800">
+                    <div className="mb-3 p-4 bg-green-50 dark:bg-green-500/40 rounded-lg border border-green-200 dark:border-green-500/50">
                       <div className="flex items-start justify-between gap-3 mb-3">
                         <div className="flex-1 min-w-0">
-                          <p className="text-sm font-medium text-green-800 dark:text-green-200 mb-2">
+                          <p className="text-sm font-medium text-green-800 dark:text-white mb-2">
                             ✓ Current Image
                           </p>
                           <a
                             href={editingAd.image_url}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="text-sm text-green-700 dark:text-green-300 hover:underline break-all"
+                            className="text-sm text-green-700 dark:text-white hover:underline break-all"
                           >
                             {editingAd.image_url}
                           </a>
@@ -6603,7 +7028,7 @@ const AdminDashboard: React.FC = () => {
                         <button
                           type="button"
                           onClick={() => setEditingAd(prev => prev ? { ...prev, image_url: '' } : null)}
-                          className="flex-shrink-0 p-1.5 text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 rounded transition-colors"
+                          className="flex-shrink-0 p-1.5 text-red-600 dark:text-white hover:bg-red-50 dark:hover:bg-red-900/20 rounded transition-colors"
                           title="Remove image"
                         >
                           <X className="h-4 w-4" />
@@ -6634,7 +7059,7 @@ const AdminDashboard: React.FC = () => {
                   </button>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">CTA Text</label>
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2">CTA Text</label>
                   <input 
                     className="input w-full" 
                     value={editingAd.cta_text || ''} 
@@ -6642,7 +7067,7 @@ const AdminDashboard: React.FC = () => {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">Target URL</label>
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2">Target URL</label>
                   <input 
                     className="input w-full" 
                     value={editingAd.target_url || ''} 
@@ -6650,7 +7075,7 @@ const AdminDashboard: React.FC = () => {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">Category</label>
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2">Category</label>
                   <select 
                     className="input w-full" 
                     value={editingAd.category || ''} 
@@ -6661,7 +7086,7 @@ const AdminDashboard: React.FC = () => {
                   </select>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">Priority</label>
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2">Priority</label>
                   <input 
                     type="number"
                     className="input w-full" 
@@ -6670,7 +7095,7 @@ const AdminDashboard: React.FC = () => {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">Status</label>
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2">Status</label>
                   <select 
                     className="input w-full" 
                     value={editingAd.is_active ? 'active' : 'inactive'} 
@@ -6680,11 +7105,11 @@ const AdminDashboard: React.FC = () => {
                     <option value="inactive">Inactive</option>
                   </select>
                 </div>
-                <div className="md:col-span-2">
-                  <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">Placements</label>
-                  <div className="grid grid-cols-2 md:grid-cols-7 gap-3">
+                <div className="col-span-2">
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2">Placements</label>
+                  <div className="grid grid-cols-2 grid-cols-7 gap-3">
                     {(['blog_top','blog_inline','blog_sidebar','blog_grid','dashboard_sidebar','dashboard_inline'] as AdPlacement[]).map(pl => (
-                      <label key={pl} className="flex items-center gap-2 p-2 rounded-lg hover:bg-[var(--color-background-default)] transition-colors cursor-pointer">
+                      <label key={pl} className="flex items-center gap-2 p-2 rounded-lg hover:bg-slate-50 dark:bg-slate-800/30 transition-colors cursor-pointer">
                         <input 
                           type="checkbox" 
                           checked={Array.isArray(editingAd.placements) && editingAd.placements.includes(pl)} 
@@ -6695,7 +7120,7 @@ const AdminDashboard: React.FC = () => {
                               : currentPlacements.filter(x => x !== pl);
                             setEditingAd(prev => prev ? {...prev, placements: next} : null);
                           }}
-                          className="w-4 h-4 text-[var(--color-primary-teal)]"
+                          className="w-4 h-4 text-teal-600 dark:text-teal-400"
                         />
                         <span className="text-sm">{pl.replace('_', ' ')}</span>
                       </label>
@@ -6730,821 +7155,12 @@ const AdminDashboard: React.FC = () => {
           </div>
         </div>
       )}
-
-        {/* Data Management Tab */}
-        {activeTab === 'data-management' && (
-          <div className="space-y-6 pb-8 mb-8">
-            {/* AI Update Controls - Only runs when requested (pay-per-use) */}
-            <div className="card p-6 border border-[var(--color-divider-gray)] bg-gradient-to-br from-[var(--color-background-surface)] to-color-mix(in srgb, var(--color-primary-light), transparent 95%)">
-              <div className="flex items-center justify-between mb-4">
-                <div className="flex items-center gap-3">
-                  <div className="p-2 rounded-lg bg-[var(--color-primary-teal)]/10">
-                    <Sparkles className="h-5 w-5 text-[var(--color-primary-teal)]" />
-                  </div>
-                  <div>
-                    <h3 className="font-semibold text-[var(--color-text-primary)]">AI-Powered Data Updates</h3>
-                    <p className="text-sm text-[var(--color-text-secondary)]">Refresh data with real, factual information from AI training data and knowledge base (pay-per-use)</p>
-                  </div>
-                </div>
-                <div className="flex items-center gap-2">
-                  <button
-                    onClick={() => handleAIUpdate(
-                      selectedDataModule === 'companies' ? 'companies' :
-                      selectedDataModule === 'deals' ? 'deals' :
-                      selectedDataModule === 'grants' ? 'grants' :
-                      selectedDataModule === 'investors' ? 'investors' :
-                      selectedDataModule === 'clinical-trials' ? 'clinical_trials' :
-                      selectedDataModule === 'regulatory-ecosystem' ? 'regulatory_bodies' :
-                      selectedDataModule === 'public-markets' ? 'public_stocks' :
-                      selectedDataModule === 'clinical-centers' ? 'clinical_centers' :
-                      selectedDataModule === 'investigators' ? 'investigators' : 'companies',
-                      10
-                    )}
-                    disabled={aiUpdateStatus.status === 'updating' || bulkUpdateStatus.status === 'updating'}
-                    className="btn-primary flex items-center gap-2 px-4 py-2 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed"
-                  >
-                    {aiUpdateStatus.status === 'updating' && aiUpdateStatus.module === selectedDataModule ? (
-                      <>
-                        <Loader2 className="h-4 w-4 animate-spin" />
-                        Updating...
-                      </>
-                    ) : (
-                      <>
-                        <RefreshCw className="h-4 w-4" />
-                        Update Current
-                      </>
-                    )}
-                  </button>
-                  <button
-                    onClick={handleBulkUpdate}
-                    disabled={aiUpdateStatus.status === 'updating' || bulkUpdateStatus.status === 'updating'}
-                    className="btn-primary-elevated flex items-center gap-2 px-4 py-2 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed"
-                  >
-                    {bulkUpdateStatus.status === 'updating' ? (
-                      <>
-                        <Loader2 className="h-4 w-4 animate-spin" />
-                        Updating All...
-                      </>
-                    ) : (
-                      <>
-                        <Sparkles className="h-4 w-4" />
-                        Update All
-                      </>
-                    )}
-                  </button>
-                </div>
-              </div>
-              
-              {/* Individual Module Buttons */}
-              <div className="mb-4">
-                <p className="text-sm font-medium text-[var(--color-text-secondary)] mb-3">Quick Update by Module:</p>
-                <div className="flex flex-wrap gap-2">
-                  {[
-                    { key: 'companies', label: 'Companies', icon: Building2 },
-                    { key: 'deals', label: 'Deals', icon: DollarSign },
-                    { key: 'grants', label: 'Grants', icon: Target },
-                    { key: 'investors', label: 'Investors', icon: Users },
-                    { key: 'clinical_trials', label: 'Trials', icon: Activity },
-                    { key: 'regulatory_bodies', label: 'Regulatory', icon: Shield },
-                    { key: 'public_stocks', label: 'Stocks', icon: TrendingUp },
-                    { key: 'clinical_centers', label: 'Centers', icon: Building2 },
-                    { key: 'investigators', label: 'Investigators', icon: UserCheck }
-                  ].map(({ key, label, icon: Icon }) => {
-                    const moduleKey = key;
-                    const isUpdating = aiUpdateStatus.status === 'updating' && aiUpdateStatus.module === moduleKey;
-                    return (
-                      <button
-                        key={key}
-                        onClick={() => handleAIUpdate(moduleKey, 10)}
-                        disabled={aiUpdateStatus.status === 'updating' || bulkUpdateStatus.status === 'updating'}
-                        className="btn-outline flex items-center gap-2 px-3 py-1.5 rounded-lg text-sm disabled:opacity-50 disabled:cursor-not-allowed hover:bg-[var(--color-primary-teal)]/5 hover:border-[var(--color-primary-teal)] transition-colors"
-                      >
-                        {isUpdating ? (
-                          <Loader2 className="h-3.5 w-3.5 animate-spin text-[var(--color-primary-teal)]" />
-                        ) : (
-                          <Icon className="h-3.5 w-3.5 text-[var(--color-primary-teal)]" />
-                        )}
-                        <span>{label}</span>
-                      </button>
-                    );
-                  })}
-                </div>
-              </div>
-              
-              {/* Status Messages */}
-              {(aiUpdateStatus.status !== 'idle' || bulkUpdateStatus.status !== 'idle') && (
-                <div className="mt-4 pt-4 border-t border-[var(--color-divider-gray)] space-y-2">
-                  {aiUpdateStatus.status !== 'idle' && (
-                    <div className={`flex items-center gap-2 p-3 rounded-lg ${
-                      aiUpdateStatus.status === 'success' 
-                        ? 'bg-[var(--color-success)]/10 border border-[var(--color-success)]/20 text-[var(--color-success)]' 
-                        : aiUpdateStatus.status === 'error' 
-                        ? 'bg-[var(--color-error)]/10 border border-[var(--color-error)]/20 text-[var(--color-error)]'
-                        : aiUpdateStatus.status === 'warning'
-                        ? 'bg-yellow-500/10 border border-yellow-500/20 text-yellow-600 dark:text-yellow-400'
-                        : 'bg-[var(--color-accent-sky)]/10 border border-[var(--color-accent-sky)]/20 text-[var(--color-accent-sky)]'
-                    }`}>
-                      {aiUpdateStatus.status === 'updating' && <Loader2 className="h-4 w-4 animate-spin" />}
-                      {aiUpdateStatus.status === 'success' && <CheckCircle className="h-4 w-4" />}
-                      {aiUpdateStatus.status === 'error' && <AlertCircle className="h-4 w-4" />}
-                      {aiUpdateStatus.status === 'warning' && <AlertCircle className="h-4 w-4" />}
-                      <span className="text-sm font-medium">{aiUpdateStatus.message}</span>
-                    </div>
-                  )}
-                  {bulkUpdateStatus.status !== 'idle' && (
-                <div className={`flex items-center gap-2 p-3 rounded-lg ${
-                  bulkUpdateStatus.status === 'success' 
-                    ? 'bg-[var(--color-success)]/10 border border-[var(--color-success)]/20 text-[var(--color-success)]' 
-                    : bulkUpdateStatus.status === 'error' 
-                    ? 'bg-[var(--color-error)]/10 border border-[var(--color-error)]/20 text-[var(--color-error)]'
-                    : bulkUpdateStatus.status === 'warning'
-                    ? 'bg-yellow-500/10 border border-yellow-500/20 text-yellow-600 dark:text-yellow-400'
-                    : 'bg-[var(--color-accent-sky)]/10 border border-[var(--color-accent-sky)]/20 text-[var(--color-accent-sky)]'
-                }`}>
-                      {bulkUpdateStatus.status === 'updating' && <Loader2 className="h-4 w-4 animate-spin" />}
-                      {bulkUpdateStatus.status === 'success' && <CheckCircle className="h-4 w-4" />}
-                      {bulkUpdateStatus.status === 'error' && <AlertCircle className="h-4 w-4" />}
-                      {bulkUpdateStatus.status === 'warning' && <AlertCircle className="h-4 w-4" />}
-                      <span className="text-sm font-medium">{bulkUpdateStatus.message}</span>
-                    </div>
-                  )}
-                </div>
-              )}
-            </div>
-
-            {/* Module Selector */}
-            <div className="bg-[var(--color-background-surface)] p-4 rounded-lg border border-[var(--color-divider-gray)]">
-              <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">
-                Select Module to Manage
-              </label>
-              <select
-                value={selectedDataModule}
-                onChange={(e) => {
-                  const newModule = e.target.value as any;
-                  handleModuleChange(newModule);
-                }}
-                className="input w-full max-w-md"
-              >
-                <option value="companies">Companies</option>
-                <option value="deals">Deals</option>
-                <option value="grants">Grants</option>
-                <option value="investors">Investors</option>
-                <option value="clinical-trials">Clinical Trials</option>
-                <option value="regulatory">Regulatory</option>
-                <option value="regulatory-ecosystem">Regulatory Ecosystem</option>
-                <option value="public-markets">Public Markets</option>
-                <option value="clinical-centers">Clinical Centers</option>
-                <option value="investigators">Investigators</option>
-                <option value="nation-pulse">Nation Pulse</option>
-                <option value="fundraising-crm">Fundraising CRM</option>
-              </select>
-            </div>
-
-            {/* Companies Module */}
-            {selectedDataModule === 'companies' && (
-              <div className="pb-8">
-                {/* Header */}
-                <div className="flex items-center justify-between">
-                  <div>
-                    <h2 className="text-2xl font-bold text-[var(--color-text-primary)]">Companies Management</h2>
-                    <p className="text-sm text-[var(--color-text-secondary)] mt-1">Manage all companies in the platform</p>
-                  </div>
-                  <button
-                    onClick={() => {
-                      setEditingCompany(null);
-                      setShowCompanyForm(true);
-                    }}
-                    className="btn-primary flex items-center gap-2 px-4 py-2 rounded-lg"
-                  >
-                    <Plus className="h-4 w-4" />
-                    Add Company
-                  </button>
-                </div>
-
-            {/* Search */}
-            <div className="card-glass p-4 rounded-lg">
-              <div className="flex gap-4 items-center">
-                <div className="flex-1 relative">
-                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-[var(--color-text-secondary)]" />
-                  <input
-                    type="text"
-                    placeholder="Search companies..."
-                    value={companiesSearch}
-                    onChange={(e) => {
-                      setCompaniesSearch(e.target.value);
-                      setCompaniesPage(1);
-                    }}
-                    className="w-full pl-10 pr-4 py-2 rounded-lg border border-[var(--color-divider-gray)] bg-[var(--color-background-surface)] text-[var(--color-text-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary-teal)]"
-                  />
-                </div>
-              </div>
-            </div>
-
-            {/* Companies Table */}
-            {loading && !companiesData ? (
-              <div className="flex items-center justify-center p-8">
-                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[var(--color-primary-teal)]"></div>
-                <span className="ml-2 text-[var(--color-text-secondary)]">Loading companies...</span>
-              </div>
-            ) : error && !companiesData ? (
-              <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-4">
-                <div className="flex items-center">
-                  <AlertCircle className="h-5 w-5 text-red-600 mr-2" />
-                  <span className="text-red-800 dark:text-red-200">{error}</span>
-                </div>
-              </div>
-            ) : (
-              <>
-                <div className="card-glass rounded-lg overflow-hidden">
-                  <div className="overflow-x-auto">
-                    <table className="w-full">
-                      <thead className="bg-[var(--color-background-default)] border-b border-[var(--color-divider-gray)]">
-                        <tr>
-                          <th className="px-4 py-3 text-left text-sm font-semibold text-[var(--color-text-primary)]">Name</th>
-                          <th className="px-4 py-3 text-left text-sm font-semibold text-[var(--color-text-primary)]">Industry</th>
-                          <th className="px-4 py-3 text-left text-sm font-semibold text-[var(--color-text-primary)]">Stage</th>
-                          <th className="px-4 py-3 text-left text-sm font-semibold text-[var(--color-text-primary)]">Funding</th>
-                          <th className="px-4 py-3 text-left text-sm font-semibold text-[var(--color-text-primary)]">Country</th>
-                          <th className="px-4 py-3 text-left text-sm font-semibold text-[var(--color-text-primary)]">Status</th>
-                          <th className="px-4 py-3 text-right text-sm font-semibold text-[var(--color-text-primary)]">Actions</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {companiesData?.companies && companiesData.companies.length > 0 ? (
-                          companiesData.companies.map((company: any) => (
-                            <tr key={company.id} className="border-b border-[var(--color-divider-gray)] hover:bg-[var(--color-background-default)] transition-colors">
-                              <td className="px-4 py-3">
-                                <div className="flex items-center gap-3">
-                                  {company.logo_url && (
-                                    <img src={company.logo_url} alt={company.name} className="h-8 w-8 rounded object-cover" />
-                                  )}
-                                  <div>
-                                    <div className="font-medium text-[var(--color-text-primary)]">{company.name || 'N/A'}</div>
-                                    {company.description && (
-                                      <div className="text-xs text-[var(--color-text-secondary)] line-clamp-1">{company.description}</div>
-                                    )}
-                                  </div>
-                                </div>
-                              </td>
-                              <td className="px-4 py-3 text-[var(--color-text-primary)]">{company.industry || company.sector || 'N/A'}</td>
-                              <td className="px-4 py-3 text-[var(--color-text-primary)]">{company.stage || company.funding_stage || 'N/A'}</td>
-                              <td className="px-4 py-3 text-[var(--color-text-primary)]">
-                                {company.total_funding ? `$${(parseFloat(company.total_funding) / 1000000).toFixed(1)}M` : 'N/A'}
-                              </td>
-                              <td className="px-4 py-3 text-[var(--color-text-primary)]">{company.country || company.headquarters || 'N/A'}</td>
-                              <td className="px-4 py-3">
-                                <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                                  company.is_active ? 'bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400' : 'bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-400'
-                                }`}>
-                                  {company.is_active ? 'Active' : 'Inactive'}
-                                </span>
-                              </td>
-                              <td className="px-4 py-3">
-                                <div className="flex items-center justify-end gap-2">
-                                  <button
-                                    onClick={() => {
-                                      setEditingCompany(company);
-                                      setShowCompanyForm(true);
-                                    }}
-                                    className="p-2 rounded-lg hover:bg-[var(--color-primary-teal)]/10 text-[var(--color-primary-teal)] transition-colors border border-transparent hover:border-[var(--color-primary-teal)]/20"
-                                    title="Edit"
-                                  >
-                                    <Edit className="h-4 w-4" />
-                                  </button>
-                                  <button
-                                    onClick={() => {
-                                      setConfirmModal({
-                                        isOpen: true,
-                                        title: 'Delete Company',
-                                        message: `Are you sure you want to delete "${company.name}"? This action cannot be undone.`,
-                                        variant: 'danger',
-                                        onConfirm: async () => {
-                                          try {
-                                            const token = localStorage.getItem('medarionAuthToken') || 'test-token';
-                                            const response = await fetch(`/api/admin/companies/${company.id}`, {
-                                              method: 'DELETE',
-                                              headers: {
-                                                'Authorization': `Bearer ${token}`,
-                                                'Content-Type': 'application/json',
-                                              },
-                                            });
-                                            const data = await response.json();
-                                            if (data.success) {
-                                              setAlertModal({
-                                                isOpen: true,
-                                                title: 'Success',
-                                                message: 'Company deleted successfully',
-                                                variant: 'success',
-                                              });
-                                              fetchCompaniesData(companiesPage, companiesSearch || undefined);
-                                              setConfirmModal({ isOpen: false, title: '', message: '', onConfirm: () => {} });
-                                            } else {
-                                              throw new Error(data.error || 'Failed to delete company');
-                                            }
-                                          } catch (err: any) {
-                                            setAlertModal({
-                                              isOpen: true,
-                                              title: 'Error',
-                                              message: err?.message || 'Failed to delete company',
-                                              variant: 'error',
-                                            });
-                                          }
-                                        },
-                                      });
-                                    }}
-                                    className="p-2 rounded-lg hover:bg-[var(--color-error)]/10 text-[var(--color-error)] transition-colors border border-transparent hover:border-[var(--color-error)]/20"
-                                    title="Delete"
-                                  >
-                                    <Trash2 className="h-4 w-4" />
-                                  </button>
-                                </div>
-                              </td>
-                            </tr>
-                          ))
-                        ) : (
-                          <tr>
-                            <td colSpan={7} className="px-4 py-8 text-center text-[var(--color-text-secondary)]">
-                              No companies found
-                            </td>
-                          </tr>
-                        )}
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
-
-                {/* Pagination */}
-                {companiesData?.pagination && companiesData.pagination.total > 0 && (
-                  <div className="flex items-center justify-between">
-                    <div className="text-sm text-[var(--color-text-secondary)]">
-                      Showing {((companiesPage - 1) * companiesPageSize) + 1} to {Math.min(companiesPage * companiesPageSize, companiesData.pagination.total)} of {companiesData.pagination.total} companies
-                    </div>
-                    <div className="flex gap-2">
-                      <button
-                        onClick={() => setCompaniesPage(p => Math.max(1, p - 1))}
-                        disabled={companiesPage === 1}
-                        className="px-4 py-2 rounded-lg border border-[var(--color-divider-gray)] bg-[var(--color-background-surface)] text-[var(--color-text-primary)] disabled:opacity-50 disabled:cursor-not-allowed hover:bg-[var(--color-background-default)] transition-colors"
-                      >
-                        Previous
-                      </button>
-                      <button
-                        onClick={() => setCompaniesPage(p => p + 1)}
-                        disabled={!companiesData.pagination.has_more}
-                        className="px-4 py-2 rounded-lg border border-[var(--color-divider-gray)] bg-[var(--color-background-surface)] text-[var(--color-text-primary)] disabled:opacity-50 disabled:cursor-not-allowed hover:bg-[var(--color-background-default)] transition-colors"
-                      >
-                        Next
-                      </button>
-                    </div>
-                  </div>
-                )}
-              </>
-            )}
-              </div>
-            )}
-
-            {/* Deals Module */}
-            {selectedDataModule === 'deals' && (
-              <div className="pb-8">
-                {/* Header */}
-                <div className="flex items-center justify-between">
-                  <div>
-                    <h2 className="text-2xl font-bold text-[var(--color-text-primary)]">Deals Management</h2>
-                    <p className="text-sm text-[var(--color-text-secondary)] mt-1">Manage all investment deals in the platform</p>
-                  </div>
-                  <button
-                    onClick={() => {
-                      setEditingDeal(null);
-                      setShowDealForm(true);
-                    }}
-                    className="btn-primary flex items-center gap-2 px-4 py-2 rounded-lg"
-                  >
-                    <Plus className="h-4 w-4" />
-                    Add Deal
-                  </button>
-                </div>
-
-                {/* Search */}
-                <div className="card-glass p-4 rounded-lg">
-                  <div className="flex gap-4 items-center">
-                    <div className="flex-1 relative">
-                      <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-[var(--color-text-secondary)]" />
-                      <input
-                        type="text"
-                        placeholder="Search deals..."
-                        value={dealsSearch}
-                        onChange={(e) => {
-                          setDealsSearch(e.target.value);
-                          setDealsPage(1);
-                        }}
-                        className="w-full pl-10 pr-4 py-2 rounded-lg border border-[var(--color-divider-gray)] bg-[var(--color-background-surface)] text-[var(--color-text-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary-teal)]"
-                      />
-                    </div>
-                  </div>
-                </div>
-
-                {/* Deals Table */}
-                {loading && !dealsData ? (
-                  <div className="flex items-center justify-center p-8">
-                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[var(--color-primary-teal)]"></div>
-                    <span className="ml-2 text-[var(--color-text-secondary)]">Loading deals...</span>
-                  </div>
-                ) : error && !dealsData ? (
-                  <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-4">
-                    <div className="flex items-center">
-                      <AlertCircle className="h-5 w-5 text-red-600 mr-2" />
-                      <span className="text-red-800 dark:text-red-200">{error}</span>
-                    </div>
-                  </div>
-                ) : (
-                  <>
-                    <div className="card-glass rounded-lg overflow-hidden">
-                      <div className="overflow-x-auto">
-                        <table className="w-full">
-                          <thead className="bg-[var(--color-background-default)] border-b border-[var(--color-divider-gray)]">
-                            <tr>
-                              <th className="px-4 py-3 text-left text-sm font-semibold text-[var(--color-text-primary)]">Company</th>
-                              <th className="px-4 py-3 text-left text-sm font-semibold text-[var(--color-text-primary)]">Deal Type</th>
-                              <th className="px-4 py-3 text-left text-sm font-semibold text-[var(--color-text-primary)]">Amount</th>
-                              <th className="px-4 py-3 text-left text-sm font-semibold text-[var(--color-text-primary)]">Date</th>
-                              <th className="px-4 py-3 text-left text-sm font-semibold text-[var(--color-text-primary)]">Status</th>
-                              <th className="px-4 py-3 text-right text-sm font-semibold text-[var(--color-text-primary)]">Actions</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            {dealsData?.deals && dealsData.deals.length > 0 ? (
-                              dealsData.deals.map((deal: any) => (
-                                <tr key={deal.id} className="border-b border-[var(--color-divider-gray)] hover:bg-[var(--color-background-default)] transition-colors">
-                                  <td className="px-4 py-3">
-                                    <div className="font-medium text-[var(--color-text-primary)]">{deal.company_name || 'N/A'}</div>
-                                    {deal.description && (
-                                      <div className="text-xs text-[var(--color-text-secondary)] line-clamp-1">{deal.description}</div>
-                                    )}
-                                  </td>
-                                  <td className="px-4 py-3 text-[var(--color-text-primary)]">{deal.deal_type || 'N/A'}</td>
-                                  <td className="px-4 py-3 text-[var(--color-text-primary)]">
-                                    {deal.amount ? `$${(parseFloat(deal.amount) / 1000000).toFixed(1)}M` : 'N/A'}
-                                  </td>
-                                  <td className="px-4 py-3 text-[var(--color-text-primary)]">
-                                    {deal.deal_date ? new Date(deal.deal_date).toLocaleDateString() : 'N/A'}
-                                  </td>
-                                  <td className="px-4 py-3">
-                                    <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                                      deal.status === 'closed' ? 'bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400' : 
-                                      deal.status === 'pending' ? 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/20 dark:text-yellow-400' : 
-                                      'bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-400'
-                                    }`}>
-                                      {deal.status || 'N/A'}
-                                    </span>
-                                  </td>
-                                  <td className="px-4 py-3">
-                                    <div className="flex items-center justify-end gap-2">
-                                      <button
-                                        onClick={() => {
-                                          // Fetch full deal details first
-                                          const token = localStorage.getItem('medarionAuthToken') || 'test-token';
-                                          fetch(`/api/admin/deals/${deal.id}`, {
-                                            headers: {
-                                              'Authorization': `Bearer ${token}`,
-                                              'Content-Type': 'application/json',
-                                            },
-                                          })
-                                          .then(r => r.json())
-                                          .then(data => {
-                                            if (data.success) {
-                                              setEditingDeal(data.data);
-                                              setShowDealForm(true);
-                                            }
-                                          })
-                                          .catch(err => {
-                                            setEditingDeal(deal);
-                                            setShowDealForm(true);
-                                          });
-                                        }}
-                                        className="p-2 rounded-lg hover:bg-[var(--color-background-default)] text-[var(--color-text-primary)] transition-colors"
-                                        title="Edit"
-                                      >
-                                        <Edit className="h-4 w-4" />
-                                      </button>
-                                      <button
-                                        onClick={() => {
-                                          setConfirmModal({
-                                            isOpen: true,
-                                            title: 'Delete Deal',
-                                            message: `Are you sure you want to delete this deal? This action cannot be undone.`,
-                                            variant: 'danger',
-                                            onConfirm: async () => {
-                                              try {
-                                                setConfirmModal(prev => ({ ...prev, isLoading: true }));
-                                                const token = localStorage.getItem('medarionAuthToken') || 'test-token';
-                                                const response = await fetch(`/api/admin/deals/${deal.id}`, {
-                                                  method: 'DELETE',
-                                                  headers: {
-                                                    'Authorization': `Bearer ${token}`,
-                                                    'Content-Type': 'application/json',
-                                                  },
-                                                });
-                                                const data = await response.json();
-                                                if (data.success) {
-                                                  setAlertModal({
-                                                    isOpen: true,
-                                                    title: 'Success',
-                                                    message: 'Deal deleted successfully',
-                                                    variant: 'success',
-                                                  });
-                                                  fetchDealsData(dealsPage, dealsSearch || undefined);
-                                                } else {
-                                                  throw new Error(data.error || 'Failed to delete deal');
-                                                }
-                                              } catch (err: any) {
-                                                setAlertModal({
-                                                  isOpen: true,
-                                                  title: 'Error',
-                                                  message: err?.message || 'Failed to delete deal',
-                                                  variant: 'error',
-                                                });
-                                              } finally {
-                                                setConfirmModal(prev => ({ ...prev, isLoading: false, isOpen: false }));
-                                              }
-                                            },
-                                          });
-                                        }}
-                                        className="p-2 rounded-lg hover:bg-red-50 dark:hover:bg-red-900/20 text-red-600 dark:text-red-400 transition-colors"
-                                        title="Delete"
-                                      >
-                                        <Trash2 className="h-4 w-4" />
-                                      </button>
-                                    </div>
-                                  </td>
-                                </tr>
-                              ))
-                            ) : (
-                              <tr>
-                                <td colSpan={6} className="px-4 py-8 text-center text-[var(--color-text-secondary)]">
-                                  No deals found
-                                </td>
-                              </tr>
-                            )}
-                          </tbody>
-                        </table>
-                      </div>
-                    </div>
-
-                    {/* Pagination */}
-                    {dealsData?.pagination && dealsData.pagination.total > 0 && (
-                      <div className="flex items-center justify-between">
-                        <div className="text-sm text-[var(--color-text-secondary)]">
-                          Showing {((dealsPage - 1) * dealsPageSize) + 1} to {Math.min(dealsPage * dealsPageSize, dealsData.pagination.total)} of {dealsData.pagination.total} deals
-                        </div>
-                        <div className="flex gap-2">
-                          <button
-                            onClick={() => setDealsPage(p => Math.max(1, p - 1))}
-                            disabled={dealsPage === 1}
-                            className="px-4 py-2 rounded-lg border border-[var(--color-divider-gray)] bg-[var(--color-background-surface)] text-[var(--color-text-primary)] disabled:opacity-50 disabled:cursor-not-allowed hover:bg-[var(--color-background-default)] transition-colors"
-                          >
-                            Previous
-                          </button>
-                          <button
-                            onClick={() => setDealsPage(p => p + 1)}
-                            disabled={!dealsData.pagination.has_more}
-                            className="px-4 py-2 rounded-lg border border-[var(--color-divider-gray)] bg-[var(--color-background-surface)] text-[var(--color-text-primary)] disabled:opacity-50 disabled:cursor-not-allowed hover:bg-[var(--color-background-default)] transition-colors"
-                          >
-                            Next
-                          </button>
-                        </div>
-                      </div>
-                    )}
-                  </>
-                )}
-              </div>
-            )}
-
-            {/* Grants Module */}
-            {selectedDataModule === 'grants' && (
-              <div className="pb-8">
-                {/* Header */}
-                <div className="flex items-center justify-between">
-                  <div>
-                    <h2 className="text-2xl font-bold text-[var(--color-text-primary)]">Grants Management</h2>
-                    <p className="text-sm text-[var(--color-text-secondary)] mt-1">Manage all research grants in the platform</p>
-                  </div>
-                  <button
-                    onClick={() => {
-                      setEditingGrant(null);
-                      setShowGrantForm(true);
-                    }}
-                    className="btn-primary flex items-center gap-2 px-4 py-2 rounded-lg"
-                  >
-                    <Plus className="h-4 w-4" />
-                    Add Grant
-                  </button>
-                </div>
-
-                {/* Search */}
-                <div className="card-glass p-4 rounded-lg">
-                  <div className="flex gap-4 items-center">
-                    <div className="flex-1 relative">
-                      <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-[var(--color-text-secondary)]" />
-                      <input
-                        type="text"
-                        placeholder="Search grants..."
-                        value={grantsSearch}
-                        onChange={(e) => {
-                          setGrantsSearch(e.target.value);
-                          setGrantsPage(1);
-                        }}
-                        className="w-full pl-10 pr-4 py-2 rounded-lg border border-[var(--color-divider-gray)] bg-[var(--color-background-surface)] text-[var(--color-text-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary-teal)]"
-                      />
-                    </div>
-                  </div>
-                </div>
-
-                {/* Grants Table */}
-                {loading && !grantsData ? (
-                  <div className="flex items-center justify-center p-8">
-                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[var(--color-primary-teal)]"></div>
-                    <span className="ml-2 text-[var(--color-text-secondary)]">Loading grants...</span>
-                  </div>
-                ) : error && !grantsData ? (
-                  <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-4">
-                    <div className="flex items-center">
-                      <AlertCircle className="h-5 w-5 text-red-600 mr-2" />
-                      <span className="text-red-800 dark:text-red-200">{error}</span>
-                    </div>
-                  </div>
-                ) : (
-                  <>
-                    <div className="card-glass rounded-lg overflow-hidden">
-                      <div className="overflow-x-auto">
-                        <table className="w-full">
-                          <thead className="bg-[var(--color-background-default)] border-b border-[var(--color-divider-gray)]">
-                            <tr>
-                              <th className="px-4 py-3 text-left text-sm font-semibold text-[var(--color-text-primary)]">Title</th>
-                              <th className="px-4 py-3 text-left text-sm font-semibold text-[var(--color-text-primary)]">Funding Agency</th>
-                              <th className="px-4 py-3 text-left text-sm font-semibold text-[var(--color-text-primary)]">Amount</th>
-                              <th className="px-4 py-3 text-left text-sm font-semibold text-[var(--color-text-primary)]">Type</th>
-                              <th className="px-4 py-3 text-left text-sm font-semibold text-[var(--color-text-primary)]">Deadline</th>
-                              <th className="px-4 py-3 text-left text-sm font-semibold text-[var(--color-text-primary)]">Status</th>
-                              <th className="px-4 py-3 text-right text-sm font-semibold text-[var(--color-text-primary)]">Actions</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            {grantsData?.grants && grantsData.grants.length > 0 ? (
-                              grantsData.grants.map((grant: any) => (
-                                <tr key={grant.id} className="border-b border-[var(--color-divider-gray)] hover:bg-[var(--color-background-default)] transition-colors">
-                                  <td className="px-4 py-3">
-                                    <div className="font-medium text-[var(--color-text-primary)]">{grant.title || 'N/A'}</div>
-                                    {grant.description && (
-                                      <div className="text-xs text-[var(--color-text-secondary)] line-clamp-1">{grant.description}</div>
-                                    )}
-                                  </td>
-                                  <td className="px-4 py-3 text-[var(--color-text-primary)]">{grant.funding_agency || 'N/A'}</td>
-                                  <td className="px-4 py-3 text-[var(--color-text-primary)]">
-                                    {grant.amount ? `$${(parseFloat(grant.amount) / 1000).toFixed(0)}K` : 'N/A'}
-                                  </td>
-                                  <td className="px-4 py-3 text-[var(--color-text-primary)]">{grant.grant_type || 'N/A'}</td>
-                                  <td className="px-4 py-3 text-[var(--color-text-primary)]">
-                                    {grant.application_deadline ? new Date(grant.application_deadline).toLocaleDateString() : 'N/A'}
-                                  </td>
-                                  <td className="px-4 py-3">
-                                    <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                                      grant.status === 'open' ? 'bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400' : 
-                                      grant.status === 'closed' ? 'bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-400' : 
-                                      'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/20 dark:text-yellow-400'
-                                    }`}>
-                                      {grant.status || 'N/A'}
-                                    </span>
-                                  </td>
-                                  <td className="px-4 py-3">
-                                    <div className="flex items-center justify-end gap-2">
-                                      <button
-                                        onClick={() => {
-                                          const token = localStorage.getItem('medarionAuthToken') || 'test-token';
-                                          fetch(`/api/admin/grants/${grant.id}`, {
-                                            headers: {
-                                              'Authorization': `Bearer ${token}`,
-                                              'Content-Type': 'application/json',
-                                            },
-                                          })
-                                          .then(r => r.json())
-                                          .then(data => {
-                                            if (data.success) {
-                                              setEditingGrant(data.data);
-                                              setShowGrantForm(true);
-                                            }
-                                          })
-                                          .catch(err => {
-                                            setEditingGrant(grant);
-                                            setShowGrantForm(true);
-                                          });
-                                        }}
-                                        className="p-2 rounded-lg hover:bg-[var(--color-background-default)] text-[var(--color-text-primary)] transition-colors"
-                                        title="Edit"
-                                      >
-                                        <Edit className="h-4 w-4" />
-                                      </button>
-                                      <button
-                                        onClick={() => {
-                                          setConfirmModal({
-                                            isOpen: true,
-                                            title: 'Delete Grant',
-                                            message: `Are you sure you want to delete "${grant.title}"? This action cannot be undone.`,
-                                            variant: 'danger',
-                                            onConfirm: async () => {
-                                              try {
-                                                setConfirmModal(prev => ({ ...prev, isLoading: true }));
-                                                const token = localStorage.getItem('medarionAuthToken') || 'test-token';
-                                                const response = await fetch(`/api/admin/grants/${grant.id}`, {
-                                                  method: 'DELETE',
-                                                  headers: {
-                                                    'Authorization': `Bearer ${token}`,
-                                                    'Content-Type': 'application/json',
-                                                  },
-                                                });
-                                                const data = await response.json();
-                                                if (data.success) {
-                                                  setAlertModal({
-                                                    isOpen: true,
-                                                    title: 'Success',
-                                                    message: 'Grant deleted successfully',
-                                                    variant: 'success',
-                                                  });
-                                                  fetchGrantsData(grantsPage, grantsSearch || undefined);
-                                                } else {
-                                                  throw new Error(data.error || 'Failed to delete grant');
-                                                }
-                                              } catch (err: any) {
-                                                setAlertModal({
-                                                  isOpen: true,
-                                                  title: 'Error',
-                                                  message: err?.message || 'Failed to delete grant',
-                                                  variant: 'error',
-                                                });
-                                              } finally {
-                                                setConfirmModal(prev => ({ ...prev, isLoading: false, isOpen: false }));
-                                              }
-                                            },
-                                          });
-                                        }}
-                                        className="p-2 rounded-lg hover:bg-red-50 dark:hover:bg-red-900/20 text-red-600 dark:text-red-400 transition-colors"
-                                        title="Delete"
-                                      >
-                                        <Trash2 className="h-4 w-4" />
-                                      </button>
-                                    </div>
-                                  </td>
-                                </tr>
-                              ))
-                            ) : (
-                              <tr>
-                                <td colSpan={7} className="px-4 py-8 text-center text-[var(--color-text-secondary)]">
-                                  No grants found
-                                </td>
-                              </tr>
-                            )}
-                          </tbody>
-                        </table>
-                      </div>
-                    </div>
-
-                    {/* Pagination */}
-                    {grantsData?.pagination && grantsData.pagination.total > 0 && (
-                      <div className="flex items-center justify-between">
-                        <div className="text-sm text-[var(--color-text-secondary)]">
-                          Showing {((grantsPage - 1) * grantsPageSize) + 1} to {Math.min(grantsPage * grantsPageSize, grantsData.pagination.total)} of {grantsData.pagination.total} grants
-                        </div>
-                        <div className="flex gap-2">
-                          <button
-                            onClick={() => setGrantsPage(p => Math.max(1, p - 1))}
-                            disabled={grantsPage === 1}
-                            className="px-4 py-2 rounded-lg border border-[var(--color-divider-gray)] bg-[var(--color-background-surface)] text-[var(--color-text-primary)] disabled:opacity-50 disabled:cursor-not-allowed hover:bg-[var(--color-background-default)] transition-colors"
-                          >
-                            Previous
-                          </button>
-                          <button
-                            onClick={() => setGrantsPage(p => p + 1)}
-                            disabled={!grantsData.pagination.has_more}
-                            className="px-4 py-2 rounded-lg border border-[var(--color-divider-gray)] bg-[var(--color-background-surface)] text-[var(--color-text-primary)] disabled:opacity-50 disabled:cursor-not-allowed hover:bg-[var(--color-background-default)] transition-colors"
-                          >
-                            Next
-                          </button>
-                        </div>
-                      </div>
-                    )}
-                  </>
-                )}
-              </div>
-            )}
-
-            {/* All modules have full implementations - no placeholder needed */}
-          </div>
-        )}
-
       {/* Company Form Modal */}
       {showCompanyForm && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white dark:bg-gray-800 rounded-xl p-6 w-full max-w-4xl mx-4 max-h-[90vh] overflow-y-auto">
+          <div className="bg-white dark:bg-slate-800 rounded-xl p-6 w-full max-w-4xl mx-4 max-h-[700px] overflow-y-auto">
             <div className="flex items-center justify-between mb-6">
-              <h3 className="text-xl font-semibold text-[var(--color-text-primary)]">
+              <h3 className="text-xl font-semibold text-slate-700 dark:text-slate-200">
                 {editingCompany ? 'Edit Company' : 'Create New Company'}
               </h3>
               <button 
@@ -7628,11 +7244,11 @@ const AdminDashboard: React.FC = () => {
             }}>
               <div className="grid grid-cols-2 gap-4 mb-4">
                 {/* Basic Information */}
-                <div className="md:col-span-2">
-                  <h4 className="text-lg font-semibold text-[var(--color-text-primary)] mb-3">Basic Information</h4>
+                <div className="col-span-2">
+                  <h4 className="text-lg font-semibold text-slate-700 dark:text-slate-200 mb-3">Basic Information</h4>
                 </div>
-                <div className="md:col-span-2">
-                  <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">Company Name *</label>
+                <div className="col-span-2">
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2">Company Name *</label>
                   <input 
                     className="input w-full" 
                     value={editingCompany?.name || ''} 
@@ -7640,8 +7256,8 @@ const AdminDashboard: React.FC = () => {
                     required
                   />
                 </div>
-                <div className="md:col-span-2">
-                  <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">Description</label>
+                <div className="col-span-2">
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2">Description</label>
                   <textarea 
                     className="input w-full min-h-[100px]" 
                     value={editingCompany?.description || ''} 
@@ -7650,7 +7266,7 @@ const AdminDashboard: React.FC = () => {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">Website</label>
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2">Website</label>
                   <input 
                     type="url"
                     className="input w-full" 
@@ -7659,21 +7275,21 @@ const AdminDashboard: React.FC = () => {
                     placeholder="https://example.com"
                   />
                 </div>
-                <div className="md:col-span-2">
-                  <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">Logo</label>
+                <div className="col-span-2">
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2">Logo</label>
                   {/* Current Logo Display */}
                   {editingCompany?.logo_url && (
-                    <div className="mb-3 p-4 bg-green-50 dark:bg-green-900/20 rounded-lg border border-green-200 dark:border-green-800">
+                    <div className="mb-3 p-4 bg-green-50 dark:bg-green-500/40 rounded-lg border border-green-200 dark:border-green-500/50">
                       <div className="flex items-start justify-between gap-3 mb-3">
                         <div className="flex-1 min-w-0">
-                          <p className="text-sm font-medium text-green-800 dark:text-green-200 mb-2">
+                          <p className="text-sm font-medium text-green-800 dark:text-white mb-2">
                             ✓ Current Logo
                           </p>
                           <a
                             href={editingCompany.logo_url}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="text-sm text-green-700 dark:text-green-300 hover:underline break-all"
+                            className="text-sm text-green-700 dark:text-white hover:underline break-all"
                           >
                             {editingCompany.logo_url}
                           </a>
@@ -7681,7 +7297,7 @@ const AdminDashboard: React.FC = () => {
                         <button
                           type="button"
                           onClick={() => setEditingCompany(prev => prev ? { ...prev, logo_url: '' } : { logo_url: '' })}
-                          className="flex-shrink-0 p-1.5 text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 rounded transition-colors"
+                          className="flex-shrink-0 p-1.5 text-red-600 dark:text-white hover:bg-red-50 dark:hover:bg-red-900/20 rounded transition-colors"
                           title="Remove logo"
                         >
                           <X className="h-4 w-4" />
@@ -7712,7 +7328,7 @@ const AdminDashboard: React.FC = () => {
                   </button>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">Industry</label>
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2">Industry</label>
                   <input 
                     className="input w-full" 
                     value={editingCompany?.industry || ''} 
@@ -7720,7 +7336,7 @@ const AdminDashboard: React.FC = () => {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">Sector</label>
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2">Sector</label>
                   <input 
                     className="input w-full" 
                     value={editingCompany?.sector || ''} 
@@ -7728,7 +7344,7 @@ const AdminDashboard: React.FC = () => {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">Stage</label>
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2">Stage</label>
                   <select 
                     className="input w-full" 
                     value={editingCompany?.stage || ''} 
@@ -7743,7 +7359,7 @@ const AdminDashboard: React.FC = () => {
                   </select>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">Funding Stage</label>
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2">Funding Stage</label>
                   <input 
                     className="input w-full" 
                     value={editingCompany?.funding_stage || ''} 
@@ -7753,11 +7369,11 @@ const AdminDashboard: React.FC = () => {
                 </div>
 
                 {/* Location & Details */}
-                <div className="md:col-span-2">
-                  <h4 className="text-lg font-semibold text-[var(--color-text-primary)] mt-4 mb-3">Location & Details</h4>
+                <div className="col-span-2">
+                  <h4 className="text-lg font-semibold text-slate-700 dark:text-slate-200 mt-4 mb-3">Location & Details</h4>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">Country</label>
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2">Country</label>
                   <input 
                     className="input w-full" 
                     value={editingCompany?.country || ''} 
@@ -7765,7 +7381,7 @@ const AdminDashboard: React.FC = () => {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">Headquarters</label>
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2">Headquarters</label>
                   <input 
                     className="input w-full" 
                     value={editingCompany?.headquarters || ''} 
@@ -7773,7 +7389,7 @@ const AdminDashboard: React.FC = () => {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">Founded Year</label>
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2">Founded Year</label>
                   <input 
                     type="number"
                     className="input w-full" 
@@ -7784,7 +7400,7 @@ const AdminDashboard: React.FC = () => {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">Employees</label>
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2">Employees</label>
                   <input 
                     type="number"
                     className="input w-full" 
@@ -7795,11 +7411,11 @@ const AdminDashboard: React.FC = () => {
                 </div>
 
                 {/* Funding Information */}
-                <div className="md:col-span-2">
-                  <h4 className="text-lg font-semibold text-[var(--color-text-primary)] mt-4 mb-3">Funding Information</h4>
+                <div className="col-span-2">
+                  <h4 className="text-lg font-semibold text-slate-700 dark:text-slate-200 mt-4 mb-3">Funding Information</h4>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">Total Funding ($)</label>
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2">Total Funding ($)</label>
                   <input 
                     type="number"
                     step="0.01"
@@ -7810,7 +7426,7 @@ const AdminDashboard: React.FC = () => {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">Last Funding Date</label>
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2">Last Funding Date</label>
                   <input 
                     type="date"
                     className="input w-full" 
@@ -7820,13 +7436,13 @@ const AdminDashboard: React.FC = () => {
                 </div>
 
                 {/* JSON Array Fields */}
-                <div className="md:col-span-2">
-                  <h4 className="text-lg font-semibold text-[var(--color-text-primary)] mt-4 mb-3">Additional Information</h4>
+                <div className="col-span-2">
+                  <h4 className="text-lg font-semibold text-slate-700 dark:text-slate-200 mt-4 mb-3">Additional Information</h4>
                 </div>
                 
                 {/* Investors Array */}
-                <div className="md:col-span-2">
-                  <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">Investors (one per line)</label>
+                <div className="col-span-2">
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2">Investors (one per line)</label>
                   <textarea 
                     className="input w-full min-h-[80px]" 
                     value={Array.isArray(editingCompany?.investors) ? editingCompany.investors.join('\n') : ''} 
@@ -7836,12 +7452,12 @@ const AdminDashboard: React.FC = () => {
                     }}
                     placeholder="Investor 1&#10;Investor 2&#10;Investor 3"
                   />
-                  <p className="text-xs text-[var(--color-text-secondary)] mt-1">Enter each investor on a new line</p>
+                  <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">Enter each investor on a new line</p>
                 </div>
 
                 {/* Products Array */}
-                <div className="md:col-span-2">
-                  <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">Products (one per line)</label>
+                <div className="col-span-2">
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2">Products (one per line)</label>
                   <textarea 
                     className="input w-full min-h-[80px]" 
                     value={Array.isArray(editingCompany?.products) ? editingCompany.products.join('\n') : ''} 
@@ -7854,8 +7470,8 @@ const AdminDashboard: React.FC = () => {
                 </div>
 
                 {/* Markets Array */}
-                <div className="md:col-span-2">
-                  <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">Markets (one per line)</label>
+                <div className="col-span-2">
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2">Markets (one per line)</label>
                   <textarea 
                     className="input w-full min-h-[80px]" 
                     value={Array.isArray(editingCompany?.markets) ? editingCompany.markets.join('\n') : ''} 
@@ -7868,8 +7484,8 @@ const AdminDashboard: React.FC = () => {
                 </div>
 
                 {/* Achievements Array */}
-                <div className="md:col-span-2">
-                  <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">Achievements (one per line)</label>
+                <div className="col-span-2">
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2">Achievements (one per line)</label>
                   <textarea 
                     className="input w-full min-h-[80px]" 
                     value={Array.isArray(editingCompany?.achievements) ? editingCompany.achievements.join('\n') : ''} 
@@ -7882,8 +7498,8 @@ const AdminDashboard: React.FC = () => {
                 </div>
 
                 {/* Partnerships Array */}
-                <div className="md:col-span-2">
-                  <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">Partnerships (one per line)</label>
+                <div className="col-span-2">
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2">Partnerships (one per line)</label>
                   <textarea 
                     className="input w-full min-h-[80px]" 
                     value={Array.isArray(editingCompany?.partnerships) ? editingCompany.partnerships.join('\n') : ''} 
@@ -7896,8 +7512,8 @@ const AdminDashboard: React.FC = () => {
                 </div>
 
                 {/* Awards Array */}
-                <div className="md:col-span-2">
-                  <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">Awards (one per line)</label>
+                <div className="col-span-2">
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2">Awards (one per line)</label>
                   <textarea 
                     className="input w-full min-h-[80px]" 
                     value={Array.isArray(editingCompany?.awards) ? editingCompany.awards.join('\n') : ''} 
@@ -7910,15 +7526,15 @@ const AdminDashboard: React.FC = () => {
                 </div>
 
                 {/* Status */}
-                <div className="md:col-span-2">
+                <div className="col-span-2">
                   <label className="flex items-center gap-2 mt-4">
                     <input 
                       type="checkbox" 
                       checked={editingCompany?.is_active !== undefined ? editingCompany.is_active : true} 
                       onChange={e => setEditingCompany(prev => prev ? {...prev, is_active: e.target.checked} : {is_active: e.target.checked})}
-                      className="w-4 h-4 text-[var(--color-primary-teal)]"
+                      className="w-4 h-4 text-teal-600 dark:text-teal-400"
                     />
-                    <span className="text-sm text-[var(--color-text-primary)]">Active Company</span>
+                    <span className="text-sm text-slate-700 dark:text-slate-200">Active Company</span>
                   </label>
                 </div>
               </div>
@@ -7951,9 +7567,9 @@ const AdminDashboard: React.FC = () => {
       {/* Clinical Trial Form Modal */}
       {showTrialForm && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white dark:bg-gray-800 rounded-xl p-6 w-full max-w-3xl mx-4 max-h-[90vh] overflow-y-auto">
+          <div className="bg-white dark:bg-slate-800 rounded-xl p-6 w-full max-w-3xl mx-4 max-h-[700px] overflow-y-auto">
             <div className="flex items-center justify-between mb-6">
-              <h3 className="text-xl font-semibold text-[var(--color-text-primary)]">
+              <h3 className="text-xl font-semibold text-slate-700 dark:text-slate-200">
                 {editingTrial ? 'Edit Clinical Trial' : 'Create New Clinical Trial'}
               </h3>
               <button 
@@ -8028,8 +7644,8 @@ const AdminDashboard: React.FC = () => {
               }
             }}>
               <div className="grid grid-cols-2 gap-4 mb-4">
-                <div className="md:col-span-2">
-                  <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">Title *</label>
+                <div className="col-span-2">
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2">Title *</label>
                   <input 
                     className="input w-full" 
                     value={editingTrial?.title || ''} 
@@ -8037,8 +7653,8 @@ const AdminDashboard: React.FC = () => {
                     required
                   />
                 </div>
-                <div className="md:col-span-2">
-                  <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">Description</label>
+                <div className="col-span-2">
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2">Description</label>
                   <textarea 
                     className="input w-full min-h-[100px]" 
                     value={editingTrial?.description || ''} 
@@ -8047,7 +7663,7 @@ const AdminDashboard: React.FC = () => {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">Phase *</label>
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2">Phase *</label>
                   <select 
                     className="input w-full" 
                     value={editingTrial?.phase || 'Phase I'} 
@@ -8061,7 +7677,7 @@ const AdminDashboard: React.FC = () => {
                   </select>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">Status</label>
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2">Status</label>
                   <select 
                     className="input w-full" 
                     value={editingTrial?.status || 'recruiting'} 
@@ -8075,7 +7691,7 @@ const AdminDashboard: React.FC = () => {
                   </select>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">Medical Condition</label>
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2">Medical Condition</label>
                   <input 
                     className="input w-full" 
                     value={editingTrial?.medical_condition || ''} 
@@ -8083,7 +7699,7 @@ const AdminDashboard: React.FC = () => {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">Intervention</label>
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2">Intervention</label>
                   <input 
                     className="input w-full" 
                     value={editingTrial?.intervention || ''} 
@@ -8091,7 +7707,7 @@ const AdminDashboard: React.FC = () => {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">Sponsor</label>
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2">Sponsor</label>
                   <input 
                     className="input w-full" 
                     value={editingTrial?.sponsor || ''} 
@@ -8099,7 +7715,7 @@ const AdminDashboard: React.FC = () => {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">Location</label>
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2">Location</label>
                   <input 
                     className="input w-full" 
                     value={editingTrial?.location || ''} 
@@ -8107,7 +7723,7 @@ const AdminDashboard: React.FC = () => {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">Country</label>
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2">Country</label>
                   <input 
                     className="input w-full" 
                     value={editingTrial?.country || ''} 
@@ -8115,7 +7731,7 @@ const AdminDashboard: React.FC = () => {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">Start Date</label>
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2">Start Date</label>
                   <input 
                     type="date"
                     className="input w-full" 
@@ -8124,7 +7740,7 @@ const AdminDashboard: React.FC = () => {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">End Date</label>
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2">End Date</label>
                   <input 
                     type="date"
                     className="input w-full" 
@@ -8133,7 +7749,7 @@ const AdminDashboard: React.FC = () => {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">NCT Number</label>
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2">NCT Number</label>
                   <input 
                     className="input w-full" 
                     value={editingTrial?.nct_number || ''} 
@@ -8142,7 +7758,7 @@ const AdminDashboard: React.FC = () => {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">Indication</label>
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2">Indication</label>
                   <input 
                     className="input w-full" 
                     value={editingTrial?.indication || ''} 
@@ -8179,9 +7795,9 @@ const AdminDashboard: React.FC = () => {
       {/* Regulatory Form Modal */}
       {showRegulatoryForm && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white dark:bg-gray-800 rounded-xl p-6 w-full max-w-3xl mx-4 max-h-[90vh] overflow-y-auto">
+          <div className="bg-white dark:bg-slate-800 rounded-xl p-6 w-full max-w-3xl mx-4 max-h-[700px] overflow-y-auto">
             <div className="flex items-center justify-between mb-6">
-              <h3 className="text-xl font-semibold text-[var(--color-text-primary)]">
+              <h3 className="text-xl font-semibold text-slate-700 dark:text-slate-200">
                 {editingRegulatory ? 'Edit Regulatory Record' : 'Create New Regulatory Record'}
               </h3>
               <button 
@@ -8250,8 +7866,8 @@ const AdminDashboard: React.FC = () => {
               }
             }}>
               <div className="grid grid-cols-2 gap-4 mb-4">
-                <div className="md:col-span-2">
-                  <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">Company *</label>
+                <div className="col-span-2">
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2">Company *</label>
                   <select 
                     className="input w-full" 
                     value={editingRegulatory?.company_id || ''} 
@@ -8265,7 +7881,7 @@ const AdminDashboard: React.FC = () => {
                   </select>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">Regulatory Body *</label>
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2">Regulatory Body *</label>
                   <input 
                     className="input w-full" 
                     value={editingRegulatory?.regulatory_body || editingRegulatory?.regulatory_body_name || ''} 
@@ -8274,7 +7890,7 @@ const AdminDashboard: React.FC = () => {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">Product/Approval Type *</label>
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2">Product/Approval Type *</label>
                   <input 
                     className="input w-full" 
                     value={editingRegulatory?.product || editingRegulatory?.approval_type || ''} 
@@ -8283,7 +7899,7 @@ const AdminDashboard: React.FC = () => {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">Approval Date *</label>
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2">Approval Date *</label>
                   <input 
                     type="date"
                     className="input w-full" 
@@ -8293,7 +7909,7 @@ const AdminDashboard: React.FC = () => {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">Status</label>
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2">Status</label>
                   <select 
                     className="input w-full" 
                     value={editingRegulatory?.status || 'pending'} 
@@ -8306,15 +7922,15 @@ const AdminDashboard: React.FC = () => {
                   </select>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">Region</label>
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2">Region</label>
                   <input 
                     className="input w-full" 
                     value={editingRegulatory?.region || ''} 
                     onChange={e => setEditingRegulatory(prev => prev ? {...prev, region: e.target.value} : {region: e.target.value})}
                   />
                 </div>
-                <div className="md:col-span-2">
-                  <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">Notes</label>
+                <div className="col-span-2">
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2">Notes</label>
                   <textarea 
                     className="input w-full min-h-[100px]" 
                     value={editingRegulatory?.notes || ''} 
@@ -8352,9 +7968,9 @@ const AdminDashboard: React.FC = () => {
       {/* Regulatory Bodies Form Modal */}
       {showRegulatoryBodyForm && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white dark:bg-gray-800 rounded-xl p-6 w-full max-w-3xl mx-4 max-h-[90vh] overflow-y-auto">
+          <div className="bg-white dark:bg-slate-800 rounded-xl p-6 w-full max-w-3xl mx-4 max-h-[700px] overflow-y-auto">
             <div className="flex items-center justify-between mb-6">
-              <h3 className="text-xl font-semibold text-[var(--color-text-primary)]">
+              <h3 className="text-xl font-semibold text-slate-700 dark:text-slate-200">
                 {editingRegulatoryBody ? 'Edit Regulatory Body' : 'Create New Regulatory Body'}
               </h3>
               <button 
@@ -8416,8 +8032,8 @@ const AdminDashboard: React.FC = () => {
               }
             }}>
               <div className="grid grid-cols-2 gap-4">
-                <div className="md:col-span-2">
-                  <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">Name *</label>
+                <div className="col-span-2">
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2">Name *</label>
                   <input 
                     className="input w-full" 
                     value={editingRegulatoryBody?.name || ''} 
@@ -8426,7 +8042,7 @@ const AdminDashboard: React.FC = () => {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">Country *</label>
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2">Country *</label>
                   <input 
                     className="input w-full" 
                     value={editingRegulatoryBody?.country || ''} 
@@ -8435,7 +8051,7 @@ const AdminDashboard: React.FC = () => {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">Abbreviation</label>
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2">Abbreviation</label>
                   <input 
                     className="input w-full" 
                     value={editingRegulatoryBody?.abbreviation || ''} 
@@ -8443,8 +8059,8 @@ const AdminDashboard: React.FC = () => {
                     placeholder="e.g., NAFDAC, FDA"
                   />
                 </div>
-                <div className="md:col-span-2">
-                  <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">Website</label>
+                <div className="col-span-2">
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2">Website</label>
                   <input 
                     type="url"
                     className="input w-full" 
@@ -8453,8 +8069,8 @@ const AdminDashboard: React.FC = () => {
                     placeholder="https://example.com"
                   />
                 </div>
-                <div className="md:col-span-2">
-                  <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">Description</label>
+                <div className="col-span-2">
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2">Description</label>
                   <textarea 
                     className="input w-full min-h-[100px]" 
                     value={editingRegulatoryBody?.description || ''} 
@@ -8463,8 +8079,8 @@ const AdminDashboard: React.FC = () => {
                     placeholder="Description of the regulatory body"
                   />
                 </div>
-                <div className="md:col-span-2">
-                  <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">Jurisdiction</label>
+                <div className="col-span-2">
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2">Jurisdiction</label>
                   <textarea 
                     className="input w-full min-h-[80px]" 
                     value={editingRegulatoryBody?.jurisdiction || ''} 
@@ -8473,8 +8089,8 @@ const AdminDashboard: React.FC = () => {
                     placeholder="Geographic or regulatory jurisdiction"
                   />
                 </div>
-                <div className="md:col-span-2">
-                  <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">Regulatory Framework</label>
+                <div className="col-span-2">
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2">Regulatory Framework</label>
                   <textarea 
                     className="input w-full min-h-[80px]" 
                     value={editingRegulatoryBody?.regulatory_framework || ''} 
@@ -8483,8 +8099,8 @@ const AdminDashboard: React.FC = () => {
                     placeholder="Regulatory framework information"
                   />
                 </div>
-                <div className="md:col-span-2">
-                  <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">Approval Process</label>
+                <div className="col-span-2">
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2">Approval Process</label>
                   <textarea 
                     className="input w-full min-h-[80px]" 
                     value={editingRegulatoryBody?.approval_process || ''} 
@@ -8493,8 +8109,8 @@ const AdminDashboard: React.FC = () => {
                     placeholder="Description of the approval process"
                   />
                 </div>
-                <div className="md:col-span-2">
-                  <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">Fees Structure</label>
+                <div className="col-span-2">
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2">Fees Structure</label>
                   <textarea 
                     className="input w-full min-h-[80px]" 
                     value={editingRegulatoryBody?.fees_structure || ''} 
@@ -8511,7 +8127,7 @@ const AdminDashboard: React.FC = () => {
                       onChange={e => setEditingRegulatoryBody(prev => prev ? {...prev, is_active: e.target.checked} : {is_active: e.target.checked})}
                       className="w-4 h-4"
                     />
-                    <span className="text-sm font-medium text-[var(--color-text-primary)]">Active</span>
+                    <span className="text-sm font-medium text-slate-700 dark:text-slate-200">Active</span>
                   </label>
                 </div>
               </div>
@@ -8544,9 +8160,9 @@ const AdminDashboard: React.FC = () => {
       {/* Public Markets Form Modal */}
       {showStockForm && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white dark:bg-gray-800 rounded-xl p-6 w-full max-w-3xl mx-4 max-h-[90vh] overflow-y-auto">
+          <div className="bg-white dark:bg-slate-800 rounded-xl p-6 w-full max-w-3xl mx-4 max-h-[700px] overflow-y-auto">
             <div className="flex items-center justify-between mb-6">
-              <h3 className="text-xl font-semibold text-[var(--color-text-primary)]">
+              <h3 className="text-xl font-semibold text-slate-700 dark:text-slate-200">
                 {editingStock ? 'Edit Stock' : 'Create New Stock'}
               </h3>
               <button 
@@ -8616,8 +8232,8 @@ const AdminDashboard: React.FC = () => {
               }
             }}>
               <div className="grid grid-cols-2 gap-4 mb-4">
-                <div className="md:col-span-2">
-                  <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">Company Name *</label>
+                <div className="col-span-2">
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2">Company Name *</label>
                   <input 
                     className="input w-full" 
                     value={editingStock?.company_name || ''} 
@@ -8626,7 +8242,7 @@ const AdminDashboard: React.FC = () => {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">Ticker *</label>
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2">Ticker *</label>
                   <input 
                     className="input w-full" 
                     value={editingStock?.ticker || ''} 
@@ -8635,7 +8251,7 @@ const AdminDashboard: React.FC = () => {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">Exchange</label>
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2">Exchange</label>
                   <input 
                     className="input w-full" 
                     value={editingStock?.exchange || ''} 
@@ -8643,7 +8259,7 @@ const AdminDashboard: React.FC = () => {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">Price ($)</label>
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2">Price ($)</label>
                   <input 
                     type="number"
                     step="0.01"
@@ -8654,7 +8270,7 @@ const AdminDashboard: React.FC = () => {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">Market Cap ($)</label>
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2">Market Cap ($)</label>
                   <input 
                     type="number"
                     step="0.01"
@@ -8665,7 +8281,7 @@ const AdminDashboard: React.FC = () => {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">Currency</label>
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2">Currency</label>
                   <select 
                     className="input w-full" 
                     value={editingStock?.currency || 'USD'} 
@@ -8678,7 +8294,7 @@ const AdminDashboard: React.FC = () => {
                   </select>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">Sector</label>
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2">Sector</label>
                   <input 
                     className="input w-full" 
                     value={editingStock?.sector || ''} 
@@ -8686,7 +8302,7 @@ const AdminDashboard: React.FC = () => {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">Country</label>
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2">Country</label>
                   <input 
                     className="input w-full" 
                     value={editingStock?.country || ''} 
@@ -8723,9 +8339,9 @@ const AdminDashboard: React.FC = () => {
       {/* Clinical Centers Form Modal */}
       {showCenterForm && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white dark:bg-gray-800 rounded-xl p-6 w-full max-w-3xl mx-4 max-h-[90vh] overflow-y-auto">
+          <div className="bg-white dark:bg-slate-800 rounded-xl p-6 w-full max-w-3xl mx-4 max-h-[700px] overflow-y-auto">
             <div className="flex items-center justify-between mb-6">
-              <h3 className="text-xl font-semibold text-[var(--color-text-primary)]">
+              <h3 className="text-xl font-semibold text-slate-700 dark:text-slate-200">
                 {editingCenter ? 'Edit Clinical Center' : 'Create New Clinical Center'}
               </h3>
               <button 
@@ -8796,8 +8412,8 @@ const AdminDashboard: React.FC = () => {
               }
             }}>
               <div className="grid grid-cols-2 gap-4 mb-4">
-                <div className="md:col-span-2">
-                  <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">Name *</label>
+                <div className="col-span-2">
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2">Name *</label>
                   <input 
                     className="input w-full" 
                     value={editingCenter?.name || ''} 
@@ -8806,7 +8422,7 @@ const AdminDashboard: React.FC = () => {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">Country</label>
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2">Country</label>
                   <input 
                     className="input w-full" 
                     value={editingCenter?.country || ''} 
@@ -8814,15 +8430,15 @@ const AdminDashboard: React.FC = () => {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">City</label>
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2">City</label>
                   <input 
                     className="input w-full" 
                     value={editingCenter?.city || ''} 
                     onChange={e => setEditingCenter(prev => prev ? {...prev, city: e.target.value} : {city: e.target.value})}
                   />
                 </div>
-                <div className="md:col-span-2">
-                  <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">Address</label>
+                <div className="col-span-2">
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2">Address</label>
                   <input 
                     className="input w-full" 
                     value={editingCenter?.address || ''} 
@@ -8830,7 +8446,7 @@ const AdminDashboard: React.FC = () => {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">Website</label>
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2">Website</label>
                   <input 
                     type="url"
                     className="input w-full" 
@@ -8839,7 +8455,7 @@ const AdminDashboard: React.FC = () => {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">Capacity (Patients)</label>
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2">Capacity (Patients)</label>
                   <input 
                     type="number"
                     className="input w-full" 
@@ -8849,7 +8465,7 @@ const AdminDashboard: React.FC = () => {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">Established Year</label>
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2">Established Year</label>
                   <input 
                     type="number"
                     className="input w-full" 
@@ -8859,8 +8475,8 @@ const AdminDashboard: React.FC = () => {
                     max={new Date().getFullYear()}
                   />
                 </div>
-                <div className="md:col-span-2">
-                  <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">Description</label>
+                <div className="col-span-2">
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2">Description</label>
                   <textarea 
                     className="input w-full min-h-[100px]" 
                     value={editingCenter?.description || ''} 
@@ -8868,7 +8484,7 @@ const AdminDashboard: React.FC = () => {
                     rows={4}
                   />
                 </div>
-                <div className="md:col-span-2">
+                <div className="col-span-2">
                   <label className="flex items-center gap-2 cursor-pointer">
                     <input 
                       type="checkbox"
@@ -8876,7 +8492,7 @@ const AdminDashboard: React.FC = () => {
                       onChange={e => setEditingCenter(prev => prev ? {...prev, is_active: e.target.checked} : {is_active: e.target.checked})}
                       className="rounded"
                     />
-                    <span className="text-sm font-medium text-[var(--color-text-primary)]">Active</span>
+                    <span className="text-sm font-medium text-slate-700 dark:text-slate-200">Active</span>
                   </label>
                 </div>
               </div>
@@ -8909,9 +8525,9 @@ const AdminDashboard: React.FC = () => {
       {/* Investigators Form Modal */}
       {showInvestigatorForm && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white dark:bg-gray-800 rounded-xl p-6 w-full max-w-3xl mx-4 max-h-[90vh] overflow-y-auto">
+          <div className="bg-white dark:bg-slate-800 rounded-xl p-6 w-full max-w-3xl mx-4 max-h-[700px] overflow-y-auto">
             <div className="flex items-center justify-between mb-6">
-              <h3 className="text-xl font-semibold text-[var(--color-text-primary)]">
+              <h3 className="text-xl font-semibold text-slate-700 dark:text-slate-200">
                 {editingInvestigator ? 'Edit Investigator' : 'Create New Investigator'}
               </h3>
               <button 
@@ -8986,7 +8602,7 @@ const AdminDashboard: React.FC = () => {
                 {(editingInvestigator?.first_name !== undefined || editingInvestigator?.name === undefined) ? (
                   <>
                     <div>
-                      <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">First Name</label>
+                      <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2">First Name</label>
                       <input 
                         className="input w-full" 
                         value={editingInvestigator?.first_name || ''} 
@@ -8994,7 +8610,7 @@ const AdminDashboard: React.FC = () => {
                       />
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">Last Name</label>
+                      <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2">Last Name</label>
                       <input 
                         className="input w-full" 
                         value={editingInvestigator?.last_name || ''} 
@@ -9003,8 +8619,8 @@ const AdminDashboard: React.FC = () => {
                     </div>
                   </>
                 ) : (
-                  <div className="md:col-span-2">
-                    <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">Name *</label>
+                  <div className="col-span-2">
+                    <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2">Name *</label>
                     <input 
                       className="input w-full" 
                       value={editingInvestigator?.name || ''} 
@@ -9014,7 +8630,7 @@ const AdminDashboard: React.FC = () => {
                   </div>
                 )}
                 <div>
-                  <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">Title</label>
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2">Title</label>
                   <input 
                     className="input w-full" 
                     value={editingInvestigator?.title || ''} 
@@ -9022,15 +8638,15 @@ const AdminDashboard: React.FC = () => {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">Specialization</label>
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2">Specialization</label>
                   <input 
                     className="input w-full" 
                     value={editingInvestigator?.specialization || editingInvestigator?.specialties || ''} 
                     onChange={e => setEditingInvestigator(prev => prev ? {...prev, specialization: e.target.value} : {specialization: e.target.value})}
                   />
                 </div>
-                <div className="md:col-span-2">
-                  <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">Affiliation</label>
+                <div className="col-span-2">
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2">Affiliation</label>
                   <input 
                     className="input w-full" 
                     value={editingInvestigator?.affiliation || ''} 
@@ -9038,7 +8654,7 @@ const AdminDashboard: React.FC = () => {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">Email</label>
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2">Email</label>
                   <input 
                     type="email"
                     className="input w-full" 
@@ -9047,7 +8663,7 @@ const AdminDashboard: React.FC = () => {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">Phone</label>
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2">Phone</label>
                   <input 
                     type="tel"
                     className="input w-full" 
@@ -9056,7 +8672,7 @@ const AdminDashboard: React.FC = () => {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">Country</label>
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2">Country</label>
                   <input 
                     className="input w-full" 
                     value={editingInvestigator?.country || ''} 
@@ -9064,7 +8680,7 @@ const AdminDashboard: React.FC = () => {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">City</label>
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2">City</label>
                   <input 
                     className="input w-full" 
                     value={editingInvestigator?.city || ''} 
@@ -9142,9 +8758,9 @@ const AdminDashboard: React.FC = () => {
       {/* Deal Form Modal */}
       {showDealForm && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white dark:bg-gray-800 rounded-xl p-6 w-full max-w-3xl mx-4 max-h-[90vh] overflow-y-auto">
+          <div className="bg-white dark:bg-slate-800 rounded-xl p-6 w-full max-w-3xl mx-4 max-h-[700px] overflow-y-auto">
             <div className="flex items-center justify-between mb-6">
-              <h3 className="text-xl font-semibold text-[var(--color-text-primary)]">
+              <h3 className="text-xl font-semibold text-slate-700 dark:text-slate-200">
                 {editingDeal ? 'Edit Deal' : 'Create New Deal'}
               </h3>
               <button 
@@ -9217,8 +8833,8 @@ const AdminDashboard: React.FC = () => {
               }
             }}>
               <div className="grid grid-cols-2 gap-4 mb-4">
-                <div className="md:col-span-2">
-                  <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">Company *</label>
+                <div className="col-span-2">
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2">Company *</label>
                   <select 
                     className="input w-full" 
                     value={editingDeal?.company_id || ''} 
@@ -9232,7 +8848,7 @@ const AdminDashboard: React.FC = () => {
                   </select>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">Deal Type *</label>
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2">Deal Type *</label>
                   <select 
                     className="input w-full" 
                     value={editingDeal?.deal_type || ''} 
@@ -9250,7 +8866,7 @@ const AdminDashboard: React.FC = () => {
                   </select>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">Status</label>
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2">Status</label>
                   <select 
                     className="input w-full" 
                     value={editingDeal?.status || 'closed'} 
@@ -9262,7 +8878,7 @@ const AdminDashboard: React.FC = () => {
                   </select>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">Amount ($) *</label>
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2">Amount ($) *</label>
                   <input 
                     type="number"
                     step="0.01"
@@ -9274,7 +8890,7 @@ const AdminDashboard: React.FC = () => {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">Valuation ($)</label>
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2">Valuation ($)</label>
                   <input 
                     type="number"
                     step="0.01"
@@ -9285,7 +8901,7 @@ const AdminDashboard: React.FC = () => {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">Deal Date *</label>
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2">Deal Date *</label>
                   <input 
                     type="date"
                     className="input w-full" 
@@ -9295,7 +8911,7 @@ const AdminDashboard: React.FC = () => {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">Lead Investor</label>
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2">Lead Investor</label>
                   <input 
                     className="input w-full" 
                     value={editingDeal?.lead_investor || ''} 
@@ -9304,7 +8920,7 @@ const AdminDashboard: React.FC = () => {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">Sector</label>
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2">Sector</label>
                   <input 
                     className="input w-full" 
                     value={editingDeal?.sector || ''} 
@@ -9312,8 +8928,8 @@ const AdminDashboard: React.FC = () => {
                     placeholder="e.g., Telemedicine, AI Health"
                   />
                 </div>
-                <div className="md:col-span-2">
-                  <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">Participants (one per line)</label>
+                <div className="col-span-2">
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2">Participants (one per line)</label>
                   <textarea 
                     className="input w-full min-h-[80px]" 
                     value={Array.isArray(editingDeal?.participants) ? editingDeal.participants.join('\n') : 
@@ -9324,10 +8940,10 @@ const AdminDashboard: React.FC = () => {
                     }}
                     placeholder="Investor 1&#10;Investor 2&#10;Investor 3"
                   />
-                  <p className="text-xs text-[var(--color-text-secondary)] mt-1">Enter each participant investor on a new line</p>
+                  <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">Enter each participant investor on a new line</p>
                 </div>
-                <div className="md:col-span-2">
-                  <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">Description</label>
+                <div className="col-span-2">
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2">Description</label>
                   <textarea 
                     className="input w-full min-h-[100px]" 
                     value={editingDeal?.description || ''} 
@@ -9366,9 +8982,9 @@ const AdminDashboard: React.FC = () => {
       {/* Grant Form Modal */}
       {showGrantForm && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white dark:bg-gray-800 rounded-xl p-6 w-full max-w-3xl mx-4 max-h-[90vh] overflow-y-auto">
+          <div className="bg-white dark:bg-slate-800 rounded-xl p-6 w-full max-w-3xl mx-4 max-h-[700px] overflow-y-auto">
             <div className="flex items-center justify-between mb-6">
-              <h3 className="text-xl font-semibold text-[var(--color-text-primary)]">
+              <h3 className="text-xl font-semibold text-slate-700 dark:text-slate-200">
                 {editingGrant ? 'Edit Grant' : 'Create New Grant'}
               </h3>
               <button 
@@ -9446,8 +9062,8 @@ const AdminDashboard: React.FC = () => {
               }
             }}>
               <div className="grid grid-cols-2 gap-4 mb-4">
-                <div className="md:col-span-2">
-                  <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">Title *</label>
+                <div className="col-span-2">
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2">Title *</label>
                   <input 
                     className="input w-full" 
                     value={editingGrant?.title || ''} 
@@ -9455,8 +9071,8 @@ const AdminDashboard: React.FC = () => {
                     required
                   />
                 </div>
-                <div className="md:col-span-2">
-                  <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">Description</label>
+                <div className="col-span-2">
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2">Description</label>
                   <textarea 
                     className="input w-full min-h-[100px]" 
                     value={editingGrant?.description || ''} 
@@ -9465,7 +9081,7 @@ const AdminDashboard: React.FC = () => {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">Funding Agency *</label>
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2">Funding Agency *</label>
                   <input 
                     className="input w-full" 
                     value={editingGrant?.funding_agency || ''} 
@@ -9474,7 +9090,7 @@ const AdminDashboard: React.FC = () => {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">Amount ($) *</label>
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2">Amount ($) *</label>
                   <input 
                     type="number"
                     step="0.01"
@@ -9486,7 +9102,7 @@ const AdminDashboard: React.FC = () => {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">Grant Type</label>
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2">Grant Type</label>
                   <input 
                     className="input w-full" 
                     value={editingGrant?.grant_type || ''} 
@@ -9495,7 +9111,7 @@ const AdminDashboard: React.FC = () => {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">Status</label>
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2">Status</label>
                   <select 
                     className="input w-full" 
                     value={editingGrant?.status || 'open'} 
@@ -9507,7 +9123,7 @@ const AdminDashboard: React.FC = () => {
                   </select>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">Application Deadline</label>
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2">Application Deadline</label>
                   <input 
                     type="date"
                     className="input w-full" 
@@ -9516,7 +9132,7 @@ const AdminDashboard: React.FC = () => {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">Award Date</label>
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2">Award Date</label>
                   <input 
                     type="date"
                     className="input w-full" 
@@ -9525,7 +9141,7 @@ const AdminDashboard: React.FC = () => {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">Country</label>
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2">Country</label>
                   <input 
                     className="input w-full" 
                     value={editingGrant?.country || ''} 
@@ -9533,7 +9149,7 @@ const AdminDashboard: React.FC = () => {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">Sector</label>
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2">Sector</label>
                   <input 
                     className="input w-full" 
                     value={editingGrant?.sector || ''} 
@@ -9541,7 +9157,7 @@ const AdminDashboard: React.FC = () => {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">Duration</label>
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2">Duration</label>
                   <input 
                     className="input w-full" 
                     value={editingGrant?.duration || ''} 
@@ -9550,7 +9166,7 @@ const AdminDashboard: React.FC = () => {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">Contact Email</label>
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2">Contact Email</label>
                   <input 
                     type="email"
                     className="input w-full" 
@@ -9559,7 +9175,7 @@ const AdminDashboard: React.FC = () => {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">Website</label>
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2">Website</label>
                   <input 
                     type="url"
                     className="input w-full" 
@@ -9568,8 +9184,8 @@ const AdminDashboard: React.FC = () => {
                     placeholder="https://example.com"
                   />
                 </div>
-                <div className="md:col-span-2">
-                  <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">Funders (one per line)</label>
+                <div className="col-span-2">
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2">Funders (one per line)</label>
                   <textarea 
                     className="input w-full min-h-[80px]" 
                     value={Array.isArray(editingGrant?.funders) ? editingGrant.funders.join('\n') : 
@@ -9580,10 +9196,10 @@ const AdminDashboard: React.FC = () => {
                     }}
                     placeholder="Funder 1&#10;Funder 2&#10;Funder 3"
                   />
-                  <p className="text-xs text-[var(--color-text-secondary)] mt-1">Enter each funder on a new line</p>
+                  <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">Enter each funder on a new line</p>
                 </div>
-                <div className="md:col-span-2">
-                  <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">Requirements</label>
+                <div className="col-span-2">
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2">Requirements</label>
                   <textarea 
                     className="input w-full min-h-[100px]" 
                     value={editingGrant?.requirements || ''} 
@@ -9619,60 +9235,471 @@ const AdminDashboard: React.FC = () => {
         </div>
       )}
 
-      {/* Investors Module UI - will be added after testing*/}
-      {selectedDataModule === 'investors' && (
-        <div className="space-y-6 pb-8">
-          <div className="flex items-center justify-between">
+      {/* Data Tables - Only show when Data Management tab is active */}
+      {activeTab === 'data-management' && (
+        <>
+      {/* Companies Module */}
+      {selectedDataModule === 'companies' && (
+        <div className="space-y-4 pb-8">
+          {/* Header Section */}
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <div>
-              <h2 className="text-2xl font-bold text-[var(--color-text-primary)]">Investors Management</h2>
-              <p className="text-sm text-[var(--color-text-secondary)] mt-1">Manage all investors in the platform</p>
+              <h2 className="text-3xl font-bold text-slate-800 dark:text-slate-100 mb-2">Companies</h2>
+              <p className="text-sm text-slate-600 dark:text-slate-400">Explore African healthcare companies and their funding history</p>
             </div>
-            <button onClick={() => { setEditingInvestor(null); setShowInvestorForm(true); }} className="btn-primary flex items-center gap-2">
-              <Plus className="h-4 w-4" /> Add Investor
+            <button 
+              onClick={() => { setEditingCompany(null); setShowCompanyForm(true); }} 
+              className="group relative inline-flex items-center justify-center gap-2 px-6 py-3 bg-gradient-to-r from-teal-600 via-cyan-600 to-teal-600 hover:from-teal-700 hover:via-cyan-700 hover:to-teal-700 text-white font-semibold rounded-xl shadow-lg shadow-teal-500/30 hover:shadow-xl hover:shadow-teal-500/40 transition-all duration-300 transform hover:scale-105 active:scale-95 overflow-hidden"
+            >
+              <span className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700"></span>
+              <Plus className="h-5 w-5 relative z-10" />
+              <span className="relative z-10">Add Company</span>
+            </button>
+          </div>
+
+          {/* Search Bar - Modern Design */}
+          <div className="relative">
+            <div className="absolute inset-0 bg-gradient-to-r from-teal-500/10 via-cyan-500/10 to-teal-500/10 rounded-2xl blur-xl"></div>
+            <div className="relative card-glass p-4 rounded-2xl border border-slate-200/50 dark:border-slate-700/50 backdrop-blur-sm">
+              <div className="flex items-center gap-3">
+                <div className="p-2 rounded-xl bg-teal-100 dark:bg-teal-500/20">
+                  <Search className="h-5 w-5 text-teal-600 dark:text-teal-400" />
+                </div>
+                <input 
+                  type="text" 
+                  placeholder="Search companies by name, industry, or country..." 
+                  value={companiesSearch} 
+                  onChange={(e) => setCompaniesSearch(e.target.value)} 
+                  className="flex-1 bg-transparent border-0 focus:ring-0 text-slate-700 dark:text-slate-200 placeholder-slate-400 dark:placeholder-slate-500 text-sm" 
+                />
+                {companiesSearch && (
+                  <button
+                    onClick={() => setCompaniesSearch('')}
+                    className="p-1.5 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 transition-colors"
+                  >
+                    <X className="h-4 w-4" />
+                  </button>
+                )}
+              </div>
+            </div>
+          </div>
+
+          {/* Stats Bar */}
+          {companiesData && !loading && (
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+              <div className="card-glass p-3 rounded-xl bg-gradient-to-br from-teal-50/50 to-cyan-50/50 dark:from-teal-950/30 dark:to-cyan-950/30 border border-teal-200/50 dark:border-teal-800/50">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wide">Total</p>
+                    <p className="text-xl font-bold text-slate-800 dark:text-slate-100 mt-1">{companiesData.pagination?.total || 0}</p>
+                  </div>
+                  <Building2 className="h-8 w-8 text-teal-600 dark:text-teal-400 opacity-60" />
+                </div>
+              </div>
+              <div className="card-glass p-3 rounded-xl bg-gradient-to-br from-emerald-50/50 to-green-50/50 dark:from-emerald-950/30 dark:to-green-950/30 border border-emerald-200/50 dark:border-emerald-800/50">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wide">Showing</p>
+                    <p className="text-xl font-bold text-slate-800 dark:text-slate-100 mt-1">{companiesData.companies?.length || 0}</p>
+                  </div>
+                  <Activity className="h-8 w-8 text-emerald-600 dark:text-emerald-400 opacity-60" />
+                </div>
+              </div>
+              <div className="card-glass p-3 rounded-xl bg-gradient-to-br from-amber-50/50 to-orange-50/50 dark:from-amber-950/30 dark:to-orange-950/30 border border-amber-200/50 dark:border-amber-800/50">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wide">Page</p>
+                    <p className="text-xl font-bold text-slate-800 dark:text-slate-100 mt-1">{companiesData.pagination?.page || 1}</p>
+                  </div>
+                  <FileText className="h-8 w-8 text-amber-600 dark:text-amber-400 opacity-60" />
+                </div>
+              </div>
+              <div className="card-glass p-3 rounded-xl bg-gradient-to-br from-indigo-50/50 to-blue-50/50 dark:from-indigo-950/30 dark:to-blue-950/30 border border-indigo-200/50 dark:border-indigo-800/50">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wide">Industries</p>
+                    <p className="text-xl font-bold text-slate-800 dark:text-slate-100 mt-1">
+                      {new Set(companiesData.companies?.map((c: any) => c.industry).filter(Boolean)).size || 0}
+                    </p>
+                  </div>
+                  <Target className="h-8 w-8 text-indigo-600 dark:text-indigo-400 opacity-60" />
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Loading/Error States */}
+          {loading ? (
+            <div className="card-glass p-12 rounded-2xl text-center">
+              <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-teal-100 dark:bg-teal-500/20 mb-4">
+                <Loader2 className="h-8 w-8 animate-spin text-teal-600 dark:text-teal-400" />
+              </div>
+              <p className="text-base font-medium text-slate-700 dark:text-slate-200">Loading companies...</p>
+              <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">Please wait while we fetch the data</p>
+            </div>
+          ) : error ? (
+            <div className="card-glass p-12 rounded-2xl text-center bg-red-50 dark:bg-red-500/40 border-2 border-red-200 dark:border-red-500/50">
+              <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-red-100 dark:bg-red-500/20 mb-4">
+                <AlertCircle className="h-8 w-8 text-red-600 dark:text-red-400" />
+              </div>
+              <p className="text-base font-semibold text-red-700 dark:text-red-300">Error Loading Companies</p>
+              <p className="text-sm text-red-600 dark:text-red-400 mt-1">{error}</p>
+            </div>
+          ) : (
+            <>
+              {/* Companies Grid - Modern Card Design */}
+              {companiesData?.companies && companiesData.companies.length > 0 ? (
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+                  {companiesData.companies.map((company: any) => (
+                    <div 
+                      key={company.id} 
+                      className="group relative card-glass p-5 rounded-2xl border border-slate-200/50 dark:border-slate-700/50 hover:border-teal-300 dark:hover:border-teal-600/50 transition-all duration-300 hover:shadow-xl hover:shadow-teal-500/10 hover:-translate-y-1 bg-gradient-to-br from-white/50 to-slate-50/50 dark:from-slate-800/50 dark:to-slate-900/50"
+                    >
+                      {/* Hover Gradient Effect */}
+                      <div className="absolute inset-0 bg-gradient-to-br from-teal-500/0 via-cyan-500/0 to-teal-500/0 group-hover:from-teal-500/5 group-hover:via-cyan-500/5 group-hover:to-teal-500/5 rounded-2xl transition-all duration-300 pointer-events-none"></div>
+                      
+                      <div className="relative">
+                        {/* Logo Section */}
+                        <div className="flex items-start justify-between mb-4">
+                          <div className="flex items-center gap-3">
+                            {company.logo_url ? (
+                              <div className="relative flex-shrink-0 w-14 h-14 rounded-xl overflow-hidden bg-white dark:bg-slate-800 border-2 border-slate-200 dark:border-slate-700 shadow-md group-hover:shadow-lg transition-shadow">
+                                <img 
+                                  src={company.logo_url} 
+                                  alt={company.name || 'Company logo'} 
+                                  className="w-full h-full object-contain p-1.5"
+                                  onError={(e) => {
+                                    const target = e.currentTarget;
+                                    target.style.display = 'none';
+                                    const parent = target.parentElement;
+                                    if (parent) {
+                                      const fallback = document.createElement('div');
+                                      fallback.className = 'w-full h-full flex items-center justify-center bg-gradient-to-br from-teal-600 to-cyan-600 text-white text-lg font-bold';
+                                      fallback.textContent = (company.name || 'C').charAt(0).toUpperCase();
+                                      parent.appendChild(fallback);
+                                    }
+                                  }}
+                                />
+                              </div>
+                            ) : (
+                              <div className="flex-shrink-0 w-14 h-14 rounded-xl bg-gradient-to-br from-teal-600 to-cyan-600 flex items-center justify-center text-white text-lg font-bold shadow-md group-hover:shadow-lg transition-shadow">
+                                {(company.name || 'C').charAt(0).toUpperCase()}
+                              </div>
+                            )}
+                            <div className="min-w-0 flex-1">
+                              <h3 className="font-bold text-lg text-slate-800 dark:text-slate-100 truncate group-hover:text-teal-600 dark:group-hover:text-teal-400 transition-colors">
+                                {company.name || 'N/A'}
+                              </h3>
+                              {company.industry && (
+                                <span className="inline-block mt-1 px-2.5 py-0.5 bg-indigo-100 dark:bg-indigo-500/30 text-indigo-700 dark:text-indigo-300 rounded-full text-xs font-medium">
+                                  {company.industry}
+                                </span>
+                              )}
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Company Details */}
+                        <div className="space-y-2.5 mb-4">
+                          {company.country && (
+                            <div className="flex items-center gap-2 text-sm text-slate-600 dark:text-slate-400">
+                              <Globe className="h-4 w-4 text-slate-400 dark:text-slate-500" />
+                              <span>{company.country}</span>
+                            </div>
+                          )}
+                          {company.total_funding && (
+                            <div className="flex items-center gap-2 text-sm">
+                              <DollarSign className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
+                              <span className="font-semibold text-slate-800 dark:text-slate-100">
+                                ${(parseFloat(company.total_funding) / 1000000).toFixed(1)}M
+                              </span>
+                              <span className="text-xs text-slate-500 dark:text-slate-400">funding</span>
+                            </div>
+                          )}
+                        </div>
+
+                        {/* Action Buttons */}
+                        <div className="flex items-center gap-2 pt-4 border-t border-slate-200 dark:border-slate-700">
+                          <button 
+                            onClick={() => { setEditingCompany(company); setShowCompanyForm(true); }} 
+                            className="flex-1 flex items-center justify-center gap-2 px-4 py-2 rounded-xl bg-teal-50 dark:bg-teal-500/20 hover:bg-teal-100 dark:hover:bg-teal-500/30 text-teal-700 dark:text-teal-300 font-medium text-sm transition-all duration-200 hover:scale-105" 
+                          >
+                            <Edit className="h-4 w-4" />
+                            <span>Edit</span>
+                          </button>
+                          <button 
+                            onClick={() => setConfirmModal({ isOpen: true, title: 'Delete Company', message: `Are you sure you want to delete ${company.name}?`, onConfirm: async () => { try { const token = localStorage.getItem('medarionAuthToken') || 'test-token'; const response = await fetch(`/api/admin/companies/${company.id}`, { method: 'DELETE', headers: { 'Authorization': `Bearer ${token}` } }); const data = await response.json(); if (data.success) { setAlertModal({ isOpen: true, title: 'Success', message: 'Company deleted successfully', variant: 'success' }); fetchCompaniesData(companiesPage, companiesSearch || undefined); } else { throw new Error(data.error || 'Failed to delete'); } } catch (err: any) { setAlertModal({ isOpen: true, title: 'Error', message: err?.message || 'Failed to delete company', variant: 'error' }); } } })} 
+                            className="p-2.5 rounded-xl bg-red-50 dark:bg-red-500/20 hover:bg-red-100 dark:hover:bg-red-500/30 text-red-600 dark:text-red-400 transition-all duration-200 hover:scale-105" 
+                            title="Delete"
+                          >
+                            <Trash2 className="h-4 w-4" />
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="card-glass p-12 rounded-2xl text-center">
+                  <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-slate-100 dark:bg-slate-800 mb-4">
+                    <Building2 className="h-10 w-10 text-slate-400 dark:text-slate-500" />
+                  </div>
+                  <p className="text-lg font-semibold text-slate-700 dark:text-slate-200 mb-2">No companies found</p>
+                  <p className="text-sm text-slate-500 dark:text-slate-400 mb-6">Get started by adding your first company</p>
+                  <button 
+                    onClick={() => { setEditingCompany(null); setShowCompanyForm(true); }} 
+                    className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-teal-600 to-cyan-600 hover:from-teal-700 hover:to-cyan-700 text-white font-semibold rounded-xl shadow-lg shadow-teal-500/30 hover:shadow-xl transition-all duration-300"
+                  >
+                    <Plus className="h-5 w-5" />
+                    <span>Add Your First Company</span>
+                  </button>
+                </div>
+              )}
+
+              {/* Pagination - Modern Design */}
+              {companiesData?.pagination && (
+                <div className="card-glass p-4 rounded-2xl flex flex-col sm:flex-row items-center justify-between gap-4 bg-gradient-to-r from-slate-50/50 to-slate-100/50 dark:from-slate-800/50 dark:to-slate-900/50 border border-slate-200/50 dark:border-slate-700/50">
+                  <div className="flex items-center gap-2">
+                    <FileText className="h-4 w-4 text-slate-400 dark:text-slate-500" />
+                    <span className="text-sm font-medium text-slate-700 dark:text-slate-200">
+                      Page <span className="font-bold text-teal-600 dark:text-teal-400">{companiesData.pagination.page}</span> of{' '}
+                      <span className="font-bold">{Math.ceil(companiesData.pagination.total / 20)}</span>
+                    </span>
+                    <span className="text-xs text-slate-500 dark:text-slate-400">
+                      ({companiesData.pagination.total} total)
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <button 
+                      onClick={() => setCompaniesPage(p => Math.max(1, p - 1))} 
+                      disabled={companiesPage === 1} 
+                      className="px-4 py-2 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 font-medium text-sm hover:bg-slate-50 dark:hover:bg-slate-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 hover:scale-105 disabled:hover:scale-100"
+                    >
+                      Previous
+                    </button>
+                    <button 
+                      onClick={() => setCompaniesPage(p => p + 1)} 
+                      disabled={!companiesData.pagination.has_more} 
+                      className="px-4 py-2 rounded-xl bg-gradient-to-r from-teal-600 to-cyan-600 hover:from-teal-700 hover:to-cyan-700 text-white font-medium text-sm shadow-md shadow-teal-500/30 hover:shadow-lg transition-all duration-200 hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
+                    >
+                      Next
+                    </button>
+                  </div>
+                </div>
+              )}
+            </>
+          )}
+        </div>
+      )}
+
+      {/* Deals Module */}
+      {selectedDataModule === 'deals' && (
+        <div className="space-y-4 pb-8">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+            <div>
+              <h2 className="text-3xl font-bold text-slate-800 dark:text-slate-100 mb-2">Deals</h2>
+              <p className="text-sm text-slate-600 dark:text-slate-400">Track M&A, licensing, and funding deal activity across African healthcare</p>
+            </div>
+            <button 
+              onClick={() => { setEditingDeal(null); setShowDealForm(true); }} 
+              className="btn-primary-elevated flex items-center gap-2 px-4 py-2 rounded-lg"
+            >
+              <Plus className="h-4 w-4" />
+              <span>Add Deal</span>
             </button>
           </div>
           <div className="card-glass p-4 rounded-lg">
             <div className="flex gap-4 items-center">
               <div className="flex-1 relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-[var(--color-text-secondary)]" />
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-slate-500 dark:text-slate-400" />
+                <input type="text" placeholder="Search deals..." value={dealsSearch} onChange={(e) => setDealsSearch(e.target.value)} className="input pl-10 w-full" />
+              </div>
+            </div>
+          </div>
+          {loading ? (
+            <div className="text-center py-12 text-slate-500 dark:text-slate-400">Loading...</div>
+          ) : error ? (
+            <div className="text-center py-12 text-red-600 dark:text-white">{error}</div>
+          ) : (
+            <div className="card-glass overflow-x-auto">
+              <table className="w-full">
+                <thead>
+                  <tr className="border-b border-slate-200 dark:border-slate-700">
+                    <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700 dark:text-slate-200">Company</th>
+                    <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700 dark:text-slate-200">Deal Type</th>
+                    <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700 dark:text-slate-200">Amount</th>
+                    <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700 dark:text-slate-200">Date</th>
+                    <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700 dark:text-slate-200">Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {dealsData?.deals && dealsData.deals.length > 0 ? (
+                    dealsData.deals.map((deal: any) => (
+                      <tr key={deal.id} className="border-b border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:bg-slate-800/50">
+                        <td className="px-4 py-3">{deal.company_name || 'N/A'}</td>
+                        <td className="px-4 py-3">{deal.deal_type || 'N/A'}</td>
+                        <td className="px-4 py-3">{deal.amount ? `$${(parseFloat(deal.amount) / 1000000).toFixed(1)}M` : 'N/A'}</td>
+                        <td className="px-4 py-3">{deal.deal_date ? new Date(deal.deal_date).toLocaleDateString() : 'N/A'}</td>
+                        <td className="px-4 py-3">
+                          <div className="flex gap-2">
+                            <button onClick={() => { setEditingDeal(deal); setShowDealForm(true); }} className="p-2 rounded-lg hover:bg-blue-50 dark:hover:bg-blue-900/20 text-blue-600 dark:text-white transition-colors" title="Edit"><Edit className="h-4 w-4" /></button>
+                            <button onClick={() => setConfirmModal({ isOpen: true, title: 'Delete Deal', message: `Are you sure you want to delete this deal?`, onConfirm: async () => { try { const token = localStorage.getItem('medarionAuthToken') || 'test-token'; const response = await fetch(`/api/admin/deals/${deal.id}`, { method: 'DELETE', headers: { 'Authorization': `Bearer ${token}` } }); const data = await response.json(); if (data.success) { setAlertModal({ isOpen: true, title: 'Success', message: 'Deal deleted successfully', variant: 'success' }); fetchDealsData(dealsPage, dealsSearch || undefined); } else { throw new Error(data.error || 'Failed to delete'); } } catch (err: any) { setAlertModal({ isOpen: true, title: 'Error', message: err?.message || 'Failed to delete deal', variant: 'error' }); } } })} className="p-2 rounded-lg hover:bg-red-50 dark:hover:bg-red-900/20 text-red-600 dark:text-white transition-colors" title="Delete"><Trash2 className="h-4 w-4" /></button>
+                          </div>
+                        </td>
+                      </tr>
+                    ))
+                  ) : (
+                    <tr><td colSpan={5} className="px-4 py-8 text-center text-slate-500 dark:text-slate-400">No deals found</td></tr>
+                  )}
+                </tbody>
+              </table>
+            </div>
+          )}
+          {dealsData?.pagination && (
+            <div className="flex items-center justify-between">
+              <span className="text-sm text-slate-500 dark:text-slate-400">Page {dealsData.pagination.page} of {Math.ceil(dealsData.pagination.total / 20)}</span>
+              <div className="flex gap-2">
+                <button onClick={() => setDealsPage(p => Math.max(1, p - 1))} disabled={dealsPage === 1} className="btn-outline">Previous</button>
+                <button onClick={() => setDealsPage(p => p + 1)} disabled={!dealsData.pagination.has_more} className="btn-outline">Next</button>
+              </div>
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* Grants Module */}
+      {selectedDataModule === 'grants' && (
+        <div className="space-y-4 pb-8">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+            <div>
+              <h2 className="text-3xl font-bold text-slate-800 dark:text-slate-100 mb-2">Grants</h2>
+              <p className="text-sm text-slate-600 dark:text-slate-400">Monitor grants and funding opportunities from global health organizations</p>
+            </div>
+            <button 
+              onClick={() => { setEditingGrant(null); setShowGrantForm(true); }} 
+              className="btn-primary-elevated flex items-center gap-2 px-4 py-2 rounded-lg"
+            >
+              <Plus className="h-4 w-4" />
+              <span>Add Grant</span>
+            </button>
+          </div>
+          <div className="card-glass p-4 rounded-lg">
+            <div className="flex gap-4 items-center">
+              <div className="flex-1 relative">
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-slate-500 dark:text-slate-400" />
+                <input type="text" placeholder="Search grants..." value={grantsSearch} onChange={(e) => setGrantsSearch(e.target.value)} className="input pl-10 w-full" />
+              </div>
+            </div>
+          </div>
+          {loading ? (
+            <div className="text-center py-12 text-slate-500 dark:text-slate-400">Loading...</div>
+          ) : error ? (
+            <div className="text-center py-12 text-red-600 dark:text-white">{error}</div>
+          ) : (
+            <div className="card-glass overflow-x-auto">
+              <table className="w-full">
+                <thead>
+                  <tr className="border-b border-slate-200 dark:border-slate-700">
+                    <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700 dark:text-slate-200">Title</th>
+                    <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700 dark:text-slate-200">Amount</th>
+                    <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700 dark:text-slate-200">Country</th>
+                    <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700 dark:text-slate-200">Deadline</th>
+                    <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700 dark:text-slate-200">Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {grantsData?.grants && grantsData.grants.length > 0 ? (
+                    grantsData.grants.map((grant: any) => (
+                      <tr key={grant.id} className="border-b border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:bg-slate-800/50">
+                        <td className="px-4 py-3">{grant.title || 'N/A'}</td>
+                        <td className="px-4 py-3">{grant.amount ? `$${(parseFloat(grant.amount) / 1000000).toFixed(1)}M` : 'N/A'}</td>
+                        <td className="px-4 py-3">{grant.country || 'N/A'}</td>
+                        <td className="px-4 py-3">{grant.application_deadline ? new Date(grant.application_deadline).toLocaleDateString() : 'N/A'}</td>
+                        <td className="px-4 py-3">
+                          <div className="flex gap-2">
+                            <button onClick={() => { setEditingGrant(grant); setShowGrantForm(true); }} className="p-2 rounded-lg hover:bg-blue-50 dark:hover:bg-blue-900/20 text-blue-600 dark:text-white transition-colors" title="Edit"><Edit className="h-4 w-4" /></button>
+                            <button onClick={() => setConfirmModal({ isOpen: true, title: 'Delete Grant', message: `Are you sure you want to delete ${grant.title}?`, onConfirm: async () => { try { const token = localStorage.getItem('medarionAuthToken') || 'test-token'; const response = await fetch(`/api/admin/grants/${grant.id}`, { method: 'DELETE', headers: { 'Authorization': `Bearer ${token}` } }); const data = await response.json(); if (data.success) { setAlertModal({ isOpen: true, title: 'Success', message: 'Grant deleted successfully', variant: 'success' }); fetchGrantsData(grantsPage, grantsSearch || undefined); } else { throw new Error(data.error || 'Failed to delete'); } } catch (err: any) { setAlertModal({ isOpen: true, title: 'Error', message: err?.message || 'Failed to delete grant', variant: 'error' }); } } })} className="p-2 rounded-lg hover:bg-red-50 dark:hover:bg-red-900/20 text-red-600 dark:text-white transition-colors" title="Delete"><Trash2 className="h-4 w-4" /></button>
+                          </div>
+                        </td>
+                      </tr>
+                    ))
+                  ) : (
+                    <tr><td colSpan={5} className="px-4 py-8 text-center text-slate-500 dark:text-slate-400">No grants found</td></tr>
+                  )}
+                </tbody>
+              </table>
+            </div>
+          )}
+          {grantsData?.pagination && (
+            <div className="flex items-center justify-between">
+              <span className="text-sm text-slate-500 dark:text-slate-400">Page {grantsData.pagination.page} of {Math.ceil(grantsData.pagination.total / 20)}</span>
+              <div className="flex gap-2">
+                <button onClick={() => setGrantsPage(p => Math.max(1, p - 1))} disabled={grantsPage === 1} className="btn-outline">Previous</button>
+                <button onClick={() => setGrantsPage(p => p + 1)} disabled={!grantsData.pagination.has_more} className="btn-outline">Next</button>
+              </div>
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* Investors Module UI - will be added after testing*/}
+      {selectedDataModule === 'investors' && (
+        <div className="space-y-4 pb-8">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+            <div>
+              <h2 className="text-3xl font-bold text-slate-800 dark:text-slate-100 mb-2">Investors</h2>
+              <p className="text-sm text-slate-600 dark:text-slate-400">Explore investor profiles and their activity in African healthcare</p>
+            </div>
+            <button 
+              onClick={() => { setEditingInvestor(null); setShowInvestorForm(true); }} 
+              className="btn-primary-elevated flex items-center gap-2 px-4 py-2 rounded-lg"
+            >
+              <Plus className="h-4 w-4" />
+              <span>Add Investor</span>
+            </button>
+          </div>
+          <div className="card-glass p-4 rounded-lg">
+            <div className="flex gap-4 items-center">
+              <div className="flex-1 relative">
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-slate-500 dark:text-slate-400" />
                 <input type="text" placeholder="Search investors..." value={investorsSearch} onChange={(e) => setInvestorsSearch(e.target.value)} className="input pl-10 w-full" />
               </div>
             </div>
           </div>
           {loading ? (
-            <div className="text-center py-12 text-[var(--color-text-secondary)]">Loading...</div>
+            <div className="text-center py-12 text-slate-500 dark:text-slate-400">Loading...</div>
           ) : error ? (
-            <div className="text-center py-12 text-red-600 dark:text-red-400">{error}</div>
+            <div className="text-center py-12 text-red-600 dark:text-white">{error}</div>
           ) : (
             <div className="card-glass overflow-x-auto">
               <table className="w-full">
                 <thead>
-                  <tr className="border-b border-[var(--color-divider-gray)]">
-                    <th className="px-4 py-3 text-left text-sm font-semibold text-[var(--color-text-primary)]">Name</th>
-                    <th className="px-4 py-3 text-left text-sm font-semibold text-[var(--color-text-primary)]">Type</th>
-                    <th className="px-4 py-3 text-left text-sm font-semibold text-[var(--color-text-primary)]">Headquarters</th>
-                    <th className="px-4 py-3 text-left text-sm font-semibold text-[var(--color-text-primary)]">Total Investments</th>
-                    <th className="px-4 py-3 text-left text-sm font-semibold text-[var(--color-text-primary)]">Actions</th>
+                  <tr className="border-b border-slate-200 dark:border-slate-700">
+                    <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700 dark:text-slate-200">Name</th>
+                    <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700 dark:text-slate-200">Type</th>
+                    <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700 dark:text-slate-200">Headquarters</th>
+                    <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700 dark:text-slate-200">Total Investments</th>
+                    <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700 dark:text-slate-200">Actions</th>
                   </tr>
                 </thead>
                 <tbody>
                   {investorsData?.investors && investorsData.investors.length > 0 ? (
                     investorsData.investors.map((investor: any) => (
-                      <tr key={investor.id} className="border-b border-[var(--color-divider-gray)] hover:bg-[var(--color-background-surface)]">
+                      <tr key={investor.id} className="border-b border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:bg-slate-800/50">
                         <td className="px-4 py-3">{investor.name || 'N/A'}</td>
                         <td className="px-4 py-3">{investor.type || 'N/A'}</td>
                         <td className="px-4 py-3">{investor.headquarters || 'N/A'}</td>
                         <td className="px-4 py-3">{investor.total_investments || 0}</td>
                         <td className="px-4 py-3">
                           <div className="flex gap-2">
-                            <button onClick={() => { setEditingInvestor(investor); setShowInvestorForm(true); }} className="p-2 rounded-lg hover:bg-blue-50 dark:hover:bg-blue-900/20 text-blue-600 dark:text-blue-400 transition-colors" title="Edit"><Edit className="h-4 w-4" /></button>
-                            <button onClick={() => setConfirmModal({ isOpen: true, title: 'Delete Investor', message: `Are you sure you want to delete ${investor.name}?`, onConfirm: async () => { try { const token = localStorage.getItem('medarionAuthToken') || 'test-token'; const response = await fetch(`/api/admin/investors/${investor.id}`, { method: 'DELETE', headers: { 'Authorization': `Bearer ${token}` } }); const data = await response.json(); if (data.success) { setAlertModal({ isOpen: true, title: 'Success', message: 'Investor deleted successfully', variant: 'success' }); fetchInvestorsData(investorsPage, investorsSearch || undefined); } else { throw new Error(data.error || 'Failed to delete'); } } catch (err: any) { setAlertModal({ isOpen: true, title: 'Error', message: err?.message || 'Failed to delete investor', variant: 'error' }); } } })} className="p-2 rounded-lg hover:bg-red-50 dark:hover:bg-red-900/20 text-red-600 dark:text-red-400 transition-colors" title="Delete"><Trash2 className="h-4 w-4" /></button>
+                            <button onClick={() => { setEditingInvestor(investor); setShowInvestorForm(true); }} className="p-2 rounded-lg hover:bg-blue-50 dark:hover:bg-blue-900/20 text-blue-600 dark:text-white transition-colors" title="Edit"><Edit className="h-4 w-4" /></button>
+                            <button onClick={() => setConfirmModal({ isOpen: true, title: 'Delete Investor', message: `Are you sure you want to delete ${investor.name}?`, onConfirm: async () => { try { const token = localStorage.getItem('medarionAuthToken') || 'test-token'; const response = await fetch(`/api/admin/investors/${investor.id}`, { method: 'DELETE', headers: { 'Authorization': `Bearer ${token}` } }); const data = await response.json(); if (data.success) { setAlertModal({ isOpen: true, title: 'Success', message: 'Investor deleted successfully', variant: 'success' }); fetchInvestorsData(investorsPage, investorsSearch || undefined); } else { throw new Error(data.error || 'Failed to delete'); } } catch (err: any) { setAlertModal({ isOpen: true, title: 'Error', message: err?.message || 'Failed to delete investor', variant: 'error' }); } } })} className="p-2 rounded-lg hover:bg-red-50 dark:hover:bg-red-900/20 text-red-600 dark:text-white transition-colors" title="Delete"><Trash2 className="h-4 w-4" /></button>
                           </div>
                         </td>
                       </tr>
                     ))
                   ) : (
-                    <tr><td colSpan={5} className="px-4 py-8 text-center text-[var(--color-text-secondary)]">No investors found</td></tr>
+                    <tr><td colSpan={5} className="px-4 py-8 text-center text-slate-500 dark:text-slate-400">No investors found</td></tr>
                   )}
                 </tbody>
               </table>
@@ -9680,7 +9707,7 @@ const AdminDashboard: React.FC = () => {
           )}
           {investorsData?.pagination && (
             <div className="flex items-center justify-between">
-              <span className="text-sm text-[var(--color-text-secondary)]">Page {investorsData.pagination.page} of {Math.ceil(investorsData.pagination.total / investorsPageSize)}</span>
+              <span className="text-sm text-slate-500 dark:text-slate-400">Page {investorsData.pagination.page} of {Math.ceil(investorsData.pagination.total / investorsPageSize)}</span>
               <div className="flex gap-2">
                 <button onClick={() => setInvestorsPage(p => Math.max(1, p - 1))} disabled={investorsPage === 1} className="btn-outline">Previous</button>
                 <button onClick={() => setInvestorsPage(p => p + 1)} disabled={!investorsData.pagination.has_more} className="btn-outline">Next</button>
@@ -9693,9 +9720,9 @@ const AdminDashboard: React.FC = () => {
       {/* Investor Form Modal */}
       {showInvestorForm && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white dark:bg-gray-800 rounded-xl p-6 w-full max-w-4xl mx-4 max-h-[90vh] overflow-y-auto">
+          <div className="bg-white dark:bg-slate-800 rounded-xl p-6 w-full max-w-4xl mx-4 max-h-[700px] overflow-y-auto">
             <div className="flex items-center justify-between mb-6">
-              <h3 className="text-xl font-semibold text-[var(--color-text-primary)]">
+              <h3 className="text-xl font-semibold text-slate-700 dark:text-slate-200">
                 {editingInvestor ? 'Edit Investor' : 'Create New Investor'}
               </h3>
               <button 
@@ -9776,8 +9803,8 @@ const AdminDashboard: React.FC = () => {
               }
             }}>
               <div className="grid grid-cols-2 gap-4 mb-4">
-                <div className="md:col-span-2">
-                  <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">Name *</label>
+                <div className="col-span-2">
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2">Name *</label>
                   <input 
                     className="input w-full" 
                     value={editingInvestor?.name || ''} 
@@ -9786,7 +9813,7 @@ const AdminDashboard: React.FC = () => {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">Type *</label>
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2">Type *</label>
                   <select 
                     className="input w-full" 
                     value={editingInvestor?.type || 'VC'} 
@@ -9804,7 +9831,7 @@ const AdminDashboard: React.FC = () => {
                   </select>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">Headquarters</label>
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2">Headquarters</label>
                   <input 
                     className="input w-full" 
                     value={editingInvestor?.headquarters || ''} 
@@ -9813,7 +9840,7 @@ const AdminDashboard: React.FC = () => {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">Founded Year</label>
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2">Founded Year</label>
                   <input 
                     type="number"
                     className="input w-full" 
@@ -9825,7 +9852,7 @@ const AdminDashboard: React.FC = () => {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">Assets Under Management ($)</label>
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2">Assets Under Management ($)</label>
                   <input 
                     type="number"
                     step="0.01"
@@ -9836,7 +9863,7 @@ const AdminDashboard: React.FC = () => {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">Total Investments</label>
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2">Total Investments</label>
                   <input 
                     type="number"
                     className="input w-full" 
@@ -9846,7 +9873,7 @@ const AdminDashboard: React.FC = () => {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">Average Investment ($)</label>
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2">Average Investment ($)</label>
                   <input 
                     type="number"
                     step="0.01"
@@ -9857,7 +9884,7 @@ const AdminDashboard: React.FC = () => {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">Team Size</label>
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2">Team Size</label>
                   <input 
                     type="number"
                     className="input w-full" 
@@ -9867,7 +9894,7 @@ const AdminDashboard: React.FC = () => {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">Website</label>
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2">Website</label>
                   <input 
                     type="url"
                     className="input w-full" 
@@ -9877,7 +9904,7 @@ const AdminDashboard: React.FC = () => {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">Contact Email</label>
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2">Contact Email</label>
                   <input 
                     type="email"
                     className="input w-full" 
@@ -9885,21 +9912,21 @@ const AdminDashboard: React.FC = () => {
                     onChange={e => setEditingInvestor(prev => prev ? {...prev, contact_email: e.target.value} : {contact_email: e.target.value})}
                   />
                 </div>
-                <div className="md:col-span-2">
-                  <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">Logo</label>
+                <div className="col-span-2">
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2">Logo</label>
                   {/* Current Logo Display */}
                   {editingInvestor?.logo && (
-                    <div className="mb-3 p-4 bg-green-50 dark:bg-green-900/20 rounded-lg border border-green-200 dark:border-green-800">
+                    <div className="mb-3 p-4 bg-green-50 dark:bg-green-500/40 rounded-lg border border-green-200 dark:border-green-500/50">
                       <div className="flex items-start justify-between gap-3 mb-3">
                         <div className="flex-1 min-w-0">
-                          <p className="text-sm font-medium text-green-800 dark:text-green-200 mb-2">
+                          <p className="text-sm font-medium text-green-800 dark:text-white mb-2">
                             ✓ Current Logo
                           </p>
                           <a
                             href={editingInvestor.logo}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="text-sm text-green-700 dark:text-green-300 hover:underline break-all"
+                            className="text-sm text-green-700 dark:text-white hover:underline break-all"
                           >
                             {editingInvestor.logo}
                           </a>
@@ -9907,7 +9934,7 @@ const AdminDashboard: React.FC = () => {
                         <button
                           type="button"
                           onClick={() => setEditingInvestor(prev => prev ? { ...prev, logo: '' } : { logo: '' })}
-                          className="flex-shrink-0 p-1.5 text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 rounded transition-colors"
+                          className="flex-shrink-0 p-1.5 text-red-600 dark:text-white hover:bg-red-50 dark:hover:bg-red-900/20 rounded transition-colors"
                           title="Remove logo"
                         >
                           <X className="h-4 w-4" />
@@ -9937,8 +9964,8 @@ const AdminDashboard: React.FC = () => {
                     {editingInvestor?.logo ? 'Replace Logo' : 'Upload Logo'}
                   </button>
                 </div>
-                <div className="md:col-span-2">
-                  <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">Description</label>
+                <div className="col-span-2">
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2">Description</label>
                   <textarea 
                     className="input w-full min-h-[100px]" 
                     value={editingInvestor?.description || ''} 
@@ -9947,8 +9974,8 @@ const AdminDashboard: React.FC = () => {
                     placeholder="Investor description"
                   />
                 </div>
-                <div className="md:col-span-2">
-                  <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">Focus Sectors (one per line)</label>
+                <div className="col-span-2">
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2">Focus Sectors (one per line)</label>
                   <textarea 
                     className="input w-full min-h-[80px]" 
                     value={Array.isArray(editingInvestor?.focus_sectors) ? editingInvestor.focus_sectors.join('\n') : 
@@ -9960,8 +9987,8 @@ const AdminDashboard: React.FC = () => {
                     placeholder="Sector 1&#10;Sector 2"
                   />
                 </div>
-                <div className="md:col-span-2">
-                  <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">Investment Stages (one per line)</label>
+                <div className="col-span-2">
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2">Investment Stages (one per line)</label>
                   <textarea 
                     className="input w-full min-h-[80px]" 
                     value={Array.isArray(editingInvestor?.investment_stages) ? editingInvestor.investment_stages.join('\n') : 
@@ -9973,8 +10000,8 @@ const AdminDashboard: React.FC = () => {
                     placeholder="Seed&#10;Series A&#10;Series B"
                   />
                 </div>
-                <div className="md:col-span-2">
-                  <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">Countries (one per line)</label>
+                <div className="col-span-2">
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2">Countries (one per line)</label>
                   <textarea 
                     className="input w-full min-h-[80px]" 
                     value={Array.isArray(editingInvestor?.countries) ? editingInvestor.countries.join('\n') : 
@@ -9986,7 +10013,7 @@ const AdminDashboard: React.FC = () => {
                     placeholder="Country 1&#10;Country 2"
                   />
                 </div>
-                <div className="md:col-span-2">
+                <div className="col-span-2">
                   <label className="flex items-center gap-2 cursor-pointer">
                     <input 
                       type="checkbox"
@@ -9994,7 +10021,7 @@ const AdminDashboard: React.FC = () => {
                       onChange={e => setEditingInvestor(prev => prev ? {...prev, is_active: e.target.checked} : {is_active: e.target.checked})}
                       className="rounded"
                     />
-                    <span className="text-sm font-medium text-[var(--color-text-primary)]">Active</span>
+                    <span className="text-sm font-medium text-slate-700 dark:text-slate-200">Active</span>
                   </label>
                 </div>
               </div>
@@ -10026,45 +10053,49 @@ const AdminDashboard: React.FC = () => {
 
       {/* Clinical Trials Module */}
       {selectedDataModule === 'clinical-trials' && (
-        <div className="space-y-6 pb-8">
-          <div className="flex items-center justify-between">
+        <div className="space-y-4 pb-8">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <div>
-              <h2 className="text-2xl font-bold text-[var(--color-text-primary)]">Clinical Trials Management</h2>
-              <p className="text-sm text-[var(--color-text-secondary)] mt-1">Manage all clinical trials in the platform</p>
+              <h2 className="text-3xl font-bold text-slate-800 dark:text-slate-100 mb-2">Clinical Trials</h2>
+              <p className="text-sm text-slate-600 dark:text-slate-400">Track clinical research and trials data across African healthcare</p>
             </div>
-            <button onClick={() => { setEditingTrial(null); setShowTrialForm(true); }} className="btn-primary flex items-center gap-2">
-              <Plus className="h-4 w-4" /> Add Clinical Trial
+            <button 
+              onClick={() => { setEditingTrial(null); setShowTrialForm(true); }} 
+              className="btn-primary-elevated flex items-center gap-2 px-4 py-2 rounded-lg"
+            >
+              <Plus className="h-4 w-4" />
+              <span>Add Clinical Trial</span>
             </button>
           </div>
           <div className="card-glass p-4 rounded-lg">
             <div className="flex gap-4 items-center">
               <div className="flex-1 relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-[var(--color-text-secondary)]" />
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-slate-500 dark:text-slate-400" />
                 <input type="text" placeholder="Search clinical trials..." value={trialsSearch} onChange={(e) => setTrialsSearch(e.target.value)} className="input pl-10 w-full" />
               </div>
             </div>
           </div>
           {loading ? (
-            <div className="text-center py-12 text-[var(--color-text-secondary)]">Loading...</div>
+            <div className="text-center py-12 text-slate-500 dark:text-slate-400">Loading...</div>
           ) : error ? (
-            <div className="text-center py-12 text-red-600 dark:text-red-400">{error}</div>
+            <div className="text-center py-12 text-red-600 dark:text-white">{error}</div>
           ) : (
             <div className="card-glass overflow-x-auto">
               <table className="w-full">
                 <thead>
-                  <tr className="border-b border-[var(--color-divider-gray)]">
-                    <th className="px-4 py-3 text-left text-sm font-semibold text-[var(--color-text-primary)]">Title</th>
-                    <th className="px-4 py-3 text-left text-sm font-semibold text-[var(--color-text-primary)]">Phase</th>
-                    <th className="px-4 py-3 text-left text-sm font-semibold text-[var(--color-text-primary)]">Status</th>
-                    <th className="px-4 py-3 text-left text-sm font-semibold text-[var(--color-text-primary)]">Sponsor</th>
-                    <th className="px-4 py-3 text-left text-sm font-semibold text-[var(--color-text-primary)]">Location</th>
-                    <th className="px-4 py-3 text-left text-sm font-semibold text-[var(--color-text-primary)]">Actions</th>
+                  <tr className="border-b border-slate-200 dark:border-slate-700">
+                    <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700 dark:text-slate-200">Title</th>
+                    <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700 dark:text-slate-200">Phase</th>
+                    <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700 dark:text-slate-200">Status</th>
+                    <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700 dark:text-slate-200">Sponsor</th>
+                    <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700 dark:text-slate-200">Location</th>
+                    <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700 dark:text-slate-200">Actions</th>
                   </tr>
                 </thead>
                 <tbody>
                   {trialsData?.trials && trialsData.trials.length > 0 ? (
                     trialsData.trials.map((trial: any) => (
-                      <tr key={trial.id} className="border-b border-[var(--color-divider-gray)] hover:bg-[var(--color-background-surface)]">
+                      <tr key={trial.id} className="border-b border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:bg-slate-800/50">
                         <td className="px-4 py-3">{trial.title || 'N/A'}</td>
                         <td className="px-4 py-3">{trial.phase || 'N/A'}</td>
                         <td className="px-4 py-3">{trial.status || 'N/A'}</td>
@@ -10072,14 +10103,14 @@ const AdminDashboard: React.FC = () => {
                         <td className="px-4 py-3">{trial.location || trial.country || 'N/A'}</td>
                         <td className="px-4 py-3">
                           <div className="flex gap-2">
-                            <button onClick={() => { setEditingTrial(trial); setShowTrialForm(true); }} className="p-2 rounded-lg hover:bg-blue-50 dark:hover:bg-blue-900/20 text-blue-600 dark:text-blue-400 transition-colors" title="Edit"><Edit className="h-4 w-4" /></button>
-                            <button onClick={() => setConfirmModal({ isOpen: true, title: 'Delete Clinical Trial', message: `Are you sure you want to delete "${trial.title}"?`, onConfirm: async () => { try { const token = localStorage.getItem('medarionAuthToken') || 'test-token'; const response = await fetch(`/api/admin/clinical-trials/${trial.id}`, { method: 'DELETE', headers: { 'Authorization': `Bearer ${token}` } }); const data = await response.json(); if (data.success) { setAlertModal({ isOpen: true, title: 'Success', message: 'Clinical trial deleted successfully', variant: 'success' }); fetchTrialsData(trialsPage, trialsSearch || undefined); } else { throw new Error(data.error || 'Failed to delete'); } } catch (err: any) { setAlertModal({ isOpen: true, title: 'Error', message: err?.message || 'Failed to delete clinical trial', variant: 'error' }); } } })} className="p-2 rounded-lg hover:bg-red-50 dark:hover:bg-red-900/20 text-red-600 dark:text-red-400 transition-colors" title="Delete"><Trash2 className="h-4 w-4" /></button>
+                            <button onClick={() => { setEditingTrial(trial); setShowTrialForm(true); }} className="p-2 rounded-lg hover:bg-blue-50 dark:hover:bg-blue-900/20 text-blue-600 dark:text-white transition-colors" title="Edit"><Edit className="h-4 w-4" /></button>
+                            <button onClick={() => setConfirmModal({ isOpen: true, title: 'Delete Clinical Trial', message: `Are you sure you want to delete "${trial.title}"?`, onConfirm: async () => { try { const token = localStorage.getItem('medarionAuthToken') || 'test-token'; const response = await fetch(`/api/admin/clinical-trials/${trial.id}`, { method: 'DELETE', headers: { 'Authorization': `Bearer ${token}` } }); const data = await response.json(); if (data.success) { setAlertModal({ isOpen: true, title: 'Success', message: 'Clinical trial deleted successfully', variant: 'success' }); fetchTrialsData(trialsPage, trialsSearch || undefined); } else { throw new Error(data.error || 'Failed to delete'); } } catch (err: any) { setAlertModal({ isOpen: true, title: 'Error', message: err?.message || 'Failed to delete clinical trial', variant: 'error' }); } } })} className="p-2 rounded-lg hover:bg-red-50 dark:hover:bg-red-900/20 text-red-600 dark:text-white transition-colors" title="Delete"><Trash2 className="h-4 w-4" /></button>
                           </div>
                         </td>
                       </tr>
                     ))
                   ) : (
-                    <tr><td colSpan={6} className="px-4 py-8 text-center text-[var(--color-text-secondary)]">No clinical trials found</td></tr>
+                    <tr><td colSpan={6} className="px-4 py-8 text-center text-slate-500 dark:text-slate-400">No clinical trials found</td></tr>
                   )}
                 </tbody>
               </table>
@@ -10087,7 +10118,7 @@ const AdminDashboard: React.FC = () => {
           )}
           {trialsData?.pagination && (
             <div className="flex items-center justify-between">
-              <span className="text-sm text-[var(--color-text-secondary)]">Page {trialsData.pagination.page} of {Math.ceil(trialsData.pagination.total / trialsPageSize)}</span>
+              <span className="text-sm text-slate-500 dark:text-slate-400">Page {trialsData.pagination.page} of {Math.ceil(trialsData.pagination.total / trialsPageSize)}</span>
               <div className="flex gap-2">
                 <button onClick={() => setTrialsPage(p => Math.max(1, p - 1))} disabled={trialsPage === 1} className="btn-outline">Previous</button>
                 <button onClick={() => setTrialsPage(p => p + 1)} disabled={!trialsData.pagination.has_more} className="btn-outline">Next</button>
@@ -10101,42 +10132,46 @@ const AdminDashboard: React.FC = () => {
         <div className="space-y-6 pb-8">
           <div className="flex items-center justify-between">
             <div>
-              <h2 className="text-2xl font-bold text-[var(--color-text-primary)]">Regulatory Management</h2>
-              <p className="text-sm text-[var(--color-text-secondary)] mt-1">Manage all regulatory approvals in the platform</p>
+              <h2 className="text-2xl font-bold text-slate-700 dark:text-slate-200">Regulatory Management</h2>
+              <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">Manage all regulatory approvals in the platform</p>
             </div>
-            <button onClick={() => { setEditingRegulatory(null); setShowRegulatoryForm(true); }} className="btn-primary flex items-center gap-2">
-              <Plus className="h-4 w-4" /> Add Regulatory Record
+            <button 
+              onClick={() => { setEditingRegulatory(null); setShowRegulatoryForm(true); }} 
+              className="btn-primary-elevated flex items-center gap-2 px-4 py-2 rounded-lg"
+            >
+              <Plus className="h-4 w-4" />
+              <span>Add Regulatory Record</span>
             </button>
           </div>
           <div className="card-glass p-4 rounded-lg">
             <div className="flex gap-4 items-center">
               <div className="flex-1 relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-[var(--color-text-secondary)]" />
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-slate-500 dark:text-slate-400" />
                 <input type="text" placeholder="Search regulatory records..." value={regulatorySearch} onChange={(e) => setRegulatorySearch(e.target.value)} className="input pl-10 w-full" />
               </div>
             </div>
           </div>
           {loading ? (
-            <div className="text-center py-12 text-[var(--color-text-secondary)]">Loading...</div>
+            <div className="text-center py-12 text-slate-500 dark:text-slate-400">Loading...</div>
           ) : error ? (
-            <div className="text-center py-12 text-red-600 dark:text-red-400">{error}</div>
+            <div className="text-center py-12 text-red-600 dark:text-white">{error}</div>
           ) : (
             <div className="card-glass overflow-x-auto">
               <table className="w-full">
                 <thead>
-                  <tr className="border-b border-[var(--color-divider-gray)]">
-                    <th className="px-4 py-3 text-left text-sm font-semibold text-[var(--color-text-primary)]">Company</th>
-                    <th className="px-4 py-3 text-left text-sm font-semibold text-[var(--color-text-primary)]">Product/Approval</th>
-                    <th className="px-4 py-3 text-left text-sm font-semibold text-[var(--color-text-primary)]">Regulatory Body</th>
-                    <th className="px-4 py-3 text-left text-sm font-semibold text-[var(--color-text-primary)]">Status</th>
-                    <th className="px-4 py-3 text-left text-sm font-semibold text-[var(--color-text-primary)]">Date</th>
-                    <th className="px-4 py-3 text-left text-sm font-semibold text-[var(--color-text-primary)]">Actions</th>
+                  <tr className="border-b border-slate-200 dark:border-slate-700">
+                    <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700 dark:text-slate-200">Company</th>
+                    <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700 dark:text-slate-200">Product/Approval</th>
+                    <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700 dark:text-slate-200">Regulatory Body</th>
+                    <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700 dark:text-slate-200">Status</th>
+                    <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700 dark:text-slate-200">Date</th>
+                    <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700 dark:text-slate-200">Actions</th>
                   </tr>
                 </thead>
                 <tbody>
                   {regulatoryData?.regulatory && regulatoryData.regulatory.length > 0 ? (
                     regulatoryData.regulatory.map((reg: any) => (
-                      <tr key={reg.id} className="border-b border-[var(--color-divider-gray)] hover:bg-[var(--color-background-surface)]">
+                      <tr key={reg.id} className="border-b border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:bg-slate-800/50">
                         <td className="px-4 py-3">{reg.company_name || 'N/A'}</td>
                         <td className="px-4 py-3">{reg.product || reg.approval_type || 'N/A'}</td>
                         <td className="px-4 py-3">{reg.regulatory_body_name || reg.regulatory_body || 'N/A'}</td>
@@ -10144,14 +10179,14 @@ const AdminDashboard: React.FC = () => {
                         <td className="px-4 py-3">{reg.approval_date || 'N/A'}</td>
                         <td className="px-4 py-3">
                           <div className="flex gap-2">
-                            <button onClick={() => { setEditingRegulatory(reg); setShowRegulatoryForm(true); }} className="p-2 rounded-lg hover:bg-blue-50 dark:hover:bg-blue-900/20 text-blue-600 dark:text-blue-400 transition-colors" title="Edit"><Edit className="h-4 w-4" /></button>
-                            <button onClick={() => setConfirmModal({ isOpen: true, title: 'Delete Regulatory Record', message: `Are you sure you want to delete this regulatory record?`, onConfirm: async () => { try { const token = localStorage.getItem('medarionAuthToken') || 'test-token'; const response = await fetch(`/api/admin/regulatory/${reg.id}`, { method: 'DELETE', headers: { 'Authorization': `Bearer ${token}` } }); const data = await response.json(); if (data.success) { setAlertModal({ isOpen: true, title: 'Success', message: 'Regulatory record deleted successfully', variant: 'success' }); fetchRegulatoryData(regulatoryPage, regulatorySearch || undefined); } else { throw new Error(data.error || 'Failed to delete'); } } catch (err: any) { setAlertModal({ isOpen: true, title: 'Error', message: err?.message || 'Failed to delete regulatory record', variant: 'error' }); } } })} className="p-2 rounded-lg hover:bg-red-50 dark:hover:bg-red-900/20 text-red-600 dark:text-red-400 transition-colors" title="Delete"><Trash2 className="h-4 w-4" /></button>
+                            <button onClick={() => { setEditingRegulatory(reg); setShowRegulatoryForm(true); }} className="p-2 rounded-lg hover:bg-blue-50 dark:hover:bg-blue-900/20 text-blue-600 dark:text-white transition-colors" title="Edit"><Edit className="h-4 w-4" /></button>
+                            <button onClick={() => setConfirmModal({ isOpen: true, title: 'Delete Regulatory Record', message: `Are you sure you want to delete this regulatory record?`, onConfirm: async () => { try { const token = localStorage.getItem('medarionAuthToken') || 'test-token'; const response = await fetch(`/api/admin/regulatory/${reg.id}`, { method: 'DELETE', headers: { 'Authorization': `Bearer ${token}` } }); const data = await response.json(); if (data.success) { setAlertModal({ isOpen: true, title: 'Success', message: 'Regulatory record deleted successfully', variant: 'success' }); fetchRegulatoryData(regulatoryPage, regulatorySearch || undefined); } else { throw new Error(data.error || 'Failed to delete'); } } catch (err: any) { setAlertModal({ isOpen: true, title: 'Error', message: err?.message || 'Failed to delete regulatory record', variant: 'error' }); } } })} className="p-2 rounded-lg hover:bg-red-50 dark:hover:bg-red-900/20 text-red-600 dark:text-white transition-colors" title="Delete"><Trash2 className="h-4 w-4" /></button>
                           </div>
                         </td>
                       </tr>
                     ))
                   ) : (
-                    <tr><td colSpan={6} className="px-4 py-8 text-center text-[var(--color-text-secondary)]">No regulatory records found</td></tr>
+                    <tr><td colSpan={6} className="px-4 py-8 text-center text-slate-500 dark:text-slate-400">No regulatory records found</td></tr>
                   )}
                 </tbody>
               </table>
@@ -10159,7 +10194,7 @@ const AdminDashboard: React.FC = () => {
           )}
           {regulatoryData?.pagination && (
             <div className="flex items-center justify-between">
-              <span className="text-sm text-[var(--color-text-secondary)]">Page {regulatoryData.pagination.page} of {Math.ceil(regulatoryData.pagination.total / regulatoryPageSize)}</span>
+              <span className="text-sm text-slate-500 dark:text-slate-400">Page {regulatoryData.pagination.page} of {Math.ceil(regulatoryData.pagination.total / regulatoryPageSize)}</span>
               <div className="flex gap-2">
                 <button onClick={() => setRegulatoryPage(p => Math.max(1, p - 1))} disabled={regulatoryPage === 1} className="btn-outline">Previous</button>
                 <button onClick={() => setRegulatoryPage(p => p + 1)} disabled={!regulatoryData.pagination.has_more} className="btn-outline">Next</button>
@@ -10171,70 +10206,74 @@ const AdminDashboard: React.FC = () => {
 
       {/* Regulatory Ecosystem Module */}
       {selectedDataModule === 'regulatory-ecosystem' && (
-        <div className="space-y-6 pb-8">
-          <div className="flex items-center justify-between">
+        <div className="space-y-4 pb-8">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <div>
-              <h2 className="text-2xl font-bold text-[var(--color-text-primary)]">Regulatory Ecosystem Management</h2>
-              <p className="text-sm text-[var(--color-text-secondary)] mt-1">Manage all regulatory bodies in the platform</p>
+              <h2 className="text-3xl font-bold text-slate-800 dark:text-slate-100 mb-2">Regulatory Ecosystem</h2>
+              <p className="text-sm text-slate-600 dark:text-slate-400">Explore regulatory bodies and compliance across African healthcare markets</p>
             </div>
-            <button onClick={() => { setEditingRegulatoryBody(null); setShowRegulatoryBodyForm(true); }} className="btn-primary flex items-center gap-2">
-              <Plus className="h-4 w-4" /> Add Regulatory Body
+            <button 
+              onClick={() => { setEditingRegulatoryBody(null); setShowRegulatoryBodyForm(true); }} 
+              className="btn-primary-elevated flex items-center gap-2 px-4 py-2 rounded-lg"
+            >
+              <Plus className="h-4 w-4" />
+              <span>Add Regulatory Body</span>
             </button>
           </div>
           <div className="card-glass p-4 rounded-lg">
             <div className="flex gap-4 items-center">
               <div className="flex-1 relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-[var(--color-text-secondary)]" />
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-slate-500 dark:text-slate-400" />
                 <input type="text" placeholder="Search regulatory bodies..." value={regulatoryBodiesSearch} onChange={(e) => setRegulatoryBodiesSearch(e.target.value)} className="input pl-10 w-full" />
               </div>
             </div>
           </div>
           {loading ? (
-            <div className="text-center py-12 text-[var(--color-text-secondary)]">Loading...</div>
+            <div className="text-center py-12 text-slate-500 dark:text-slate-400">Loading...</div>
           ) : error ? (
-            <div className="text-center py-12 text-red-600 dark:text-red-400">{error}</div>
+            <div className="text-center py-12 text-red-600 dark:text-white">{error}</div>
           ) : (
             <div className="card-glass overflow-x-auto">
               <table className="w-full">
                 <thead>
-                  <tr className="border-b border-[var(--color-divider-gray)]">
-                    <th className="px-4 py-3 text-left text-sm font-semibold text-[var(--color-text-primary)]">Name</th>
-                    <th className="px-4 py-3 text-left text-sm font-semibold text-[var(--color-text-primary)]">Country</th>
-                    <th className="px-4 py-3 text-left text-sm font-semibold text-[var(--color-text-primary)]">Abbreviation</th>
-                    <th className="px-4 py-3 text-left text-sm font-semibold text-[var(--color-text-primary)]">Website</th>
-                    <th className="px-4 py-3 text-left text-sm font-semibold text-[var(--color-text-primary)]">Status</th>
-                    <th className="px-4 py-3 text-left text-sm font-semibold text-[var(--color-text-primary)]">Actions</th>
+                  <tr className="border-b border-slate-200 dark:border-slate-700">
+                    <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700 dark:text-slate-200">Name</th>
+                    <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700 dark:text-slate-200">Country</th>
+                    <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700 dark:text-slate-200">Abbreviation</th>
+                    <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700 dark:text-slate-200">Website</th>
+                    <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700 dark:text-slate-200">Status</th>
+                    <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700 dark:text-slate-200">Actions</th>
                   </tr>
                 </thead>
                 <tbody>
                   {regulatoryBodiesData?.bodies && regulatoryBodiesData.bodies.length > 0 ? (
                     regulatoryBodiesData.bodies.map((body: any) => (
-                      <tr key={body.id} className="border-b border-[var(--color-divider-gray)] hover:bg-[var(--color-background-surface)]">
+                      <tr key={body.id} className="border-b border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:bg-slate-800/50">
                         <td className="px-4 py-3">{body.name || 'N/A'}</td>
                         <td className="px-4 py-3">{body.country || 'N/A'}</td>
                         <td className="px-4 py-3">{body.abbreviation || 'N/A'}</td>
                         <td className="px-4 py-3">
                           {body.website ? (
-                            <a href={body.website} target="_blank" rel="noopener noreferrer" className="text-blue-600 dark:text-blue-400 hover:underline">
+                            <a href={body.website} target="_blank" rel="noopener noreferrer" className="text-blue-600 dark:text-white hover:underline">
                               {body.website.length > 30 ? body.website.substring(0, 30) + '...' : body.website}
                             </a>
                           ) : 'N/A'}
                         </td>
                         <td className="px-4 py-3">
-                          <span className={`px-2 py-1 rounded-full text-xs ${body.is_active ? 'bg-green-100 dark:bg-green-900/20 text-green-700 dark:text-green-400' : 'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-400'}`}>
+                          <span className={`px-2 py-1 rounded-full text-xs ${body.is_active ? 'bg-emerald-100 dark:bg-emerald-500/40 text-emerald-700 dark:text-emerald-300' : 'bg-slate-100 dark:bg-slate-500/40 text-slate-700 dark:text-slate-200'}`}>
                             {body.is_active ? 'Active' : 'Inactive'}
                           </span>
                         </td>
                         <td className="px-4 py-3">
                           <div className="flex gap-2">
-                            <button onClick={() => { setEditingRegulatoryBody(body); setShowRegulatoryBodyForm(true); }} className="p-2 rounded-lg hover:bg-blue-50 dark:hover:bg-blue-900/20 text-blue-600 dark:text-blue-400 transition-colors" title="Edit"><Edit className="h-4 w-4" /></button>
-                            <button onClick={() => setConfirmModal({ isOpen: true, title: 'Delete Regulatory Body', message: `Are you sure you want to delete "${body.name}"?`, onConfirm: async () => { try { const token = localStorage.getItem('medarionAuthToken') || 'test-token'; const response = await fetch(`/api/admin/regulatory-bodies/${body.id}`, { method: 'DELETE', headers: { 'Authorization': `Bearer ${token}` } }); const data = await response.json(); if (data.success) { setAlertModal({ isOpen: true, title: 'Success', message: 'Regulatory body deleted successfully', variant: 'success' }); fetchRegulatoryBodiesData(regulatoryBodiesPage, regulatoryBodiesSearch || undefined); } else { throw new Error(data.error || 'Failed to delete'); } } catch (err: any) { setAlertModal({ isOpen: true, title: 'Error', message: err?.message || 'Failed to delete regulatory body', variant: 'error' }); } } })} className="p-2 rounded-lg hover:bg-red-50 dark:hover:bg-red-900/20 text-red-600 dark:text-red-400 transition-colors" title="Delete"><Trash2 className="h-4 w-4" /></button>
+                            <button onClick={() => { setEditingRegulatoryBody(body); setShowRegulatoryBodyForm(true); }} className="p-2 rounded-lg hover:bg-blue-50 dark:hover:bg-blue-900/20 text-blue-600 dark:text-white transition-colors" title="Edit"><Edit className="h-4 w-4" /></button>
+                            <button onClick={() => setConfirmModal({ isOpen: true, title: 'Delete Regulatory Body', message: `Are you sure you want to delete "${body.name}"?`, onConfirm: async () => { try { const token = localStorage.getItem('medarionAuthToken') || 'test-token'; const response = await fetch(`/api/admin/regulatory-bodies/${body.id}`, { method: 'DELETE', headers: { 'Authorization': `Bearer ${token}` } }); const data = await response.json(); if (data.success) { setAlertModal({ isOpen: true, title: 'Success', message: 'Regulatory body deleted successfully', variant: 'success' }); fetchRegulatoryBodiesData(regulatoryBodiesPage, regulatoryBodiesSearch || undefined); } else { throw new Error(data.error || 'Failed to delete'); } } catch (err: any) { setAlertModal({ isOpen: true, title: 'Error', message: err?.message || 'Failed to delete regulatory body', variant: 'error' }); } } })} className="p-2 rounded-lg hover:bg-red-50 dark:hover:bg-red-900/20 text-red-600 dark:text-white transition-colors" title="Delete"><Trash2 className="h-4 w-4" /></button>
                           </div>
                         </td>
                       </tr>
                     ))
                   ) : (
-                    <tr><td colSpan={6} className="px-4 py-8 text-center text-[var(--color-text-secondary)]">No regulatory bodies found</td></tr>
+                    <tr><td colSpan={6} className="px-4 py-8 text-center text-slate-500 dark:text-slate-400">No regulatory bodies found</td></tr>
                   )}
                 </tbody>
               </table>
@@ -10242,7 +10281,7 @@ const AdminDashboard: React.FC = () => {
           )}
           {regulatoryBodiesData?.pagination && (
             <div className="flex items-center justify-between">
-              <span className="text-sm text-[var(--color-text-secondary)]">Page {regulatoryBodiesData.pagination.page} of {Math.ceil(regulatoryBodiesData.pagination.total / regulatoryBodiesPageSize)}</span>
+              <span className="text-sm text-slate-500 dark:text-slate-400">Page {regulatoryBodiesData.pagination.page} of {Math.ceil(regulatoryBodiesData.pagination.total / regulatoryBodiesPageSize)}</span>
               <div className="flex gap-2">
                 <button onClick={() => setRegulatoryBodiesPage(p => Math.max(1, p - 1))} disabled={regulatoryBodiesPage === 1} className="btn-outline">Previous</button>
                 <button onClick={() => setRegulatoryBodiesPage(p => p + 1)} disabled={!regulatoryBodiesData.pagination.has_more} className="btn-outline">Next</button>
@@ -10254,45 +10293,49 @@ const AdminDashboard: React.FC = () => {
 
       {/* Public Markets Module */}
       {selectedDataModule === 'public-markets' && (
-        <div className="space-y-6 pb-8">
-          <div className="flex items-center justify-between">
+        <div className="space-y-4 pb-8">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <div>
-              <h2 className="text-2xl font-bold text-[var(--color-text-primary)]">Public Markets Management</h2>
-              <p className="text-sm text-[var(--color-text-secondary)] mt-1">Manage all public market stocks in the platform</p>
+              <h2 className="text-3xl font-bold text-slate-800 dark:text-slate-100 mb-2">Public Markets</h2>
+              <p className="text-sm text-slate-600 dark:text-slate-400">Comprehensive financial data hub for African healthcare public markets</p>
             </div>
-            <button onClick={() => { setEditingStock(null); setShowStockForm(true); }} className="btn-primary flex items-center gap-2">
-              <Plus className="h-4 w-4" /> Add Stock
+            <button 
+              onClick={() => { setEditingStock(null); setShowStockForm(true); }} 
+              className="btn-primary-elevated flex items-center gap-2 px-4 py-2 rounded-lg"
+            >
+              <Plus className="h-4 w-4" />
+              <span>Add Stock</span>
             </button>
           </div>
           <div className="card-glass p-4 rounded-lg">
             <div className="flex gap-4 items-center">
               <div className="flex-1 relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-[var(--color-text-secondary)]" />
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-slate-500 dark:text-slate-400" />
                 <input type="text" placeholder="Search stocks..." value={publicMarketsSearch} onChange={(e) => setPublicMarketsSearch(e.target.value)} className="input pl-10 w-full" />
               </div>
             </div>
           </div>
           {loading ? (
-            <div className="text-center py-12 text-[var(--color-text-secondary)]">Loading...</div>
+            <div className="text-center py-12 text-slate-500 dark:text-slate-400">Loading...</div>
           ) : error ? (
-            <div className="text-center py-12 text-red-600 dark:text-red-400">{error}</div>
+            <div className="text-center py-12 text-red-600 dark:text-white">{error}</div>
           ) : (
             <div className="card-glass overflow-x-auto">
               <table className="w-full">
                 <thead>
-                  <tr className="border-b border-[var(--color-divider-gray)]">
-                    <th className="px-4 py-3 text-left text-sm font-semibold text-[var(--color-text-primary)]">Company</th>
-                    <th className="px-4 py-3 text-left text-sm font-semibold text-[var(--color-text-primary)]">Ticker</th>
-                    <th className="px-4 py-3 text-left text-sm font-semibold text-[var(--color-text-primary)]">Exchange</th>
-                    <th className="px-4 py-3 text-left text-sm font-semibold text-[var(--color-text-primary)]">Price</th>
-                    <th className="px-4 py-3 text-left text-sm font-semibold text-[var(--color-text-primary)]">Market Cap</th>
-                    <th className="px-4 py-3 text-left text-sm font-semibold text-[var(--color-text-primary)]">Actions</th>
+                  <tr className="border-b border-slate-200 dark:border-slate-700">
+                    <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700 dark:text-slate-200">Company</th>
+                    <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700 dark:text-slate-200">Ticker</th>
+                    <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700 dark:text-slate-200">Exchange</th>
+                    <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700 dark:text-slate-200">Price</th>
+                    <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700 dark:text-slate-200">Market Cap</th>
+                    <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700 dark:text-slate-200">Actions</th>
                   </tr>
                 </thead>
                 <tbody>
                   {publicMarketsData?.stocks && publicMarketsData.stocks.length > 0 ? (
                     publicMarketsData.stocks.map((stock: any) => (
-                      <tr key={stock.id} className="border-b border-[var(--color-divider-gray)] hover:bg-[var(--color-background-surface)]">
+                      <tr key={stock.id} className="border-b border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:bg-slate-800/50">
                         <td className="px-4 py-3">{stock.company_name || 'N/A'}</td>
                         <td className="px-4 py-3">{stock.ticker || 'N/A'}</td>
                         <td className="px-4 py-3">{stock.exchange || 'N/A'}</td>
@@ -10300,14 +10343,14 @@ const AdminDashboard: React.FC = () => {
                         <td className="px-4 py-3">{stock.market_cap ? `$${(parseFloat(stock.market_cap) / 1000000).toFixed(2)}M` : 'N/A'}</td>
                         <td className="px-4 py-3">
                           <div className="flex gap-2">
-                            <button onClick={() => { setEditingStock(stock); setShowStockForm(true); }} className="p-2 rounded-lg hover:bg-blue-50 dark:hover:bg-blue-900/20 text-blue-600 dark:text-blue-400 transition-colors" title="Edit"><Edit className="h-4 w-4" /></button>
-                            <button onClick={() => setConfirmModal({ isOpen: true, title: 'Delete Stock', message: `Are you sure you want to delete "${stock.company_name}"?`, onConfirm: async () => { try { const token = localStorage.getItem('medarionAuthToken') || 'test-token'; const response = await fetch(`/api/admin/public-markets/${stock.id}`, { method: 'DELETE', headers: { 'Authorization': `Bearer ${token}` } }); const data = await response.json(); if (data.success) { setAlertModal({ isOpen: true, title: 'Success', message: 'Stock deleted successfully', variant: 'success' }); fetchPublicMarketsData(publicMarketsPage, publicMarketsSearch || undefined); } else { throw new Error(data.error || 'Failed to delete'); } } catch (err: any) { setAlertModal({ isOpen: true, title: 'Error', message: err?.message || 'Failed to delete stock', variant: 'error' }); } } })} className="p-2 rounded-lg hover:bg-red-50 dark:hover:bg-red-900/20 text-red-600 dark:text-red-400 transition-colors" title="Delete"><Trash2 className="h-4 w-4" /></button>
+                            <button onClick={() => { setEditingStock(stock); setShowStockForm(true); }} className="p-2 rounded-lg hover:bg-blue-50 dark:hover:bg-blue-900/20 text-blue-600 dark:text-white transition-colors" title="Edit"><Edit className="h-4 w-4" /></button>
+                            <button onClick={() => setConfirmModal({ isOpen: true, title: 'Delete Stock', message: `Are you sure you want to delete "${stock.company_name}"?`, onConfirm: async () => { try { const token = localStorage.getItem('medarionAuthToken') || 'test-token'; const response = await fetch(`/api/admin/public-markets/${stock.id}`, { method: 'DELETE', headers: { 'Authorization': `Bearer ${token}` } }); const data = await response.json(); if (data.success) { setAlertModal({ isOpen: true, title: 'Success', message: 'Stock deleted successfully', variant: 'success' }); fetchPublicMarketsData(publicMarketsPage, publicMarketsSearch || undefined); } else { throw new Error(data.error || 'Failed to delete'); } } catch (err: any) { setAlertModal({ isOpen: true, title: 'Error', message: err?.message || 'Failed to delete stock', variant: 'error' }); } } })} className="p-2 rounded-lg hover:bg-red-50 dark:hover:bg-red-900/20 text-red-600 dark:text-white transition-colors" title="Delete"><Trash2 className="h-4 w-4" /></button>
                           </div>
                         </td>
                       </tr>
                     ))
                   ) : (
-                    <tr><td colSpan={6} className="px-4 py-8 text-center text-[var(--color-text-secondary)]">No stocks found</td></tr>
+                    <tr><td colSpan={6} className="px-4 py-8 text-center text-slate-500 dark:text-slate-400">No stocks found</td></tr>
                   )}
                 </tbody>
               </table>
@@ -10315,7 +10358,7 @@ const AdminDashboard: React.FC = () => {
           )}
           {publicMarketsData?.pagination && (
             <div className="flex items-center justify-between">
-              <span className="text-sm text-[var(--color-text-secondary)]">Page {publicMarketsData.pagination.page} of {Math.ceil(publicMarketsData.pagination.total / publicMarketsPageSize)}</span>
+              <span className="text-sm text-slate-500 dark:text-slate-400">Page {publicMarketsData.pagination.page} of {Math.ceil(publicMarketsData.pagination.total / publicMarketsPageSize)}</span>
               <div className="flex gap-2">
                 <button onClick={() => setPublicMarketsPage(p => Math.max(1, p - 1))} disabled={publicMarketsPage === 1} className="btn-outline">Previous</button>
                 <button onClick={() => setPublicMarketsPage(p => p + 1)} disabled={!publicMarketsData.pagination.has_more} className="btn-outline">Next</button>
@@ -10327,58 +10370,62 @@ const AdminDashboard: React.FC = () => {
 
       {/* Clinical Centers Module */}
       {selectedDataModule === 'clinical-centers' && (
-        <div className="space-y-6 pb-8">
-          <div className="flex items-center justify-between">
+        <div className="space-y-4 pb-8">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <div>
-              <h2 className="text-2xl font-bold text-[var(--color-text-primary)]">Clinical Centers Management</h2>
-              <p className="text-sm text-[var(--color-text-secondary)] mt-1">Manage all clinical centers in the platform</p>
+              <h2 className="text-3xl font-bold text-slate-800 dark:text-slate-100 mb-2">Clinical Centers</h2>
+              <p className="text-sm text-slate-600 dark:text-slate-400">Discover centers conducting clinical trials and research across Africa</p>
             </div>
-            <button onClick={() => { setEditingCenter(null); setShowCenterForm(true); }} className="btn-primary flex items-center gap-2">
-              <Plus className="h-4 w-4" /> Add Clinical Center
+            <button 
+              onClick={() => { setEditingCenter(null); setShowCenterForm(true); }} 
+              className="btn-primary-elevated flex items-center gap-2 px-4 py-2 rounded-lg"
+            >
+              <Plus className="h-4 w-4" />
+              <span>Add Clinical Center</span>
             </button>
           </div>
           <div className="card-glass p-4 rounded-lg">
             <div className="flex gap-4 items-center">
               <div className="flex-1 relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-[var(--color-text-secondary)]" />
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-slate-500 dark:text-slate-400" />
                 <input type="text" placeholder="Search clinical centers..." value={clinicalCentersSearch} onChange={(e) => setClinicalCentersSearch(e.target.value)} className="input pl-10 w-full" />
               </div>
             </div>
           </div>
           {loading ? (
-            <div className="text-center py-12 text-[var(--color-text-secondary)]">Loading...</div>
+            <div className="text-center py-12 text-slate-500 dark:text-slate-400">Loading...</div>
           ) : error ? (
-            <div className="text-center py-12 text-red-600 dark:text-red-400">{error}</div>
+            <div className="text-center py-12 text-red-600 dark:text-white">{error}</div>
           ) : (
             <div className="card-glass overflow-x-auto">
               <table className="w-full">
                 <thead>
-                  <tr className="border-b border-[var(--color-divider-gray)]">
-                    <th className="px-4 py-3 text-left text-sm font-semibold text-[var(--color-text-primary)]">Name</th>
-                    <th className="px-4 py-3 text-left text-sm font-semibold text-[var(--color-text-primary)]">Country</th>
-                    <th className="px-4 py-3 text-left text-sm font-semibold text-[var(--color-text-primary)]">City</th>
-                    <th className="px-4 py-3 text-left text-sm font-semibold text-[var(--color-text-primary)]">Capacity</th>
-                    <th className="px-4 py-3 text-left text-sm font-semibold text-[var(--color-text-primary)]">Actions</th>
+                  <tr className="border-b border-slate-200 dark:border-slate-700">
+                    <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700 dark:text-slate-200">Name</th>
+                    <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700 dark:text-slate-200">Country</th>
+                    <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700 dark:text-slate-200">City</th>
+                    <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700 dark:text-slate-200">Capacity</th>
+                    <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700 dark:text-slate-200">Actions</th>
                   </tr>
                 </thead>
                 <tbody>
                   {clinicalCentersData?.centers && clinicalCentersData.centers.length > 0 ? (
                     clinicalCentersData.centers.map((center: any) => (
-                      <tr key={center.id} className="border-b border-[var(--color-divider-gray)] hover:bg-[var(--color-background-surface)]">
+                      <tr key={center.id} className="border-b border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:bg-slate-800/50">
                         <td className="px-4 py-3">{center.name || 'N/A'}</td>
                         <td className="px-4 py-3">{center.country || 'N/A'}</td>
                         <td className="px-4 py-3">{center.city || 'N/A'}</td>
                         <td className="px-4 py-3">{center.capacity_patients || 'N/A'}</td>
                         <td className="px-4 py-3">
                           <div className="flex gap-2">
-                            <button onClick={() => { setEditingCenter(center); setShowCenterForm(true); }} className="p-2 rounded-lg hover:bg-blue-50 dark:hover:bg-blue-900/20 text-blue-600 dark:text-blue-400 transition-colors" title="Edit"><Edit className="h-4 w-4" /></button>
-                            <button onClick={() => setConfirmModal({ isOpen: true, title: 'Delete Clinical Center', message: `Are you sure you want to delete "${center.name}"?`, onConfirm: async () => { try { const token = localStorage.getItem('medarionAuthToken') || 'test-token'; const response = await fetch(`/api/admin/clinical-centers/${center.id}`, { method: 'DELETE', headers: { 'Authorization': `Bearer ${token}` } }); const data = await response.json(); if (data.success) { setAlertModal({ isOpen: true, title: 'Success', message: 'Clinical center deleted successfully', variant: 'success' }); fetchClinicalCentersData(clinicalCentersPage, clinicalCentersSearch || undefined); } else { throw new Error(data.error || 'Failed to delete'); } } catch (err: any) { setAlertModal({ isOpen: true, title: 'Error', message: err?.message || 'Failed to delete clinical center', variant: 'error' }); } } })} className="p-2 rounded-lg hover:bg-red-50 dark:hover:bg-red-900/20 text-red-600 dark:text-red-400 transition-colors" title="Delete"><Trash2 className="h-4 w-4" /></button>
+                            <button onClick={() => { setEditingCenter(center); setShowCenterForm(true); }} className="p-2 rounded-lg hover:bg-blue-50 dark:hover:bg-blue-900/20 text-blue-600 dark:text-white transition-colors" title="Edit"><Edit className="h-4 w-4" /></button>
+                            <button onClick={() => setConfirmModal({ isOpen: true, title: 'Delete Clinical Center', message: `Are you sure you want to delete "${center.name}"?`, onConfirm: async () => { try { const token = localStorage.getItem('medarionAuthToken') || 'test-token'; const response = await fetch(`/api/admin/clinical-centers/${center.id}`, { method: 'DELETE', headers: { 'Authorization': `Bearer ${token}` } }); const data = await response.json(); if (data.success) { setAlertModal({ isOpen: true, title: 'Success', message: 'Clinical center deleted successfully', variant: 'success' }); fetchClinicalCentersData(clinicalCentersPage, clinicalCentersSearch || undefined); } else { throw new Error(data.error || 'Failed to delete'); } } catch (err: any) { setAlertModal({ isOpen: true, title: 'Error', message: err?.message || 'Failed to delete clinical center', variant: 'error' }); } } })} className="p-2 rounded-lg hover:bg-red-50 dark:hover:bg-red-900/20 text-red-600 dark:text-white transition-colors" title="Delete"><Trash2 className="h-4 w-4" /></button>
                           </div>
                         </td>
                       </tr>
                     ))
                   ) : (
-                    <tr><td colSpan={5} className="px-4 py-8 text-center text-[var(--color-text-secondary)]">No clinical centers found</td></tr>
+                    <tr><td colSpan={5} className="px-4 py-8 text-center text-slate-500 dark:text-slate-400">No clinical centers found</td></tr>
                   )}
                 </tbody>
               </table>
@@ -10386,7 +10433,7 @@ const AdminDashboard: React.FC = () => {
           )}
           {clinicalCentersData?.pagination && (
             <div className="flex items-center justify-between">
-              <span className="text-sm text-[var(--color-text-secondary)]">Page {clinicalCentersData.pagination.page} of {Math.ceil(clinicalCentersData.pagination.total / clinicalCentersPageSize)}</span>
+              <span className="text-sm text-slate-500 dark:text-slate-400">Page {clinicalCentersData.pagination.page} of {Math.ceil(clinicalCentersData.pagination.total / clinicalCentersPageSize)}</span>
               <div className="flex gap-2">
                 <button onClick={() => setClinicalCentersPage(p => Math.max(1, p - 1))} disabled={clinicalCentersPage === 1} className="btn-outline">Previous</button>
                 <button onClick={() => setClinicalCentersPage(p => p + 1)} disabled={!clinicalCentersData.pagination.has_more} className="btn-outline">Next</button>
@@ -10398,58 +10445,62 @@ const AdminDashboard: React.FC = () => {
 
       {/* Investigators Module */}
       {selectedDataModule === 'investigators' && (
-        <div className="space-y-6 pb-8">
-          <div className="flex items-center justify-between">
+        <div className="space-y-4 pb-8">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <div>
-              <h2 className="text-2xl font-bold text-[var(--color-text-primary)]">Investigators Management</h2>
-              <p className="text-sm text-[var(--color-text-secondary)] mt-1">Manage all investigators in the platform</p>
+              <h2 className="text-3xl font-bold text-slate-800 dark:text-slate-100 mb-2">Investigators</h2>
+              <p className="text-sm text-slate-600 dark:text-slate-400">Explore clinical trial investigators and physicians across Africa</p>
             </div>
-            <button onClick={() => { setEditingInvestigator(null); setShowInvestigatorForm(true); }} className="btn-primary flex items-center gap-2">
-              <Plus className="h-4 w-4" /> Add Investigator
+            <button 
+              onClick={() => { setEditingInvestigator(null); setShowInvestigatorForm(true); }} 
+              className="btn-primary-elevated flex items-center gap-2 px-4 py-2 rounded-lg"
+            >
+              <Plus className="h-4 w-4" />
+              <span>Add Investigator</span>
             </button>
           </div>
           <div className="card-glass p-4 rounded-lg">
             <div className="flex gap-4 items-center">
               <div className="flex-1 relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-[var(--color-text-secondary)]" />
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-slate-500 dark:text-slate-400" />
                 <input type="text" placeholder="Search investigators..." value={investigatorsSearch} onChange={(e) => setInvestigatorsSearch(e.target.value)} className="input pl-10 w-full" />
               </div>
             </div>
           </div>
           {loading ? (
-            <div className="text-center py-12 text-[var(--color-text-secondary)]">Loading...</div>
+            <div className="text-center py-12 text-slate-500 dark:text-slate-400">Loading...</div>
           ) : error ? (
-            <div className="text-center py-12 text-red-600 dark:text-red-400">{error}</div>
+            <div className="text-center py-12 text-red-600 dark:text-white">{error}</div>
           ) : (
             <div className="card-glass overflow-x-auto">
               <table className="w-full">
                 <thead>
-                  <tr className="border-b border-[var(--color-divider-gray)]">
-                    <th className="px-4 py-3 text-left text-sm font-semibold text-[var(--color-text-primary)]">Name</th>
-                    <th className="px-4 py-3 text-left text-sm font-semibold text-[var(--color-text-primary)]">Title</th>
-                    <th className="px-4 py-3 text-left text-sm font-semibold text-[var(--color-text-primary)]">Affiliation</th>
-                    <th className="px-4 py-3 text-left text-sm font-semibold text-[var(--color-text-primary)]">Country</th>
-                    <th className="px-4 py-3 text-left text-sm font-semibold text-[var(--color-text-primary)]">Actions</th>
+                  <tr className="border-b border-slate-200 dark:border-slate-700">
+                    <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700 dark:text-slate-200">Name</th>
+                    <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700 dark:text-slate-200">Title</th>
+                    <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700 dark:text-slate-200">Affiliation</th>
+                    <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700 dark:text-slate-200">Country</th>
+                    <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700 dark:text-slate-200">Actions</th>
                   </tr>
                 </thead>
                 <tbody>
                   {investigatorsData?.investigators && investigatorsData.investigators.length > 0 ? (
                     investigatorsData.investigators.map((investigator: any) => (
-                      <tr key={investigator.id} className="border-b border-[var(--color-divider-gray)] hover:bg-[var(--color-background-surface)]">
+                      <tr key={investigator.id} className="border-b border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:bg-slate-800/50">
                         <td className="px-4 py-3">{(investigator.first_name && investigator.last_name) ? `${investigator.first_name} ${investigator.last_name}` : investigator.name || 'N/A'}</td>
                         <td className="px-4 py-3">{investigator.title || 'N/A'}</td>
                         <td className="px-4 py-3">{investigator.affiliation || 'N/A'}</td>
                         <td className="px-4 py-3">{investigator.country || 'N/A'}</td>
                         <td className="px-4 py-3">
                           <div className="flex gap-2">
-                            <button onClick={() => { setEditingInvestigator(investigator); setShowInvestigatorForm(true); }} className="p-2 rounded-lg hover:bg-blue-50 dark:hover:bg-blue-900/20 text-blue-600 dark:text-blue-400 transition-colors" title="Edit"><Edit className="h-4 w-4" /></button>
-                            <button onClick={() => setConfirmModal({ isOpen: true, title: 'Delete Investigator', message: `Are you sure you want to delete this investigator?`, onConfirm: async () => { try { const token = localStorage.getItem('medarionAuthToken') || 'test-token'; const response = await fetch(`/api/admin/investigators/${investigator.id}`, { method: 'DELETE', headers: { 'Authorization': `Bearer ${token}` } }); const data = await response.json(); if (data.success) { setAlertModal({ isOpen: true, title: 'Success', message: 'Investigator deleted successfully', variant: 'success' }); fetchInvestigatorsData(investigatorsPage, investigatorsSearch || undefined); } else { throw new Error(data.error || 'Failed to delete'); } } catch (err: any) { setAlertModal({ isOpen: true, title: 'Error', message: err?.message || 'Failed to delete investigator', variant: 'error' }); } } })} className="p-2 rounded-lg hover:bg-red-50 dark:hover:bg-red-900/20 text-red-600 dark:text-red-400 transition-colors" title="Delete"><Trash2 className="h-4 w-4" /></button>
+                            <button onClick={() => { setEditingInvestigator(investigator); setShowInvestigatorForm(true); }} className="p-2 rounded-lg hover:bg-blue-50 dark:hover:bg-blue-900/20 text-blue-600 dark:text-white transition-colors" title="Edit"><Edit className="h-4 w-4" /></button>
+                            <button onClick={() => setConfirmModal({ isOpen: true, title: 'Delete Investigator', message: `Are you sure you want to delete this investigator?`, onConfirm: async () => { try { const token = localStorage.getItem('medarionAuthToken') || 'test-token'; const response = await fetch(`/api/admin/investigators/${investigator.id}`, { method: 'DELETE', headers: { 'Authorization': `Bearer ${token}` } }); const data = await response.json(); if (data.success) { setAlertModal({ isOpen: true, title: 'Success', message: 'Investigator deleted successfully', variant: 'success' }); fetchInvestigatorsData(investigatorsPage, investigatorsSearch || undefined); } else { throw new Error(data.error || 'Failed to delete'); } } catch (err: any) { setAlertModal({ isOpen: true, title: 'Error', message: err?.message || 'Failed to delete investigator', variant: 'error' }); } } })} className="p-2 rounded-lg hover:bg-red-50 dark:hover:bg-red-900/20 text-red-600 dark:text-white transition-colors" title="Delete"><Trash2 className="h-4 w-4" /></button>
                           </div>
                         </td>
                       </tr>
                     ))
                   ) : (
-                    <tr><td colSpan={5} className="px-4 py-8 text-center text-[var(--color-text-secondary)]">No investigators found</td></tr>
+                    <tr><td colSpan={5} className="px-4 py-8 text-center text-slate-500 dark:text-slate-400">No investigators found</td></tr>
                   )}
                 </tbody>
               </table>
@@ -10457,7 +10508,7 @@ const AdminDashboard: React.FC = () => {
           )}
           {investigatorsData?.pagination && (
             <div className="flex items-center justify-between">
-              <span className="text-sm text-[var(--color-text-secondary)]">Page {investigatorsData.pagination.page} of {Math.ceil(investigatorsData.pagination.total / investigatorsPageSize)}</span>
+              <span className="text-sm text-slate-500 dark:text-slate-400">Page {investigatorsData.pagination.page} of {Math.ceil(investigatorsData.pagination.total / investigatorsPageSize)}</span>
               <div className="flex gap-2">
                 <button onClick={() => setInvestigatorsPage(p => Math.max(1, p - 1))} disabled={investigatorsPage === 1} className="btn-outline">Previous</button>
                 <button onClick={() => setInvestigatorsPage(p => p + 1)} disabled={!investigatorsData.pagination.has_more} className="btn-outline">Next</button>
@@ -10469,60 +10520,52 @@ const AdminDashboard: React.FC = () => {
 
       {/* Nation Pulse Module */}
       {selectedDataModule === 'nation-pulse' && (
-        <div className="space-y-6 pb-8">
-          <div className="flex items-center justify-between">
-            <div>
-              <h2 className="text-2xl font-bold text-[var(--color-text-primary)]">Nation Pulse Data Management</h2>
-              <p className="text-sm text-[var(--color-text-secondary)] mt-1">Manage health and economic indicators</p>
-            </div>
-            <button onClick={() => { setEditingNationPulse(null); setShowNationPulseForm(true); }} className="btn-primary flex items-center gap-2">
-              <Plus className="h-4 w-4" /> Add Data Point
-            </button>
+        <div className="space-y-4 pb-8">
+          <div>
+            <h2 className="text-3xl font-bold text-slate-800 dark:text-slate-100 mb-2">Nation Pulse</h2>
+            <p className="text-sm text-slate-600 dark:text-slate-400">Health and economic indicators across African nations (read-only)</p>
           </div>
           <div className="card-glass p-4 rounded-lg">
             <div className="flex gap-4 items-center">
               <div className="flex-1 relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-[var(--color-text-secondary)]" />
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-slate-500 dark:text-slate-400" />
                 <input type="text" placeholder="Search metrics..." value={nationPulseSearch} onChange={(e) => setNationPulseSearch(e.target.value)} className="input pl-10 w-full" />
               </div>
             </div>
           </div>
           {loading ? (
-            <div className="text-center py-12 text-[var(--color-text-secondary)]">Loading...</div>
+            <div className="text-center py-12 text-slate-500 dark:text-slate-400">Loading...</div>
           ) : error ? (
-            <div className="text-center py-12 text-red-600 dark:text-red-400">{error}</div>
+            <div className="text-center py-12 text-red-600 dark:text-white">{error}</div>
           ) : (
             <div className="card-glass overflow-x-auto">
               <table className="w-full">
                 <thead>
-                  <tr className="border-b border-[var(--color-divider-gray)]">
-                    <th className="px-4 py-3 text-left text-sm font-semibold text-[var(--color-text-primary)]">Country</th>
-                    <th className="px-4 py-3 text-left text-sm font-semibold text-[var(--color-text-primary)]">Data Type</th>
-                    <th className="px-4 py-3 text-left text-sm font-semibold text-[var(--color-text-primary)]">Metric</th>
-                    <th className="px-4 py-3 text-left text-sm font-semibold text-[var(--color-text-primary)]">Value</th>
-                    <th className="px-4 py-3 text-left text-sm font-semibold text-[var(--color-text-primary)]">Year</th>
-                    <th className="px-4 py-3 text-left text-sm font-semibold text-[var(--color-text-primary)]">Actions</th>
+                  <tr className="border-b border-slate-200 dark:border-slate-700">
+                    <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700 dark:text-slate-200">Country</th>
+                    <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700 dark:text-slate-200">Data Type</th>
+                    <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700 dark:text-slate-200">Metric</th>
+                    <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700 dark:text-slate-200">Value</th>
+                    <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700 dark:text-slate-200">Year</th>
+                    <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700 dark:text-slate-200">Actions</th>
                   </tr>
                 </thead>
                 <tbody>
                   {nationPulseData?.data && nationPulseData.data.length > 0 ? (
                     nationPulseData.data.map((item: any) => (
-                      <tr key={item.id} className="border-b border-[var(--color-divider-gray)] hover:bg-[var(--color-background-surface)]">
+                      <tr key={item.id} className="border-b border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:bg-slate-800/50">
                         <td className="px-4 py-3">{item.country || 'N/A'}</td>
                         <td className="px-4 py-3">{item.data_type || 'N/A'}</td>
                         <td className="px-4 py-3">{item.metric_name || 'N/A'}</td>
                         <td className="px-4 py-3">{item.metric_value ? `${item.metric_value} ${item.metric_unit || ''}` : 'N/A'}</td>
                         <td className="px-4 py-3">{item.year || 'N/A'}</td>
                         <td className="px-4 py-3">
-                          <div className="flex gap-2">
-                            <button onClick={() => { setEditingNationPulse(item); setShowNationPulseForm(true); }} className="p-2 rounded-lg hover:bg-blue-50 dark:hover:bg-blue-900/20 text-blue-600 dark:text-blue-400 transition-colors" title="Edit"><Edit className="h-4 w-4" /></button>
-                            <button onClick={() => setConfirmModal({ isOpen: true, title: 'Delete Data Point', message: `Are you sure you want to delete this data point?`, onConfirm: async () => { try { const token = localStorage.getItem('medarionAuthToken') || 'test-token'; const response = await fetch(`/api/admin/nation-pulse/${item.id}`, { method: 'DELETE', headers: { 'Authorization': `Bearer ${token}` } }); const data = await response.json(); if (data.success) { setAlertModal({ isOpen: true, title: 'Success', message: 'Data point deleted successfully', variant: 'success' }); fetchNationPulseData(nationPulsePage, nationPulseSearch || undefined); } else { throw new Error(data.error || 'Failed to delete'); } } catch (err: any) { setAlertModal({ isOpen: true, title: 'Error', message: err?.message || 'Failed to delete data point', variant: 'error' }); } } })} className="p-2 rounded-lg hover:bg-red-50 dark:hover:bg-red-900/20 text-red-600 dark:text-red-400 transition-colors" title="Delete"><Trash2 className="h-4 w-4" /></button>
-                          </div>
+                          <span className="text-sm text-slate-500 dark:text-slate-400">Read-only</span>
                         </td>
                       </tr>
                     ))
                   ) : (
-                    <tr><td colSpan={6} className="px-4 py-8 text-center text-[var(--color-text-secondary)]">No data found</td></tr>
+                    <tr><td colSpan={6} className="px-4 py-8 text-center text-slate-500 dark:text-slate-400">No data found</td></tr>
                   )}
                 </tbody>
               </table>
@@ -10530,7 +10573,7 @@ const AdminDashboard: React.FC = () => {
           )}
           {nationPulseData?.pagination && (
             <div className="flex items-center justify-between">
-              <span className="text-sm text-[var(--color-text-secondary)]">Page {nationPulseData.pagination.page} of {nationPulseData.pagination.pages || 1}</span>
+              <span className="text-sm text-slate-500 dark:text-slate-400">Page {nationPulseData.pagination.page} of {nationPulseData.pagination.pages || 1}</span>
               <div className="flex gap-2">
                 <button onClick={() => setNationPulsePage(p => Math.max(1, p - 1))} disabled={nationPulsePage === 1} className="btn-outline">Previous</button>
                 <button onClick={() => setNationPulsePage(p => p + 1)} disabled={nationPulseData.pagination.page >= nationPulseData.pagination.pages} className="btn-outline">Next</button>
@@ -10542,60 +10585,52 @@ const AdminDashboard: React.FC = () => {
 
       {/* Fundraising CRM Module */}
       {selectedDataModule === 'fundraising-crm' && (
-        <div className="space-y-6 pb-8">
-          <div className="flex items-center justify-between">
-            <div>
-              <h2 className="text-2xl font-bold text-[var(--color-text-primary)]">Fundraising CRM Management</h2>
-              <p className="text-sm text-[var(--color-text-secondary)] mt-1">Manage investor relationships and pipeline</p>
-            </div>
-            <button onClick={() => { setEditingCRMInvestor(null); setShowCRMInvestorForm(true); }} className="btn-primary flex items-center gap-2">
-              <Plus className="h-4 w-4" /> Add Investor
-            </button>
+        <div className="space-y-4 pb-8">
+          <div>
+            <h2 className="text-3xl font-bold text-slate-800 dark:text-slate-100 mb-2">Fundraising CRM</h2>
+            <p className="text-sm text-slate-600 dark:text-slate-400">View investor relationships and pipeline (account-specific, read-only)</p>
           </div>
           <div className="card-glass p-4 rounded-lg">
             <div className="flex gap-4 items-center">
               <div className="flex-1 relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-[var(--color-text-secondary)]" />
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-slate-500 dark:text-slate-400" />
                 <input type="text" placeholder="Search investors..." value={fundraisingCRMSearch} onChange={(e) => setFundraisingCRMSearch(e.target.value)} className="input pl-10 w-full" />
               </div>
             </div>
           </div>
           {loading ? (
-            <div className="text-center py-12 text-[var(--color-text-secondary)]">Loading...</div>
+            <div className="text-center py-12 text-slate-500 dark:text-slate-400">Loading...</div>
           ) : error ? (
-            <div className="text-center py-12 text-red-600 dark:text-red-400">{error}</div>
+            <div className="text-center py-12 text-red-600 dark:text-white">{error}</div>
           ) : (
             <div className="card-glass overflow-x-auto">
               <table className="w-full">
                 <thead>
-                  <tr className="border-b border-[var(--color-divider-gray)]">
-                    <th className="px-4 py-3 text-left text-sm font-semibold text-[var(--color-text-primary)]">Name</th>
-                    <th className="px-4 py-3 text-left text-sm font-semibold text-[var(--color-text-primary)]">Type</th>
-                    <th className="px-4 py-3 text-left text-sm font-semibold text-[var(--color-text-primary)]">Pipeline Stage</th>
-                    <th className="px-4 py-3 text-left text-sm font-semibold text-[var(--color-text-primary)]">Email</th>
-                    <th className="px-4 py-3 text-left text-sm font-semibold text-[var(--color-text-primary)]">Last Contact</th>
-                    <th className="px-4 py-3 text-left text-sm font-semibold text-[var(--color-text-primary)]">Actions</th>
+                  <tr className="border-b border-slate-200 dark:border-slate-700">
+                    <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700 dark:text-slate-200">Name</th>
+                    <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700 dark:text-slate-200">Type</th>
+                    <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700 dark:text-slate-200">Pipeline Stage</th>
+                    <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700 dark:text-slate-200">Email</th>
+                    <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700 dark:text-slate-200">Last Contact</th>
+                    <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700 dark:text-slate-200">Actions</th>
                   </tr>
                 </thead>
                 <tbody>
                   {fundraisingCRMData?.investors && fundraisingCRMData.investors.length > 0 ? (
                     fundraisingCRMData.investors.map((investor: any) => (
-                      <tr key={investor.id} className="border-b border-[var(--color-divider-gray)] hover:bg-[var(--color-background-surface)]">
+                      <tr key={investor.id} className="border-b border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:bg-slate-800/50">
                         <td className="px-4 py-3">{investor.name || 'N/A'}</td>
                         <td className="px-4 py-3">{investor.type || 'N/A'}</td>
                         <td className="px-4 py-3">{investor.pipeline_stage || 'N/A'}</td>
                         <td className="px-4 py-3">{investor.email || 'N/A'}</td>
                         <td className="px-4 py-3">{investor.last_contact || 'N/A'}</td>
                         <td className="px-4 py-3">
-                          <div className="flex gap-2">
-                            <button onClick={() => { setEditingCRMInvestor(investor); setShowCRMInvestorForm(true); }} className="p-2 rounded-lg hover:bg-blue-50 dark:hover:bg-blue-900/20 text-blue-600 dark:text-blue-400 transition-colors" title="Edit"><Edit className="h-4 w-4" /></button>
-                            <button onClick={() => setConfirmModal({ isOpen: true, title: 'Delete CRM Investor', message: `Are you sure you want to delete this investor?`, onConfirm: async () => { try { const token = localStorage.getItem('medarionAuthToken') || 'test-token'; const response = await fetch(`/api/admin/crm-investors/${investor.id}`, { method: 'DELETE', headers: { 'Authorization': `Bearer ${token}` } }); const data = await response.json(); if (data.success) { setAlertModal({ isOpen: true, title: 'Success', message: 'CRM investor deleted successfully', variant: 'success' }); fetchFundraisingCRMData(fundraisingCRMPage, fundraisingCRMSearch || undefined); } else { throw new Error(data.error || 'Failed to delete'); } } catch (err: any) { setAlertModal({ isOpen: true, title: 'Error', message: err?.message || 'Failed to delete CRM investor', variant: 'error' }); } } })} className="p-2 rounded-lg hover:bg-red-50 dark:hover:bg-red-900/20 text-red-600 dark:text-red-400 transition-colors" title="Delete"><Trash2 className="h-4 w-4" /></button>
-                          </div>
+                          <span className="text-sm text-slate-500 dark:text-slate-400">Read-only</span>
                         </td>
                       </tr>
                     ))
                   ) : (
-                    <tr><td colSpan={6} className="px-4 py-8 text-center text-[var(--color-text-secondary)]">No CRM investors found</td></tr>
+                    <tr><td colSpan={6} className="px-4 py-8 text-center text-slate-500 dark:text-slate-400">No CRM investors found</td></tr>
                   )}
                 </tbody>
               </table>
@@ -10603,7 +10638,7 @@ const AdminDashboard: React.FC = () => {
           )}
           {fundraisingCRMData?.pagination && (
             <div className="flex items-center justify-between">
-              <span className="text-sm text-[var(--color-text-secondary)]">Page {fundraisingCRMData.pagination.page} of {fundraisingCRMData.pagination.pages || 1}</span>
+              <span className="text-sm text-slate-500 dark:text-slate-400">Page {fundraisingCRMData.pagination.page} of {fundraisingCRMData.pagination.pages || 1}</span>
               <div className="flex gap-2">
                 <button onClick={() => setFundraisingCRMPage(p => Math.max(1, p - 1))} disabled={fundraisingCRMPage === 1} className="btn-outline">Previous</button>
                 <button onClick={() => setFundraisingCRMPage(p => p + 1)} disabled={fundraisingCRMData.pagination.page >= fundraisingCRMData.pagination.pages} className="btn-outline">Next</button>
@@ -10612,15 +10647,17 @@ const AdminDashboard: React.FC = () => {
           )}
         </div>
       )}
+        </>
+      )}
 
       {/* Category Manager Modal */}
       {showCategoryManager && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white dark:bg-gray-800 rounded-xl max-w-2xl w-full max-h-[90vh] overflow-hidden border border-gray-200 dark:border-gray-700 shadow-2xl">
+          <div className="bg-white dark:bg-slate-800 rounded-xl max-w-2xl w-full max-h-[700px] overflow-hidden border border-slate-200 dark:border-slate-700 shadow-2xl">
             {/* Modal Header */}
-            <div className="flex items-center justify-between p-6 border-b border-gray-200 dark:border-gray-700 bg-gradient-to-r from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-750">
+            <div className="flex items-center justify-between p-6 border-b border-slate-200 dark:border-slate-700 bg-gradient-to-r from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-750">
               <div>
-                <h3 className="text-xl font-bold text-gray-900 dark:text-white">Blog Categories</h3>
+                <h3 className="text-xl font-bold text-slate-700 dark:text-slate-200">Blog Categories</h3>
                 <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">Manage blog post categories</p>
               </div>
               <button
@@ -10628,7 +10665,7 @@ const AdminDashboard: React.FC = () => {
                   setShowCategoryManager(false);
                   setEditingCategory(null);
                 }}
-                className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 p-2 rounded-lg hover:bg-white dark:hover:bg-gray-700 transition-colors"
+                className="text-gray-500 hover:text-gray-800 dark:text-gray-200 dark:hover:text-gray-200 p-2 rounded-lg hover:bg-white dark:hover:bg-gray-700 transition-colors"
               >
                 <X className="h-6 w-6" />
               </button>
@@ -10651,7 +10688,7 @@ const AdminDashboard: React.FC = () => {
               {editingCategory ? (
                 <div className="space-y-4">
                   <div>
-                    <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">Category Name</label>
+                    <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2">Category Name</label>
                     <input
                       type="text"
                       className="input w-full"
@@ -10665,7 +10702,7 @@ const AdminDashboard: React.FC = () => {
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">Slug</label>
+                    <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2">Slug</label>
                     <input
                       type="text"
                       className="input w-full"
@@ -10708,19 +10745,19 @@ const AdminDashboard: React.FC = () => {
               ) : (
                 <div className="space-y-2">
                   {blogCategories.length === 0 ? (
-                    <div className="text-center py-8 text-[var(--color-text-secondary)]">
+                    <div className="text-center py-8 text-slate-500 dark:text-slate-400">
                       <Database className="h-12 w-12 mx-auto mb-3 opacity-50" />
                       <p>No categories yet</p>
                       <p className="text-sm">Click "Add Category" to create one</p>
                     </div>
                   ) : (
                     blogCategories.map(cat => (
-                      <div key={cat.id || cat.name} className="flex items-center justify-between p-3 bg-[var(--color-background-surface)] rounded-lg border border-[var(--color-divider-gray)]">
+                      <div key={cat.id || cat.name} className="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-800/50 rounded-lg border border-slate-200 dark:border-slate-700">
                         <div className="flex-1">
-                          <div className="font-medium text-[var(--color-text-primary)]">{cat.name}</div>
-                          <div className="text-sm text-[var(--color-text-secondary)]">/{cat.slug}</div>
+                          <div className="font-medium text-slate-700 dark:text-slate-200">{cat.name}</div>
+                          <div className="text-sm text-slate-500 dark:text-slate-400">/{cat.slug}</div>
                           {cat.post_count !== undefined && (
-                            <div className="text-xs text-[var(--color-text-secondary)] mt-1">
+                            <div className="text-xs text-slate-500 dark:text-slate-400 mt-1">
                               {cat.post_count} {cat.post_count === 1 ? 'post' : 'posts'}
                             </div>
                           )}
@@ -10746,7 +10783,7 @@ const AdminDashboard: React.FC = () => {
                                   }
                                 });
                               }}
-                              className="btn-outline px-3 py-1.5 rounded-lg text-sm text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20"
+                              className="btn-outline px-3 py-1.5 rounded-lg text-sm text-red-600 dark:text-white hover:bg-red-50 dark:hover:bg-red-900/20"
                             >
                               <Trash2 className="h-4 w-4" />
                             </button>
@@ -10761,7 +10798,6 @@ const AdminDashboard: React.FC = () => {
           </div>
         </div>
       )}
-
 
       {/* Modals */}
       <AlertModal

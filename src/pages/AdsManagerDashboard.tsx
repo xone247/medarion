@@ -83,7 +83,7 @@ const AdsManagerDashboard: React.FC = () => {
   return (
     <div className="grid grid-cols-4 gap-6">
       {/* Sidebar */}
-      <aside className="lg:col-span-1 space-y-4">
+      <aside className="col-span-1 space-y-4">
         <div className="tile">
           <div className="tile-header flex items-center gap-2">
             <Megaphone className="h-4 w-4 icon-primary" />
@@ -135,7 +135,7 @@ const AdsManagerDashboard: React.FC = () => {
       </aside>
 
       {/* Main */}
-      <section className="lg:col-span-3 space-y-4">
+      <section className="col-span-3 space-y-4">
         <div className="tile">
           <div className="tile-header flex items-center gap-2">
             <h3 className="font-semibold text-[var(--color-text-primary)]">Ads</h3>
@@ -205,7 +205,7 @@ const AdsManagerDashboard: React.FC = () => {
             <div className="grid grid-cols-2 gap-3">
               <input className="input" placeholder="Title" value={editing.title} onChange={e=> setEditing(prev => prev? { ...prev, title: e.target.value } : prev)} />
               <input className="input" placeholder="Advertiser" value={editing.advertiser||''} onChange={e=> setEditing(prev => prev? { ...prev, advertiser: e.target.value } : prev)} />
-              <input className="input md:col-span-2" placeholder="Image URL" value={editing.imageUrl} onChange={e=> setEditing(prev => prev? { ...prev, imageUrl: e.target.value } : prev)} />
+              <input className="input col-span-2" placeholder="Image URL" value={editing.imageUrl} onChange={e=> setEditing(prev => prev? { ...prev, imageUrl: e.target.value } : prev)} />
               <input className="input" placeholder="CTA Text" value={editing.ctaText} onChange={e=> setEditing(prev => prev? { ...prev, ctaText: e.target.value } : prev)} />
               <input className="input" placeholder="Target URL" value={editing.targetUrl} onChange={e=> setEditing(prev => prev? { ...prev, targetUrl: e.target.value } : prev)} />
               <div>
@@ -227,7 +227,7 @@ const AdsManagerDashboard: React.FC = () => {
                   ))}
                 </div>
               </div>
-              <div className="md:col-span-2 flex items-center justify-end gap-2">
+              <div className="col-span-2 flex items-center justify-end gap-2">
                 <button className="btn-outline px-3 py-2 rounded" onClick={()=> setEditing(null)}>Cancel</button>
                 <button className="btn-primary px-3 py-2 rounded flex items-center gap-2" onClick={()=>{
                   const next = ads.some(a=>a.id===editing.id)

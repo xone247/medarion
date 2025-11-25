@@ -212,9 +212,9 @@ const StartupProfile = () => {
   };
 
   return (
-    <div className="bg-[var(--color-background-default)] min-h-screen">
+    <div className="w-full">
       {/* Profile Content */}
-      <div className="p-6 space-y-6">
+      <div className="space-y-6">
         {/* Action Buttons */}
         <div className="flex justify-end gap-2">
           <button
@@ -235,7 +235,7 @@ const StartupProfile = () => {
         </div>
 
       {/* Profile Completion */}
-      <div className="bg-background-surface p-6 rounded-lg border border-divider shadow-sm">
+      <div className="bg-white dark:bg-[var(--color-background-surface)] p-6 rounded-xl border border-gray-200 dark:border-[var(--color-divider-gray)] shadow-soft">
         <div className="flex items-center justify-between mb-4">
           <h3 className="text-lg font-semibold text-text-primary">Profile Completion</h3>
           <span className="text-accent-500 font-bold">85%</span>
@@ -250,9 +250,9 @@ const StartupProfile = () => {
 
       <div className="grid grid-cols-3 gap-6">
         {/* Main Profile */}
-        <div className="lg:col-span-2 space-y-6">
+        <div className="col-span-2 space-y-6">
           {/* Basic Information */}
-          <div className="bg-background-surface p-6 rounded-lg border border-divider shadow-sm">
+          <div className="card-glass p-6">
             <h3 className="text-lg font-semibold text-text-primary mb-4">Basic Information</h3>
             <div className="space-y-4">
               <div>
@@ -300,7 +300,7 @@ const StartupProfile = () => {
           </div>
 
           {/* Company Details */}
-          <div className="bg-background-surface p-6 rounded-lg border border-divider shadow-sm">
+          <div className="card-glass p-6">
             <h3 className="text-lg font-semibold text-text-primary mb-4">Company Details</h3>
             <div className="grid grid-cols-2 gap-4">
               <div>
@@ -372,7 +372,7 @@ const StartupProfile = () => {
           </div>
 
           {/* Key Metrics */}
-          <div className="bg-background-surface p-6 rounded-lg border border-divider shadow-sm">
+          <div className="card-glass p-6">
             <h3 className="text-lg font-semibold text-text-primary mb-4">Key Metrics</h3>
             <div className="grid grid-cols-3 gap-4">
               <div>
@@ -423,7 +423,7 @@ const StartupProfile = () => {
         {/* Sidebar */}
         <div className="space-y-6">
           {/* Contact Information */}
-          <div className="bg-background-surface p-6 rounded-lg border border-divider shadow-sm">
+          <div className="card-glass p-6">
             <h3 className="text-lg font-semibold text-text-primary mb-4">Contact Information</h3>
             <div className="space-y-3">
               <div className="flex items-center space-x-3">
@@ -459,7 +459,7 @@ const StartupProfile = () => {
           </div>
 
           {/* Funding Information */}
-          <div className="bg-background-surface p-6 rounded-lg border border-divider shadow-sm">
+          <div className="card-glass p-6">
             <h3 className="text-lg font-semibold text-text-primary mb-4">Funding</h3>
             <div className="space-y-4">
               <div>
@@ -537,7 +537,7 @@ const StartupProfile = () => {
           </div>
 
           {/* Account Security Section */}
-          <div className="bg-background-surface p-6 rounded-lg border border-divider shadow-sm">
+          <div className="card-glass p-6">
             <h3 className="text-lg font-semibold text-text-primary mb-4 flex items-center space-x-2">
               <Lock className="h-5 w-5 text-[var(--color-primary-teal)]" />
               <span>Account Security</span>
@@ -550,7 +550,7 @@ const StartupProfile = () => {
                 </div>
                 <button
                   onClick={() => setShowPasswordModal(true)}
-                  className="px-4 py-2 rounded-lg bg-[var(--color-primary-teal)] text-white hover:opacity-90 transition-colors flex items-center space-x-2 border border-[color-mix(in_srgb,var(--color-primary-teal),black_10%)]"
+                  className="px-4 py-2 rounded-lg bg-black dark:bg-white text-white dark:text-black hover:opacity-90 dark:hover:opacity-80 transition-colors flex items-center space-x-2 border border-black dark:border-white"
                 >
                   <Lock className="h-4 w-4" />
                   <span>Change Password</span>
@@ -673,7 +673,7 @@ const StartupProfile = () => {
               </button>
             </div>
             
-            <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
+            <div className="grid grid-cols-2 grid-cols-3 gap-4 mb-6">
               <div>
                 <label className="block text-sm font-medium text-text-secondary mb-1">Revenue 2023 (USD)</label>
                 <input

@@ -145,22 +145,22 @@ const NotificationDropdown: React.FC = () => {
       {/* Notification Bell Button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="card-glass p-1.5 sm:p-2 rounded-md relative hover:shadow-soft transition-all duration-200 hover:bg-opacity-90 min-w-[2rem] sm:min-w-[2.5rem] min-h-[2rem] sm:min-h-[2.5rem] flex items-center justify-center"
+        className="card-glass p-1.5 p-2 rounded-md relative hover:shadow-soft transition-all duration-200 hover:bg-opacity-90 min-w-[2rem] min-w-[2.5rem] min-h-[2rem] min-h-[2.5rem] flex items-center justify-center"
         title="Notifications"
       >
-        <Bell className="h-4 w-4 sm:h-5 sm:w-5 text-[var(--color-primary-teal)]" />
+        <Bell className="h-4 w-4 h-5 w-5 text-[var(--color-primary-teal)]" />
       </button>
       
       {/* Notification Counter - Positioned outside the button */}
       {unreadCount > 0 && (
-        <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs sm:text-xs md:text-sm rounded-full min-w-[1.5rem] sm:min-w-[1.75rem] h-6 sm:h-7 px-1.5 sm:px-2 flex items-center justify-center font-bold border-2 border-[var(--color-background-surface)] shadow-lg z-20 whitespace-nowrap">
+        <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs text-xs text-sm rounded-full min-w-[1.5rem] min-w-[1.75rem] h-6 h-7 px-1.5 px-2 flex items-center justify-center font-bold border-2 border-[var(--color-background-surface)] shadow-lg z-20 whitespace-nowrap">
           {unreadCount > 99 ? '99+' : unreadCount}
         </span>
       )}
 
       {/* Dropdown */}
       {isOpen && (
-        <div className="absolute right-0 top-full mt-2 w-[calc(100vw-2rem)] sm:w-80 md:w-96 max-h-96 overflow-hidden bg-[var(--color-background-surface)] border-2 border-[var(--color-divider-gray)] rounded-xl shadow-2xl z-50">
+        <div className="absolute right-0 top-full mt-2 w-[calc(100vw-2rem)] w-80 w-96 max-h-96 overflow-hidden bg-[var(--color-background-surface)] border-2 border-[var(--color-divider-gray)] rounded-xl shadow-2xl z-50">
           {/* Header */}
           <div className="p-4 border-b border-[var(--color-divider-gray)] bg-[var(--color-background-surface)]">
             <div className="flex items-center justify-between">

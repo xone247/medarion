@@ -229,36 +229,26 @@ const BlogPage: React.FC<BlogPageProps> = ({ onBack }) => {
   return (
     <div className="min-h-screen bg-[var(--color-background-default)]">
       {/* Hero Section */}
-      <div className="relative overflow-hidden border-b border-[var(--color-divider-gray)] bg-[var(--color-background-surface)]" style={{ 
-        marginTop: '-100px',
-        marginLeft: '-50vw',
-        marginRight: '-50vw',
-        left: '50%',
-        right: '50%',
-        width: '100vw',
-        paddingTop: '120px',
-        paddingBottom: '48px',
-        position: 'relative',
-      }}>
-        <div aria-hidden className="absolute inset-0 z-0">
+      <div className="page-hero">
+        <div aria-hidden className="page-hero-bg">
           <img
             src={blogHeroUrl}
             alt=""
-            className="w-full h-full object-cover blur-[2px] scale-105 opacity-90"
-            style={{ filter: 'brightness(0.4) saturate(1.1)' }}
+            onError={(e) => {
+              e.currentTarget.src = 'https://images.unsplash.com/photo-1576091160399-112ba8d25d1f?w=1920&h=1080&fit=crop&q=80';
+            }}
           />
-          <div className="absolute inset-0 bg-black/50" />
-          <div className="absolute inset-0 opacity-10 mix-blend-multiply" style={{ background: 'linear-gradient(90deg, var(--color-primary-teal) 0%, var(--color-accent-sky) 100%)' }} />
+          <div className="page-hero-overlay" />
+          <div className="page-hero-gradient" />
         </div>
         
-        <div className="container mx-auto px-4 relative z-10">
-          <div className="max-w-4xl mx-auto text-center">
-            <div className="mx-auto w-16 h-1 rounded-full bg-[var(--color-primary-teal)] mb-6" />
-            <h1 className="text-5xl md:text-6xl font-bold text-white mb-4 leading-tight drop-shadow-lg">
-              Healthcare Insights
+        <div className="page-hero-content">
+          <div className="page-hero-content-inner">
+            <h1 className="page-hero-heading">
+              Arion
             </h1>
-            <p className="text-lg md:text-xl text-white/90 mb-8 max-w-2xl mx-auto drop-shadow-md">
-              Discover the latest trends, innovations, and opportunities in African healthcare markets
+            <p className="page-hero-subtext">
+              Insight Refined. Opportunity Redefined
             </p>
             
             {/* Search Bar */}
@@ -313,7 +303,7 @@ const BlogPage: React.FC<BlogPageProps> = ({ onBack }) => {
                   )}
                 </div>
                 {/* Mobile Dropdown */}
-                <div className="lg:hidden mb-3">
+                <div className="hidden mb-3">
                   <select
                     value={selectedCategory}
                     onChange={(e) => setSelectedCategory(e.target.value)}
@@ -327,7 +317,7 @@ const BlogPage: React.FC<BlogPageProps> = ({ onBack }) => {
                   </select>
                 </div>
                 {/* Desktop Category Buttons - Split into 2 rows */}
-                <div className="hidden lg:grid grid-cols-2 gap-2">
+                <div className="hidden grid grid-cols-2 gap-2">
                   {categories.map((category) => (
                     <button
                       key={category}
@@ -389,7 +379,7 @@ const BlogPage: React.FC<BlogPageProps> = ({ onBack }) => {
                     <div className="grid grid-cols-4 gap-6 mb-6 items-start">
                       {/* Large Featured Post - Left Side (2 columns) */}
                       <article 
-                        className="lg:col-span-2 bg-[var(--color-background-surface)] rounded-2xl shadow-lg overflow-hidden border border-[var(--color-divider-gray)] group cursor-pointer flex flex-col h-full"
+                        className="col-span-2 bg-[var(--color-background-surface)] rounded-2xl shadow-lg overflow-hidden border border-[var(--color-divider-gray)] group cursor-pointer flex flex-col h-full"
                         onClick={() => handleReadPost(paginatedPosts[0]?.id || featuredPost?.id || 0)}
                       >
                         {(() => {
@@ -421,7 +411,7 @@ const BlogPage: React.FC<BlogPageProps> = ({ onBack }) => {
                               </div>
                               {/* Content moved to white section below */}
                               <div className="p-6 bg-white dark:bg-[var(--color-background-surface)] flex-1 flex flex-col">
-                                <h2 className="text-2xl md:text-3xl font-bold text-[var(--color-text-primary)] mb-3 leading-tight line-clamp-2">
+                                <h2 className="text-2xl text-3xl font-bold text-[var(--color-text-primary)] mb-3 leading-tight line-clamp-2">
                                   {mainPost.title}
                                 </h2>
                                 <p className="text-sm text-[var(--color-text-secondary)] mb-4 leading-relaxed line-clamp-2 flex-1">
@@ -448,7 +438,7 @@ const BlogPage: React.FC<BlogPageProps> = ({ onBack }) => {
                       </article>
 
                       {/* Small Compact Posts - Right Side (Stacked Vertically to Match Height) */}
-                      <div className="lg:col-span-2 flex flex-col gap-3 h-full">
+                      <div className="col-span-2 flex flex-col gap-3 h-full">
                         {paginatedPosts.slice(1, 6).map((post) => (
                           <article 
                             key={post.id} 
@@ -478,7 +468,7 @@ const BlogPage: React.FC<BlogPageProps> = ({ onBack }) => {
                     </div>
 
                     {/* Two Rows of Blog Posts Below */}
-                    <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                    <div className="grid grid-cols-2 grid-cols-3 grid-cols-4 gap-6">
                       {paginatedPosts.slice(6, 14).map((post, idx) => (
                         <article 
                           key={post.id} 
@@ -590,7 +580,7 @@ const BlogPage: React.FC<BlogPageProps> = ({ onBack }) => {
                         
                         return (
                           <article 
-                            className="lg:col-span-2 bg-[var(--color-background-surface)] rounded-2xl shadow-lg overflow-hidden border border-[var(--color-divider-gray)] group cursor-pointer flex flex-col h-full"
+                            className="col-span-2 bg-[var(--color-background-surface)] rounded-2xl shadow-lg overflow-hidden border border-[var(--color-divider-gray)] group cursor-pointer flex flex-col h-full"
                           >
                             <div className="relative aspect-[4/3] overflow-hidden bg-black">
                               {embedUrl ? (
@@ -643,7 +633,7 @@ const BlogPage: React.FC<BlogPageProps> = ({ onBack }) => {
                             </div>
                             {/* Content moved to white section below */}
                             <div className="p-6 bg-white dark:bg-[var(--color-background-surface)] flex-1 flex flex-col">
-                              <h2 className="text-2xl md:text-3xl font-bold text-[var(--color-text-primary)] mb-3 leading-tight line-clamp-2">
+                              <h2 className="text-2xl text-3xl font-bold text-[var(--color-text-primary)] mb-3 leading-tight line-clamp-2">
                                 {mainVideo.title}
                               </h2>
                               {mainVideo.description && (
@@ -672,7 +662,7 @@ const BlogPage: React.FC<BlogPageProps> = ({ onBack }) => {
                       })()}
 
                       {/* Small Compact Videos - Right Side (Stacked Vertically to Match Height) */}
-                      <div className="lg:col-span-2 flex flex-col gap-3 h-full">
+                      <div className="col-span-2 flex flex-col gap-3 h-full">
                         {videos.slice(1, 6).map((video) => {
                           const videoId = extractYouTubeId(video.video_url);
                           const embedUrl = videoId ? getYouTubeEmbedUrl(video.video_url, {
@@ -737,7 +727,7 @@ const BlogPage: React.FC<BlogPageProps> = ({ onBack }) => {
                     </div>
 
                     {/* Two Rows of Videos Below */}
-                    <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                    <div className="grid grid-cols-2 grid-cols-3 grid-cols-4 gap-6">
                       {videos.slice(6, 14).map((video) => {
                         const videoId = extractYouTubeId(video.video_url);
                         const embedUrl = videoId ? getYouTubeEmbedUrl(video.video_url, {

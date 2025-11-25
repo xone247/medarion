@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Globe, Mail, Phone, MapPin, Send, ArrowLeft, MessageSquare, Calendar } from 'lucide-react';
+import { Globe, Mail, Phone, MapPin, Send, ArrowLeft, MessageSquare, Calendar, ChevronDown } from 'lucide-react';
 
 interface ContactPageProps {
   onBack: () => void;
@@ -16,6 +16,7 @@ const ContactPage: React.FC<ContactPageProps> = ({ onBack }) => {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(null);
 
   const handleInputChange = (field: string, value: string) => {
     setFormData(prev => ({ ...prev, [field]: value }));
@@ -49,8 +50,8 @@ const ContactPage: React.FC<ContactPageProps> = ({ onBack }) => {
     {
       city: 'Lagos',
       country: 'Nigeria',
-      address: '123 Victoria Island, Lagos, Nigeria',
-      phone: '+234 800 123 4567',
+      address: '88 Reindei, Lagos, Nigeria',
+      phone: '+234 800 523 4087',
       email: 'lagos@medarion.com',
       flag: '🇳🇬',
       description: 'Our headquarters and main operations center'
@@ -58,7 +59,7 @@ const ContactPage: React.FC<ContactPageProps> = ({ onBack }) => {
     {
       city: 'Nairobi',
       country: 'Kenya',
-      address: '456 Westlands, Nairobi, Kenya',
+      address: '400 Meadows, Nairobi, Kenya',
       phone: '+254 700 123 456',
       email: 'nairobi@medarion.com',
       flag: '🇰🇪',
@@ -67,7 +68,7 @@ const ContactPage: React.FC<ContactPageProps> = ({ onBack }) => {
     {
       city: 'Cape Town',
       country: 'South Africa',
-      address: '789 Waterfront, Cape Town, South Africa',
+      address: 'Cape Town, South Africa',
       phone: '+27 21 123 4567',
       email: 'capetown@medarion.com',
       flag: '🇿🇦',
@@ -100,11 +101,75 @@ const ContactPage: React.FC<ContactPageProps> = ({ onBack }) => {
     {
       question: 'Can I contribute data to your platform?',
       answer: 'Absolutely! We welcome data contributions from verified sources. Please contact us to discuss data partnership opportunities.'
+    },
+    {
+      question: 'What types of data do you provide?',
+      answer: 'We provide comprehensive data on companies, deals, grants, clinical trials, investors, regulatory information, public markets, clinical centers, investigators, and nation pulse indicators across African healthcare markets.'
+    },
+    {
+      question: 'How accurate is your data?',
+      answer: 'We maintain the highest standards of data accuracy and reliability. Our data is sourced from verified sources and continuously validated to ensure quality.'
+    },
+    {
+      question: 'Can I export data from the platform?',
+      answer: 'Yes, export functionality is available based on your subscription tier. Free accounts have limited exports, while paid accounts have 20 exports per day. Company accounts have custom export limits.'
+    },
+    {
+      question: 'What payment methods do you accept?',
+      answer: 'We accept major credit cards, bank transfers, and other payment methods. Contact our sales team for enterprise payment options.'
+    },
+    {
+      question: 'Is there a free trial available?',
+      answer: 'Yes, we offer a free starter tier that gives you access to essential features. You can upgrade anytime as your needs grow.'
+    },
+    {
+      question: 'How do I cancel my subscription?',
+      answer: 'You can cancel your subscription at any time from your account settings. Your access will continue until the end of your current billing period.'
+    },
+    {
+      question: 'Do you offer training or onboarding?',
+      answer: 'Yes, we provide comprehensive onboarding and training for enterprise customers. Contact our customer support team to schedule a session.'
+    },
+    {
+      question: 'What countries are covered in your database?',
+      answer: 'We cover 35+ African countries with comprehensive healthcare data including companies, deals, clinical trials, and market intelligence.'
+    },
+    {
+      question: 'Can I integrate Medarion data with my existing systems?',
+      answer: 'Yes, our API allows seamless integration with your existing systems. Enterprise customers can work with our technical team for custom integrations.'
+    },
+    {
+      question: 'What is the difference between Arion, M-Index, and Ergon?',
+      answer: 'Arion provides healthcare insights and analysis, M-Index is our healthcare terms database, and Ergon is our AI-driven recruitment platform for hiring talent across Africa.'
+    },
+    {
+      question: 'How do I report data errors or discrepancies?',
+      answer: 'You can report data issues through our platform or contact our technical support team. We take data accuracy seriously and will investigate all reports promptly.'
+    },
+    {
+      question: 'Do you provide custom reports?',
+      answer: 'Yes, our Report & Advisory service provides on-demand reports and advisory services across industries and countries. Contact us to discuss your specific needs.'
+    },
+    {
+      question: 'What security measures do you have in place?',
+      answer: 'We implement enterprise-grade security including encryption, secure authentication, and regular security audits to protect your data and our platform.'
+    },
+    {
+      question: 'Can I access historical data?',
+      answer: 'Yes, our platform includes historical data going back several years, allowing you to track trends and analyze changes over time.'
+    },
+    {
+      question: 'How do I get support if I have technical issues?',
+      answer: 'You can reach our technical support team at technical@medarion.com or use our live chat feature available 9 AM - 6 PM WAT.'
+    },
+    {
+      question: 'Are there any data usage restrictions?',
+      answer: 'Usage restrictions depend on your subscription tier. Free accounts have basic limits, while paid and enterprise accounts have higher limits. Check our pricing page for details.'
     }
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+    <div className="min-h-screen bg-[var(--color-background-default)] transition-colors duration-500">
       {/* Navigation removed to use global SiteHeader */}
 
       {/* Hero Section */}
@@ -120,38 +185,37 @@ const ContactPage: React.FC<ContactPageProps> = ({ onBack }) => {
         
         <div className="page-hero-content">
           <div className="page-hero-content-inner">
-            <div className="page-hero-accent" />
             <h1 className="page-hero-heading">
               Get in Touch
             </h1>
             <p className="page-hero-subtext">
-              Have questions about our platform or partnerships? We'd love to hear from you—reach out to our team across Africa.
+              Have questions about our platform or partnerships? Connect with our team, we'd love to hear from you!
             </p>
           </div>
         </div>
       </div>
 
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-12 space-y-12 sm:space-y-16">
+      <div className="max-w-screen-2xl mx-auto px-6 md:px-8 lg:px-12 xl:px-16 py-16 md:py-20 lg:py-24 space-y-16 md:space-y-20 lg:space-y-24">
 
         {/* Contact Form & Info */}
-        <div className="grid-2-col gap-8 sm:gap-12">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 lg:gap-16 items-stretch">
           {/* Contact Form */}
-          <div className="p-8">
-            <h2 className="text-2xl font-bold text-[var(--color-text-primary)] mb-6">Send us a Message</h2>
+          <div className="p-8 md:p-10 lg:p-12 rounded-2xl border border-[var(--color-divider-gray)]/20 bg-[var(--color-background-surface)] shadow-sm hover:shadow-md transition-shadow duration-300 flex flex-col h-full">
+            <h2 className="text-2xl md:text-3xl font-semibold text-[var(--color-text-primary)] mb-8">Send us a Message</h2>
             
             {submitted ? (
               <div className="text-center py-12">
-                <div className="w-16 h-16 flex items-center justify-center mx-auto mb-4">
-                  <Send className="h-8 w-8 text-green-600" />
+                <div className="w-16 h-16 flex items-center justify-center mx-auto mb-4 rounded-full bg-green-100 dark:bg-green-500/40">
+                  <Send className="h-8 w-8 text-green-600 dark:text-green-400" />
                 </div>
-                <h3 className="text-lg font-semibold text-[var(--color-text-primary)] mb-2">Message Sent!</h3>
+                <h3 className="text-xl font-semibold text-[var(--color-text-primary)] mb-2">Message Sent!</h3>
                 <p className="text-[var(--color-text-secondary)]">Thank you for reaching out. We'll get back to you within 24 hours.</p>
               </div>
             ) : (
-              <form onSubmit={handleSubmit} className="space-y-6">
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <form onSubmit={handleSubmit} className="space-y-6 flex-1 flex flex-col">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-6">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                    <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">
                       Full Name *
                     </label>
                     <input
@@ -159,13 +223,13 @@ const ContactPage: React.FC<ContactPageProps> = ({ onBack }) => {
                       required
                       value={formData.name}
                       onChange={(e) => handleInputChange('name', e.target.value)}
-                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                      className="w-full px-4 py-3 border border-[var(--color-divider-gray)] rounded-lg bg-[var(--color-background-default)] text-[var(--color-text-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary-teal)] focus:border-[var(--color-primary-teal)] transition-all"
                       placeholder="Your full name"
                     />
                   </div>
                   
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                    <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">
                       Email Address *
                     </label>
                     <input
@@ -173,34 +237,34 @@ const ContactPage: React.FC<ContactPageProps> = ({ onBack }) => {
                       required
                       value={formData.email}
                       onChange={(e) => handleInputChange('email', e.target.value)}
-                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                      className="w-full px-4 py-3 border border-[var(--color-divider-gray)] rounded-lg bg-[var(--color-background-default)] text-[var(--color-text-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary-teal)] focus:border-[var(--color-primary-teal)] transition-all"
                       placeholder="your@email.com"
                     />
                   </div>
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-6">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                    <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">
                       Company/Organization
                     </label>
                     <input
                       type="text"
                       value={formData.company}
                       onChange={(e) => handleInputChange('company', e.target.value)}
-                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                      className="w-full px-4 py-3 border border-[var(--color-divider-gray)] rounded-lg bg-[var(--color-background-default)] text-[var(--color-text-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary-teal)] focus:border-[var(--color-primary-teal)] transition-all"
                       placeholder="Your company name"
                     />
                   </div>
                   
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                    <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">
                       Inquiry Type
                     </label>
                     <select
                       value={formData.inquiryType}
                       onChange={(e) => handleInputChange('inquiryType', e.target.value)}
-                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                      className="w-full px-4 py-3 border border-[var(--color-divider-gray)] rounded-lg bg-[var(--color-background-default)] text-[var(--color-text-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary-teal)] focus:border-[var(--color-primary-teal)] transition-all"
                     >
                       {inquiryTypes.map(type => (
                         <option key={type.value} value={type.value}>{type.label}</option>
@@ -210,7 +274,7 @@ const ContactPage: React.FC<ContactPageProps> = ({ onBack }) => {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                  <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">
                     Subject *
                   </label>
                   <input
@@ -218,13 +282,13 @@ const ContactPage: React.FC<ContactPageProps> = ({ onBack }) => {
                     required
                     value={formData.subject}
                     onChange={(e) => handleInputChange('subject', e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                    className="w-full px-4 py-3 border border-[var(--color-divider-gray)] rounded-lg bg-[var(--color-background-default)] text-[var(--color-text-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary-teal)] focus:border-[var(--color-primary-teal)] transition-all"
                     placeholder="Brief subject of your inquiry"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                  <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">
                     Message *
                   </label>
                   <textarea
@@ -232,7 +296,7 @@ const ContactPage: React.FC<ContactPageProps> = ({ onBack }) => {
                     rows={6}
                     value={formData.message}
                     onChange={(e) => handleInputChange('message', e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                    className="w-full px-4 py-3 border border-[var(--color-divider-gray)] rounded-lg bg-[var(--color-background-default)] text-[var(--color-text-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary-teal)] focus:border-[var(--color-primary-teal)] transition-all resize-none"
                     placeholder="Tell us more about your inquiry..."
                   />
                 </div>
@@ -240,7 +304,7 @@ const ContactPage: React.FC<ContactPageProps> = ({ onBack }) => {
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="w-full bg-primary-600 hover:bg-primary-700 disabled:bg-gray-400 text-white py-3 px-6 rounded-lg transition-colors flex items-center justify-center space-x-2 border border-primary-700"
+                  className="w-full bg-black dark:bg-white hover:opacity-90 dark:hover:opacity-80 disabled:opacity-50 text-white dark:text-black py-3 px-6 rounded-lg transition-all duration-200 flex items-center justify-center gap-2 font-semibold shadow-md hover:shadow-lg disabled:cursor-not-allowed"
                 >
                   {isSubmitting ? (
                     <>
@@ -259,43 +323,51 @@ const ContactPage: React.FC<ContactPageProps> = ({ onBack }) => {
           </div>
 
           {/* Contact Information */}
-          <div className="space-y-8">
-            <div className="p-8">
-              <h3 className="text-xl font-bold text-[var(--color-text-primary)] mb-6">Quick Contact</h3>
-              <div className="space-y-4">
-                <div className="flex items-center space-x-3">
-                  <Mail className="h-5 w-5 text-primary-500" />
-                  <div>
-                    <p className="text-gray-900 dark:text-white font-medium">General Inquiries</p>
-                    <a href="mailto:hello@medarion.com" className="text-primary-600 dark:text-primary-400 hover:underline">
-                      hello@medarion.com
+          <div className="space-y-6 md:space-y-8 flex flex-col h-full">
+            <div className="p-8 md:p-10 lg:p-12 rounded-2xl border border-[var(--color-divider-gray)]/20 bg-[var(--color-background-surface)] shadow-sm hover:shadow-md transition-shadow duration-300">
+              <h3 className="text-xl md:text-2xl font-semibold text-[var(--color-text-primary)] mb-8">Quick Contact</h3>
+              <div className="space-y-6">
+                <div className="flex items-start gap-4 p-4 rounded-lg hover:bg-[var(--color-background-default)] transition-colors">
+                  <div className="p-2 rounded-lg bg-black/10 dark:bg-white/10">
+                    <Mail className="h-5 w-5 text-[var(--color-primary-teal)]" />
+                  </div>
+                  <div className="flex-1">
+                    <p className="text-[var(--color-text-primary)] font-medium mb-1">Customer Support</p>
+                    <a href="mailto:customer@medarion.com" className="text-[var(--color-primary-teal)] hover:underline text-sm">
+                      customer@medarion.com
                     </a>
                   </div>
                 </div>
                 
-                <div className="flex items-center space-x-3">
-                  <Phone className="h-5 w-5 text-primary-500" />
-                  <div>
-                    <p className="text-gray-900 dark:text-white font-medium">Phone Support</p>
-                    <a href="tel:+2348001234567" className="text-primary-600 dark:text-primary-400 hover:underline">
-                      +234 800 123 4567
+                <div className="flex items-start gap-4 p-4 rounded-lg hover:bg-[var(--color-background-default)] transition-colors">
+                  <div className="p-2 rounded-lg bg-black/10 dark:bg-white/10">
+                    <Mail className="h-5 w-5 text-[var(--color-primary-teal)]" />
+                  </div>
+                  <div className="flex-1">
+                    <p className="text-[var(--color-text-primary)] font-medium mb-1">Technical Support</p>
+                    <a href="mailto:technical@medarion.com" className="text-[var(--color-primary-teal)] hover:underline text-sm">
+                      technical@medarion.com
                     </a>
                   </div>
                 </div>
                 
-                <div className="flex items-center space-x-3">
-                  <MessageSquare className="h-5 w-5 text-primary-500" />
-                  <div>
-                    <p className="text-gray-900 dark:text-white font-medium">Live Chat</p>
-                    <p className="text-gray-600 dark:text-gray-400">Available 9 AM - 6 PM WAT</p>
+                <div className="flex items-start gap-4 p-4 rounded-lg hover:bg-[var(--color-background-default)] transition-colors">
+                  <div className="p-2 rounded-lg bg-black/10 dark:bg-white/10">
+                    <MessageSquare className="h-5 w-5 text-[var(--color-primary-teal)]" />
+                  </div>
+                  <div className="flex-1">
+                    <p className="text-[var(--color-text-primary)] font-medium mb-1">Live Chat</p>
+                    <p className="text-[var(--color-text-secondary)] text-sm">Available 9 AM - 6 PM WAT</p>
                   </div>
                 </div>
                 
-                <div className="flex items-center space-x-3">
-                  <Calendar className="h-5 w-5 text-primary-500" />
-                  <div>
-                    <p className="text-gray-900 dark:text-white font-medium">Schedule a Demo</p>
-                    <a href="#" className="text-primary-600 dark:text-primary-400 hover:underline">
+                <div className="flex items-start gap-4 p-4 rounded-lg hover:bg-[var(--color-background-default)] transition-colors">
+                  <div className="p-2 rounded-lg bg-black/10 dark:bg-white/10">
+                    <Calendar className="h-5 w-5 text-[var(--color-primary-teal)]" />
+                  </div>
+                  <div className="flex-1">
+                    <p className="text-[var(--color-text-primary)] font-medium mb-1">Schedule a Demo</p>
+                    <a href="#" className="text-[var(--color-primary-teal)] hover:underline text-sm">
                       Book a meeting
                     </a>
                   </div>
@@ -304,11 +376,10 @@ const ContactPage: React.FC<ContactPageProps> = ({ onBack }) => {
             </div>
 
             {/* Response Time */}
-            <div className="p-6">
-              <h4 className="text-lg font-semibold text-[var(--color-text-primary)] mb-2">Response Time</h4>
-              <p className="text-[var(--color-text-secondary)] text-sm">
-                We typically respond to all inquiries within 24 hours during business days. 
-                For urgent matters, please call our phone support line.
+            <div className="p-6 md:p-8 rounded-2xl border border-[var(--color-divider-gray)]/20 bg-[var(--color-background-surface)] shadow-sm flex-1 flex flex-col justify-center">
+              <h4 className="text-lg font-semibold text-[var(--color-text-primary)] mb-3">Response Time</h4>
+              <p className="text-[var(--color-text-secondary)] text-sm leading-relaxed">
+                We typically respond to all inquiries within 24 hours during business days.
               </p>
             </div>
           </div>
@@ -316,34 +387,34 @@ const ContactPage: React.FC<ContactPageProps> = ({ onBack }) => {
 
         {/* Office Locations */}
         <div>
-          <h2 className="text-3xl font-bold text-[var(--color-text-primary)] text-center mb-12">Our Offices</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
+          <h2 className="text-2xl md:text-3xl font-semibold text-[var(--color-text-primary)] text-center mb-12 md:mb-16">Our Offices</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
             {offices.map((office, index) => (
-              <div key={index} className="p-6">
-                <div className="flex items-center space-x-3 mb-4">
-                  <span className="text-3xl">{office.flag}</span>
+              <div key={index} className="p-6 md:p-8 rounded-2xl border border-[var(--color-divider-gray)]/20 bg-[var(--color-background-surface)] shadow-sm hover:shadow-md hover:border-[var(--color-primary-teal)]/30 transition-all duration-300">
+                <div className="flex items-center gap-4 mb-6">
+                  <span className="text-4xl">{office.flag}</span>
                   <div>
-                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white">{office.city}</h3>
-                    <p className="text-gray-600 dark:text-gray-400">{office.country}</p>
+                    <h3 className="text-lg md:text-xl font-semibold text-[var(--color-text-primary)]">{office.city}</h3>
+                    <p className="text-[var(--color-text-secondary)] text-sm">{office.country}</p>
                   </div>
                 </div>
                 
-                <p className="text-gray-600 dark:text-gray-300 text-sm mb-4">{office.description}</p>
+                <p className="text-[var(--color-text-secondary)] text-sm mb-6 leading-relaxed">{office.description}</p>
                 
-                <div className="space-y-2">
-                  <div className="flex items-center space-x-2">
-                    <MapPin className="h-4 w-4 text-gray-400" />
-                    <span className="text-sm text-gray-600 dark:text-gray-400">{office.address}</span>
+                <div className="space-y-3">
+                  <div className="flex items-start gap-3">
+                    <MapPin className="h-4 w-4 text-[var(--color-primary-teal)] mt-1 flex-shrink-0" />
+                    <span className="text-sm text-[var(--color-text-secondary)] leading-relaxed">{office.address}</span>
                   </div>
-                  <div className="flex items-center space-x-2">
-                    <Phone className="h-4 w-4 text-gray-400" />
-                    <a href={`tel:${office.phone}`} className="text-sm text-primary-600 dark:text-primary-400 hover:underline">
+                  <div className="flex items-center gap-3">
+                    <Phone className="h-4 w-4 text-[var(--color-primary-teal)] flex-shrink-0" />
+                    <a href={`tel:${office.phone}`} className="text-sm text-[var(--color-primary-teal)] hover:underline">
                       {office.phone}
                     </a>
                   </div>
-                  <div className="flex items-center space-x-2">
-                    <Mail className="h-4 w-4 text-gray-400" />
-                    <a href={`mailto:${office.email}`} className="text-sm text-primary-600 dark:text-primary-400 hover:underline">
+                  <div className="flex items-center gap-3">
+                    <Mail className="h-4 w-4 text-[var(--color-primary-teal)] flex-shrink-0" />
+                    <a href={`mailto:${office.email}`} className="text-sm text-[var(--color-primary-teal)] hover:underline break-all">
                       {office.email}
                     </a>
                   </div>
@@ -355,14 +426,42 @@ const ContactPage: React.FC<ContactPageProps> = ({ onBack }) => {
 
         {/* FAQ Section */}
         <div>
-          <h2 className="text-3xl font-bold text-[var(--color-text-primary)] text-center mb-12">Frequently Asked Questions</h2>
-          <div className="grid-2-col gap-6 sm:gap-8">
-            {faqs.map((faq, index) => (
-              <div key={index} className="p-6">
-                <h3 className="text-lg font-semibold text-[var(--color-text-primary)] mb-3">{faq.question}</h3>
-                <p className="text-[var(--color-text-secondary)]">{faq.answer}</p>
-              </div>
-            ))}
+          <h2 className="text-2xl md:text-3xl font-semibold text-[var(--color-text-primary)] text-center mb-12 md:mb-16">Frequently Asked Questions</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
+            {faqs.map((faq, index) => {
+              const isOpen = openFaqIndex === index;
+              return (
+                <div 
+                  key={index} 
+                  className="rounded-2xl border border-[var(--color-divider-gray)]/20 bg-[var(--color-background-surface)] shadow-sm hover:shadow-md hover:border-[var(--color-primary-teal)]/30 transition-all duration-300 overflow-hidden"
+                >
+                  <button
+                    onClick={() => setOpenFaqIndex(isOpen ? null : index)}
+                    className="w-full p-5 md:p-6 flex items-center justify-between gap-3 text-left hover:bg-[var(--color-background-default)]/50 transition-colors"
+                  >
+                    <h3 className="text-base md:text-lg font-semibold text-[var(--color-text-primary)] pr-2 flex-1">
+                      {faq.question}
+                    </h3>
+                    <ChevronDown 
+                      className={`h-4 w-4 md:h-5 md:w-5 text-[var(--color-primary-teal)] flex-shrink-0 transition-transform duration-300 ${
+                        isOpen ? 'transform rotate-180' : ''
+                      }`}
+                    />
+                  </button>
+                  <div 
+                    className={`overflow-hidden transition-all duration-300 ${
+                      isOpen ? 'max-h-[500px] opacity-100' : 'max-h-0 opacity-0'
+                    }`}
+                  >
+                    <div className="px-5 md:px-6 pb-5 md:pb-6 pt-0">
+                      <p className="text-sm md:text-base text-[var(--color-text-secondary)] leading-relaxed">
+                        {faq.answer}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
           </div>
         </div>
       </div>

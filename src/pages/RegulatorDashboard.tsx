@@ -59,10 +59,10 @@ const RegulatorDashboard = () => {
   ];
 
   return (
-    <div className="bg-[var(--color-background-default)] min-h-screen">
+    <div className="w-full">
       {/* Header */}
       <div className="border-b border-[var(--color-divider-gray)] bg-[var(--color-background-surface)]">
-        <div className="max-w-7xl mx-auto px-6 lg:px-8">
+        <div className="w-full">
           <div className="py-6">
             <div className="flex items-center justify-between">
               <div>
@@ -80,9 +80,9 @@ const RegulatorDashboard = () => {
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-6 lg:px-8 py-8">
+      <div className="w-full py-4">
         {/* KPI Cards */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        <div className="grid grid-cols-2 grid-cols-4 gap-6 mb-8">
           <KPICard
             title="Compliance Rate"
             value="91%"
@@ -115,14 +115,14 @@ const RegulatorDashboard = () => {
 
         <div className="grid grid-cols-2 gap-8 mb-8">
           {/* Regulatory Initiatives */}
-          <div className="bg-[var(--color-background-surface)] rounded-lg border border-[var(--color-divider-gray)] p-6">
+          <div className="bg-white dark:bg-[var(--color-background-surface)] rounded-xl border border-gray-200 dark:border-[var(--color-divider-gray)] p-6 shadow-soft">
             <div className="flex items-center space-x-3 mb-6">
               <Shield className="h-6 w-6 text-[var(--color-primary-teal)]" />
               <h3 className="text-lg font-semibold text-[var(--color-text-primary)]">Regulatory Initiatives</h3>
             </div>
             <div className="space-y-4">
               {regulatoryInitiatives.map((initiative, index) => (
-                <div key={index} className="border border-[var(--color-divider-gray)] rounded-lg p-4">
+                <div key={index} className="border border-gray-200 dark:border-[var(--color-divider-gray)] rounded-lg p-4 bg-gray-50 dark:bg-[var(--color-background-default)]">
                   <div className="flex items-center justify-between mb-2">
                     <h4 className="font-medium text-[var(--color-text-primary)]">{initiative.title}</h4>
                     <span className={`px-2 py-1 text-xs rounded-full ${
@@ -154,14 +154,14 @@ const RegulatorDashboard = () => {
           </div>
 
           {/* Compliance Metrics */}
-          <div className="bg-[var(--color-background-surface)] rounded-lg border border-[var(--color-divider-gray)] p-6">
+          <div className="bg-white dark:bg-[var(--color-background-surface)] rounded-xl border border-gray-200 dark:border-[var(--color-divider-gray)] p-6 shadow-soft">
             <div className="flex items-center space-x-3 mb-6">
               <BarChart3 className="h-6 w-6 text-[var(--color-primary-teal)]" />
               <h3 className="text-lg font-semibold text-[var(--color-text-primary)]">Regional Compliance</h3>
             </div>
             <div className="space-y-4">
               {complianceMetrics.map((metric, index) => (
-                <div key={index} className="border border-[var(--color-divider-gray)] rounded-lg p-4">
+                <div key={index} className="border border-gray-200 dark:border-[var(--color-divider-gray)] rounded-lg p-4 bg-gray-50 dark:bg-[var(--color-background-default)]">
                   <div className="flex items-center justify-between mb-2">
                     <h4 className="font-medium text-[var(--color-text-primary)]">{metric.region}</h4>
                     <span className="text-lg font-semibold text-[var(--color-primary-teal)]">{metric.complianceRate}</span>
@@ -177,9 +177,9 @@ const RegulatorDashboard = () => {
         </div>
 
         {/* Regulatory Updates */}
-        <div className="bg-[var(--color-background-surface)] rounded-lg border border-[var(--color-divider-gray)] p-6 mb-8">
+        <div className="card-glass p-6 mb-8">
           <div className="flex items-center space-x-3 mb-6">
-            <FileText className="h-6 w-6 text-[var(--color-primary-teal)]" />
+            <FileText className="h-6 w-6 text-black dark:text-white" />
             <h3 className="text-lg font-semibold text-[var(--color-text-primary)]">Recent Regulatory Updates</h3>
           </div>
           <div className="space-y-4">
@@ -217,9 +217,9 @@ const RegulatorDashboard = () => {
 
         {/* Map and Nation Pulse */}
         <div className="grid grid-cols-2 gap-8">
-          <div className="bg-[var(--color-background-surface)] rounded-lg border border-[var(--color-divider-gray)] p-6">
+          <div className="card-glass p-6">
             <div className="flex items-center space-x-3 mb-6">
-              <Globe className="h-6 w-6 text-[var(--color-primary-teal)]" />
+              <Globe className="h-6 w-6 text-black dark:text-white" />
               <h3 className="text-lg font-semibold text-[var(--color-text-primary)]">Regulatory Coverage Map</h3>
             </div>
             <div className="mb-4">
@@ -228,7 +228,7 @@ const RegulatorDashboard = () => {
                   onClick={() => setMapDataType('value')}
                   className={`px-3 py-1 text-sm rounded ${
                     mapDataType === 'value'
-                      ? 'bg-[var(--color-primary-teal)] text-white'
+                      ? 'bg-black dark:bg-white text-white dark:text-black'
                       : 'bg-[var(--color-background-default)] text-[var(--color-text-secondary)]'
                   }`}
                 >
@@ -238,7 +238,7 @@ const RegulatorDashboard = () => {
                   onClick={() => setMapDataType('count')}
                   className={`px-3 py-1 text-sm rounded ${
                     mapDataType === 'count'
-                      ? 'bg-[var(--color-primary-teal)] text-white'
+                      ? 'bg-black dark:bg-white text-white dark:text-black'
                       : 'bg-[var(--color-background-default)] text-[var(--color-text-secondary)]'
                   }`}
                 >

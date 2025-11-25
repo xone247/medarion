@@ -18,7 +18,10 @@ import {
   PieChart,
   Search,
   Square,
-  Grid3X3
+  Grid3X3,
+  ChevronDown,
+  Settings,
+  Star
 } from 'lucide-react';
 import Logo from './Logo';
 import { useAuth } from '../contexts/AuthContext';
@@ -50,6 +53,20 @@ const Sidebar = ({ userType }: SidebarProps) => {
   } = useDashboard();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [showCustomizer, setShowCustomizer] = useState(false);
+  const [showUserDropdown, setShowUserDropdown] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      const target = event.target as HTMLElement;
+      if (showUserDropdown && !target.closest('.user-dropdown-container')) {
+        setShowUserDropdown(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [showUserDropdown]);
 
   // Get profile route based on user type
   const getProfileRoute = (userProfile: any): string => {
@@ -240,7 +257,7 @@ const Sidebar = ({ userType }: SidebarProps) => {
     return iconMap[iconName] || Square;
   };
 
-  const selectedClasses = 'bg-[var(--color-primary-teal)] text-white shadow-md';
+  const selectedClasses = 'bg-black dark:bg-white text-white dark:text-black shadow-md';
   const selectedIconClasses = 'text-white';
   
 
@@ -257,21 +274,84 @@ const Sidebar = ({ userType }: SidebarProps) => {
       )}
 
       {/* Sidebar - Responsive: Always visible on desktop, hidden on mobile unless menu is open */}
-      <div className={`w-64 h-screen fixed lg:static z-50 transition-all duration-300 bg-[var(--color-background-surface)] border-r border-[var(--color-divider-gray)] shadow-xl ${
+      <div className={`w-64 h-screen lg:static fixed lg:z-auto z-50 transition-all duration-300 bg-white dark:bg-[var(--color-background-surface)] border-r border-gray-200 dark:border-[var(--color-divider-gray)] shadow-xl ${
         isMobileMenuOpen 
           ? 'translate-x-0' 
-          : '-translate-x-full lg:translate-x-0'
+          : 'lg:translate-x-0 -translate-x-full'
       }`}>
         <div className="flex h-full flex-col overflow-hidden">
-          {/* Header - fixed size */}
-          <div className="flex-shrink-0 flex items-center justify-between px-4 py-4 border-b border-[var(--color-divider-gray)] bg-[var(--color-background-surface)]">
-            <Logo />
-            <button 
-              onClick={toggleMobileMenu} 
-              className="lg:hidden p-2 rounded-lg hover:bg-[var(--color-background-default)] transition-colors"
-            >
-              {isMobileMenuOpen ? <X className="h-5 w-5 text-[var(--color-text-secondary)]" /> : <Menu className="h-5 w-5 text-[var(--color-text-secondary)]" />}
-            </button>
+          {/* User Profile Section at Top */}
+          <div className="flex-shrink-0 px-4 py-4 border-b border-gray-200 dark:border-[var(--color-divider-gray)] bg-white dark:bg-[var(--color-background-surface)]">
+            <div className="relative user-dropdown-container">
+              <button
+                onClick={() => setShowUserDropdown(!showUserDropdown)}
+                className="w-full flex items-center space-x-3 p-2 rounded-lg hover:bg-gray-50 dark:hover:bg-[var(--color-background-default)] transition-colors"
+              >
+                {(profile as any)?.profileImage ? (
+                  <img 
+                    src={(profile as any).profileImage} 
+                    alt="Profile" 
+                    className="w-10 h-10 rounded-full object-cover border-2 border-gray-200 dark:border-[var(--color-divider-gray)]"
+                  />
+                ) : (
+                  <div className="w-10 h-10 rounded-full bg-black dark:bg-white flex items-center justify-center text-white dark:text-black font-semibold">
+                    {profile?.firstName?.[0]?.toUpperCase() || profile?.email?.[0]?.toUpperCase() || 'U'}
+                  </div>
+                )}
+                <div className="flex-1 text-left min-w-0">
+                  <p className="text-sm font-medium text-gray-900 dark:text-[var(--color-text-primary)] truncate">
+                    {profile?.firstName && profile?.lastName 
+                      ? `${profile.firstName} ${profile.lastName}`
+                      : profile?.username || profile?.email?.split('@')[0] || 'User'}
+                  </p>
+                  <p className="text-xs text-gray-500 dark:text-[var(--color-text-secondary)] truncate">
+                    {profile?.email || 'user@example.com'}
+                  </p>
+                </div>
+                <ChevronDown className={`h-4 w-4 text-gray-400 transition-transform ${showUserDropdown ? 'rotate-180' : ''}`} />
+              </button>
+              
+              {/* User Dropdown Menu */}
+              {showUserDropdown && (
+                <div className="absolute top-full left-0 right-0 mt-2 bg-white dark:bg-[var(--color-background-surface)] border border-gray-200 dark:border-[var(--color-divider-gray)] rounded-lg shadow-lg z-50">
+                  <button
+                    onClick={() => {
+                      const profileRoute = getProfileRoute(profile);
+                      navigate(profileRoute);
+                      setShowUserDropdown(false);
+                    }}
+                    className="w-full flex items-center space-x-2 px-4 py-2 text-sm text-gray-700 dark:text-[var(--color-text-primary)] hover:bg-gray-50 dark:hover:bg-[var(--color-background-default)] transition-colors"
+                  >
+                    <User className="h-4 w-4" />
+                    <span>My Profile</span>
+                  </button>
+                  <button
+                    onClick={() => {
+                      setShowUserDropdown(false);
+                      handleSignOut();
+                    }}
+                    className="w-full flex items-center space-x-2 px-4 py-2 text-sm text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors"
+                  >
+                    <LogOut className="h-4 w-4" />
+                    <span>Sign Out</span>
+                  </button>
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* Search Bar */}
+          <div className="flex-shrink-0 px-4 py-3 border-b border-gray-200 dark:border-[var(--color-divider-gray)] bg-white dark:bg-[var(--color-background-surface)]">
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+              <input
+                type="text"
+                placeholder="Search..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="w-full pl-10 pr-4 py-2 text-sm bg-gray-50 dark:bg-[var(--color-background-default)] border border-gray-200 dark:border-[var(--color-divider-gray)] rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--color-primary-teal)] focus:border-transparent text-gray-900 dark:text-[var(--color-text-primary)]"
+              />
+            </div>
           </div>
 
           {/* Scrollable content area */}
@@ -283,51 +363,26 @@ const Sidebar = ({ userType }: SidebarProps) => {
                   (location.pathname.includes('-dashboard') && !location.pathname.includes('manager')) ||
                   (location.pathname === getModuleRoute(defaultModule) && !location.pathname.includes('-profile')) ||
                   (currentModule === defaultModule && currentModule !== 'my_profile' && !location.pathname.includes('-profile'))
-                    ? selectedClasses
-                    : 'text-[var(--color-text-secondary)] hover:bg-[var(--color-background-default)] hover:text-[var(--color-text-primary)] hover:shadow-sm'
+                    ? 'bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 border border-blue-200 dark:border-blue-800'
+                    : 'text-gray-600 dark:text-[var(--color-text-secondary)] hover:bg-gray-50 dark:hover:bg-[var(--color-background-default)] hover:text-gray-900 dark:hover:text-[var(--color-text-primary)]'
                 }`}
               >
                 <Grid3X3 className={`h-5 w-5 ${
                   ((location.pathname.includes('-dashboard') && !location.pathname.includes('manager')) ||
                    (location.pathname === getModuleRoute(defaultModule) && !location.pathname.includes('-profile')) ||
                    (currentModule === defaultModule && currentModule !== 'my_profile' && !location.pathname.includes('-profile')))
-                    ? selectedIconClasses 
-                    : 'text-[var(--color-primary-teal)]'
+                    ? 'text-blue-600 dark:text-blue-400' 
+                    : 'text-gray-500 dark:text-[var(--color-primary-teal)]'
                 }`} />
-                <span>Dashboard</span>
+                <span className="font-medium">Home</span>
               </button>
 
-              <div className="border-t border-[var(--color-divider-gray)] pt-4 space-y-3">
-                <div className="flex items-center justify-between px-3">
-                  <p className="text-xs font-medium text-[var(--color-text-secondary)]">MODULES</p>
-                  <button
-                    onClick={() => setShowCustomizer(true)}
-                    className="p-1 rounded-md bg-[var(--color-primary-teal)] hover:opacity-90 text-[var(--color-background-surface)] transition-colors border border-[color-mix(in_srgb,var(--color-primary-teal),black_10%)]"
-                    title="Add Modules"
-                  >
-                    <Plus className="h-3 w-3 text-[var(--color-background-surface)]" />
-                  </button>
-                </div>
-
-                <button
-                  onClick={() => {
-                    const profileRoute = getProfileRoute(profile);
-                    navigate(profileRoute);
-                    navigateToModule('my_profile');
-                  }}
-                  className={`w-full flex items-center space-x-3 px-3 py-2 rounded-lg text-left transition-all duration-200 ${
-                    location.pathname.includes('-profile')
-                      ? selectedClasses
-                      : 'text-[var(--color-text-secondary)] hover:bg-[var(--color-background-default)] hover:text-[var(--color-text-primary)] hover:shadow-sm'
-                  }`}
-                >
-                  <User className={`h-5 w-5 ${location.pathname.includes('-profile') ? selectedIconClasses : 'text-[var(--color-primary-teal)]'}`} />
-                  <span className="text-sm">My Profile</span>
-                </button>
-              </div>
             </div>
 
             <nav className="px-4 pb-4">
+              <div className="mb-3">
+                <p className="text-xs font-semibold text-gray-500 dark:text-[var(--color-text-secondary)] uppercase tracking-wider px-3">Navigation</p>
+              </div>
               <ul className="space-y-2">
                 {/* Use DashboardContext modules in moduleOrder for sidebar - syncs with customizer */}
                 {(() => {
@@ -380,12 +435,12 @@ const Sidebar = ({ userType }: SidebarProps) => {
                           onClick={() => handleModuleClick(module.id)}
                           className={`w-full flex items-center space-x-3 px-3 py-2 rounded-lg text-left transition-all duration-200 ${
                             active
-                              ? selectedClasses
-                              : 'text-[var(--color-text-secondary)] hover:bg-[var(--color-background-default)] hover:text-[var(--color-text-primary)] hover:shadow-sm'
+                              ? 'bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 border border-blue-200 dark:border-blue-800'
+                              : 'text-gray-600 dark:text-[var(--color-text-secondary)] hover:bg-gray-50 dark:hover:bg-[var(--color-background-default)] hover:text-gray-900 dark:hover:text-[var(--color-text-primary)]'
                           }`}
                         >
-                          <IconComponent className={`h-5 w-5 ${active ? selectedIconClasses : 'text-[var(--color-primary-teal)]'}`} />
-                          <span className="text-sm">{module.name}</span>
+                          <IconComponent className={`h-5 w-5 ${active ? 'text-blue-600 dark:text-blue-400' : 'text-gray-500 dark:text-[var(--color-primary-teal)]'}`} />
+                          <span className="text-sm font-medium">{module.name}</span>
                         </button>
                       </li>
                     );
@@ -396,15 +451,8 @@ const Sidebar = ({ userType }: SidebarProps) => {
           </div>
 
           {/* Footer - fixed at bottom */}
-          <div className="flex-shrink-0 px-4 py-4 border-t border-[var(--color-divider-gray)] space-y-3 bg-[var(--color-background-surface)] z-10">
+          <div className="flex-shrink-0 px-4 py-4 border-t border-gray-200 dark:border-[var(--color-divider-gray)] bg-white dark:bg-[var(--color-background-surface)] z-10">
             <AdSlot placement="dashboard_sidebar" category="dashboard_personalized" />
-            <button
-              onClick={handleSignOut}
-              className="w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg text-[var(--color-error)] hover:bg-[var(--color-error)]/10 transition-all duration-200 border border-[var(--color-error)]/20 hover:shadow-sm font-medium"
-            >
-              <LogOut className="h-4 w-4 text-[var(--color-error)]" />
-              <span className="text-sm">Sign Out</span>
-            </button>
           </div>
         </div>
       </div>
@@ -415,7 +463,7 @@ const Sidebar = ({ userType }: SidebarProps) => {
       )}
 
       {/* No extra spacer needed; header is unified */}
-      <div className="md:hidden h-0"></div>
+      <div className="hidden h-0"></div>
     </>
   );
 };

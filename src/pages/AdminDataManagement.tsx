@@ -453,7 +453,7 @@ const AdminDataManagement: React.FC = () => {
         </div>
 
         {/* Main Content */}
-        <div className="lg:col-span-3">
+        <div className="col-span-3">
           {selectedTable ? (
             <div className="card-glass shadow-soft">
               {/* Table Header */}
@@ -591,7 +591,7 @@ const AdminDataManagement: React.FC = () => {
       {/* Create/Edit Modal */}
       {(showCreateModal || editingRecord) && currentTable && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="card-glass shadow-elevated p-6 w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+          <div className="card-glass shadow-elevated p-6 w-full max-w-2xl max-h-[700px] overflow-y-auto">
             <div className="flex items-center justify-between mb-6">
               <h3 className="text-xl font-semibold text-[var(--color-text-primary)]">
                 {editingRecord ? 'Edit Record' : 'Create New Record'}

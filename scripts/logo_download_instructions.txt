@@ -1,0 +1,17 @@
+
+# To download logos, you need:
+# 1. Actual logo URLs from company/investor websites
+# 2. Run: python scripts/download_logos.py --urls logo_urls.json
+# 3. Logos will be saved to public/uploads/{type}/
+# 4. Update seed script with logo URLs
+
+# Example logo_urls.json structure:
+{
+  "companies": {
+    "mPharma": "https://mpharma.com/logo.png",
+    "54gene": "https://54gene.com/logo.png"
+  },
+  "investors": {
+    "TLcom Capital": "https://tlcomcapital.com/logo.png"
+  }
+}

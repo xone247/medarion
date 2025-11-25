@@ -40,7 +40,7 @@ const PublicMarkets = () => {
       try {
         // Use same endpoint as Data Management tab
         const response = await apiService.get('/admin/public-markets', { limit: '200' });
-        if (response.success && response.data) {
+        if (response.success && response.data && Array.isArray(response.data)) {
           // Transform API data to match expected format
           const transformed = response.data.map((stock: any) => ({
             id: stock.id,
@@ -296,10 +296,10 @@ const PublicMarkets = () => {
   // Share disabled platform-wide for data protection
 
   return (
-    <div className="page-container py-6 space-y-6 bg-[var(--color-background-default)] min-h-screen">
+    <div className="w-full space-y-6">
       {/* Header with glassmorphism */}
       <div className="card-glass p-6 shadow-soft">
-        <div className="flex flex-row lg:items-center lg:justify-between gap-4">
+        <div className="flex flex-row items-center justify-between gap-4">
           <div className="flex items-center space-x-3">
             <TrendingUp className="h-8 w-8 icon-primary" />
             <div>
@@ -376,13 +376,13 @@ const PublicMarkets = () => {
       {/* Navigation Tabs with glassmorphism */}
       <div className="card-glass overflow-hidden shadow-soft">
         <div className="flex border-b border-[var(--color-divider-gray)] overflow-x-auto no-scrollbar">
-          <button onClick={() => setSelectedTab('overview')} className={`flex-shrink-0 px-6 py-3 text-sm font-medium ${selectedTab === 'overview' ? 'border-b-2 border-[var(--color-primary-teal)] text-[var(--color-primary-teal)]' : 'text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)]'}`}>Market Overview</button>
-          <button onClick={() => setSelectedTab('watchlist')} className={`flex-shrink-0 px-6 py-3 text-sm font-medium ${selectedTab === 'watchlist' ? 'border-b-2 border-[var(--color-primary-teal)] text-[var(--color-primary-teal)]' : 'text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)]'}`}>Watchlist & Movers</button>
-          <button onClick={() => setSelectedTab('financials')} className={`flex-shrink-0 px-6 py-3 text-sm font-medium ${selectedTab === 'financials' ? 'border-b-2 border-[var(--color-primary-teal)] text-[var(--color-primary-teal)]' : 'text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)]'}`}>Financial Metrics</button>
-          <button onClick={() => setSelectedTab('currency')} className={`flex-shrink-0 px-6 py-3 text-sm font-medium ${selectedTab === 'currency' ? 'border-b-2 border-[var(--color-primary-teal)] text-[var(--color-primary-teal)]' : 'text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)]'}`}>Currency Exchange</button>
+          <button onClick={() => setSelectedTab('overview')} className={`flex-shrink-0 px-6 py-3 text-sm font-medium ${selectedTab === 'overview' ? 'border-b-2 border-black dark:border-white text-black dark:text-white' : 'text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)]'}`}>Market Overview</button>
+          <button onClick={() => setSelectedTab('watchlist')} className={`flex-shrink-0 px-6 py-3 text-sm font-medium ${selectedTab === 'watchlist' ? 'border-b-2 border-black dark:border-white text-black dark:text-white' : 'text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)]'}`}>Watchlist & Movers</button>
+          <button onClick={() => setSelectedTab('financials')} className={`flex-shrink-0 px-6 py-3 text-sm font-medium ${selectedTab === 'financials' ? 'border-b-2 border-black dark:border-white text-black dark:text-white' : 'text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)]'}`}>Financial Metrics</button>
+          <button onClick={() => setSelectedTab('currency')} className={`flex-shrink-0 px-6 py-3 text-sm font-medium ${selectedTab === 'currency' ? 'border-b-2 border-black dark:border-white text-black dark:text-white' : 'text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)]'}`}>Currency Exchange</button>
         </div>
 
-        <div className="p-4 sm:p-6">
+        <div className="p-4 p-6">
           {/* Market Overview */}
           {selectedTab === 'overview' && (
             <div className="space-y-6">
@@ -620,7 +620,7 @@ const PublicMarkets = () => {
                         <tr key={String(company.ticker)} className="hover:bg-[var(--color-background-default)] transition-colors">
                           <td className="px-6 py-4">
                             <div className="flex items-center">
-                              <div className="w-8 h-8 bg-[var(--color-primary-teal)] rounded-lg flex items-center justify-center border border-[color-mix(in_srgb,var(--color-primary-teal),black_10%)]">
+                              <div className="w-8 h-8 bg-black dark:bg-gray-700 rounded-lg flex items-center justify-center border border-black/20 dark:border-gray-600/30">
                                 <Building2 className="h-4 w-4 text-white" />
                               </div>
                               <div className="ml-3">
@@ -683,7 +683,7 @@ const PublicMarkets = () => {
               {/* Currency Exchange Rates with glassmorphism */}
               <div className="grid grid-cols-3 gap-4">
                 {/* Rates list */}
-                <div className="card-glass p-4 shadow-soft lg:col-span-2">
+                <div className="card-glass p-4 shadow-soft col-span-2">
                   <div className="flex items-center justify-between mb-3">
                     <div className="flex items-center space-x-2">
                       <TrendingUp className="h-4 w-4 icon-primary" />

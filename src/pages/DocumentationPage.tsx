@@ -86,10 +86,11 @@ const DocumentationPage: React.FC<DocumentationPageProps> = ({ onBack }) => {
 
             <div className="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg p-6">
               <h4 className="text-lg font-semibold text-yellow-900 dark:text-yellow-100 mb-2">Rate Limits</h4>
-              <p className="text-yellow-800 dark:text-yellow-200">
-                API requests are limited to 1000 requests per hour for free tier users. 
-                Premium users have higher limits based on their subscription plan.
-              </p>
+              <div className="space-y-2 text-yellow-800 dark:text-yellow-200">
+                <p><strong>Free account:</strong> 5 requests per hour or less. Upgrade to paid for more access.</p>
+                <p><strong>Paid account:</strong> 20 exports per day.</p>
+                <p><strong>Company account:</strong> Custom limits based on your subscription plan.</p>
+              </div>
             </div>
           </div>
         );
@@ -660,7 +661,6 @@ app.listen(3000);`}
             <div className="inline-flex items-center justify-center p-3 rounded-xl bg-[var(--color-primary-teal)]/20 backdrop-blur-sm mb-6">
               <Code className="h-8 w-8 text-white" />
             </div>
-            <div className="page-hero-accent" />
             <h1 className="page-hero-heading">
               API Documentation
             </h1>

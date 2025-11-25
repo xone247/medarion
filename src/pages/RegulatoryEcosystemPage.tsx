@@ -68,10 +68,10 @@ const RegulatoryEcosystemPage: React.FC = () => {
     <div className="page-container">
       {/* Header with glassmorphism */}
       <div className="card-glass p-6 shadow-soft mb-6">
-        <div className="flex flex-row sm:items-center sm:justify-between gap-3">
+        <div className="flex flex-row items-center justify-between gap-3">
           <div className="flex items-center space-x-2">
             <Globe className="h-6 w-6 icon-primary" />
-            <h1 className="text-xl md:text-2xl font-bold text-[var(--color-text-primary)]">Regulatory Ecosystem</h1>
+            <h1 className="text-xl text-2xl font-bold text-[var(--color-text-primary)]">Regulatory Ecosystem</h1>
           </div>
           <div className="flex items-center gap-2 flex-wrap">
             {canAI && <button onClick={runAISummary} className="btn-primary-elevated btn-sm flex items-center gap-2"><Bot className="h-4 w-4" /><span className="text-sm">AI Summary</span></button>}
@@ -151,7 +151,7 @@ const RegulatoryEcosystemPage: React.FC = () => {
                   {bodies.map((body) => (
                     <div key={body.id} className="card-glass p-4 shadow-soft">
                       <div className="flex items-start space-x-3">
-                        <div className="w-8 h-8 bg-[var(--color-primary-teal)] rounded-lg flex items-center justify-center border border-[color-mix(in_srgb,var(--color-primary-teal),black_10%)] flex-shrink-0">
+                        <div className="w-8 h-8 bg-black dark:bg-gray-700 rounded-lg flex items-center justify-center border border-black/20 dark:border-gray-600/30 flex-shrink-0">
                           <Building2 className="h-4 w-4 text-white" />
                         </div>
                         <div className="flex-1 min-w-0">

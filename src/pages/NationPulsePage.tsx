@@ -41,6 +41,7 @@ const NationPulsePage = () => {
             healthcare_infrastructure: {},
             economic_indicators: {},
             disease_immunization: {},
+            electrification: {},
           };
           
           response.data.forEach((row: any) => {
@@ -244,6 +245,28 @@ const NationPulsePage = () => {
               if (metricName.includes('polio_coverage') || metricName.includes('polio')) {
                 grouped[dataType][countryKey].immunization_coverage.polio = metricValue;
               }
+            } else if (dataType === 'electrification') {
+              if (metricName.includes('national_electrification_rate') || metricName.includes('electrification_rate') || (metricName.includes('access') && metricName.includes('electricity'))) {
+                grouped[dataType][countryKey].access_rate = metricValue;
+              }
+              if (metricName.includes('hours_per_day') || metricName.includes('reliability') || metricName.includes('hours_of_electricity')) {
+                grouped[dataType][countryKey].reliability_hours_per_day = metricValue;
+              }
+              if (metricName.includes('household_tariff') || metricName.includes('tariff') || (metricName.includes('cost') && metricName.includes('kwh'))) {
+                grouped[dataType][countryKey].household_tariff_usd_per_kwh = metricValue;
+              }
+              if (metricName.includes('renewables_share') || metricName.includes('renewable')) {
+                grouped[dataType][countryKey].renewables_share_percent = metricValue;
+              }
+              if (metricName.includes('transmission_losses') || metricName.includes('distribution_losses') || metricName.includes('losses')) {
+                grouped[dataType][countryKey].transmission_distribution_losses_percent = metricValue;
+              }
+              if (metricName.includes('new_connections') || metricName.includes('connections_per_year')) {
+                grouped[dataType][countryKey].new_connections_per_year = metricValue;
+              }
+              if (metricName.includes('power_sector_investment') || metricName.includes('annual_investment') || (metricName.includes('investment') && metricName.includes('power'))) {
+                grouped[dataType][countryKey].annual_power_sector_investment_usd = metricValue;
+              }
             }
           });
           
@@ -290,7 +313,8 @@ const NationPulsePage = () => {
     { id: 'disease_immunization', label: 'Disease Prevalence', icon: Shield, color: 'bg-green-500' },
     { id: 'immunization_coverage', label: 'Immunization Coverage', icon: Stethoscope, color: 'bg-purple-500' },
     { id: 'healthcare_infrastructure', label: 'Healthcare Infrastructure', icon: Building, color: 'bg-purple-500' },
-    { id: 'economic_indicators', label: 'Economic Indicators', icon: DollarSign, color: 'bg-orange-500' }
+    { id: 'economic_indicators', label: 'Economic Indicators', icon: DollarSign, color: 'bg-orange-500' },
+    { id: 'electrification', label: 'Electrification', icon: Layers, color: 'bg-yellow-500' }
   ];
 
   const mapLayers = [
@@ -768,13 +792,90 @@ const NationPulsePage = () => {
           </div>
         );
 
+      case 'electrification':
+        if (!dataObj) {
+          return (
+            <div className="card-glass p-6 shadow-soft">
+              <p className="text-[var(--color-text-secondary)]">No electrification data available for this country.</p>
+            </div>
+          );
+        }
+        return (
+          <div className="space-y-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6">
+              <div className="card-glass p-6 shadow-soft">
+                <div className="flex items-center space-x-3 mb-4">
+                  <Layers className="h-6 w-6 icon-primary" />
+                  <h4 className="text-lg font-semibold text-[var(--color-text-primary)]">Access Rate</h4>
+                </div>
+                <p className="text-3xl font-bold text-[var(--color-text-primary)]">{dataObj.access_rate || 0}%</p>
+                <p className="text-[var(--color-text-secondary)] text-sm mt-2">National Electrification Rate</p>
+              </div>
+
+              <div className="card-glass p-6 shadow-soft">
+                <div className="flex items-center space-x-3 mb-4">
+                  <Activity className="h-6 w-6 icon-primary" />
+                  <h4 className="text-lg font-semibold text-[var(--color-text-primary)]">Reliability</h4>
+                </div>
+                <p className="text-3xl font-bold text-[var(--color-text-primary)]">{dataObj.reliability_hours_per_day || 0}</p>
+                <p className="text-[var(--color-text-secondary)] text-sm mt-2">Hours per Day</p>
+              </div>
+
+              <div className="card-glass p-6 shadow-soft">
+                <div className="flex items-center space-x-3 mb-4">
+                  <DollarSign className="h-6 w-6 icon-primary" />
+                  <h4 className="text-lg font-semibold text-[var(--color-text-primary)]">Household Tariff</h4>
+                </div>
+                <p className="text-3xl font-bold text-[var(--color-text-primary)]">${dataObj.household_tariff_usd_per_kwh || 0}</p>
+                <p className="text-[var(--color-text-secondary)] text-sm mt-2">USD/kWh</p>
+              </div>
+
+              <div className="card-glass p-6 shadow-soft">
+                <div className="flex items-center space-x-3 mb-4">
+                  <TrendingUp className="h-6 w-6 icon-primary" />
+                  <h4 className="text-lg font-semibold text-[var(--color-text-primary)]">Renewables Share</h4>
+                </div>
+                <p className="text-3xl font-bold text-[var(--color-text-primary)]">{dataObj.renewables_share_percent || 0}%</p>
+                <p className="text-[var(--color-text-secondary)] text-sm mt-2">Of total generation</p>
+              </div>
+
+              <div className="card-glass p-6 shadow-soft">
+                <div className="flex items-center space-x-3 mb-4">
+                  <BarChart3 className="h-6 w-6 icon-primary" />
+                  <h4 className="text-lg font-semibold text-[var(--color-text-primary)]">Transmission Losses</h4>
+                </div>
+                <p className="text-3xl font-bold text-[var(--color-text-primary)]">{dataObj.transmission_distribution_losses_percent || 0}%</p>
+                <p className="text-[var(--color-text-secondary)] text-sm mt-2">T&D losses</p>
+              </div>
+
+              <div className="card-glass p-6 shadow-soft">
+                <div className="flex items-center space-x-3 mb-4">
+                  <Users className="h-6 w-6 icon-primary" />
+                  <h4 className="text-lg font-semibold text-[var(--color-text-primary)]">New Connections</h4>
+                </div>
+                <p className="text-3xl font-bold text-[var(--color-text-primary)]">{dataObj.new_connections_per_year || 0}</p>
+                <p className="text-[var(--color-text-secondary)] text-sm mt-2">Per year</p>
+              </div>
+
+              <div className="card-glass p-6 shadow-soft">
+                <div className="flex items-center space-x-3 mb-4">
+                  <DollarSign className="h-6 w-6 icon-primary" />
+                  <h4 className="text-lg font-semibold text-[var(--color-text-primary)]">Power Investment</h4>
+                </div>
+                <p className="text-3xl font-bold text-[var(--color-text-primary)]">${((dataObj.annual_power_sector_investment_usd || 0) / 1000000).toFixed(1)}M</p>
+                <p className="text-[var(--color-text-secondary)] text-sm mt-2">Annual investment</p>
+              </div>
+            </div>
+          </div>
+        );
+
       default:
         return null;
     }
   };
 
   return (
-    <div className="page-container py-4 sm:py-6 space-y-4 sm:space-y-6 bg-[var(--color-background-default)] min-h-screen">
+    <div className="w-full space-y-4 sm:space-y-6">
       {/* Analytics Overview with glassmorphism */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6">
         <div className="card-glass p-6 shadow-soft">
@@ -782,8 +883,11 @@ const NationPulsePage = () => {
             <Heart className="h-6 w-6 icon-primary" />
             <h4 className="text-lg font-semibold text-[var(--color-text-primary)]">Avg Life Expectancy</h4>
           </div>
-          <p className="text-3xl font-bold text-[var(--color-text-primary)]">{analytics.regional_averages.life_expectancy.toFixed(1)} years</p>
-          <p className="text-[var(--color-text-secondary)] text-sm mt-2">Regional average</p>
+          <div className="space-y-1">
+            <p className="text-3xl font-bold text-[var(--color-text-primary)]">{analytics.regional_averages.life_expectancy.toFixed(1)}</p>
+            <p className="text-[var(--color-text-secondary)] text-sm">years</p>
+            <p className="text-[var(--color-text-secondary)] text-xs mt-2">Regional average</p>
+          </div>
         </div>
 
         <div className="card-glass p-6 shadow-soft">
@@ -791,8 +895,11 @@ const NationPulsePage = () => {
             <DollarSign className="h-6 w-6 icon-primary" />
             <h4 className="text-lg font-semibold text-[var(--color-text-primary)]">Avg GDP per Capita</h4>
           </div>
-          <p className="text-3xl font-bold text-[var(--color-text-primary)]">${analytics.regional_averages.gdp_per_capita.toFixed(0)}</p>
-          <p className="text-[var(--color-text-secondary)] text-sm mt-2">Regional average</p>
+          <div className="space-y-1">
+            <p className="text-3xl font-bold text-[var(--color-text-primary)]">${analytics.regional_averages.gdp_per_capita.toFixed(0)}</p>
+            <p className="text-[var(--color-text-secondary)] text-sm">USD</p>
+            <p className="text-[var(--color-text-secondary)] text-xs mt-2">Regional average</p>
+          </div>
         </div>
 
         <div className="card-glass p-6 shadow-soft">
@@ -800,22 +907,34 @@ const NationPulsePage = () => {
             <Building className="h-6 w-6 icon-primary" />
             <h4 className="text-lg font-semibold text-[var(--color-text-primary)]">Avg Health Spend</h4>
           </div>
-          <p className="text-3xl font-bold text-[var(--color-text-primary)]">{analytics.regional_averages.health_expenditure.toFixed(1)}%</p>
-          <p className="text-[var(--color-text-secondary)] text-sm mt-2">Of GDP</p>
+          <div className="space-y-1">
+            <p className="text-3xl font-bold text-[var(--color-text-primary)]">{analytics.regional_averages.health_expenditure.toFixed(1)}%</p>
+            <p className="text-[var(--color-text-secondary)] text-sm">Of GDP</p>
+            <p className="text-[var(--color-text-secondary)] text-xs mt-2">Regional average</p>
+          </div>
         </div>
 
         <div className="card-glass p-6 shadow-soft">
           <div className="flex items-center space-x-3 mb-4">
             <TrendingUp className="h-6 w-6 icon-primary" />
-            <h4 className="text-lg font-semibold text-[var(--color-text-primary)]">Avg Annual Growth</h4>
+            <h4 className="text-lg font-semibold text-[var(--color-text-primary)]">avg National Electrification Rate</h4>
           </div>
-          <p className="text-3xl font-bold text-[var(--color-text-primary)]">
-            {(countries.reduce((sum: number, country: string) => {
-              const economicData = data?.economic_indicators?.[country];
-              return sum + (economicData ? economicData.gdp.growth_rate : 0);
-            }, 0) / (countries.length || 1)).toFixed(1)}%
-          </p>
-          <p className="text-[var(--color-text-secondary)] text-sm mt-2">GDP growth rate</p>
+          <div className="space-y-1">
+            <p className="text-3xl font-bold text-[var(--color-text-primary)]">
+              {(() => {
+                // Calculate average electrification rate (placeholder - needs to be added to data structure)
+                const electrificationRates = countries.map((country: string) => {
+                  const electrificationData = data?.electrification?.[country];
+                  return electrificationData?.access_rate || 0;
+                }).filter((rate: number) => rate > 0);
+                return electrificationRates.length > 0 
+                  ? (electrificationRates.reduce((a: number, b: number) => a + b, 0) / electrificationRates.length).toFixed(1)
+                  : '0.0';
+              })()}%
+            </p>
+            <p className="text-[var(--color-text-secondary)] text-sm">Access rate</p>
+            <p className="text-[var(--color-text-secondary)] text-xs mt-2">Regional average</p>
+          </div>
         </div>
       </div>
 
@@ -950,17 +1069,32 @@ const NationPulsePage = () => {
                 <div className="flex justify-between items-start mb-3">
                   <h4 className="font-semibold text-[var(--color-text-primary)]">{opportunity.country}</h4>
                   <span className={`px-2 py-1 rounded text-xs font-bold border ${
-                    opportunity.opportunity_score >= 80 ? 'bg-[var(--color-success)] text-white border-[color-mix(in_srgb,var(--color-success),black_10%)]' :
-                    opportunity.opportunity_score >= 60 ? 'bg-[var(--color-warning)] text-white border-[color-mix(in_srgb,var(--color-warning),black_10%)]' :
-                    'bg-[var(--color-error)] text-white border-[color-mix(in_srgb,var(--color-error),black_10%)]'
+                    opportunity.opportunity_score >= 80 ? 'bg-green-500 dark:bg-green-600 text-white border-green-600 dark:border-green-500' :
+                    opportunity.opportunity_score >= 60 ? 'bg-yellow-500 dark:bg-yellow-600 text-white border-yellow-600 dark:border-yellow-500' :
+                    'bg-red-500 dark:bg-red-600 text-white border-red-600 dark:border-red-500'
                   }`}>
                     Score: {opportunity.opportunity_score}
                   </span>
                 </div>
                 <div className="space-y-2">
-                  {opportunity.key_factors.map((factor: string, factorIndex: number) => (
-                    <p key={factorIndex} className="text-xs text-[var(--color-text-secondary)]">{factor}</p>
-                  ))}
+                  <div className="flex justify-between items-center text-xs">
+                    <span className="text-[var(--color-text-secondary)]">GDP Growth:</span>
+                    <span className="font-medium text-[var(--color-text-primary)]">
+                      {economicData?.gdp?.growth_rate ? `${economicData.gdp.growth_rate.toFixed(1)}%` : 'N/A'}
+                    </span>
+                  </div>
+                  <div className="flex justify-between items-center text-xs">
+                    <span className="text-[var(--color-text-secondary)]">Health Spend:</span>
+                    <span className="font-medium text-[var(--color-text-primary)]">
+                      {data?.healthcare_infrastructure?.[countryKey]?.health_expenditure?.percentage_of_gdp ? `${data.healthcare_infrastructure[countryKey].health_expenditure.percentage_of_gdp.toFixed(1)}% of GDP` : 'N/A'}
+                    </span>
+                  </div>
+                  <div className="flex justify-between items-center text-xs">
+                    <span className="text-[var(--color-text-secondary)]">Population:</span>
+                    <span className="font-medium text-[var(--color-text-primary)]">
+                      {data?.population?.[countryKey]?.population_size ? `${(data.population[countryKey].population_size / 1000000).toFixed(1)}M` : 'N/A'}
+                    </span>
+                  </div>
                   <div className="pt-2 border-t border-[var(--color-divider-gray)] mt-2">
                     <div className="flex justify-between items-center text-xs">
                       <span className="text-[var(--color-text-secondary)]">GDP per Capita:</span>

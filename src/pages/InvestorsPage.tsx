@@ -140,10 +140,10 @@ const InvestorsPage = () => {
   };
 
   return (
-    <div className="page-container py-6 space-y-6 bg-[var(--color-background-default)] min-h-screen">
+    <div className="w-full space-y-6">
       {/* Header with glassmorphism */}
       <div className="card-glass p-6 shadow-soft">
-        <div className="flex flex-row sm:items-center sm:justify-between gap-3">
+        <div className="flex flex-row items-center justify-between gap-3">
           <div className="flex items-center space-x-3">
             <Users className="h-8 w-8 icon-primary" />
             <div>
@@ -243,7 +243,7 @@ const InvestorsPage = () => {
       </div>
 
       {/* Investors Grid with glassmorphism */}
-      <div className="grid grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-2 grid-cols-3 gap-6">
         {filteredInvestors.sort((a: any, b: any) => b.totalInvested - a.totalInvested).map((investor: any) => (
           <div 
             key={investor.name} 
@@ -252,7 +252,7 @@ const InvestorsPage = () => {
           >
             <div className="flex items-start justify-between mb-4">
               <div className="flex items-center space-x-3">
-                <div className="w-12 h-12 bg-[var(--color-primary-teal)] rounded-lg flex items-center justify-center border border-[color-mix(in_srgb,var(--color-primary-teal),black_10%)]">
+                <div className="w-12 h-12 bg-black dark:bg-gray-700 rounded-lg flex items-center justify-center border border-black/20 dark:border-gray-600/30">
                   <Users className="h-6 w-6 text-white" />
                 </div>
                 <div>
@@ -332,10 +332,10 @@ const InvestorsPage = () => {
       {/* Investor Details Modal with glassmorphism */}
       {showInvestorDetails && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-          <div className="card-glass p-6 max-w-3xl w-full mx-4 max-h-[80vh] overflow-y-auto shadow-elevated">
+          <div className="card-glass p-6 max-w-3xl w-full mx-4 max-h-[600px] overflow-y-auto shadow-elevated">
             <div className="flex items-center justify-between mb-6">
               <div className="flex items-center space-x-4">
-                <div className="w-14 h-14 bg-[var(--color-primary-teal)] rounded-lg flex items-center justify-center border border-[color-mix(in_srgb,var(--color-primary-teal),black_10%)]">
+                <div className="w-14 h-14 bg-black dark:bg-gray-700 rounded-lg flex items-center justify-center border border-black/20 dark:border-gray-600/30">
                   <Users className="h-7 w-7 text-white" />
                 </div>
                 <div>
@@ -457,7 +457,7 @@ const InvestorsPage = () => {
             
             <div className="mb-6">
               <h4 className="text-lg font-semibold text-[var(--color-text-primary)] mb-3">Portfolio Companies</h4>
-              <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
+              <div className="grid grid-cols-2 grid-cols-3 gap-2">
                 {(showInvestorDetails.portfolioCompanies || []).map((company: string, index: number) => (
                   <div key={index} className="card-glass p-2 shadow-soft text-sm">
                     {company}

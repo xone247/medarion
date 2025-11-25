@@ -330,22 +330,22 @@ const FundraisingCRMPage = () => {
     <div className="page-container">
       {/* Header with glassmorphism */}
       <div className="card-glass p-6 shadow-soft mb-6">
-        <div className="flex flex-row lg:items-center lg:justify-between gap-4">
+        <div className="flex flex-row items-center justify-between gap-4">
           <div className="flex items-center space-x-3">
             <MessageSquare className="h-8 w-8 icon-primary" />
             <div>
-              <h1 className="text-xl md:text-2xl font-bold text-[var(--color-text-primary)]">Fundraising CRM</h1>
+              <h1 className="text-xl text-2xl font-bold text-[var(--color-text-primary)]">Fundraising CRM</h1>
               <p className="text-sm text-[var(--color-text-secondary)]">Manage your investor relationships and fundraising pipeline</p>
             </div>
           </div>
           <div className="flex flex-row gap-3">
           <div className="toolbar">
-              <input className="input w-full sm:w-48" placeholder="Search..." value={query} onChange={(e)=>setQuery(e.target.value)} />
-              <select className="input w-full sm:w-40" value={stageFilter} onChange={(e)=>setStageFilter(e.target.value)}>
+              <input className="input w-full w-48" placeholder="Search..." value={query} onChange={(e)=>setQuery(e.target.value)} />
+              <select className="input w-full w-40" value={stageFilter} onChange={(e)=>setStageFilter(e.target.value)}>
                 <option value="">All stages</option>
                 {Object.keys(pipeline).map(s => (<option key={s} value={s}>{s}</option>))}
               </select>
-              <select className="input w-full sm:w-36" value={typeFilter} onChange={(e)=>setTypeFilter(e.target.value)}>
+              <select className="input w-full w-36" value={typeFilter} onChange={(e)=>setTypeFilter(e.target.value)}>
                 <option value="">All types</option>
                 {Array.from(new Set(allInvestors.map(i=>i.type))).map(t => (<option key={t} value={t}>{t}</option>))}
               </select>
@@ -381,49 +381,49 @@ const FundraisingCRMPage = () => {
       )}
 
       {/* Summary Stats */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-        <div className="card-glass p-4 lg:p-6 shadow-soft">
+      <div className="grid grid-cols-2 grid-cols-4 gap-4 mb-6">
+        <div className="card-glass p-4 p-6 shadow-soft">
           <div className="flex items-center space-x-3">
-            <User className="h-5 w-5 lg:h-6 lg:w-6 icon-primary flex-shrink-0" />
+            <User className="h-5 w-5 h-6 w-6 icon-primary flex-shrink-0" />
             <div className="min-w-0">
-              <p className="text-xs lg:text-sm text-[var(--color-text-secondary)]">Total Investors</p>
-              <p className="text-lg lg:text-2xl font-bold text-[var(--color-text-primary)]">{totalInvestors}</p>
+              <p className="text-xs text-sm text-[var(--color-text-secondary)]">Total Investors</p>
+              <p className="text-lg text-2xl font-bold text-[var(--color-text-primary)]">{totalInvestors}</p>
             </div>
           </div>
         </div>
-        <div className="card-glass p-4 lg:p-6 shadow-soft">
+        <div className="card-glass p-4 p-6 shadow-soft">
           <div className="flex items-center space-x-3">
-            <DollarSign className="h-5 w-5 lg:h-6 lg:w-6 icon-primary flex-shrink-0" />
+            <DollarSign className="h-5 w-5 h-6 w-6 icon-primary flex-shrink-0" />
             <div className="min-w-0">
-              <p className="text-xs lg:text-sm text-[var(--color-text-secondary)]">Active Deals</p>
-              <p className="text-lg lg:text-2xl font-bold text-[var(--color-text-primary)]">{activeDeals}</p>
+              <p className="text-xs text-sm text-[var(--color-text-secondary)]">Active Deals</p>
+              <p className="text-lg text-2xl font-bold text-[var(--color-text-primary)]">{activeDeals}</p>
             </div>
           </div>
         </div>
-        <div className="card-glass p-4 lg:p-6 shadow-soft">
+        <div className="card-glass p-4 p-6 shadow-soft">
           <div className="flex items-center space-x-3">
-            <Calendar className="h-5 w-5 lg:h-6 lg:w-6 icon-primary flex-shrink-0" />
+            <Calendar className="h-5 w-5 h-6 w-6 icon-primary flex-shrink-0" />
             <div className="min-w-0">
-              <p className="text-xs lg:text-sm text-[var(--color-text-secondary)]">Avg Deal Size</p>
-              <p className="text-lg lg:text-2xl font-bold text-[var(--color-text-primary)]">${avgDealSize.toFixed(1)}M</p>
+              <p className="text-xs text-sm text-[var(--color-text-secondary)]">Avg Deal Size</p>
+              <p className="text-lg text-2xl font-bold text-[var(--color-text-primary)]">${avgDealSize.toFixed(1)}M</p>
             </div>
           </div>
         </div>
-        <div className="card-glass p-4 lg:p-6 shadow-soft">
+        <div className="card-glass p-4 p-6 shadow-soft">
           <div className="flex items-center space-x-3">
-            <FileText className="h-5 w-5 lg:h-6 lg:w-6 icon-primary flex-shrink-0" />
+            <FileText className="h-5 w-5 h-6 w-6 icon-primary flex-shrink-0" />
             <div className="min-w-0">
-              <p className="text-xs lg:text-sm text-[var(--color-text-secondary)]">Conversion Rate</p>
-              <p className="text-lg lg:text-2xl font-bold text-[var(--color-text-primary)]">{((activeDeals / Math.max(1,totalInvestors)) * 100).toFixed(0)}%</p>
+              <p className="text-xs text-sm text-[var(--color-text-secondary)]">Conversion Rate</p>
+              <p className="text-lg text-2xl font-bold text-[var(--color-text-primary)]">{((activeDeals / Math.max(1,totalInvestors)) * 100).toFixed(0)}%</p>
             </div>
           </div>
         </div>
       </div>
 
       {/* CRM Pipeline */}
-      <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-3 md:gap-4">
+      <div className="grid grid-cols-2 grid-cols-3 grid-cols-5 gap-3 gap-4">
         {Object.entries(filteredPipeline).map(([stage, investors]) => (
-          <div key={stage} className="card-glass rounded-lg flex flex-col h-[28rem] md:h-[32rem] shadow-soft">
+          <div key={stage} className="card-glass rounded-lg flex flex-col h-[28rem] h-[32rem] shadow-soft">
             <div className={`h-1 w-full rounded-t ${getStageAccent(stage)}`}></div>
             <div className="p-3 border-b border-[var(--color-divider-gray)] bg-[var(--color-background-default)] flex-shrink-0">
               <h3 className="font-semibold text-[var(--color-text-primary)] text-center text-sm">{stage}</h3>
@@ -445,8 +445,8 @@ const FundraisingCRMPage = () => {
                   >
                     <div className="flex items-start justify-between mb-3">
                       <div className="flex items-center space-x-3">
-                        <div className="w-12 h-12 bg-[var(--color-primary-teal)] rounded-lg flex items-center justify-center border border-[color-mix(in_srgb,var(--color-primary-teal),black_10%)]">
-                          <Users className="h-5 w-5 text-white" />
+                        <div className="w-12 h-12 bg-black dark:bg-gray-700 rounded-lg flex items-center justify-center border border-black/20 dark:border-gray-600/30">
+                          <Users className="h-5 w-5 text-white dark:text-white" />
                         </div>
                         <div>
                           <h4 className="text-base font-semibold text-[var(--color-text-primary)] leading-tight">{investor.name}</h4>
@@ -467,13 +467,13 @@ const FundraisingCRMPage = () => {
                         onClick={(e) => { e.stopPropagation(); setSelectedInvestor(investor); setShowMeetingModal(true); }}
                         className="btn-chip btn-chip-danger flex-shrink-0"
                       >
-                        <Calendar className="h-3 w-3" /><span className="hidden sm:inline">Meeting</span>
+                        <Calendar className="h-3 w-3" /><span className="hidden inline">Meeting</span>
                       </button>
                       <button
                         onClick={(e) => { e.stopPropagation(); setSelectedInvestor(investor); setShowReminderModal(true); }}
                         className="btn-chip btn-chip-info flex-shrink-0"
                       >
-                        <Bell className="h-3 w-3" /><span className="hidden sm:inline">Remind</span>
+                        <Bell className="h-3 w-3" /><span className="hidden inline">Remind</span>
                       </button>
                       <div className="ml-auto flex items-center gap-1">
                         <ArrowRightLeft className="h-3 w-3 text-[var(--color-text-secondary)]" />
@@ -498,9 +498,9 @@ const FundraisingCRMPage = () => {
       {/* Investor Detail Modal */}
       {selectedInvestor && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-          <div className="card-glass p-4 md:p-6 max-w-2xl w-full mx-auto max-h-[80vh] overflow-y-auto shadow-soft">
+          <div className="card-glass p-4 p-6 max-w-2xl w-full mx-auto max-h-[600px] overflow-y-auto shadow-soft">
             <div className="flex items-center justify-between mb-4">
-              <h3 className="text-lg md:text-xl font-bold text-[var(--color-text-primary)]">{selectedInvestor.name}</h3>
+              <h3 className="text-lg text-xl font-bold text-[var(--color-text-primary)]">{selectedInvestor.name}</h3>
               <button onClick={() => setSelectedInvestor(null)} className="text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)]">✕</button>
             </div>
             <div className="grid grid-cols-2 gap-4 mb-4">
@@ -532,9 +532,9 @@ const FundraisingCRMPage = () => {
       {/* Meeting Request Modal */}
       {showMeetingModal && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-          <div className="card-glass p-4 md:p-6 max-w-2xl w-full mx-auto shadow-soft">
-            <div className="flex items-center justify-between mb-4 md:mb-6">
-              <h3 className="text-lg md:text-xl font-bold text-[var(--color-text-primary)]">Schedule Meeting</h3>
+          <div className="card-glass p-4 p-6 max-w-2xl w-full mx-auto shadow-soft">
+            <div className="flex items-center justify-between mb-4 mb-6">
+              <h3 className="text-lg text-xl font-bold text-[var(--color-text-primary)]">Schedule Meeting</h3>
               <button onClick={() => setShowMeetingModal(false)} className="text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)]">✕</button>
             </div>
             <div className="space-y-4 mb-6">
@@ -589,9 +589,9 @@ const FundraisingCRMPage = () => {
       {/* Reminder Modal */}
       {showReminderModal && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-          <div className="card-glass p-4 md:p-6 max-w-2xl w-full mx-auto shadow-soft">
-            <div className="flex items-center justify-between mb-4 md:mb-6">
-              <h3 className="text-lg md:text-xl font-bold text-[var(--color-text-primary)]">Set Task Reminder</h3>
+          <div className="card-glass p-4 p-6 max-w-2xl w-full mx-auto shadow-soft">
+            <div className="flex items-center justify-between mb-4 mb-6">
+              <h3 className="text-lg text-xl font-bold text-[var(--color-text-primary)]">Set Task Reminder</h3>
               <button onClick={() => setShowReminderModal(false)} className="text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)]">✕</button>
             </div>
             <div className="space-y-4 mb-6">
@@ -617,10 +617,10 @@ const FundraisingCRMPage = () => {
       {/* Select Investor from Database Modal */}
       {showSelectInvestorModal && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-          <div className="card-glass p-4 md:p-6 max-w-4xl w-full mx-auto shadow-soft max-h-[80vh] overflow-hidden flex flex-col">
+          <div className="card-glass p-4 p-6 max-w-4xl w-full mx-auto shadow-soft max-h-[600px] overflow-hidden flex flex-col">
             <div className="flex items-center justify-between mb-4 flex-shrink-0">
               <div>
-                <h3 className="text-lg md:text-xl font-bold text-[var(--color-text-primary)]">Select Investor from Platform</h3>
+                <h3 className="text-lg text-xl font-bold text-[var(--color-text-primary)]">Select Investor from Platform</h3>
                 <p className="text-sm text-[var(--color-text-secondary)] mt-1">Choose an investor from the database to add to your CRM pipeline</p>
               </div>
               <button onClick={()=>{setShowSelectInvestorModal(false); setInvestorSearchTerm('');}} className="text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)]">
@@ -732,9 +732,9 @@ const FundraisingCRMPage = () => {
       {/* Add Custom Investor Modal */}
       {showAddModal && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-          <div className="card-glass p-4 md:p-6 max-w-xl w-full mx-auto shadow-soft">
+          <div className="card-glass p-4 p-6 max-w-xl w-full mx-auto shadow-soft">
             <div className="flex items-center justify-between mb-4">
-              <h3 className="text-lg md:text-xl font-bold text-[var(--color-text-primary)]">Add Custom Investor</h3>
+              <h3 className="text-lg text-xl font-bold text-[var(--color-text-primary)]">Add Custom Investor</h3>
               <button onClick={()=>setShowAddModal(false)} className="text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)]">✕</button>
             </div>
             <div className="grid grid-cols-2 gap-3">
@@ -750,7 +750,7 @@ const FundraisingCRMPage = () => {
               <input className="input" placeholder="Phone" value={newInv.phone} onChange={(e)=>setNewInv(prev=>({...prev, phone:e.target.value}))} />
               <input className="input" placeholder="Deal Size (e.g., 1-3M)" value={newInv.dealSize} onChange={(e)=>setNewInv(prev=>({...prev, dealSize:e.target.value}))} />
               <input className="input" placeholder="Timeline (e.g., Q2 2025)" value={newInv.timeline} onChange={(e)=>setNewInv(prev=>({...prev, timeline:e.target.value}))} />
-              <textarea className="input md:col-span-2" placeholder="Notes" rows={3} value={newInv.notes} onChange={(e)=>setNewInv(prev=>({...prev, notes:e.target.value}))} />
+              <textarea className="input col-span-2" placeholder="Notes" rows={3} value={newInv.notes} onChange={(e)=>setNewInv(prev=>({...prev, notes:e.target.value}))} />
             </div>
             <div className="mt-4 flex justify-end gap-2">
               <button className="btn-outline px-4 py-2 rounded" onClick={()=>setShowAddModal(false)}>Cancel</button>

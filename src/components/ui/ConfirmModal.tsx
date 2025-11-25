@@ -55,7 +55,7 @@ const ConfirmModal: React.FC<ConfirmModalProps> = ({
       icon: AlertTriangle,
       iconColor: 'text-[var(--color-primary-teal)] dark:text-[var(--color-primary-teal)]',
       iconBg: 'bg-[var(--color-primary-teal)]/10 dark:bg-[var(--color-primary-teal)]/20',
-      button: 'bg-[var(--color-primary-teal)] hover:bg-[var(--color-primary-teal)]/90 text-white',
+      button: 'bg-black dark:bg-white hover:bg-black/90 dark:hover:bg-white/80 text-white dark:text-black',
     },
   };
 

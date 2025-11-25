@@ -58,9 +58,9 @@ const AIChatWidget: React.FC = () => {
   };
 
   return (
-    <div className="fixed bottom-4 right-4 z-[1000]">
+    <div className="fixed bottom-4 right-4 z-[1000] flex flex-col items-end gap-3">
       {open && (
-        <div className="mb-3 w-[20rem] sm:w-[24rem] bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl shadow-2xl overflow-hidden flex flex-col" style={{ maxHeight: '70vh', height: '500px' }}>
+        <div className="w-[20rem] w-[24rem] bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl shadow-2xl overflow-hidden flex flex-col" style={{ maxHeight: '70vh', height: '500px' }}>
           <div className="flex items-center justify-between px-3 py-2 border-b border-gray-200 dark:border-gray-700 flex-shrink-0">
             <div className="flex items-center space-x-2">
               <MessageSquare className="h-4 w-4 text-[var(--color-text-primary)]" />
@@ -130,11 +130,11 @@ const AIChatWidget: React.FC = () => {
               disabled={!query.trim() || loading}
               className={`p-2 rounded-lg border disabled:opacity-50 disabled:cursor-not-allowed transition-colors ${
                 theme === 'dark' 
-                  ? 'bg-white text-black border-white/30 hover:opacity-90' 
+                  ? 'bg-gray-700 text-white border-gray-600 hover:opacity-90' 
                   : 'bg-black text-white border-black/30 hover:opacity-90'
               }`}
             >
-              <Send className="h-4 w-4" />
+              <Send className="h-4 w-4 text-white dark:text-white" />
             </button>
           </div>
         </div>
@@ -142,14 +142,14 @@ const AIChatWidget: React.FC = () => {
 
       <button
         onClick={() => setOpen(v => !v)}
-        className={`h-12 w-12 rounded-full shadow-lg border flex items-center justify-center transition-colors ${
+        className={`h-12 w-12 rounded-full shadow-lg border flex items-center justify-center transition-colors flex-shrink-0 ${
           theme === 'dark' 
-            ? 'bg-white text-black border-white/30 hover:opacity-90' 
+            ? 'bg-gray-700 text-white border-gray-600 hover:opacity-90' 
             : 'bg-black text-white border-black/30 hover:opacity-90'
         }`}
         title="Open Medarion AI"
       >
-        <MessageSquare className="h-5 w-5" />
+        <MessageSquare className="h-5 w-5 text-white dark:text-white" />
       </button>
 
       <ConfirmModal

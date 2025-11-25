@@ -72,9 +72,9 @@ const DealsBySectorChart: React.FC<{ deals?: Deal[] }> = ({ deals: dealsProp }) 
   };
 
   return (
-    <div className="bg-[var(--color-background-surface)] p-4 md:p-6 rounded-lg border border-[var(--color-divider-gray)] shadow-sm">
-      <h3 className="text-base md:text-lg font-semibold text-[var(--color-text-primary)] mb-4">Deal Value by Sector</h3>
-      <div className="h-56 md:h-80">
+    <div className="bg-[var(--color-background-surface)] p-4 p-6 rounded-lg border border-[var(--color-divider-gray)] shadow-sm">
+      <h3 className="text-base text-lg font-semibold text-[var(--color-text-primary)] mb-4">Deal Value by Sector</h3>
+      <div className="h-56 h-80">
         <ResponsiveContainer width="100%" height="100%">
           <PieChart margin={{ top: 0, right: 0, bottom: 0, left: 0 }}>
             <Pie

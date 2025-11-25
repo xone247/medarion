@@ -372,7 +372,7 @@ const NewsletterComposer: React.FC<NewsletterComposerProps> = ({
               <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-3">
                 Email Template
               </label>
-              <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+              <div className="grid grid-cols-2 grid-cols-4 gap-4">
                 {(['modern', 'bold', 'professional', 'minimalist'] as TemplateName[]).map((template) => {
                   const isSelected = selectedTemplate === template;
                   const templateInfo = {
@@ -668,7 +668,7 @@ const NewsletterComposer: React.FC<NewsletterComposerProps> = ({
       {/* Preview Modal */}
       {showPreview && (
         <div className="fixed inset-0 bg-black/70 z-[60] flex items-center justify-center p-4">
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-hidden flex flex-col">
+          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-2xl max-w-4xl w-full max-h-[700px] overflow-hidden flex flex-col">
             <div className="flex items-center justify-between p-4 border-b border-[var(--color-divider-gray)]">
               <div>
                 <h3 className="text-lg font-semibold text-[var(--color-text-primary)]">Email Preview</h3>

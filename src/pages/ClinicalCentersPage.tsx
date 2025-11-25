@@ -54,7 +54,7 @@ const ClinicalCentersPage: React.FC = () => {
   const runAISummary = () => { try { const count = filteredCenters.length; const distinctCountries = new Set(filteredCenters.map((c:any)=>c.country)).size; setAiSummary(`Centers: ${count} • Countries: ${distinctCountries}`); } catch { setAiSummary('No data available'); } };
 
   return (
-    <div className="page-container py-6 space-y-6 bg-[var(--color-background-default)] min-h-screen">
+    <div className="w-full space-y-6">
       {/* Header */}
       <div className="card-glass p-6 shadow-soft">
         <div className="flex flex-row items-center justify-between gap-3">
@@ -135,7 +135,7 @@ const ClinicalCentersPage: React.FC = () => {
             {filteredCenters.map((center: any) => (
               <div key={center.id} className="card-glass p-4 shadow-soft hover:shadow-md transition-shadow">
                 <div className="flex items-start space-x-4">
-                  <div className="w-12 h-12 bg-[var(--color-primary-teal)] rounded-lg flex items-center justify-center border border-[color-mix(in_srgb,var(--color-primary-teal),black_10%)] flex-shrink-0">
+                  <div className="w-12 h-12 bg-black dark:bg-gray-700 rounded-lg flex items-center justify-center border border-black/20 dark:border-gray-600/30 flex-shrink-0">
                     <Building2 className="h-6 w-6 text-white" />
                   </div>
                   <div className="flex-1 min-w-0">
@@ -186,6 +186,26 @@ const ClinicalCentersPage: React.FC = () => {
                         )}
                       </div>
                     )}
+                    <div className="flex items-center space-x-4 mt-3 pt-3 border-t border-[var(--color-divider-gray)]">
+                      <button
+                        onClick={() => {
+                          // TODO: Implement more details functionality
+                          alert(`More details for ${center.name}`);
+                        }}
+                        className="text-xs text-[var(--color-primary-teal)] hover:underline"
+                      >
+                        More details
+                      </button>
+                      <button
+                        onClick={() => {
+                          // TODO: Implement save functionality
+                          alert('Save functionality to be implemented');
+                        }}
+                        className="text-xs text-[var(--color-primary-teal)] hover:underline"
+                      >
+                        Save
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>

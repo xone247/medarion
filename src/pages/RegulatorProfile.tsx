@@ -20,10 +20,10 @@ const RegulatorProfile: React.FC = () => {
   const [showNew, setShowNew] = useState(false);
 
   return (
-    <div className="bg-[var(--color-background-default)] min-h-screen">
+    <div className="w-full">
       {/* Header */}
-      <div className="border-b border-[var(--color-divider-gray)] bg-[var(--color-background-surface)]">
-        <div className="max-w-7xl mx-auto px-6 lg:px-8">
+      <div className="border-b border-[var(--color-divider-gray)] bg-[var(--color-background-surface)] mb-6">
+        <div className="w-full">
           <div className="py-6">
             <div className="flex items-center justify-between">
               <div>
@@ -33,7 +33,7 @@ const RegulatorProfile: React.FC = () => {
               <div className="flex items-center space-x-4">
                 <button
                   onClick={() => setIsEditing(!isEditing)}
-                  className="flex items-center space-x-2 px-4 py-2 bg-[var(--color-primary-teal)] text-white rounded-lg hover:bg-[var(--color-primary-dark)] transition-colors"
+                  className="flex items-center space-x-2 px-4 py-2 bg-black dark:bg-white text-white dark:text-black rounded-lg hover:bg-black/90 dark:hover:bg-white/80 transition-colors"
                 >
                   {isEditing ? <Save className="h-4 w-4" /> : <Edit className="h-4 w-4" />}
                   <span>{isEditing ? 'Save' : 'Edit'}</span>
@@ -44,13 +44,13 @@ const RegulatorProfile: React.FC = () => {
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-6 lg:px-8 py-8">
+      <div className="w-full py-4">
         <div className="grid grid-cols-3 gap-8">
           {/* Profile Information */}
-          <div className="lg:col-span-1">
-            <div className="bg-[var(--color-background-surface)] rounded-lg border border-[var(--color-divider-gray)] p-6">
+          <div className="col-span-1">
+            <div className="card-glass p-6">
               <div className="flex items-center space-x-3 mb-6">
-                <Shield className="h-6 w-6 text-[var(--color-primary-teal)]" />
+                <Shield className="h-6 w-6 text-black dark:text-white" />
                 <h3 className="text-lg font-semibold text-[var(--color-text-primary)]">Profile Information</h3>
               </div>
               
@@ -161,16 +161,16 @@ const RegulatorProfile: React.FC = () => {
           </div>
 
           {/* Regulatory Initiatives */}
-          <div className="lg:col-span-2">
-            <div className="bg-[var(--color-background-surface)] rounded-lg border border-[var(--color-divider-gray)] p-6">
+          <div className="col-span-2">
+            <div className="card-glass p-6">
               <div className="flex items-center justify-between mb-6">
                 <div className="flex items-center space-x-3">
-                  <Target className="h-6 w-6 text-[var(--color-primary-teal)]" />
+                  <Target className="h-6 w-6 text-black dark:text-white" />
                   <h3 className="text-lg font-semibold text-[var(--color-text-primary)]">Regulatory Initiatives</h3>
                 </div>
                 <button
                   onClick={() => setShowNew(!showNew)}
-                  className="flex items-center space-x-2 px-3 py-2 bg-[var(--color-primary-teal)] text-white rounded-lg hover:bg-[var(--color-primary-dark)] transition-colors"
+                  className="btn-primary flex items-center space-x-2 px-3 py-2 rounded-lg"
                 >
                   <Plus className="h-4 w-4" />
                   <span>Add Initiative</span>
@@ -222,7 +222,7 @@ const RegulatorProfile: React.FC = () => {
                           setShowNew(false);
                         }
                       }}
-                      className="px-4 py-2 bg-[var(--color-primary-teal)] text-white rounded-lg hover:bg-[var(--color-primary-dark)] transition-colors"
+                      className="px-4 py-2 bg-black dark:bg-white text-white dark:text-black rounded-lg hover:bg-black/90 dark:hover:bg-white/80 transition-colors"
                     >
                       Save
                     </button>

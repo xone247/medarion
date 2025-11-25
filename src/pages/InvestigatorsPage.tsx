@@ -58,7 +58,7 @@ const InvestigatorsPage: React.FC = () => {
   const runAISummary = () => { try { const total = filteredInvestigators.length; const countries = new Set(filteredInvestigators.map((i:any)=> i.country)).size; setAiSummary(`Investigators: ${total} • Countries: ${countries}`); } catch { setAiSummary('No data available'); } };
 
   return (
-    <div className="page-container py-6 space-y-6 bg-[var(--color-background-default)] min-h-screen">
+    <div className="w-full space-y-6">
       {/* Header */}
       <div className="card-glass p-6 shadow-soft">
         <div className="flex flex-row items-center justify-between gap-3">
@@ -161,7 +161,7 @@ const InvestigatorsPage: React.FC = () => {
                     <div className="space-y-1 text-sm text-[var(--color-text-secondary)]">
                       {investigator.specialization && (
                         <div className="flex items-center space-x-2">
-                          <span className="bg-[var(--color-primary-teal)] text-white px-2 py-0.5 rounded-full text-xs font-medium border border-[color-mix(in_srgb,var(--color-primary-teal),black_10%)]">
+                          <span className="bg-black dark:bg-white text-white dark:text-black px-2 py-0.5 rounded-full text-xs font-medium border border-black dark:border-white">
                             {investigator.specialization}
                           </span>
                         </div>
@@ -212,6 +212,26 @@ const InvestigatorsPage: React.FC = () => {
                         )}
                       </div>
                     )}
+                    <div className="flex items-center space-x-4 mt-3 pt-3 border-t border-[var(--color-divider-gray)]">
+                      <button
+                        onClick={() => {
+                          // TODO: Implement more details functionality
+                          alert(`More details for ${investigator.first_name} ${investigator.last_name}`);
+                        }}
+                        className="text-xs text-[var(--color-primary-teal)] hover:underline"
+                      >
+                        More details
+                      </button>
+                      <button
+                        onClick={() => {
+                          // TODO: Implement save functionality
+                          alert('Save functionality to be implemented');
+                        }}
+                        className="text-xs text-[var(--color-primary-teal)] hover:underline"
+                      >
+                        Save
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>

@@ -61,12 +61,12 @@ const NationPulseWidget = ({ type = 'overview' }) => {
 
   if (type === 'health-metrics') {
     return (
-      <div className="bg-background-surface p-4 md:p-6 rounded-lg border border-divider shadow-sm">
+      <div className="bg-background-surface p-4 p-6 rounded-lg border border-divider shadow-sm">
         <div className="flex items-center space-x-2 mb-4">
           <Heart className="h-5 w-5 text-red-500" />
-          <h3 className="text-base md:text-lg font-semibold text-text-primary">Regional Health Metrics</h3>
+          <h3 className="text-base text-lg font-semibold text-text-primary">Regional Health Metrics</h3>
         </div>
-        <div className="h-64 md:h-72">
+        <div className="h-64 h-72">
           <ResponsiveContainer width="100%" height="100%">
             <BarChart data={healthMetricsData} margin={{ top: 5, right: 20, bottom: 5, left: 0 }}>
               <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" className="dark:stroke-gray-600" />
@@ -94,12 +94,12 @@ const NationPulseWidget = ({ type = 'overview' }) => {
 
   if (type === 'investment-opportunities') {
     return (
-      <div className="bg-background-surface p-4 md:p-6 rounded-lg border border-divider shadow-sm">
+      <div className="bg-background-surface p-4 p-6 rounded-lg border border-divider shadow-sm">
         <div className="flex items-center space-x-2 mb-4">
           <TrendingUp className="h-5 w-5 text-green-500" />
-          <h3 className="text-base md:text-lg font-semibold text-text-primary">Investment Opportunity Scores</h3>
+          <h3 className="text-base text-lg font-semibold text-text-primary">Investment Opportunity Scores</h3>
         </div>
-        <div className="h-64 md:h-72">
+        <div className="h-64 h-72">
           <ResponsiveContainer width="100%" height="100%">
             <LineChart data={investmentOpportunityData} margin={{ top: 5, right: 20, bottom: 5, left: 0 }}>
               <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" className="dark:stroke-gray-600" />
@@ -135,12 +135,12 @@ const NationPulseWidget = ({ type = 'overview' }) => {
 
   if (type === 'economic-overview') {
     return (
-      <div className="bg-background-surface p-4 md:p-6 rounded-lg border border-divider shadow-sm">
+      <div className="bg-background-surface p-4 p-6 rounded-lg border border-divider shadow-sm">
         <div className="flex items-center space-x-2 mb-4">
           <DollarSign className="h-5 w-5 text-green-500" />
-          <h3 className="text-base md:text-lg font-semibold text-text-primary">Economic Indicators</h3>
+          <h3 className="text-base text-lg font-semibold text-text-primary">Economic Indicators</h3>
         </div>
-        <div className="h-64 md:h-72">
+        <div className="h-64 h-72">
           <ResponsiveContainer width="100%" height="100%">
             <BarChart data={healthMetricsData} margin={{ top: 5, right: 20, bottom: 5, left: 0 }}>
               <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" className="dark:stroke-gray-600" />
@@ -167,49 +167,49 @@ const NationPulseWidget = ({ type = 'overview' }) => {
 
   // Default overview widget
   return (
-    <div className="bg-background-surface p-4 md:p-6 rounded-lg border border-divider shadow-sm">
+    <div className="bg-background-surface p-4 p-6 rounded-lg border border-divider shadow-sm">
       <div className="flex items-center space-x-2 mb-4">
         <Globe className="h-5 w-5 text-primary-400" />
-        <h3 className="text-base md:text-lg font-semibold text-text-primary">Nation Pulse Overview</h3>
+        <h3 className="text-base text-lg font-semibold text-text-primary">Nation Pulse Overview</h3>
       </div>
       
-      <div className="grid grid-cols-2 gap-3 md:gap-4 mb-4">
+      <div className="grid grid-cols-2 gap-3 gap-4 mb-4">
         <div className="text-center">
-          <div className="flex items-center justify-center space-x-1 md:space-x-2 mb-1 md:mb-2">
-            <Heart className="h-3 w-3 md:h-4 md:w-4 text-red-500" />
-            <span className="text-xs md:text-sm text-text-secondary">Avg Life Expectancy</span>
+          <div className="flex items-center justify-center space-x-1 space-x-2 mb-1 mb-2">
+            <Heart className="h-3 w-3 h-4 w-4 text-red-500" />
+            <span className="text-xs text-sm text-text-secondary">Avg Life Expectancy</span>
           </div>
-          <p className="text-lg md:text-2xl font-bold text-text-primary">
+          <p className="text-lg text-2xl font-bold text-text-primary">
             {regionalAverages.life_expectancy.toFixed(1)} years
           </p>
         </div>
         
         <div className="text-center">
-          <div className="flex items-center justify-center space-x-1 md:space-x-2 mb-1 md:mb-2">
-            <DollarSign className="h-3 w-3 md:h-4 md:w-4 text-green-500" />
-            <span className="text-xs md:text-sm text-text-secondary">Avg GDP per Capita</span>
+          <div className="flex items-center justify-center space-x-1 space-x-2 mb-1 mb-2">
+            <DollarSign className="h-3 w-3 h-4 w-4 text-green-500" />
+            <span className="text-xs text-sm text-text-secondary">Avg GDP per Capita</span>
           </div>
-          <p className="text-lg md:text-2xl font-bold text-text-primary">
+          <p className="text-lg text-2xl font-bold text-text-primary">
             ${regionalAverages.gdp_per_capita.toFixed(0)}
           </p>
         </div>
         
         <div className="text-center">
-          <div className="flex items-center justify-center space-x-1 md:space-x-2 mb-1 md:mb-2">
-            <Building className="h-3 w-3 md:h-4 md:w-4 text-blue-500" />
-            <span className="text-xs md:text-sm text-text-secondary">Avg Health Spend</span>
+          <div className="flex items-center justify-center space-x-1 space-x-2 mb-1 mb-2">
+            <Building className="h-3 w-3 h-4 w-4 text-blue-500" />
+            <span className="text-xs text-sm text-text-secondary">Avg Health Spend</span>
           </div>
-          <p className="text-lg md:text-2xl font-bold text-text-primary">
+          <p className="text-lg text-2xl font-bold text-text-primary">
             {regionalAverages.health_expenditure.toFixed(1)}% GDP
           </p>
         </div>
         
         <div className="text-center">
-          <div className="flex items-center justify-center space-x-1 md:space-x-2 mb-1 md:mb-2">
-            <TrendingUp className="h-3 w-3 md:h-4 md:w-4 text-purple-500" />
-            <span className="text-xs md:text-sm text-text-secondary">Avg Annual Growth</span>
+          <div className="flex items-center justify-center space-x-1 space-x-2 mb-1 mb-2">
+            <TrendingUp className="h-3 w-3 h-4 w-4 text-purple-500" />
+            <span className="text-xs text-sm text-text-secondary">Avg Annual Growth</span>
           </div>
-          <p className="text-lg md:text-2xl font-bold text-text-primary">
+          <p className="text-lg text-2xl font-bold text-text-primary">
             {(countries.reduce((sum, country) => {
               const economicData = np?.economic_indicators?.[country];
               return sum + (economicData ? (economicData.gdp?.growth_rate || 0) : 0);
@@ -219,10 +219,10 @@ const NationPulseWidget = ({ type = 'overview' }) => {
       </div>
 
       <div className="border-t border-divider pt-4">
-        <h4 className="text-xs md:text-sm font-semibold text-text-primary mb-3">Top Investment Opportunities</h4>
+        <h4 className="text-xs text-sm font-semibold text-text-primary mb-3">Top Investment Opportunities</h4>
         <div className="space-y-2">
           {investmentOpportunityData.slice(0, 3).map((opportunity: any, index: number) => (
-            <div key={`${opportunity.country}-${index}`} className="flex items-center justify-between text-xs md:text-sm">
+            <div key={`${opportunity.country}-${index}`} className="flex items-center justify-between text-xs text-sm">
               <span className="text-text-secondary">{opportunity.country}</span>
               <span className={`${
                 opportunity.score >= 80 ? 'bg-green-100 text-green-800' :

@@ -1,0 +1,19 @@
+{
+  "companies": {
+    "mPharma": "https://mpharma.com/logo.png",
+    "54gene": "https://54gene.com/logo.png",
+    "LifeBank": "https://lifebank.ng/logo.png",
+    "Helium Health": "https://heliumhealth.com/logo.png",
+    "Vezeeta": "https://vezeeta.com/logo.png",
+    "Zipline": "https://flyzipline.com/logo.png",
+    "Discovery Health": "https://discovery.co.za/logo.png",
+    "Netcare": "https://netcare.co.za/logo.png",
+    "Aspen Pharmacare": "https://aspenpharma.com/logo.png"
+  },
+  "investors": {
+    "TLcom Capital": "https://tlcomcapital.com/logo.png",
+    "Partech Africa": "https://partechpartners.com/logo.png",
+    "Novastar Ventures": "https://novastarventures.com/logo.png",
+    "Consonance Investment Managers": "https://consonanceinv.com/logo.png"
+  }
+}

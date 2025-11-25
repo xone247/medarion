@@ -236,7 +236,7 @@ const BlogDetailPage: React.FC = () => {
 		<div className="min-h-screen bg-[var(--color-background-default)]" style={{ marginTop: 0, paddingTop: 0 }}>
 			{/* Reading progress bar */}
 			<div aria-hidden className="fixed top-0 left-0 right-0 h-1 z-[100]">
-				<div className="h-full bg-[var(--color-primary-teal)] transition-[width] duration-150 ease-linear" style={{ width: `${progress}%` }} />
+				<div className="h-full bg-black dark:bg-white transition-[width] duration-150 ease-linear" style={{ width: `${progress}%` }} />
 			</div>
 		{/* Hero Section with Featured Image */}
 		<div className="relative overflow-hidden" style={{
@@ -269,7 +269,7 @@ const BlogDetailPage: React.FC = () => {
 					{/* Back button removed per request */}
 
 					{/* Title and Metadata Overlay */}
-					<div className="absolute left-0 right-0 p-8 lg:p-12" style={{
+					<div className="absolute left-0 right-0 p-8 p-12" style={{
 						top: '160px',
 						paddingBottom: '2rem',
 						paddingLeft: '2rem',
@@ -291,19 +291,19 @@ const BlogDetailPage: React.FC = () => {
 								</span>
 							</div>
 							
-							<h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 leading-tight drop-shadow-lg">
+							<h1 className="text-4xl text-5xl text-6xl font-normal text-white mb-6 leading-tight drop-shadow-lg">
 								{post.title}
 							</h1>
 							
 							{/* Excerpt */}
 							{post.excerpt && (
-								<p className="text-lg md:text-xl text-white/95 mb-8 leading-relaxed max-w-3xl drop-shadow-md font-light">
+								<p className="text-lg text-xl text-white/95 mb-8 leading-relaxed max-w-3xl drop-shadow-md font-light">
 									{post.excerpt}
 								</p>
 							)}
 
 							{/* Metadata - Modern design */}
-							<div className="flex flex-wrap items-center gap-4 text-white/90 text-sm md:text-base mb-6">
+							<div className="flex flex-wrap items-center gap-4 text-white/90 text-sm text-base mb-6">
 								<div className="flex items-center gap-2 px-3 py-1.5 bg-white/10 backdrop-blur-sm rounded-lg border border-white/20">
 									<Calendar className="h-4 w-4" />
 									<span className="font-medium">
@@ -359,10 +359,10 @@ const BlogDetailPage: React.FC = () => {
 					</div>
 					<div className="grid grid-cols-3 gap-12">
 						{/* Main Content */}
-						<article className="lg:col-span-2 space-y-8" id="blog-article">
+						<article className="col-span-2 space-y-8" id="blog-article">
 							{/* Content */}
 							<div className="bg-white dark:bg-gray-800 rounded-3xl shadow-2xl overflow-hidden">
-								<div className="p-8 lg:p-12">
+								<div className="p-8 p-12">
 									<div className="prose prose-lg max-w-none dark:prose-invert prose-headings:text-gray-900 dark:prose-headings:text-white prose-p:text-gray-700 dark:prose-p:text-gray-300 prose-strong:text-gray-900 dark:prose-strong:text-white prose-a:text-blue-600 dark:prose-a:text-blue-400 prose-img:rounded-xl prose-img:shadow-lg prose-pre:bg-gray-100 dark:prose-pre:bg-gray-800 prose-pre:rounded-xl prose-blockquote:border-l-4 prose-blockquote:border-blue-500 prose-blockquote:bg-blue-50 dark:prose-blockquote:bg-blue-900/20 prose-blockquote:px-6 prose-blockquote:py-4 prose-blockquote:rounded-r-xl">
 										{post.content ? (
 											<div dangerouslySetInnerHTML={{ __html: post.content }} />
@@ -388,7 +388,7 @@ const BlogDetailPage: React.FC = () => {
 								
 								return embedUrl ? (
 									<div className="bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-900 rounded-3xl shadow-2xl overflow-hidden border border-gray-200 dark:border-gray-700">
-										<div className="p-6 lg:p-8">
+										<div className="p-6 p-8">
 											{/* Video Header */}
 											<div className="flex items-center justify-between mb-6">
 												<div className="flex items-center gap-3">
@@ -430,13 +430,13 @@ const BlogDetailPage: React.FC = () => {
 							{/* Related Articles */}
 							{relatedPosts.length > 0 && (
 							<div className="bg-[var(--color-background-surface)] rounded-3xl shadow-2xl overflow-hidden border border-[var(--color-divider-gray)]">
-								<div className="px-8 lg:px-12 py-8 border-b border-[var(--color-divider-gray)]">
+								<div className="px-8 px-12 py-8 border-b border-[var(--color-divider-gray)]">
 									<h3 className="text-3xl font-bold text-[var(--color-text-primary)] flex items-center gap-3">
-										<span className="w-1 h-8 bg-[var(--color-primary-teal)] rounded-full"></span>
+										<span className="w-1 h-8 bg-black dark:bg-white rounded-full"></span>
 										{relatedPosts.some(r => r.category === post?.category) ? 'Related Articles' : 'You Might Also Like'}
 									</h3>
 									</div>
-									<div className="p-8 lg:p-12">
+									<div className="p-8 p-12">
 										<div className="grid grid-cols-2 gap-8">
                             {relatedPosts.map(r => (
 												<article 
@@ -484,7 +484,7 @@ const BlogDetailPage: React.FC = () => {
 						{/* Inline ad removed; bottom ad remains below */}
 
 						{/* Bottom Ad Placement */}
-						<div className="bg-[var(--color-background-surface)] rounded-3xl shadow-2xl p-8 lg:p-12 border border-[var(--color-divider-gray)]">
+						<div className="bg-[var(--color-background-surface)] rounded-3xl shadow-2xl p-8 p-12 border border-[var(--color-divider-gray)]">
 							<AdSlot placement="blog_bottom" category="blog_general" />
 						</div>
 						</article>
@@ -494,7 +494,7 @@ const BlogDetailPage: React.FC = () => {
 							{/* Author Card */}
 							<div className="bg-[var(--color-background-surface)] rounded-3xl shadow-2xl p-8 border border-[var(--color-divider-gray)]">
 								<div className="text-center">
-									<div className="w-20 h-20 bg-[var(--color-primary-teal)] rounded-full flex items-center justify-center text-white font-bold text-2xl mx-auto mb-4 shadow-lg">
+									<div className="w-20 h-20 bg-black dark:bg-white rounded-full flex items-center justify-center text-white dark:text-black font-bold text-2xl mx-auto mb-4 shadow-lg">
 										{post.author.charAt(0)}
 									</div>
 									<h4 className="text-xl font-bold text-[var(--color-text-primary)] mb-2">{post.author}</h4>
@@ -527,7 +527,7 @@ const BlogDetailPage: React.FC = () => {
 								<p className="text-[var(--color-text-secondary)] text-sm leading-relaxed mb-4">
 									Insights and analysis on African healthcare markets, startups, investment, and policy.
 								</p>
-								<button className="w-full btn-primary-elevated text-white py-3 px-6 rounded-xl font-semibold hover:opacity-90 transition-all duration-200 shadow-lg">
+								<button className="w-full btn-primary-elevated py-3 px-6 rounded-xl font-semibold hover:opacity-90 transition-all duration-200 shadow-lg">
 									Learn More
 								</button>
 							</div>

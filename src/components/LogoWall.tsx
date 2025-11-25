@@ -26,7 +26,7 @@ const LogoWall: React.FC<LogoWallProps> = ({ title, items, columns = 6 }) => {
           <h3 className="text-lg font-semibold text-[var(--color-text-primary)]">{title}</h3>
         </div>
       )}
-      <div className={`p-4 grid ${gridCols} gap-3 md:gap-4`}>
+      <div className={`p-4 grid ${gridCols} gap-3 gap-4`}>
         {items.map((item) => (
           <div key={item.name} className="aspect-square rounded-lg border border-[var(--color-divider-gray)] bg-[var(--color-background-default)] flex items-center justify-center overflow-hidden">
             {item.logoUrl ? (

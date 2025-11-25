@@ -115,7 +115,7 @@ const UsersManagerDashboard: React.FC = () => {
 		<>
 		<div className="grid grid-cols-4 gap-6">
 			{/* Sidebar */}
-			<aside className="lg:col-span-1 space-y-4">
+			<aside className="col-span-1 space-y-4">
 				<div className="tile">
 					<div className="tile-header flex items-center gap-2">
 						<Users className="h-4 w-4 icon-primary" />
@@ -170,7 +170,7 @@ const UsersManagerDashboard: React.FC = () => {
 			</aside>
 
 			{/* Main */}
-			<section className="lg:col-span-3 space-y-4">
+			<section className="col-span-3 space-y-4">
 				<div className="tile">
 					<div className="tile-header flex items-center gap-2">
 						<h3 className="font-semibold text-[var(--color-text-primary)]">Users</h3>
@@ -258,8 +258,8 @@ const UsersManagerDashboard: React.FC = () => {
 								<option value="academic">Academic</option>
 								<option value="enterprise">Enterprise</option>
 							</select>
-							<label className="text-sm md:col-span-2">App roles</label>
-							<div className="md:col-span-2 flex flex-wrap gap-2">
+							<label className="text-sm col-span-2">App roles</label>
+							<div className="col-span-2 flex flex-wrap gap-2">
 								{(['super_admin','blog_admin','content_editor','ads_admin'] as AppRole[]).map(r => (
 									<label key={r} className="text-xs inline-flex items-center gap-1 px-2 py-1 rounded border border-[var(--color-divider-gray)] bg-[var(--color-background-default)]">
 										<input type="checkbox" checked={editing.app_roles.includes(r)} onChange={(e)=> setEditing(prev => prev? { ...prev, app_roles: e.target.checked ? Array.from(new Set([...prev.app_roles, r])) : prev.app_roles.filter(a=>a!==r) } : prev)} />
@@ -267,8 +267,8 @@ const UsersManagerDashboard: React.FC = () => {
 									</label>
 								))}
 							</div>
-							<label className="flex items-center gap-2 text-sm md:col-span-2"><input type="checkbox" checked={!!editing.is_admin} onChange={(e)=> setEditing(prev => prev? { ...prev, is_admin: e.target.checked } : prev)} /> Super admin</label>
-							<div className="md:col-span-2 flex items-center justify-end gap-2">
+							<label className="flex items-center gap-2 text-sm col-span-2"><input type="checkbox" checked={!!editing.is_admin} onChange={(e)=> setEditing(prev => prev? { ...prev, is_admin: e.target.checked } : prev)} /> Super admin</label>
+							<div className="col-span-2 flex items-center justify-end gap-2">
 								<button className="btn-outline px-3 py-2 rounded" onClick={()=> setEditing(null)}>Cancel</button>
 								<button className="btn-primary px-3 py-2 rounded flex items-center gap-2" onClick={()=>{
 									const exists = users.some(u=>u.id===editing.id);

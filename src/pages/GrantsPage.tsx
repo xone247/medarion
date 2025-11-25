@@ -206,14 +206,14 @@ const GrantsPage = () => {
   };
 
   return (
-    <div className="page-container py-6 space-y-6 bg-[var(--color-background-default)] min-h-screen">
+    <div className="w-full space-y-6">
       {/* Header with glassmorphism */}
       <div className="card-glass p-6 shadow-soft">
-        <div className="flex flex-row lg:items-center lg:justify-between gap-4">
+        <div className="flex flex-row items-center justify-between gap-4">
           <div className="flex items-center space-x-3">
             <DollarSign className="h-8 w-8 icon-primary" />
             <div>
-              <h1 className="text-xl md:text-2xl font-bold text-[var(--color-text-primary)]">Grants & Funding</h1>
+              <h1 className="text-xl text-2xl font-bold text-[var(--color-text-primary)]">Grants & Funding</h1>
               <p className="text-sm text-[var(--color-text-secondary)]">Track non-dilutive grants, VC rounds, donor funding, and other financing</p>
             </div>
           </div>
@@ -349,7 +349,7 @@ const GrantsPage = () => {
                 <tr key={grant.id} className="hover:bg-[var(--color-background-default)] transition-colors">
                   <td className="px-6 py-4">
                     <div className="flex items-center">
-                      <div className="w-10 h-10 bg-[var(--color-primary-teal)] rounded-lg flex items-center justify-center border border-[color-mix(in_srgb,var(--color-primary-teal),black_10%)]">
+                      <div className="w-10 h-10 bg-black dark:bg-gray-700 rounded-lg flex items-center justify-center border border-black/20 dark:border-gray-600/30">
                         <Building2 className="h-5 w-5 text-white" />
                       </div>
                       <div className="ml-4">

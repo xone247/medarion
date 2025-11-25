@@ -143,8 +143,8 @@ const AIChatInterface: React.FC<AIChatInterfaceProps> = ({
       <div className="flex-shrink-0 p-4 border-b border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-lg bg-[var(--color-primary-teal)] flex items-center justify-center">
-              <Bot className="h-5 w-5 text-white" style={{ color: 'white' }} />
+            <div className="w-10 h-10 rounded-lg bg-black dark:bg-white flex items-center justify-center">
+              <Bot className="h-5 w-5 text-white dark:text-black" />
             </div>
             <div>
               <h2 className="text-lg font-bold text-gray-900 dark:text-white">{toolName}</h2>
@@ -234,14 +234,14 @@ const AIChatInterface: React.FC<AIChatInterfaceProps> = ({
               className={`flex gap-3 ${message.role === 'user' ? 'justify-end' : 'justify-start'} items-end`}
             >
               {message.role === 'assistant' && (
-                <div className="w-10 h-10 rounded-full bg-[var(--color-primary-teal)] flex items-center justify-center flex-shrink-0 shadow-md">
-                  <Bot className="h-5 w-5 text-white" style={{ color: 'white' }} />
+                <div className="w-10 h-10 rounded-full bg-black dark:bg-white flex items-center justify-center flex-shrink-0 shadow-md">
+                  <Bot className="h-5 w-5 text-white dark:text-black" />
                 </div>
               )}
               <div
                 className={`max-w-[85%] rounded-2xl p-4 relative ${
                   message.role === 'user'
-                    ? 'bg-[var(--color-primary-teal)] text-white shadow-md'
+                    ? 'bg-black dark:bg-white text-white dark:text-black shadow-md'
                     : 'bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 shadow-md border border-gray-200 dark:border-gray-600'
                 }`}
                 style={{
@@ -300,8 +300,8 @@ const AIChatInterface: React.FC<AIChatInterfaceProps> = ({
         )}
         {loading && (
           <div className="flex gap-3 justify-start items-end">
-            <div className="w-10 h-10 rounded-full bg-[var(--color-primary-teal)] flex items-center justify-center flex-shrink-0 shadow-md">
-              <Bot className="h-5 w-5 text-white" style={{ color: 'white' }} />
+            <div className="w-10 h-10 rounded-full bg-black dark:bg-white flex items-center justify-center flex-shrink-0 shadow-md">
+              <Bot className="h-5 w-5 text-white dark:text-black" />
             </div>
             <div className="bg-white dark:bg-gray-800 shadow-lg border border-gray-200 dark:border-gray-600 p-4 rounded-2xl">
               <div className="flex items-center gap-2">
@@ -335,7 +335,7 @@ const AIChatInterface: React.FC<AIChatInterfaceProps> = ({
           <button
             onClick={handleSend}
             disabled={!input.trim() || loading}
-            className="px-6 py-3 rounded-xl bg-[var(--color-primary-teal)] text-white font-semibold hover:bg-[var(--color-primary-teal)]/90 disabled:opacity-50 disabled:cursor-not-allowed transition-all flex items-center gap-2 shadow-lg hover:shadow-xl hover:scale-[1.02] active:scale-[0.98]"
+            className="px-6 py-3 rounded-xl bg-black dark:bg-white text-white dark:text-black font-semibold hover:bg-black/90 dark:hover:bg-white/80 disabled:opacity-50 disabled:cursor-not-allowed transition-all flex items-center gap-2 shadow-lg hover:shadow-xl hover:scale-[1.02] active:scale-[0.98]"
           >
             {loading ? (
               <Loader2 className="h-5 w-5 animate-spin" />

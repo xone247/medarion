@@ -32,7 +32,7 @@ const CompaniesPage: React.FC<{ onViewCompany: (name: string) => void }> = ({ on
       try {
         // Use same endpoint as Data Management tab
         const response = await apiService.get('/admin/companies', { limit: '200' });
-        if (response.success && response.data) {
+        if (response.success && response.data && Array.isArray(response.data)) {
           // Transform API data to match expected format
           // Note: Companies data structure may need aggregation from deals
           const transformed = response.data.map((company: any) => ({
@@ -151,10 +151,10 @@ const CompaniesPage: React.FC<{ onViewCompany: (name: string) => void }> = ({ on
   const handleContactCompany = (companyName: string) => { alert(`Contacting company: ${companyName}`); };
 
   return (
-    <div className="page-container py-6 space-y-6 bg-[var(--color-background-default)] min-h-screen">
+    <div className="w-full space-y-6">
       {/* Header with glassmorphism */}
       <div className="card-glass p-6 shadow-soft">
-        <div className="flex flex-row lg:items-center lg:justify-between gap-4">
+        <div className="flex flex-row items-center justify-between gap-4">
           <div className="flex items-center space-x-3">
             <Building2 className="h-8 w-8 icon-primary" />
             <div>
@@ -176,7 +176,7 @@ const CompaniesPage: React.FC<{ onViewCompany: (name: string) => void }> = ({ on
       </div>
 
       {/* Summary Stats with glassmorphism */}
-      <div className="grid grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6">
         <div className="card-glass p-6 shadow-soft">
           <div className="flex items-center space-x-3">
             <Building2 className="h-6 w-6 icon-primary" />
@@ -216,7 +216,7 @@ const CompaniesPage: React.FC<{ onViewCompany: (name: string) => void }> = ({ on
       </div>
 
       {/* Insights with glassmorphism */}
-      <div className="grid grid-cols-2 gap-6">
+      <div className="grid-2-col gap-4 sm:gap-6">
         <div className="card-glass p-6 shadow-soft">
           <h3 className="text-lg font-semibold text-[var(--color-text-primary)] mb-3">Top Sectors</h3>
           <ul className="space-y-2">
@@ -247,7 +247,7 @@ const CompaniesPage: React.FC<{ onViewCompany: (name: string) => void }> = ({ on
           <Filter className="h-5 w-5 icon-primary" />
           <h3 className="text-lg font-semibold text-[var(--color-text-primary)]">Filters</h3>
         </div>
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
           <div className="relative">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-[var(--color-text-secondary)]" />
             <input
@@ -272,16 +272,16 @@ const CompaniesPage: React.FC<{ onViewCompany: (name: string) => void }> = ({ on
       </div>
 
       {/* Companies Grid with glassmorphism */}
-      <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6">
         {filteredCompanies.slice().sort((a: any, b: any) => b.totalFunding - a.totalFunding).map((company: any) => (
-          <div key={company.name} className="card-glass p-5 sm:p-6 shadow-soft hover:shadow-elevated transition-all duration-300 cursor-pointer card-hover">
+          <div key={company.name} className="card-glass p-5 p-6 shadow-soft hover:shadow-elevated transition-all duration-300 cursor-pointer card-hover">
             <div className="flex items-start justify-between mb-4">
               <div className="flex items-center space-x-3">
-                <div className="w-10 h-10 sm:w-12 sm:h-12 bg-[var(--color-primary-teal)] rounded-lg flex items-center justify-center border border-[color-mix(in_srgb,var(--color-primary-teal),black_10%)]">
-                  <Building2 className="h-6 w-6 text-white" />
+                <div className="w-10 h-10 w-12 h-12 bg-black dark:bg-gray-700 rounded-lg flex items-center justify-center border border-black/20 dark:border-gray-600/30">
+                  <Building2 className="h-6 w-6 text-white dark:text-white" />
                 </div>
                 <div>
-                  <h3 className="text-base sm:text-lg font-semibold text-[var(--color-text-primary)]">{company.name}</h3>
+                  <h3 className="text-base text-lg font-semibold text-[var(--color-text-primary)]">{company.name}</h3>
                   <p className="text-sm text-[var(--color-text-secondary)]">{company.sector}</p>
                   {company.website && (
                     <a href={company.website} target="_blank" rel="noopener noreferrer" className="text-xs text-[var(--color-primary-teal)] underline hover:text-[var(--color-primary-light)]">Website</a>
@@ -356,11 +356,11 @@ const CompaniesPage: React.FC<{ onViewCompany: (name: string) => void }> = ({ on
       {/* Company Details Modal with glassmorphism */}
       {showCompanyDetails && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-          <div className="card-glass p-6 max-w-4xl w-full mx-4 max-h-[85vh] overflow-y-auto shadow-elevated">
+          <div className="card-glass p-6 max-w-4xl w-full mx-4 max-h-[650px] overflow-y-auto shadow-elevated">
             <div className="flex items-center justify-between mb-6">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 bg-[var(--color-primary-teal)] rounded-lg flex items-center justify-center border border-[color-mix(in_srgb,var(--color-primary-teal),black_10%)]">
-                  <Building2 className="h-5 w-5 text-white" />
+                <div className="w-10 h-10 bg-black dark:bg-gray-700 rounded-lg flex items-center justify-center border border-black/20 dark:border-gray-600/30">
+                  <Building2 className="h-5 w-5 text-white dark:text-white" />
                 </div>
                 <div>
                   <h3 className="text-2xl font-bold text-[var(--color-text-primary)]">{showCompanyDetails.name}</h3>
@@ -371,7 +371,7 @@ const CompaniesPage: React.FC<{ onViewCompany: (name: string) => void }> = ({ on
             </div>
             
             {/* Key Metrics with glassmorphism */}
-            <div className="grid grid-cols-3 gap-4 mb-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mb-6">
               <div className="card-glass p-4 shadow-soft">
                 <p className="text-sm text-[var(--color-text-secondary)]">Total Funding</p>
                 <p className="text-2xl font-bold text-[var(--color-primary-teal)]">${(showCompanyDetails.totalFunding / 1000000).toFixed(1)}M</p>

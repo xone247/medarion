@@ -266,10 +266,24 @@ router.get('/subscribers', authenticateToken, async (req, res) => {
     params.push(parseInt(limit), offset);
     
     try {
+      // Build count query separately to avoid parameter mismatch
+      let countQuery = 'SELECT COUNT(*) as total FROM newsletter_subscriptions WHERE 1=1';
+      const countParams = [];
+      
+      if (search) {
+        countQuery += ' AND (email LIKE ? OR name LIKE ? OR company LIKE ?)';
+        const searchTerm = `%${search}%`;
+        countParams.push(searchTerm, searchTerm, searchTerm);
+      }
+      
+      if (status === 'active') {
+        countQuery += ' AND is_active = TRUE';
+      } else if (status === 'inactive') {
+        countQuery += ' AND is_active = FALSE';
+      }
+      
       const [subscribers] = await connection.execute(query, params);
-      const [countResult] = await connection.execute(
-        query.replace('SELECT *', 'SELECT COUNT(*) as total').replace('ORDER BY subscribed_at DESC LIMIT ? OFFSET ?', '')
-      );
+      const [countResult] = await connection.execute(countQuery, countParams);
       
       res.json({
         success: true,

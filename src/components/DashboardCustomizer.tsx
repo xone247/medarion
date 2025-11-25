@@ -96,7 +96,7 @@ const DashboardCustomizer: React.FC<DashboardCustomizerProps> = ({ onClose }) =>
       onClick={handleOverlayClick}
     >
       <div 
-        className="bg-white dark:bg-gray-800 rounded-xl max-w-6xl w-full max-h-[90vh] overflow-hidden border border-gray-200 dark:border-gray-700 shadow-2xl"
+        className="bg-white dark:bg-gray-800 rounded-xl max-w-6xl w-full max-h-[700px] overflow-hidden border border-gray-200 dark:border-gray-700 shadow-2xl"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}

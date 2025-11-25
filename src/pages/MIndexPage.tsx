@@ -63,7 +63,6 @@ const STATIC_KEY_TERMS: GlossaryItem[] = [
 ];
 
 const MIndexPage: React.FC<MIndexPageProps> = ({ onBack }) => {
-  const [query, setQuery] = useState('');
   const [category, setCategory] = useState<string>('All');
   const items = STATIC_KEY_TERMS;
 
@@ -71,9 +70,7 @@ const MIndexPage: React.FC<MIndexPageProps> = ({ onBack }) => {
 
   const filtered = items.filter(i => {
     const matchCategory = category === 'All' || i.category === category;
-    const q = query.trim().toLowerCase();
-    const matchQuery = !q || i.term.toLowerCase().includes(q) || i.def.toLowerCase().includes(q);
-    return matchCategory && matchQuery;
+    return matchCategory;
   });
 
   return (
@@ -91,7 +88,6 @@ const MIndexPage: React.FC<MIndexPageProps> = ({ onBack }) => {
         
         <div className="page-hero-content">
           <div className="page-hero-content-inner">
-            <div className="page-hero-accent" />
             <h1 className="page-hero-heading">
               M-Index
             </h1>
@@ -111,46 +107,32 @@ const MIndexPage: React.FC<MIndexPageProps> = ({ onBack }) => {
         <AfricaMap height={600} heightSm={400} />
       </div>
 
-      {/* Key Terms Section */}
+      {/* Terms Section */}
       <div className="max-w-7xl mx-auto px-6 py-10">
         <div className="mb-8 text-center">
-          <h2 className="text-4xl font-bold text-[var(--color-text-primary)] mb-3">Key Terms</h2>
-          <p className="text-lg text-[var(--color-text-secondary)] max-w-3xl mx-auto">
-            Browse and search key terms to help you navigate the Africa Healthcare ecosystem
-          </p>
+          <h2 className="text-4xl font-bold text-[var(--color-text-primary)] mb-3">Terms</h2>
         </div>
 
-        {/* Search and Filter Bar */}
+        {/* Filter Bar */}
         <div className="mb-8 bg-[var(--color-background-surface)] border border-[var(--color-divider-gray)] rounded-xl p-6 shadow-sm">
-          <div className="flex flex-row gap-4 items-center">
-            <div className="flex-1 w-full">
-              <input
-                type="text"
-                value={query}
-                onChange={(e) => setQuery(e.target.value)}
-                placeholder="Search key terms..."
-                className="w-full px-4 py-3 rounded-lg border border-[var(--color-divider-gray)] bg-[var(--color-background-default)] text-[var(--color-text-primary)] placeholder-[var(--color-text-secondary)] focus:ring-2 focus:ring-[var(--color-primary-teal)] focus:border-transparent"
-              />
-            </div>
-            <div className="flex flex-wrap gap-2 justify-start">
-              {categories.map(c => (
-                <button
-                  key={c}
-                  onClick={() => setCategory(c)}
-                  className={`px-4 py-2 rounded-lg border transition-all ${
-                    category === c
-                      ? 'bg-[var(--color-primary-teal)] text-white border-[var(--color-primary-teal)] shadow-md'
-                      : 'border-[var(--color-divider-gray)] text-[var(--color-text-primary)] hover:bg-[var(--color-background-surface)] hover:border-[var(--color-primary-teal)]/50'
-                  }`}
-                >
-                  {c}
-                </button>
-              ))}
-            </div>
+          <div className="flex flex-wrap gap-2 justify-center">
+            {categories.map(c => (
+              <button
+                key={c}
+                onClick={() => setCategory(c)}
+                className={`px-4 py-2 rounded-lg border transition-all ${
+                  category === c
+                    ? 'bg-[var(--color-primary-teal)] text-white border-[var(--color-primary-teal)] shadow-md'
+                    : 'border-[var(--color-divider-gray)] text-[var(--color-text-primary)] hover:bg-[var(--color-background-surface)] hover:border-[var(--color-primary-teal)]/50'
+                }`}
+              >
+                {c}
+              </button>
+            ))}
           </div>
           {filtered.length > 0 && (
-            <div className="mt-4 text-sm text-[var(--color-text-secondary)]">
-              Showing {filtered.length} of {items.length} key terms
+            <div className="mt-4 text-sm text-[var(--color-text-secondary)] text-center">
+              Showing {filtered.length} of {items.length} terms
             </div>
           )}
         </div>
@@ -197,17 +179,16 @@ const MIndexPage: React.FC<MIndexPageProps> = ({ onBack }) => {
               No key terms found
             </h3>
             <p className="text-[var(--color-text-secondary)] mb-4">
-              {query ? `No results for "${query}"` : 'Try adjusting your search or filter'}
+              Try adjusting your filter
             </p>
-            {(query || category !== 'All') && (
+            {category !== 'All' && (
               <button
                 onClick={() => {
-                  setQuery('');
                   setCategory('All');
                 }}
                 className="px-4 py-2 bg-[var(--color-primary-teal)] text-white rounded-lg hover:opacity-90 transition-opacity"
               >
-                Clear Filters
+                Clear Filter
               </button>
             )}
           </div>

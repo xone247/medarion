@@ -43,48 +43,54 @@ const StartupDashboard = () => {
   };
 
   return (
-    <div className="p-6 space-y-6 bg-[var(--color-background-default)] min-h-screen">
+    <div className="w-full space-y-3">
 
-      {/* KPI Row */}
-      <div className="grid grid-cols-4 gap-6">
+      {/* Page Header - Compact */}
+      <div className="mb-2">
+        <h1 className="text-2xl font-bold text-slate-700 dark:text-slate-200 mb-1">Startup Dashboard</h1>
+        <p className="text-sm text-slate-500 dark:text-slate-400">Track your fundraising and investor connections</p>
+      </div>
+
+      {/* KPI Row - Compact */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2">
         <KPICard title="Deals & Grants" value={kpis?.deals_and_grants ?? '—'} icon={TrendingUp} trend="+12% this week" />
         <KPICard title="Companies" value={kpis?.companies ?? '—'} icon={User} trend="+8% this week" />
         <KPICard title="Investors" value={kpis?.investors ?? '—'} icon={Eye} trend="+5% this week" />
         <KPICard title="Total Value ($)" value={kpis?.total_value_usd ?? 0} icon={Download} trend="+18% this week" />
       </div>
 
-      {/* Market Intelligence Section */}
-      <div className="grid grid-cols-2 gap-6">
+      {/* Market Intelligence Section - Compact */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
         <NationPulseWidget type="overview" />
         <HealthcareMarketWidget />
       </div>
 
-      {/* Interactive Map Section */}
-      <div className="bg-[var(--color-background-surface)] rounded-lg border border-[var(--color-divider-gray)] overflow-hidden shadow-sm">
-        <div className="p-4 border-b border-[var(--color-divider-gray)] flex items-center justify-between">
+      {/* Interactive Map Section - Compact */}
+      <div className="card-glass rounded-lg overflow-hidden">
+        <div className="p-3 border-b border-slate-200 dark:border-slate-700 flex items-center justify-between">
           <div>
-            <h3 className="text-lg font-semibold text-[var(--color-text-primary)]">African Healthcare Investment Landscape</h3>
-            <p className="text-sm text-[var(--color-text-secondary)] mt-1">
-              Explore investment opportunities and market activity across Africa
+            <h3 className="text-base font-semibold text-slate-700 dark:text-slate-200">African Healthcare Investment Landscape</h3>
+            <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+              Explore investment opportunities across Africa
             </p>
           </div>
-          <div className="flex bg-[var(--color-background-default)] rounded-lg p-1 border border-[var(--color-divider-gray)]">
+          <div className="flex bg-slate-100 dark:bg-slate-800 rounded-lg p-1">
             <button
               onClick={() => setMapDataType('value')}
-              className={`px-3 py-1 text-xs font-medium rounded transition-colors ${
+              className={`px-2 py-1 text-xs font-medium rounded transition-colors ${
                 mapDataType === 'value'
-                  ? 'bg-[var(--color-primary-teal)] text-[var(--color-background-surface)]'
-                  : 'text-[var(--color-text-secondary)] hover:bg-[var(--color-background-default)]'
+                  ? 'bg-gradient-to-br from-cyan-500 to-teal-600 dark:from-cyan-500 dark:to-teal-600 text-white'
+                  : 'text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-700'
               }`}
             >
               Deal Value
             </button>
             <button
               onClick={() => setMapDataType('count')}
-              className={`px-3 py-1 text-xs font-medium rounded transition-colors ${
+              className={`px-2 py-1 text-xs font-medium rounded transition-colors ${
                 mapDataType === 'count'
-                  ? 'bg-[var(--color-primary-teal)] text-[var(--color-background-surface)]'
-                  : 'text-[var(--color-text-secondary)] hover:bg-[var(--color-background-default)]'
+                  ? 'bg-gradient-to-br from-cyan-500 to-teal-600 dark:from-cyan-500 dark:to-teal-600 text-white'
+                  : 'text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-700'
               }`}
             >
               Deal Count
@@ -100,33 +106,36 @@ const StartupDashboard = () => {
         </div>
       </div>
 
-      {/* Market Opportunity Charts */}
-      <div className="grid grid-cols-2 gap-6">
+      {/* Market Opportunity Charts - Compact */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
         <NationPulseWidget type="health-metrics" />
         <NationPulseWidget type="investment-opportunities" />
       </div>
 
-      {/* AI Investor Matches */}
-      <div className="bg-[var(--color-background-surface)] p-6 rounded-lg border border-[var(--color-divider-gray)] shadow-sm">
-        <div className="flex items-center space-x-2 mb-4">
-          <TrendingUp className="h-5 w-5 text-[var(--color-primary-teal)]" />
-          <h3 className="text-lg font-semibold text-[var(--color-text-primary)]">AI Investor Matches</h3>
-          <span className="bg-[var(--color-secondary-gold)] text-black text-xs px-2 py-1 rounded-full font-bold">NEW</span>
+      {/* AI Investor Matches - Compact */}
+      <div className="card-glass p-3 rounded-lg">
+        <div className="flex items-center space-x-2 mb-3">
+          <div className="p-1.5 bg-cyan-100 dark:bg-cyan-500/30 rounded-lg">
+            <TrendingUp className="h-4 w-4 text-cyan-600 dark:text-cyan-400" />
+          </div>
+          <h3 className="text-base font-semibold text-slate-700 dark:text-slate-200">AI Investor Matches</h3>
+          <span className="bg-gradient-to-br from-cyan-500 to-teal-600 dark:from-cyan-500 dark:to-teal-600 text-white text-xs px-1.5 py-0.5 rounded-full font-bold">NEW</span>
         </div>
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-2">
           {matchedInvestors.map((investor, index) => (
-            <div key={index} className="bg-[var(--color-background-default)] p-4 rounded-lg hover:bg-[color-mix(in_srgb,var(--color-background-default),black_5%)] transition-colors cursor-pointer shadow-sm border border-[var(--color-divider-gray)]">
-              <div className="flex justify-between items-start mb-2">
-                <h4 className="text-[var(--color-text-primary)] font-medium">{investor.name}</h4>
-                <span className="bg-[var(--color-primary-teal)] text-[var(--color-background-surface)] text-xs px-2 py-1 rounded-full border border-[color-mix(in_srgb,var(--color-primary-teal),black_10%)]">
+            <div key={index} className="card-glass p-3 rounded-lg hover:shadow-md transition-all cursor-pointer group relative overflow-hidden">
+              <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/5 to-teal-500/5 dark:from-cyan-500/10 dark:to-teal-500/10 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+              <div className="relative flex justify-between items-start mb-2">
+                <h4 className="text-slate-700 dark:text-slate-200 font-medium text-sm truncate">{investor.name}</h4>
+                <span className="bg-gradient-to-br from-cyan-500 to-teal-600 dark:from-cyan-500 dark:to-teal-600 text-white text-xs px-1.5 py-0.5 rounded-full flex-shrink-0 ml-2">
                   {investor.match}% Match
                 </span>
               </div>
               <div className="space-y-1">
-                <span className="inline-block bg-[var(--color-background-default)] text-[var(--color-text-secondary)] text-xs px-2 py-1 rounded border border-[var(--color-divider-gray)]">
+                <span className="inline-block bg-cyan-50 dark:bg-cyan-950/30 text-slate-600 dark:text-slate-400 text-xs px-1.5 py-0.5 rounded border border-cyan-100 dark:border-cyan-900/50">
                   Focus: {investor.focus}
                 </span>
-                <span className="inline-block bg-[var(--color-background-default)] text-[var(--color-text-secondary)] text-xs px-2 py-1 rounded ml-2 border border-[var(--color-divider-gray)]">
+                <span className="inline-block bg-indigo-50 dark:bg-indigo-950/30 text-slate-600 dark:text-slate-400 text-xs px-1.5 py-0.5 rounded ml-2 border border-indigo-100 dark:border-indigo-900/50">
                   Stage: {investor.stage}
                 </span>
               </div>
@@ -135,23 +144,25 @@ const StartupDashboard = () => {
         </div>
       </div>
 
-      {/* Fundraising CRM */}
-      <div className="bg-[var(--color-background-surface)] p-6 rounded-lg border border-[var(--color-divider-gray)] shadow-sm">
-        <div className="flex items-center space-x-2 mb-4">
-          <MessageSquare className="h-5 w-5 text-[var(--color-primary-teal)]" />
-          <h3 className="text-lg font-semibold text-[var(--color-text-primary)]">Fundraising CRM</h3>
+      {/* Fundraising CRM - Compact */}
+      <div className="card-glass p-3 rounded-lg">
+        <div className="flex items-center space-x-2 mb-3">
+          <div className="p-1.5 bg-indigo-100 dark:bg-indigo-500/30 rounded-lg">
+            <MessageSquare className="h-4 w-4 text-indigo-600 dark:text-indigo-400" />
+          </div>
+          <h3 className="text-base font-semibold text-slate-700 dark:text-slate-200">Fundraising CRM</h3>
         </div>
-        <div className="grid grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
           {Object.entries(crmData).map(([stage, investors]) => (
-            <div key={stage} className="bg-[var(--color-background-default)] p-4 rounded-lg shadow-sm border border-[var(--color-divider-gray)]">
-              <h4 className="text-[var(--color-text-primary)] font-medium mb-3 text-center border-b border-[var(--color-divider-gray)] pb-2">
+            <div key={stage} className="card-glass p-3 rounded-lg">
+              <h4 className="text-slate-700 dark:text-slate-200 font-medium mb-2 text-center border-b border-slate-200 dark:border-slate-700 pb-2 text-sm">
                 {stage}
               </h4>
-              <div className="space-y-2">
+              <div className="space-y-1.5">
                 {investors.map((investor, index) => (
-                  <div key={index} className="bg-[var(--color-background-surface)] p-3 rounded-lg cursor-pointer hover:bg-[var(--color-background-default)] transition-colors shadow-sm border border-[var(--color-divider-gray)]">
-                    <p className="text-[var(--color-text-primary)] text-sm font-medium">{investor.name}</p>
-                    <p className="text-[var(--color-text-secondary)] text-xs">{investor.type} • {investor.focus}</p>
+                  <div key={index} className="card-glass p-2 rounded-lg cursor-pointer hover:shadow-md transition-all">
+                    <p className="text-slate-700 dark:text-slate-200 text-xs font-medium truncate">{investor.name}</p>
+                    <p className="text-slate-500 dark:text-slate-400 text-xs truncate">{investor.type} • {investor.focus}</p>
                   </div>
                 ))}
               </div>
@@ -160,19 +171,23 @@ const StartupDashboard = () => {
         </div>
       </div>
 
-      {/* Recent Notifications */}
-      <div className="bg-[var(--color-background-surface)] p-6 rounded-lg border border-[var(--color-divider-gray)] shadow-sm">
-        <div className="flex items-center space-x-2 mb-4">
-          <Clock className="h-5 w-5 text-[var(--color-primary-teal)]" />
-          <h3 className="text-lg font-semibold text-[var(--color-text-primary)]">Recent Activity</h3>
+      {/* Recent Notifications - Compact */}
+      <div className="card-glass p-3 rounded-lg">
+        <div className="flex items-center space-x-2 mb-3">
+          <div className="p-1.5 bg-amber-100 dark:bg-amber-500/30 rounded-lg">
+            <Clock className="h-4 w-4 text-amber-600 dark:text-amber-400" />
+          </div>
+          <h3 className="text-base font-semibold text-slate-700 dark:text-slate-200">Recent Activity</h3>
         </div>
-        <div className="space-y-3">
+        <div className="space-y-2">
           {activity.map((notification, index) => (
-            <div key={index} className="flex items-start space-x-3 p-3 bg-[var(--color-background-default)] rounded-lg shadow-sm border border-[var(--color-divider-gray)]">
-              <div className="w-2 h-2 bg-[var(--color-primary-teal)] rounded-full mt-2"></div>
-              <div className="flex-1">
-                <p className="text-[var(--color-text-primary)] text-sm">{notification.message}</p>
-                <p className="text-[var(--color-text-secondary)] text-xs mt-1">{new Date(notification.time).toLocaleString()}</p>
+            <div key={index} className="card-glass p-2 rounded-lg">
+              <div className="flex items-start space-x-2">
+                <div className="w-1.5 h-1.5 bg-gradient-to-br from-cyan-500 to-teal-600 dark:from-cyan-500 dark:to-teal-600 rounded-full mt-1.5 flex-shrink-0"></div>
+                <div className="flex-1 min-w-0">
+                  <p className="text-slate-700 dark:text-slate-200 text-xs">{notification.message}</p>
+                  <p className="text-slate-500 dark:text-slate-400 text-xs mt-0.5">{new Date(notification.time).toLocaleString()}</p>
+                </div>
               </div>
             </div>
           ))}

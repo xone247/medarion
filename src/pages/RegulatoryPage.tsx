@@ -164,10 +164,10 @@ const RegulatoryPage: React.FC = () => {
     <div className="page-container">
       {/* Header with glassmorphism */}
       <div className="card-glass p-6 shadow-soft mb-6">
-        <div className="flex flex-row sm:items-center sm:justify-between gap-3">
+        <div className="flex flex-row items-center justify-between gap-3">
           <div className="flex items-center space-x-2">
             <FileText className="h-6 w-6 icon-primary" />
-            <h1 className="text-xl md:text-2xl font-bold text-[var(--color-text-primary)]">Regulatory</h1>
+            <h1 className="text-xl text-2xl font-bold text-[var(--color-text-primary)]">Regulatory</h1>
           </div>
           <div className="flex items-center gap-2 flex-wrap">
             {canAI && <button onClick={generateAISummary} className="btn-primary-elevated btn-sm flex items-center gap-2"><Bot className="h-4 w-4" /><span className="text-sm">AI Summary</span></button>}
@@ -231,7 +231,7 @@ const RegulatoryPage: React.FC = () => {
         </div>
         <div className="card-glass p-6 shadow-soft">
           <div className="flex items-center space-x-3">
-            <div className="w-6 h-6 bg-[var(--color-success)] rounded-full flex items-center justify-center border border-[color-mix(in_srgb,var(--color-success),black_10%)]">
+            <div className="w-6 h-6 bg-green-500 dark:bg-green-600 rounded-full flex items-center justify-center border border-green-600 dark:border-green-500">
               <div className="w-2 h-2 bg-white rounded-full"></div>
             </div>
             <div>
@@ -244,7 +244,7 @@ const RegulatoryPage: React.FC = () => {
         </div>
         <div className="card-glass p-6 shadow-soft">
           <div className="flex items-center space-x-3">
-            <div className="w-6 h-6 bg-[var(--color-warning)] rounded-full flex items-center justify-center border border-[color-mix(in_srgb,var(--color-warning),black_10%)]">
+            <div className="w-6 h-6 bg-yellow-500 dark:bg-yellow-600 rounded-full flex items-center justify-center border border-yellow-600 dark:border-yellow-500">
               <div className="w-2 h-2 bg-white rounded-full"></div>
             </div>
             <div>
@@ -274,17 +274,17 @@ const RegulatoryPage: React.FC = () => {
           <Globe className="h-5 w-5 icon-primary" />
           <h3 className="text-lg font-semibold text-[var(--color-text-primary)]">Most Active Regulatory Countries</h3>
         </div>
-        <div className="grid grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid grid-cols-2 grid-cols-3 gap-4">
           {topCountries.map((country: any, index: number) => (
             <div key={country.country} className="card-glass p-4 shadow-soft hover:shadow-md transition-shadow">
               <div className="flex items-center justify-between mb-2">
                 <div className="flex items-center space-x-2">
-                  <div className="w-8 h-8 bg-[var(--color-primary-teal)] rounded-full flex items-center justify-center text-white font-bold border border-[color-mix(in_srgb,var(--color-primary-teal),black_10%)]">
+                  <div className="w-8 h-8 bg-black dark:bg-white rounded-full flex items-center justify-center text-white dark:text-black font-bold border border-black dark:border-white">
                     {index + 1}
                   </div>
                   <h4 className="font-medium text-[var(--color-text-primary)]">{country.country}</h4>
                 </div>
-                <span className="bg-[var(--color-primary-teal)] text-white px-2 py-1 rounded-full text-xs font-medium border border-[color-mix(in_srgb,var(--color-primary-teal),black_10%)]">
+                <span className="bg-black dark:bg-white text-white dark:text-black px-2 py-1 rounded-full text-xs font-medium border border-black dark:border-white">
                   {country.count} submissions
                 </span>
               </div>
@@ -295,7 +295,7 @@ const RegulatoryPage: React.FC = () => {
                 </div>
                 <div className="w-full bg-[var(--color-background-default)] rounded-full h-2">
                   <div 
-                    className="bg-[var(--color-success)] h-2 rounded-full" 
+                    className="bg-green-500 dark:bg-green-600 h-2 rounded-full" 
                     style={{ width: `${(country.approved / country.count) * 100}%` }}
                   ></div>
                 </div>
@@ -367,7 +367,7 @@ const RegulatoryPage: React.FC = () => {
                 <tr key={`${reg.companyName}-${reg.product}-${index}`} className="hover:bg-[var(--color-background-default)] transition-colors">
                   <td className="px-6 py-4">
                     <div className="flex items-center">
-                      <div className="w-8 h-8 bg-[var(--color-primary-teal)] rounded-lg flex items-center justify-center border border-[color-mix(in_srgb,var(--color-primary-teal),black_10%)]">
+                      <div className="w-8 h-8 bg-black dark:bg-gray-700 rounded-lg flex items-center justify-center border border-black/20 dark:border-gray-600/30">
                         <Building2 className="h-4 w-4 text-white" />
                       </div>
                       <div className="ml-3">
@@ -398,7 +398,7 @@ const RegulatoryPage: React.FC = () => {
                       href={reg.dataSource}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-[var(--color-primary-teal)] hover:text-[var(--color-accent-sky)] flex items-center space-x-1"
+                      className="text-black dark:text-white hover:text-blue-600 dark:hover:text-blue-400 flex items-center space-x-1"
                     >
                       <ExternalLink className="h-3 w-3" />
                       <span className="text-xs">View Source</span>

@@ -31,10 +31,10 @@ const MostActiveInvestorsWidget: React.FC = () => {
   const topInvestors = useMemo(() => investors.slice().sort((a, b) => b.dealCount - a.dealCount).slice(0, 8), [investors]);
 
   return (
-    <div className="bg-white dark:bg-gray-800 p-4 md:p-6 rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm">
+    <div className="bg-white dark:bg-gray-800 p-4 p-6 rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm">
       <div className="flex items-center space-x-2 mb-4">
         <Users className="h-5 w-5 text-primary-400" />
-        <h3 className="text-base md:text-lg font-semibold text-gray-900 dark:text-white">Most Active Investors</h3>
+        <h3 className="text-base text-lg font-semibold text-gray-900 dark:text-white">Most Active Investors</h3>
       </div>
       <div className="space-y-3">
         {topInvestors.map((investor, index) => (
@@ -49,7 +49,7 @@ const MostActiveInvestorsWidget: React.FC = () => {
               </div>
             </div>
             <div className="text-right">
-              <p className="text-sm md:text-base font-bold text-accent-600 dark:text-accent-500">${(investor.totalInvested / 1000000).toFixed(1)}M</p>
+              <p className="text-sm text-base font-bold text-accent-600 dark:text-accent-500">${(investor.totalInvested / 1000000).toFixed(1)}M</p>
               <p className="text-xs text-gray-600 dark:text-gray-400">Total Value</p>
             </div>
           </div>

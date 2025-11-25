@@ -389,7 +389,7 @@ const BlogEditor: React.FC<BlogEditorProps> = ({ post, onChange, onSave, onCance
             <div className="space-y-4">
               {post.video_url && videoUrlSaved ? (
                 <div className="space-y-3">
-                  <div className="p-4 bg-green-50 dark:bg-green-900/20 rounded-lg border border-green-200 dark:border-green-800">
+                  <div className="p-4 bg-green-50 dark:bg-green-500/40 rounded-lg border border-green-200 dark:border-green-500/50">
                     <div className="flex items-start justify-between gap-3">
                       <div className="flex-1 min-w-0">
                         <p className="text-sm font-medium text-green-800 dark:text-green-200 mb-1">
@@ -543,7 +543,7 @@ const BlogEditor: React.FC<BlogEditorProps> = ({ post, onChange, onSave, onCance
             <div className="space-y-4">
               {post.featured_image ? (
                 <div className="space-y-3">
-                  <div className="p-4 bg-green-50 dark:bg-green-900/20 rounded-lg border border-green-200 dark:border-green-800">
+                  <div className="p-4 bg-green-50 dark:bg-green-500/40 rounded-lg border border-green-200 dark:border-green-500/50">
                     <div className="flex items-start justify-between gap-3 mb-3">
                       <div className="flex-1 min-w-0">
                         <p className="text-sm font-medium text-green-800 dark:text-green-200 mb-2">
@@ -668,7 +668,7 @@ const BlogEditor: React.FC<BlogEditorProps> = ({ post, onChange, onSave, onCance
               )}
 
               {imageUploadError && (
-                <div className="p-3 bg-red-100 dark:bg-red-900/20 text-red-800 dark:text-red-200 rounded-lg text-sm">
+                <div className="p-3 bg-red-100 dark:bg-red-500/40 text-red-800 dark:text-white rounded-lg text-sm">
                   {imageUploadError}
                 </div>
               )}
@@ -826,7 +826,7 @@ const BlogEditor: React.FC<BlogEditorProps> = ({ post, onChange, onSave, onCance
 
               {/* Error Message */}
               {imageUploadError && (
-                <div className="p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg">
+                <div className="p-4 bg-red-50 dark:bg-red-500/40 border border-red-200 dark:border-red-500/50 rounded-lg">
                   <p className="text-sm text-red-800 dark:text-red-200">{imageUploadError}</p>
                 </div>
               )}

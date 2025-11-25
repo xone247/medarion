@@ -52,31 +52,20 @@ const MIndexPage: React.FC<MIndexPageProps> = ({ onBack }) => {
   return (
     <div className="min-h-screen bg-[var(--color-background-default)] text-[var(--color-text-primary)]">
       {/* Hero (blog-style) */}
-      <section className="relative overflow-hidden" style={{ 
-        minHeight: 'min(100vh, 44vh)',
-        marginTop: '-100px',
-        marginLeft: '-50vw',
-        marginRight: '-50vw',
-        left: '50%',
-        right: '50%',
-        width: '100vw',
-        paddingTop: '120px',
-        position: 'relative',
-      }}>
-        <div aria-hidden className="absolute inset-0 z-0">
+      <section className="page-hero" style={{ minHeight: '500px' }}>
+        <div aria-hidden className="page-hero-bg">
           <img
             src={(import.meta as any).env?.VITE_MARION_HERO_URL || (import.meta as any).env?.VITE_BLOG_HERO_URL || '/images/page hero section.jpeg'}
             alt=""
-            className="w-full h-full object-cover blur-[2px] md:blur-[1px] scale-105 opacity-95 saturate-125 contrast-110"
             style={{ filter: 'brightness(1.1) saturate(1.06)' }}
           />
-          <div className="absolute inset-0 bg-black/5 md:bg-black/0" />
+          <div className="absolute inset-0 bg-black/5 bg-black/0" />
           <div className="absolute inset-0 opacity-15 mix-blend-multiply" style={{ background: 'linear-gradient(90deg, var(--color-primary-teal) 0%, var(--color-accent-sky) 100%)' }} />
           <div className="absolute inset-0 pointer-events-none" style={{ background: 'linear-gradient(180deg, rgba(255,255,255,0.00) 70%, var(--color-background-default) 100%)' }} />
         </div>
-        <div className="relative z-10 max-w-6xl mx-auto px-6 pt-16 md:pt-20 pb-10 text-center">
-          <h1 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-3">m‑index</h1>
-          <p className="text-lg md:text-xl text-[var(--color-text-primary)] opacity-90 dark:text-white/85">
+        <div className="page-hero-content" style={{ maxWidth: '72rem', paddingTop: '4rem', paddingBottom: '2.5rem' }}>
+          <h1 className="text-4xl text-5xl font-bold text-gray-900 dark:text-white mb-3">m‑index</h1>
+          <p className="text-lg text-xl text-[var(--color-text-primary)] opacity-90 dark:text-white/85">
             Key terms to help you navigate the African healthcare ecosystem.
           </p>
           <div className="mt-6 max-w-2xl mx-auto">
@@ -102,7 +91,7 @@ const MIndexPage: React.FC<MIndexPageProps> = ({ onBack }) => {
 
       {/* Glossary content */}
       <div className="max-w-6xl mx-auto px-6 py-10">
-        <div className="grid grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid grid-cols-2 grid-cols-3 gap-4">
           {filtered.map((i, idx) => (
             <div key={`${i.term}-${idx}`} className="bg-[var(--color-background-surface)] border border-[var(--color-divider-gray)] rounded-xl p-4 shadow-sm">
               <div className="text-xs text-[var(--color-text-secondary)] mb-1">{i.category}</div>

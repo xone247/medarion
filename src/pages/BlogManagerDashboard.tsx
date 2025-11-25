@@ -133,7 +133,7 @@ const BlogManagerDashboard: React.FC = () => {
   return (
     <div className="grid grid-cols-4 gap-6">
       {/* Sidebar */}
-      <aside className="lg:col-span-1 space-y-4">
+      <aside className="col-span-1 space-y-4">
         <div className="tile">
           <div className="tile-header flex items-center gap-2">
             <Newspaper className="h-4 w-4 icon-primary" />
@@ -192,7 +192,7 @@ const BlogManagerDashboard: React.FC = () => {
       </aside>
 
       {/* Main */}
-      <section className="lg:col-span-3 space-y-4">
+      <section className="col-span-3 space-y-4">
         <div className="tile">
           <div className="tile-header flex items-center gap-2">
             <h3 className="font-semibold text-[var(--color-text-primary)]">Posts</h3>
@@ -270,9 +270,9 @@ const BlogManagerDashboard: React.FC = () => {
               <input className="input" placeholder="Category" value={editing.category} onChange={e=> setEditing(prev => prev? { ...prev, category: e.target.value } : prev)} />
               <input className="input" placeholder="Author" value={editing.author} onChange={e=> setEditing(prev => prev? { ...prev, author: e.target.value } : prev)} />
               <input className="input" placeholder="Image URL" value={editing.image} onChange={e=> setEditing(prev => prev? { ...prev, image: e.target.value } : prev)} />
-              <textarea className="input md:col-span-2" placeholder="Excerpt" value={editing.excerpt} onChange={e=> setEditing(prev => prev? { ...prev, excerpt: e.target.value } : prev)} />
+              <textarea className="input col-span-2" placeholder="Excerpt" value={editing.excerpt} onChange={e=> setEditing(prev => prev? { ...prev, excerpt: e.target.value } : prev)} />
               {/* Minimal WYSIWYG: contenteditable area */}
-              <div className="md:col-span-2">
+              <div className="col-span-2">
                 <label className="text-xs text-[var(--color-text-secondary)]">Content</label>
                 <div
                   className="input h-64 overflow-auto prose max-w-none dark:prose-invert"
@@ -286,8 +286,8 @@ const BlogManagerDashboard: React.FC = () => {
                 />
                 <div className="text-[10px] mt-1 text-[var(--color-text-secondary)]">Tip: paste formatted text or images; HTML will be saved.</div>
               </div>
-              <label className="flex items-center gap-2 text-sm md:col-span-2"><input type="checkbox" checked={!!editing.featured} onChange={e=> setEditing(prev => prev? { ...prev, featured: e.target.checked } : prev)} /> Featured</label>
-              <div className="md:col-span-2 flex items-center justify-end gap-2">
+              <label className="flex items-center gap-2 text-sm col-span-2"><input type="checkbox" checked={!!editing.featured} onChange={e=> setEditing(prev => prev? { ...prev, featured: e.target.checked } : prev)} /> Featured</label>
+              <div className="col-span-2 flex items-center justify-end gap-2">
                 <button className="btn-outline px-3 py-2 rounded" onClick={()=> setEditing(null)} disabled={saving}>Cancel</button>
                 <button className="btn-primary px-3 py-2 rounded flex items-center gap-2" disabled={saving} onClick={async ()=>{
                   if (!editing) return;

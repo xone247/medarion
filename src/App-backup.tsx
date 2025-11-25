@@ -170,10 +170,10 @@ const AppContent = () => {
   // Main dashboard with modular system
   return (
     <DashboardProvider>
-      <div className="flex flex-col lg:flex-row h-screen bg-background">
+      <div className="flex flex-col flex-row h-screen bg-background">
         <Sidebar userType={profile?.user_type ?? 'startup'} />
-        <main className="flex-1 overflow-y-auto pt-16 lg:pt-0 transition-all duration-300 border-l border-[var(--color-divider-gray)]">
-          <div className="page-container py-4 md:py-6">
+        <main className="flex-1 overflow-y-auto pt-16 pt-0 transition-all duration-300 border-l border-[var(--color-divider-gray)]">
+          <div className="page-container py-4 py-6">
             <ModularDashboard onViewCompany={handleViewCompany} />
           </div>
         </main>

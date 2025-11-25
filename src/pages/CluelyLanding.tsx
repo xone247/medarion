@@ -37,6 +37,8 @@ const CluelyLanding: React.FC<CluelyLandingProps> = ({ onGetStarted, onShowAuth,
 	const [mobileOpen, setMobileOpen] = useState(false);
 	const [isMobile, setIsMobile] = useState(false);
 	const location = useLocation();
+	const [newsletterStatus, setNewsletterStatus] = useState<{ type: 'success' | 'error' | null; message: string }>({ type: null, message: '' });
+	const [isSubscribing, setIsSubscribing] = useState(false);
 
 	// Detect mobile breakpoint
 	useEffect(() => {
@@ -168,13 +170,13 @@ const CluelyLanding: React.FC<CluelyLandingProps> = ({ onGetStarted, onShowAuth,
               background: 'transparent',
             }}>
 				{/* Desktop Header */}
-				<div className={`page-container h-16 flex items-center justify-between ${isMobile ? 'hidden' : 'flex'}`} style={{ flexWrap: 'nowrap', minWidth: 0 }}>
+				<div className={`max-w-screen-2xl mx-auto h-16 sm:h-20 flex items-center justify-between ${isMobile ? 'hidden' : 'flex'}`} style={{ flexWrap: 'nowrap', minWidth: 0, paddingLeft: '1.5rem', paddingRight: '1.5rem' }}>
 					{/* Logo */}
-					<a href="/" className="flex items-center gap-2 flex-shrink-0">
+					<a href="/" className="flex items-center gap-2 flex-shrink-0" style={{ minWidth: 'fit-content' }}>
 						<img 
 							src="/images/logo-light.png" 
 							alt="Medarion" 
-							className="h-8"
+							className="h-8 sm:h-9"
 							style={{
 								filter: 'brightness(0) invert(1)', // Always white for header over dark hero background
 							}}
@@ -182,24 +184,24 @@ const CluelyLanding: React.FC<CluelyLandingProps> = ({ onGetStarted, onShowAuth,
 					</a>
 					
 					{/* Navigation - Center */}
-					<nav className="flex items-center gap-4 text-sm text-white flex-shrink-0" style={{ fontSize: '14px' }}>
-                        <a className="hover:opacity-80 transition-opacity whitespace-nowrap" href="/about">About</a>
-                        <a className="hover:opacity-80 transition-opacity whitespace-nowrap" href="/arion">Arion</a>
-                        <a className="hover:opacity-80 transition-opacity whitespace-nowrap" href="/m-index">M-Index</a>
-                        <a className="hover:opacity-80 transition-opacity whitespace-nowrap" href="#">Ergon</a>
+					<nav className="flex items-center gap-4 md:gap-6 lg:gap-8 text-sm text-white flex-shrink-0 mx-auto" style={{ fontSize: '14px', flex: '0 0 auto' }}>
+                        <a className="hover:opacity-80 transition-opacity whitespace-nowrap px-3 py-1.5" href="/about">About</a>
+                        <a className="hover:opacity-80 transition-opacity whitespace-nowrap px-3 py-1.5" href="/arion">Arion</a>
+                        <a className="hover:opacity-80 transition-opacity whitespace-nowrap px-3 py-1.5" href="/m-index">M-Index</a>
+                        <a className="hover:opacity-80 transition-opacity whitespace-nowrap px-3 py-1.5" href="#">Ergon</a>
 					</nav>
 					
 					{/* Right side actions */}
-					<div className="flex items-center gap-3 flex-shrink-0">
+					<div className="flex items-center gap-3 md:gap-4 flex-shrink-0" style={{ minWidth: 'fit-content' }}>
 						<a 
-							className="text-sm text-white hover:opacity-80 transition-opacity" 
+							className="text-sm text-white hover:opacity-80 transition-opacity px-4 py-1.5 whitespace-nowrap" 
 							href="/auth" 
 							onClick={handleSignInClick}
 						>
 							{user && profile ? 'Dashboard' : 'Sign in'}
 						</a>
 						<a 
-							className="px-4 py-2 text-sm text-white border border-white/30 rounded-md hover:bg-white/10 transition-colors" 
+							className="px-5 sm:px-6 py-2 text-sm text-white border border-white/30 rounded-lg hover:bg-white/10 transition-colors whitespace-nowrap" 
 							href="/auth" 
 							onClick={handleSignInClick}
 						>
@@ -209,11 +211,11 @@ const CluelyLanding: React.FC<CluelyLandingProps> = ({ onGetStarted, onShowAuth,
 				</div>
 
 				{/* Mobile Header */}
-				<div className={`page-container ${isMobile ? 'flex' : 'hidden'} flex-col gap-2`} style={{ paddingTop: '8px', paddingBottom: '8px' }}>
+				<div className={`max-w-screen-2xl mx-auto ${isMobile ? 'flex' : 'hidden'} flex-col gap-2`} style={{ paddingTop: '8px', paddingBottom: '8px', paddingLeft: '1rem', paddingRight: '1rem' }}>
 					{/* Mobile Header Row 1: Hamburger + Logo + Actions */}
 					<div className="flex items-center justify-between gap-2 w-full" style={{ flexWrap: 'nowrap' }}>
 						{/* Left: Hamburger + Logo */}
-						<div className="flex items-center gap-2 flex-shrink-0">
+						<div className="flex items-center gap-2 flex-shrink-0" style={{ minWidth: 'fit-content' }}>
 							<button 
 								aria-label="Open menu" 
 								className="flex items-center justify-center w-10 h-10 rounded-xl text-white hover:bg-white/10 transition-colors"
@@ -234,9 +236,9 @@ const CluelyLanding: React.FC<CluelyLandingProps> = ({ onGetStarted, onShowAuth,
 						</div>
 
 						{/* Right: Sign in */}
-						<div className="flex items-center gap-2 flex-shrink-0">
+						<div className="flex items-center gap-2 flex-shrink-0" style={{ minWidth: 'fit-content' }}>
 							<a 
-								className="px-3 py-1.5 text-sm text-white border border-white/30 rounded-lg hover:bg-white/10 transition-colors flex-shrink-0"
+								className="px-3 py-1.5 text-sm text-white border border-white/30 rounded-lg hover:bg-white/10 transition-colors flex-shrink-0 whitespace-nowrap"
 								href="/auth" 
 								onClick={handleSignInClick}
 							>
@@ -359,10 +361,10 @@ const CluelyLanding: React.FC<CluelyLandingProps> = ({ onGetStarted, onShowAuth,
 				
 				{/* Hero Content - Centered like Giga.ai */}
 				<div className="relative z-10 w-full flex items-center justify-center landing-hero-content" style={{ minHeight: '100vh' }}>
-					<div className="text-center max-w-5xl mx-auto px-4 sm:px-6">
+					<div className="text-center max-w-5xl mx-auto px-6 md:px-8 lg:px-12 py-24 md:py-32 lg:py-40">
 						{/* Small rounded badge - Giga.ai style */}
-						<div className="inline-flex items-center justify-center mb-6 sm:mb-8">
-							<div className="px-4 py-1.5 sm:px-5 sm:py-2 rounded-full bg-white/10 backdrop-blur-md border border-white/20">
+						<div className="inline-flex items-center justify-center mb-8 md:mb-10">
+							<div className="px-5 py-2 sm:px-6 sm:py-2.5 rounded-full bg-white/10 backdrop-blur-md border border-white/20">
 								<span className="text-xs sm:text-sm text-white/90 font-medium" style={{ 
 									fontFamily: 'Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
 									letterSpacing: '0.02em'
@@ -373,7 +375,7 @@ const CluelyLanding: React.FC<CluelyLandingProps> = ({ onGetStarted, onShowAuth,
 						</div>
 						
 						{/* Main heading - Large like Giga.ai, two lines */}
-						<h1 className="text-white mb-8 sm:mb-10 font-normal" style={{ 
+						<h1 className="text-white mb-10 md:mb-12 lg:mb-16 font-normal" style={{ 
 							fontFamily: 'Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
 							fontSize: 'clamp(2rem, 6vw, 4rem)',
 							letterSpacing: '-0.02em',
@@ -381,135 +383,98 @@ const CluelyLanding: React.FC<CluelyLandingProps> = ({ onGetStarted, onShowAuth,
 							fontWeight: 400,
 							maxWidth: '900px',
 							marginLeft: 'auto',
-							marginRight: 'auto'
+							marginRight: 'auto',
+							paddingLeft: '1rem',
+							paddingRight: '1rem'
 						}}>
 							Gain a deeper understanding of Africa's ecosystem and transformation
 						</h1>
 						
 						{/* CTA Buttons - Giga.ai style */}
-						<div className="mt-8 sm:mt-10 flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 px-4">
-							<button className="w-full sm:w-auto px-8 sm:px-10 py-3 sm:py-3.5 bg-black text-white rounded-full font-medium hover:bg-black/90 transition-all shadow-lg hover:shadow-xl flex items-center justify-center gap-2 text-base sm:text-lg" style={{ fontFamily: 'Inter, system-ui, sans-serif' }} onClick={onGetStarted}>
+						<div className="mt-10 md:mt-12 lg:mt-14 flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-5">
+							<button className="w-full sm:w-auto px-10 sm:px-12 py-3.5 sm:py-4 bg-black text-white rounded-full font-medium hover:bg-black/90 transition-all shadow-lg hover:shadow-xl flex items-center justify-center gap-2.5 text-base sm:text-lg" style={{ fontFamily: 'Inter, system-ui, sans-serif' }} onClick={onGetStarted}>
 								Get started <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5" />
 							</button>
-							<a className="w-full sm:w-auto px-8 sm:px-10 py-3 sm:py-3.5 border-2 border-white/40 text-white rounded-full font-medium hover:bg-white/10 hover:border-white/60 transition-all backdrop-blur-sm inline-flex items-center justify-center text-base sm:text-lg" style={{ fontFamily: 'Inter, system-ui, sans-serif' }} href="/pricing" onClick={(e)=>{ e.preventDefault(); window.location.replace('/pricing'); }}>See pricing</a>
+							<a className="w-full sm:w-auto px-10 sm:px-12 py-3.5 sm:py-4 border-2 border-white/40 text-white rounded-full font-medium hover:bg-white/10 hover:border-white/60 transition-all backdrop-blur-sm inline-flex items-center justify-center text-base sm:text-lg" style={{ fontFamily: 'Inter, system-ui, sans-serif' }} href="/pricing" onClick={(e)=>{ e.preventDefault(); window.location.replace('/pricing'); }}>See pricing</a>
 						</div>
 					</div>
 				</div>
 			</section>
 
-			{/* Section 01 - AI Co-pilot for Deals & Funding - Large spacious style */}
-			<section className="py-20 sm:py-28 md:py-36 lg:py-40">
-				<div className="max-w-7xl mx-auto px-6 sm:px-8 md:px-12 lg:px-16">
-					<div className="grid grid-cols-1 lg:grid-cols-5 items-center gap-12 sm:gap-16 md:gap-20 lg:gap-24">
+			{/* Section 01 - AI Co-pilot for Deals & Funding */}
+			<section 
+				className="py-24 md:py-32 lg:py-40 border-t border-b border-[var(--color-divider-gray)]/20 transition-colors duration-500"
+				style={{ 
+					backgroundColor: theme === 'dark' ? 'var(--color-background-default)' : '#FFFFFF'
+				}}
+			>
+				<div className="max-w-screen-2xl mx-auto px-6 md:px-8 lg:px-12 xl:px-16">
+					<div className="grid grid-cols-1 lg:grid-cols-5 items-center gap-12 md:gap-16 lg:gap-20">
 						{/* Left: Text Content */}
-						<div className="lg:col-span-2 space-y-4 sm:space-y-5">
+						<div className="space-y-6 md:space-y-7 order-1 lg:order-1 lg:col-span-2">
 							<div className="text-xl sm:text-2xl font-normal text-[var(--color-text-primary)] opacity-60">01</div>
-							<h3 className="text-2xl sm:text-3xl md:text-4xl font-normal text-[var(--color-text-primary)] tracking-tight leading-tight">
+							<h3 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-normal text-[var(--color-text-primary)] tracking-tight leading-tight">
 								AI Co-pilot for Deals & Funding
 							</h3>
-							<p className="text-sm sm:text-base md:text-lg text-[var(--color-text-secondary)] leading-relaxed">
+							<p className="text-base sm:text-lg md:text-xl text-[var(--color-text-secondary)] leading-relaxed max-w-xl">
 								Our AI co-pilot helps you gain a deeper understanding of deals and funding across Africa, with clear insights and executive-level summaries.
 							</p>
-							<div className="flex flex-wrap gap-2 sm:gap-3 pt-3">
-								<span className="px-3 py-1 text-xs sm:text-sm text-[var(--color-text-secondary)]">Due Diligence</span>
-								<span className="px-3 py-1 text-xs sm:text-sm text-[var(--color-text-secondary)]">Valuation</span>
-								<span className="px-3 py-1 text-xs sm:text-sm text-[var(--color-text-secondary)]">Pitch Deck</span>
-								<span className="px-3 py-1 text-xs sm:text-sm text-[var(--color-text-secondary)]">Investor Matching</span>
-								<span className="px-3 py-1 text-xs sm:text-sm text-[var(--color-text-secondary)]">Market Risk</span>
+							<div className="flex flex-wrap gap-2 sm:gap-2.5 pt-3 md:pt-5">
+								<span className="px-3 py-1.5 text-xs text-[var(--color-text-secondary)] bg-[var(--color-background-surface)] rounded-md whitespace-nowrap">Due Diligence</span>
+								<span className="px-3 py-1.5 text-xs text-[var(--color-text-secondary)] bg-[var(--color-background-surface)] rounded-md whitespace-nowrap">Valuation</span>
+								<span className="px-3 py-1.5 text-xs text-[var(--color-text-secondary)] bg-[var(--color-background-surface)] rounded-md whitespace-nowrap">Pitch Deck</span>
+								<span className="px-3 py-1.5 text-xs text-[var(--color-text-secondary)] bg-[var(--color-background-surface)] rounded-md whitespace-nowrap">Investor Matching</span>
+								<span className="px-3 py-1.5 text-xs text-[var(--color-text-secondary)] bg-[var(--color-background-surface)] rounded-md whitespace-nowrap">Market Risk</span>
 							</div>
 						</div>
-						{/* Right: Overlapping Cards Design */}
-						<div className="relative lg:col-span-3 min-h-[500px] sm:min-h-[600px] md:min-h-[700px] lg:min-h-[800px]">
-							<div className="relative w-full h-full" style={{
-								background: 'linear-gradient(180deg, #f0f9f4 0%, #e0f2e9 100%)'
-							}}>
-								{/* Card 1 - Front */}
-								<div className="absolute top-0 left-0 w-64 sm:w-72 md:w-80 bg-white rounded-lg shadow-lg p-6 transform rotate-[-3deg] z-10">
-									<div className="flex items-center justify-between mb-4">
-										<div className="flex items-center gap-3">
-											<div className="w-10 h-10 bg-[var(--color-primary-teal)] rounded-full flex items-center justify-center">
-												<Shield className="w-5 h-5 text-white" />
-											</div>
-											<h4 className="font-semibold text-[var(--color-text-primary)] text-sm sm:text-base">Due Diligence</h4>
-										</div>
-										<div className="px-2 py-1 bg-[var(--color-primary-teal)] text-white text-xs font-medium rounded">70</div>
-									</div>
-									<p className="text-xs sm:text-sm text-[var(--color-text-secondary)] mb-4 leading-relaxed">
-										A comprehensive overview of your current financial standing and future projections.
-									</p>
-									<button className="w-full px-4 py-2 bg-[var(--color-primary-teal)] text-white rounded-md text-xs sm:text-sm font-medium hover:opacity-90 transition-opacity flex items-center justify-center gap-2">
-										Launch <ChevronRight className="w-4 h-4" />
-									</button>
-								</div>
-
-								{/* Card 2 - Behind */}
-								<div className="absolute top-8 left-8 sm:left-12 md:left-16 w-64 sm:w-72 md:w-80 bg-white rounded-lg shadow-lg p-6 transform rotate-[2deg] z-9">
-									<div className="flex items-center justify-between mb-4">
-										<div className="flex items-center gap-3">
-											<div className="w-10 h-10 bg-[var(--color-primary-teal)] rounded-full flex items-center justify-center">
-												<LineChart className="w-5 h-5 text-white" />
-											</div>
-											<h4 className="font-semibold text-[var(--color-text-primary)] text-sm sm:text-base">Valuation</h4>
-										</div>
-										<div className="px-2 py-1 bg-[var(--color-primary-teal)] text-white text-xs font-medium rounded">80</div>
-									</div>
-									<p className="text-xs sm:text-sm text-[var(--color-text-secondary)] mb-4 leading-relaxed">
-										Provides real-time insights into market trends and investment opportunities.
-									</p>
-									<button className="w-full px-4 py-2 bg-[var(--color-primary-teal)] text-white rounded-md text-xs sm:text-sm font-medium hover:opacity-90 transition-opacity flex items-center justify-center gap-2">
-										Launch <ChevronRight className="w-4 h-4" />
-									</button>
-								</div>
-
-								{/* Card 3 - Further Behind */}
-								<div className="absolute top-16 left-16 sm:left-24 md:left-32 w-64 sm:w-72 md:w-80 bg-white rounded-lg shadow-lg p-6 transform rotate-[-1deg] z-8">
-									<div className="flex items-center justify-between mb-4">
-										<div className="flex items-center gap-3">
-											<div className="w-10 h-10 bg-[var(--color-primary-teal)] rounded-full flex items-center justify-center">
-												<Database className="w-5 h-5 text-white" />
-											</div>
-											<h4 className="font-semibold text-[var(--color-text-primary)] text-sm sm:text-base">Pitch Deck</h4>
-										</div>
-										<div className="px-2 py-1 bg-[var(--color-primary-teal)] text-white text-xs font-medium rounded">90</div>
-									</div>
-									<p className="text-xs sm:text-sm text-[var(--color-text-secondary)] mb-4 leading-relaxed">
-										Advanced analytics and reporting tools for data-driven decision making.
-									</p>
-									<div className="flex gap-2">
-										<button className="flex-1 px-3 py-2 bg-orange-500 text-white rounded-md text-xs font-medium hover:opacity-90 transition-opacity">
-											Edit
-										</button>
-										<button className="flex-1 px-3 py-2 bg-blue-500 text-white rounded-md text-xs font-medium hover:opacity-90 transition-opacity">
-											View
-										</button>
-									</div>
-								</div>
+						{/* Right: Visual Placeholder */}
+						<div className="relative order-2 lg:order-2 lg:col-span-3">
+							<div className="aspect-[4/3] flex items-center justify-center min-h-[300px] sm:min-h-[360px] md:min-h-[420px] lg:min-h-[480px] overflow-hidden rounded-2xl shadow-2xl border border-[var(--color-divider-gray)]/20">
+								<img 
+									src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=1200&h=900&fit=crop&q=80" 
+									alt="AI Co-pilot for Deals & Funding - Data Analytics Dashboard"
+									className="w-full h-full object-cover hover:scale-105 transition-transform duration-700"
+									loading="lazy"
+									onError={(e) => {
+										e.currentTarget.src = 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=1200&h=900&fit=crop&q=80';
+									}}
+								/>
 							</div>
 						</div>
 					</div>
 				</div>
 			</section>
 
-			{/* Section 02 - Macro Insights Across Africa - Large spacious style */}
-			<section className="py-20 sm:py-28 md:py-36 lg:py-40">
-				<div className="max-w-7xl mx-auto px-6 sm:px-8 md:px-12 lg:px-16">
-					<div className="grid grid-cols-1 lg:grid-cols-5 items-center gap-12 sm:gap-16 md:gap-20 lg:gap-24">
+			{/* Section 02 - Macro Insights Across Africa */}
+			<section 
+				className="py-24 md:py-32 lg:py-40 border-b border-[var(--color-divider-gray)]/20 transition-colors duration-500"
+				style={{ 
+					backgroundColor: theme === 'dark' ? 'var(--color-background-default)' : '#F9F7F4'
+				}}
+			>
+				<div className="max-w-screen-2xl mx-auto px-6 md:px-8 lg:px-12 xl:px-16">
+					<div className="grid grid-cols-1 lg:grid-cols-5 items-center gap-12 md:gap-16 lg:gap-20">
 						{/* Left: Visual Placeholder */}
 						<div className="relative order-1 lg:order-1 lg:col-span-3">
-							<div className="aspect-[4/3] flex items-center justify-center min-h-[500px] sm:min-h-[600px] md:min-h-[700px] lg:min-h-[800px]">
-								<div className="text-center text-[var(--color-text-secondary)]">
-									<div className="text-6xl sm:text-7xl md:text-8xl mb-4">📈</div>
-									<p className="text-base sm:text-lg md:text-xl">Economic Growth Visual</p>
-								</div>
+							<div className="aspect-[4/3] flex items-center justify-center min-h-[300px] sm:min-h-[360px] md:min-h-[420px] lg:min-h-[480px] overflow-hidden rounded-2xl shadow-2xl border border-[var(--color-divider-gray)]/20">
+								<img 
+									src="https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=1200&h=900&fit=crop&q=80" 
+									alt="Macro Insights - Economic Growth and Market Analysis Visualization"
+									className="w-full h-full object-cover hover:scale-105 transition-transform duration-700"
+									loading="lazy"
+									onError={(e) => {
+										e.currentTarget.src = 'https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=1200&h=900&fit=crop&q=80';
+									}}
+								/>
 							</div>
 						</div>
 						{/* Right: Text Content */}
-						<div className="space-y-4 sm:space-y-5 order-2 lg:order-2 lg:col-span-2">
+						<div className="space-y-6 md:space-y-7 order-2 lg:order-2 lg:col-span-2">
 							<div className="text-xl sm:text-2xl font-normal text-[var(--color-text-primary)] opacity-60">02</div>
-							<h3 className="text-2xl sm:text-3xl md:text-4xl font-normal text-[var(--color-text-primary)] tracking-tight leading-tight">
+							<h3 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-normal text-[var(--color-text-primary)] tracking-tight leading-tight">
 								Macro Insights Across Africa
 							</h3>
-							<p className="text-sm sm:text-base md:text-lg text-[var(--color-text-secondary)] leading-relaxed">
+							<p className="text-base sm:text-lg md:text-xl text-[var(--color-text-secondary)] leading-relaxed max-w-xl">
 								Clear macro insights across Africa compare countries and uncover investment opportunities.
 							</p>
 						</div>
@@ -517,61 +482,82 @@ const CluelyLanding: React.FC<CluelyLandingProps> = ({ onGetStarted, onShowAuth,
 				</div>
 			</section>
 
-			{/* Section 03 - Clinical Trial Ecosystem - Large spacious style */}
-			<section className="py-20 sm:py-28 md:py-36 lg:py-40">
-				<div className="max-w-7xl mx-auto px-6 sm:px-8 md:px-12 lg:px-16">
-					<div className="grid grid-cols-1 lg:grid-cols-5 items-center gap-12 sm:gap-16 md:gap-20 lg:gap-24">
+			{/* Section 03 - Clinical Trial Ecosystem */}
+			<section 
+				className="py-24 md:py-32 lg:py-40 border-b border-[var(--color-divider-gray)]/20 transition-colors duration-500"
+				style={{ 
+					backgroundColor: theme === 'dark' ? 'var(--color-background-default)' : '#FFFFFF'
+				}}
+			>
+				<div className="max-w-screen-2xl mx-auto px-6 md:px-8 lg:px-12 xl:px-16">
+					<div className="grid grid-cols-1 lg:grid-cols-5 items-center gap-12 md:gap-16 lg:gap-20">
 						{/* Left: Text Content */}
-						<div className="lg:col-span-2 space-y-4 sm:space-y-5">
+						<div className="space-y-6 md:space-y-7 order-1 lg:order-1 lg:col-span-2">
 							<div className="text-xl sm:text-2xl font-normal text-[var(--color-text-primary)] opacity-60">03</div>
-							<h3 className="text-2xl sm:text-3xl md:text-4xl font-normal text-[var(--color-text-primary)] tracking-tight leading-tight">
+							<h3 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-normal text-[var(--color-text-primary)] tracking-tight leading-tight">
 								Clinical Trial Ecosystem
 							</h3>
-							<p className="text-sm sm:text-base md:text-lg text-[var(--color-text-secondary)] leading-relaxed">
+							<p className="text-base sm:text-lg md:text-xl text-[var(--color-text-secondary)] leading-relaxed max-w-xl">
 								Explore Africa's clinical trial ecosystem with precision, map trial sites, assess regulatory pathways, and identify key investigators.
 							</p>
-							<div className="flex flex-wrap gap-2 sm:gap-3 pt-3">
-								<span className="px-3 py-1 text-xs sm:text-sm text-[var(--color-text-secondary)]">Country</span>
-								<span className="px-3 py-1 text-xs sm:text-sm text-[var(--color-text-secondary)]">Phase</span>
-								<span className="px-3 py-1 text-xs sm:text-sm text-[var(--color-text-secondary)]">Indication</span>
-								<span className="px-3 py-1 text-xs sm:text-sm text-[var(--color-text-secondary)]">Sponsor</span>
-								<span className="px-3 py-1 text-xs sm:text-sm text-[var(--color-text-secondary)]">Site</span>
-								<span className="px-3 py-1 text-xs sm:text-sm text-[var(--color-text-secondary)]">Investigator</span>
+							<div className="flex flex-wrap gap-3 sm:gap-3.5 pt-3 md:pt-5">
+								<span className="px-4 py-2 text-xs sm:text-sm text-[var(--color-text-secondary)] bg-[var(--color-background-surface)] rounded-md">Country</span>
+								<span className="px-4 py-2 text-xs sm:text-sm text-[var(--color-text-secondary)] bg-[var(--color-background-surface)] rounded-md">Phase</span>
+								<span className="px-4 py-2 text-xs sm:text-sm text-[var(--color-text-secondary)] bg-[var(--color-background-surface)] rounded-md">Indication</span>
+								<span className="px-4 py-2 text-xs sm:text-sm text-[var(--color-text-secondary)] bg-[var(--color-background-surface)] rounded-md">Sponsor</span>
+								<span className="px-4 py-2 text-xs sm:text-sm text-[var(--color-text-secondary)] bg-[var(--color-background-surface)] rounded-md">Site</span>
+								<span className="px-4 py-2 text-xs sm:text-sm text-[var(--color-text-secondary)] bg-[var(--color-background-surface)] rounded-md">Investigator</span>
 							</div>
 						</div>
 						{/* Right: Visual Placeholder */}
-						<div className="relative lg:col-span-3">
-							<div className="aspect-[4/3] flex items-center justify-center min-h-[500px] sm:min-h-[600px] md:min-h-[700px] lg:min-h-[800px]">
-								<div className="text-center text-[var(--color-text-secondary)]">
-									<div className="text-6xl sm:text-7xl md:text-8xl mb-4">🔬</div>
-									<p className="text-base sm:text-lg md:text-xl">Clinical Trial Filters</p>
-								</div>
+						<div className="relative order-2 lg:order-2 lg:col-span-3">
+							<div className="aspect-[4/3] flex items-center justify-center min-h-[300px] sm:min-h-[360px] md:min-h-[420px] lg:min-h-[480px] overflow-hidden rounded-2xl shadow-2xl border border-[var(--color-divider-gray)]/20">
+								<img 
+									src="https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=1200&h=900&fit=crop&q=80" 
+									alt="Clinical Trial Ecosystem - Research and Medical Studies"
+									className="w-full h-full object-cover hover:scale-105 transition-transform duration-700"
+									loading="lazy"
+									onError={(e) => {
+										e.currentTarget.src = 'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=1200&h=900&fit=crop&q=80';
+									}}
+								/>
 							</div>
 						</div>
 					</div>
 				</div>
 			</section>
 
-			{/* Section 04 - Real-time Epidemiology - Large spacious style */}
-			<section className="py-20 sm:py-28 md:py-36 lg:py-40">
-				<div className="max-w-7xl mx-auto px-6 sm:px-8 md:px-12 lg:px-16">
-					<div className="grid grid-cols-1 lg:grid-cols-5 items-center gap-12 sm:gap-16 md:gap-20 lg:gap-24">
-						{/* Left: Visual Placeholder */}
+			{/* Section 04 - Real-time Epidemiology */}
+			<section 
+				className="py-24 md:py-32 lg:py-40 border-b border-[var(--color-divider-gray)]/20 transition-colors duration-500"
+				style={{ 
+					backgroundColor: theme === 'dark' ? 'var(--color-background-default)' : '#F9F7F4'
+				}}
+			>
+				<div className="max-w-screen-2xl mx-auto px-6 md:px-8 lg:px-12 xl:px-16">
+					<div className="grid grid-cols-1 lg:grid-cols-5 items-center gap-12 md:gap-16 lg:gap-20">
+						{/* Left: Visual Placeholder (Hiring Module) */}
 						<div className="relative order-1 lg:order-1 lg:col-span-3">
-							<div className="aspect-[4/3] flex items-center justify-center min-h-[500px] sm:min-h-[600px] md:min-h-[700px] lg:min-h-[800px]">
-								<div className="text-center text-[var(--color-text-secondary)]">
-									<div className="text-6xl sm:text-7xl md:text-8xl mb-4">🌍</div>
-									<p className="text-base sm:text-lg md:text-xl">Epidemiology Visual</p>
-								</div>
+							<div className="relative aspect-[4/3] min-h-[300px] sm:min-h-[360px] md:min-h-[420px] lg:min-h-[480px] overflow-hidden rounded-2xl shadow-2xl border border-[var(--color-divider-gray)]/20 bg-[var(--color-background-surface)]">
+								<img 
+									src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=1200&h=900&fit=crop&q=80" 
+									alt="Real-time Epidemiology - Disease Intelligence and Health Monitoring"
+									className="absolute inset-0 w-full h-full object-cover hover:scale-105 transition-transform duration-700"
+									loading="lazy"
+									onError={(e) => {
+										const img = e.currentTarget;
+										img.src = 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=1200&h=900&fit=crop&q=80';
+									}}
+								/>
 							</div>
 						</div>
 						{/* Right: Text Content */}
-						<div className="space-y-4 sm:space-y-5 order-2 lg:order-2 lg:col-span-2">
+						<div className="space-y-6 md:space-y-7 order-2 lg:order-2 lg:col-span-2">
 							<div className="text-xl sm:text-2xl font-normal text-[var(--color-text-primary)] opacity-60">04</div>
-							<h3 className="text-2xl sm:text-3xl md:text-4xl font-normal text-[var(--color-text-primary)] tracking-tight leading-tight">
+							<h3 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-normal text-[var(--color-text-primary)] tracking-tight leading-tight">
 								Real-time Epidemiology
 							</h3>
-							<p className="text-sm sm:text-base md:text-lg text-[var(--color-text-secondary)] leading-relaxed">
+							<p className="text-base sm:text-lg md:text-xl text-[var(--color-text-secondary)] leading-relaxed max-w-xl">
 								AI for real-time epidemiology, unlocking Africa's disease intelligence.
 							</p>
 						</div>
@@ -579,43 +565,63 @@ const CluelyLanding: React.FC<CluelyLandingProps> = ({ onGetStarted, onShowAuth,
 				</div>
 			</section>
 
-			{/* Section 05 - M-Index & Ergon Side by Side */}
-			<section className="py-20 sm:py-28 md:py-36 lg:py-40 relative overflow-hidden">
-				<div className="max-w-7xl mx-auto relative z-10 px-6 sm:px-8 md:px-12 lg:px-16">
-					<div className="grid grid-cols-1 lg:grid-cols-2 gap-12 sm:gap-16 md:gap-20 lg:gap-24">
-						{/* Left: Ergon */}
-						<div className="space-y-8">
-							<div className="p-8 sm:p-12 md:p-16 min-h-[500px] sm:min-h-[600px] md:min-h-[700px] flex flex-col">
-								<div className="flex-1 flex items-center justify-center mb-8">
-									<div className="text-center text-[var(--color-text-secondary)]">
-										<div className="text-7xl sm:text-8xl md:text-9xl mb-6">💼</div>
-										<p className="text-base sm:text-lg md:text-xl font-medium">Ergon Screenshot</p>
-										<p className="text-sm sm:text-base mt-2 opacity-60">Image placeholder</p>
-									</div>
-								</div>
-								<div className="space-y-6">
-									<h3 className="text-3xl sm:text-4xl md:text-5xl font-normal text-[var(--color-text-primary)] tracking-tight">Ergon</h3>
-									<p className="text-lg sm:text-xl md:text-2xl text-[var(--color-text-secondary)] leading-relaxed">
-										AI-driven recruitment copilot to help you hire the best talent across Africa.
-									</p>
-								</div>
-							</div>
+			{/* Section 05 - Report & Advisory */}
+			<section 
+				className="py-24 md:py-32 lg:py-40 border-b border-[var(--color-divider-gray)]/20 transition-colors duration-500"
+				style={{ 
+					backgroundColor: theme === 'dark' ? 'var(--color-background-default)' : '#FFFFFF'
+				}}
+			>
+				<div className="max-w-screen-2xl mx-auto px-6 md:px-8 lg:px-12 xl:px-16">
+					<div className="grid grid-cols-1 lg:grid-cols-5 items-center gap-12 md:gap-16 lg:gap-20">
+						{/* Left: Text Content */}
+						<div className="space-y-6 md:space-y-7 order-1 lg:order-1 lg:col-span-2">
+							<div className="text-xl sm:text-2xl font-normal text-[var(--color-text-primary)] opacity-60">05</div>
+							<h3 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-normal text-[var(--color-text-primary)] tracking-tight leading-tight">
+								Report & Advisory
+							</h3>
+							<p className="text-base sm:text-lg md:text-xl text-[var(--color-text-secondary)] leading-relaxed max-w-xl">
+								The Medarion team provides on-demand reports and advisory services across industries and countries covering topics ranging from funding and deals to clinical trials and much more.
+							</p>
 						</div>
-						{/* Right: M-Index */}
-						<div className="space-y-8">
-							<div className="p-8 sm:p-12 md:p-16 min-h-[500px] sm:min-h-[600px] md:min-h-[700px] flex flex-col">
-								<div className="flex-1 flex items-center justify-center mb-8">
-									<div className="text-center text-[var(--color-text-secondary)]">
-										<div className="text-7xl sm:text-8xl md:text-9xl mb-6">📚</div>
-										<p className="text-base sm:text-lg md:text-xl font-medium">M-Index Screenshot</p>
-										<p className="text-sm sm:text-base mt-2 opacity-60">Image placeholder</p>
-									</div>
+						{/* Right: Report Thumbnails */}
+						<div className="relative order-2 lg:order-2 lg:col-span-3">
+							<div className="grid grid-cols-2 gap-4 md:gap-6">
+								<div className="aspect-[4/3] rounded-xl overflow-hidden shadow-lg border border-[var(--color-divider-gray)]/20 cursor-pointer hover:scale-105 transition-transform duration-300 relative group">
+									<img 
+										src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=1200&h=900&fit=crop&q=80" 
+										alt="2024 Healthcare Series A Funding Trends" 
+										className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+										loading="lazy"
+										onError={handleImageError}
+									/>
 								</div>
-								<div className="space-y-6">
-									<h3 className="text-3xl sm:text-4xl md:text-5xl font-normal text-[var(--color-text-primary)] tracking-tight">M-Index</h3>
-									<p className="text-lg sm:text-xl md:text-2xl text-[var(--color-text-secondary)] leading-relaxed">
-										Master the Terms. Maximize the Impact
-									</p>
+								<div className="aspect-[4/3] rounded-xl overflow-hidden shadow-lg border border-[var(--color-divider-gray)]/20 cursor-pointer hover:scale-105 transition-transform duration-300 relative group">
+									<img 
+										src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=1200&h=900&fit=crop&q=80" 
+										alt="2023 Series C Trends Across Africa" 
+										className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+										loading="lazy"
+										onError={handleImageError}
+									/>
+								</div>
+								<div className="aspect-[4/3] rounded-xl overflow-hidden shadow-lg border border-[var(--color-divider-gray)]/20 cursor-pointer hover:scale-105 transition-transform duration-300 relative group">
+									<img 
+										src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=1200&h=900&fit=crop&q=80" 
+										alt="2021 Deals in Africa: Fintech Insights & Trends" 
+										className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+										loading="lazy"
+										onError={handleImageError}
+									/>
+								</div>
+								<div className="aspect-[4/3] rounded-xl overflow-hidden shadow-lg border border-[var(--color-divider-gray)]/20 cursor-pointer hover:scale-105 transition-transform duration-300 relative group">
+									<img 
+										src="https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=1200&h=900&fit=crop&q=80" 
+										alt="2023 Clinical Trial Insights in Nigeria" 
+										className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+										loading="lazy"
+										onError={handleImageError}
+									/>
 								</div>
 							</div>
 						</div>
@@ -623,21 +629,96 @@ const CluelyLanding: React.FC<CluelyLandingProps> = ({ onGetStarted, onShowAuth,
 				</div>
 			</section>
 
+			{/* Section 06 - Arion, M-Index & Ergon */}
+			<section 
+				className="py-16 md:py-20 lg:py-24 border-b border-[var(--color-divider-gray)]/20 transition-colors duration-500"
+				style={{ 
+					backgroundColor: theme === 'dark' ? 'var(--color-background-default)' : '#F9F7F4'
+				}}
+			>
+				<div className="max-w-screen-2xl mx-auto px-6 md:px-8 lg:px-12 xl:px-16">
+					<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 md:gap-10 lg:gap-12">
+						{/* Arion */}
+						<div className="p-0 cursor-pointer transition-opacity duration-200 hover:opacity-80 flex flex-col h-full" onClick={() => navigate('/arion')}>
+							<div className="relative mb-4 sm:mb-5 md:mb-6 overflow-hidden rounded-xl shadow-lg aspect-[4/3] border border-[var(--color-divider-gray)]/20 bg-[var(--color-background-surface)]">
+								<img 
+									src="https://images.unsplash.com/photo-1576091160399-112ba8d25d1f?w=1200&h=900&fit=crop&q=80" 
+									alt="Arion - Healthcare Insights and Analysis"
+									className="absolute inset-0 w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+									loading="lazy"
+									onError={(e) => {
+										const img = e.currentTarget;
+										img.src = 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=1200&h=900&fit=crop&q=80';
+									}}
+								/>
+							</div>
+							<div className="mt-1 mb-3 sm:mb-4 font-semibold text-base sm:text-lg md:text-xl text-[var(--color-text-primary)] hover:text-[var(--color-primary-teal)] transition-colors">Arion</div>
+							<p className="text-sm sm:text-base text-[var(--color-text-secondary)] mt-1 mb-4 sm:mb-5 leading-relaxed flex-grow min-h-[3.5rem]">
+								Healthcare insights and analysis.
+							</p>
+						</div>
+						{/* M-Index */}
+						<div className="p-0 cursor-pointer transition-opacity duration-200 hover:opacity-80 flex flex-col h-full" onClick={() => navigate('/m-index')}>
+							<div className="relative mb-4 sm:mb-5 md:mb-6 overflow-hidden rounded-xl shadow-lg aspect-[4/3] border border-[var(--color-divider-gray)]/20 bg-[var(--color-background-surface)]">
+								<img 
+									src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=1200&h=900&fit=crop&q=80" 
+									alt="M-Index - Healthcare Terms Database and Medical Glossary"
+									className="absolute inset-0 w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+									loading="lazy"
+									onError={(e) => {
+										const img = e.currentTarget;
+										img.src = 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=1200&h=900&fit=crop&q=80';
+									}}
+								/>
+							</div>
+							<div className="mt-1 mb-3 sm:mb-4 font-semibold text-base sm:text-lg md:text-xl text-[var(--color-text-primary)] hover:text-[var(--color-primary-teal)] transition-colors">M-Index</div>
+							<p className="text-sm sm:text-base text-[var(--color-text-secondary)] mt-1 mb-4 sm:mb-5 leading-relaxed flex-grow min-h-[3.5rem]">
+								Master the Terms. Maximize the Impact.
+							</p>
+						</div>
+						{/* Ergon */}
+						<div className="p-0 cursor-pointer transition-opacity duration-200 hover:opacity-80 flex flex-col h-full" onClick={() => navigate('/ergon')}>
+							<div className="relative mb-4 sm:mb-5 md:mb-6 overflow-hidden rounded-xl shadow-lg aspect-[4/3] border border-[var(--color-divider-gray)]/20 bg-[var(--color-background-surface)]">
+								<img 
+									src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=1200&h=900&fit=crop&q=80" 
+									alt="Ergon - AI-Driven Recruitment Platform for African Talent"
+									className="absolute inset-0 w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+									loading="lazy"
+									onError={(e) => {
+										const img = e.currentTarget;
+										img.src = 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=1200&h=900&fit=crop&q=80';
+									}}
+								/>
+							</div>
+							<div className="mt-1 mb-3 sm:mb-4 font-semibold text-base sm:text-lg md:text-xl text-[var(--color-text-primary)] hover:text-[var(--color-primary-teal)] transition-colors">Ergon</div>
+							<p className="text-sm sm:text-base text-[var(--color-text-secondary)] mt-1 mb-4 sm:mb-5 leading-relaxed flex-grow min-h-[3.5rem]">
+								AI-driven recruitment copilot to help you hire the best talent across Africa.
+							</p>
+						</div>
+					</div>
+				</div>
+			</section>
+
             {/* Blog Preview */}
-            <section className="page-container section py-12 sm:py-16 md:py-24">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6">
-                    <div className="flex flex-col sm:flex-row items-start sm:items-end justify-between mb-6 gap-4">
-                        <h2 className="text-2xl sm:text-3xl font-semibold">From Arion</h2>
+            <section 
+				className="py-24 md:py-32 lg:py-40 transition-colors duration-500"
+				style={{ 
+					backgroundColor: theme === 'dark' ? 'var(--color-background-default)' : '#FFFFFF'
+				}}
+			>
+                <div className="max-w-screen-2xl mx-auto px-6 md:px-8 lg:px-12 xl:px-16">
+                    <div className="flex flex-col sm:flex-row items-start sm:items-end justify-between mb-12 md:mb-16 gap-4">
+                        <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-semibold text-[var(--color-text-primary)]">From Arion</h2>
                         <a className="btn-outline btn-sm inline-flex items-center justify-center" href="/arion" onClick={(e)=>{ e.preventDefault(); window.location.replace('/arion'); }}>View all</a>
                     </div>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 md:gap-10 lg:gap-12">
                     {(blogPreview && blogPreview.length ? blogPreview : []).map((p) => (
                         <div 
                             key={p.id} 
-                            className="p-4 cursor-pointer transition-opacity duration-200 hover:opacity-80"
+                            className="p-0 cursor-pointer transition-opacity duration-200 hover:opacity-80 flex flex-col h-full"
                             onClick={() => navigate(`/arion/${p.slug || p.id}`)}
                         >
-                            <div className="aspect-[16/9] rounded-md bg-[var(--color-background-default)] mb-3 overflow-hidden">
+                            <div className="aspect-[16/9] rounded-xl bg-[var(--color-background-default)] mb-4 sm:mb-5 md:mb-6 overflow-hidden shadow-lg border border-[var(--color-divider-gray)]/20">
                                 <img
                                     src={getBlogPostImage(p.featuredImage, p.id, p.category || 'General')}
                                     alt={p.title}
@@ -645,10 +726,10 @@ const CluelyLanding: React.FC<CluelyLandingProps> = ({ onGetStarted, onShowAuth,
                                     onError={(e) => handleImageError(e, p.id, p.category || 'General')}
                                 />
                             </div>
-                            <div className="text-xs text-[var(--color-text-secondary)]">{p.publishedAt ? new Date(p.publishedAt).toLocaleDateString() : ''}</div>
-                            <div className="mt-1 font-semibold line-clamp-2 text-[var(--color-text-primary)] hover:text-[var(--color-primary-teal)] transition-colors">{p.title}</div>
-                            {p.excerpt ? <p className="text-sm text-[var(--color-text-secondary)] mt-1 line-clamp-3">{p.excerpt}</p> : null}
-                            <div className="mt-3">
+                            <div className="text-xs sm:text-sm text-[var(--color-text-secondary)] mb-2 sm:mb-2.5">{p.publishedAt ? new Date(p.publishedAt).toLocaleDateString() : ''}</div>
+                            <div className="mt-1 mb-3 sm:mb-4 font-semibold line-clamp-2 text-base sm:text-lg text-[var(--color-text-primary)] hover:text-[var(--color-primary-teal)] transition-colors">{p.title}</div>
+                            {p.excerpt ? <p className="text-sm sm:text-base text-[var(--color-text-secondary)] mt-1 mb-4 sm:mb-5 line-clamp-3 leading-relaxed flex-grow">{p.excerpt}</p> : <div className="flex-grow"></div>}
+                            <div className="mt-auto pt-3">
                                 <button 
                                     className="btn-outline btn-sm inline-flex items-center justify-center" 
                                     onClick={(e)=>{ e.preventDefault(); e.stopPropagation(); navigate(`/arion/${p.slug || p.id}`); }}
@@ -666,27 +747,38 @@ const CluelyLanding: React.FC<CluelyLandingProps> = ({ onGetStarted, onShowAuth,
             </section>
 
 			{/* Professional Footer */}
-			{withFooter && (<footer className="relative border-t border-[var(--color-divider-gray)] bg-[var(--color-background-default)]">
-				<div className="page-container py-12 sm:py-16 md:py-20">
-					<div className="footer-grid">
+			{withFooter && (<footer 
+				className="relative border-t transition-colors duration-500 rounded-t-3xl"
+				style={{ 
+					backgroundColor: theme === 'dark' ? 'var(--color-background-default)' : '#F9F7F4',
+					borderColor: theme === 'dark' 
+						? 'var(--color-divider-gray)' 
+						: 'rgba(0, 0, 0, 0.2)'
+				}}
+			>
+				<div className="w-full px-6 md:px-8 lg:px-12 xl:px-16 py-16 md:py-20 lg:py-24">
+					<div className="footer-grid gap-4 sm:gap-5 md:gap-6 lg:gap-8 items-start">
 						{/* Brand Section - Widest */}
-						<div className="space-y-6">
-							<div className="flex items-center gap-3">
+						<div className="space-y-5 md:space-y-6 flex flex-col h-full items-center text-center">
+							<div>
 								<img 
 									src="/images/logo-light.png" 
 									alt="Medarion" 
-									className="h-10 sm:h-12"
+									className="h-14 sm:h-16 md:h-20 lg:h-24 w-auto mx-auto"
 									style={{
 										filter: theme === 'dark' ? 'brightness(0) invert(1)' : 'brightness(0)',
 									}}
 								/>
 							</div>
-							<p className="text-sm sm:text-base text-[var(--color-text-secondary)] max-w-lg leading-relaxed">
-								African healthcare market data and AI assistance to keep you prepared on every call.
+							<h3 className="text-base sm:text-lg md:text-xl font-semibold text-[var(--color-text-primary)] leading-tight max-w-md">
+								Africa's Most Advanced AI Insight Platform
+							</h3>
+							<p className="text-sm sm:text-base text-[var(--color-text-secondary)] leading-relaxed max-w-md">
+								Empowering African healthcare innovation through comprehensive data intelligence.
 							</p>
 							
 							{/* Social Links */}
-							<div className="flex items-center gap-3">
+							<div className="flex items-center justify-center gap-3 pt-2 mt-auto">
 								<a 
 									href="#" 
 									aria-label="Twitter" 
@@ -712,9 +804,9 @@ const CluelyLanding: React.FC<CluelyLandingProps> = ({ onGetStarted, onShowAuth,
 						</div>
 
 						{/* Data */}
-						<div className="space-y-4">
+						<div className="space-y-4 pt-0 md:pt-1 flex flex-col h-full">
 							<h4 className="text-sm font-semibold text-[var(--color-text-primary)]">Data</h4>
-							<ul className="space-y-3">
+							<ul className="space-y-3 flex-grow">
 								<li>
 									<button 
 										className="text-sm text-[var(--color-text-secondary)] hover:text-[var(--color-primary-teal)] transition-colors" 
@@ -751,9 +843,9 @@ const CluelyLanding: React.FC<CluelyLandingProps> = ({ onGetStarted, onShowAuth,
 						</div>
 
 						{/* Resources */}
-						<div className="space-y-4">
+						<div className="space-y-4 pt-0 md:pt-1 flex flex-col h-full">
 							<h4 className="text-sm font-semibold text-[var(--color-text-primary)]">Resources</h4>
-							<ul className="space-y-3">
+							<ul className="space-y-3 flex-grow">
 								<li>
 									<button 
 										className="text-sm text-[var(--color-text-secondary)] hover:text-[var(--color-primary-teal)] transition-colors" 
@@ -798,9 +890,9 @@ const CluelyLanding: React.FC<CluelyLandingProps> = ({ onGetStarted, onShowAuth,
 						</div>
 
 						{/* Company */}
-						<div className="space-y-4">
+						<div className="space-y-4 pt-0 md:pt-1 flex flex-col h-full">
 							<h4 className="text-sm font-semibold text-[var(--color-text-primary)]">Company</h4>
-							<ul className="space-y-3">
+							<ul className="space-y-3 flex-grow">
 								<li>
 									<button 
 										className="text-sm text-[var(--color-text-secondary)] hover:text-[var(--color-primary-teal)] transition-colors" 
@@ -837,47 +929,103 @@ const CluelyLanding: React.FC<CluelyLandingProps> = ({ onGetStarted, onShowAuth,
 						</div>
 
 						{/* Newsletter Section - Last Column, Biggest */}
-						<div className="space-y-4">
-							<h4 className="text-sm font-semibold text-[var(--color-text-primary)]">Stay updated</h4>
+						<div className="space-y-4 pt-0 md:pt-1 flex flex-col h-full">
+							<h4 className="text-sm font-semibold text-[var(--color-text-primary)]">Stay Updated</h4>
 							<p className="text-sm text-[var(--color-text-secondary)]">
-								Get the latest updates and insights delivered to your inbox.
+								Get weekly insights on African healthcare markets delivered to your inbox.
 							</p>
 							<form 
-								className="flex flex-col gap-2" 
-								onSubmit={(e)=>{
+								className="flex flex-col gap-2 flex-grow" 
+								onSubmit={async (e)=>{
 									e.preventDefault();
 									const form = e.target as HTMLFormElement;
 									const input = form.querySelector('input[type="email"]') as HTMLInputElement;
-									if (input && input.value) {
-										// TODO: Integrate with newsletter API
-										alert('Thank you for subscribing!');
-										input.value = '';
+									if (input && input.value && !isSubscribing) {
+										const email = input.value.trim();
+										setIsSubscribing(true);
+										setNewsletterStatus({ type: null, message: '' });
+										
+										try {
+											const response = await apiService.post('/newsletter/subscribe', {
+												email: email,
+												source: 'landing_page'
+											});
+											
+											if (response.success) {
+												setNewsletterStatus({ 
+													type: 'success', 
+													message: response.message || 'Successfully subscribed to newsletter!' 
+												});
+												input.value = '';
+												// Clear success message after 5 seconds
+												setTimeout(() => {
+													setNewsletterStatus({ type: null, message: '' });
+												}, 5000);
+											} else {
+												throw new Error(response.error || 'Failed to subscribe');
+											}
+										} catch (error: any) {
+											setNewsletterStatus({ 
+												type: 'error', 
+												message: error.message || 'Failed to subscribe. Please try again.' 
+											});
+											// Clear error message after 5 seconds
+											setTimeout(() => {
+												setNewsletterStatus({ type: null, message: '' });
+											}, 5000);
+										} finally {
+											setIsSubscribing(false);
+										}
 									}
 								}}
 							>
 								<input 
 									type="email" 
-									className="w-full px-4 py-2.5 border border-[var(--color-divider-gray)] bg-[var(--color-background-default)] text-[var(--color-text-primary)] placeholder:text-[var(--color-text-secondary)] focus:outline-none focus:ring-1 focus:ring-[var(--color-primary-teal)] focus:border-[var(--color-primary-teal)] text-sm rounded" 
+									className="w-full px-4 py-2.5 border border-[var(--color-divider-gray)] bg-[var(--color-background-default)] text-[var(--color-text-primary)] placeholder:text-[var(--color-text-secondary)] focus:outline-none focus:ring-1 focus:ring-[var(--color-primary-teal)] focus:border-[var(--color-primary-teal)] text-sm rounded disabled:opacity-50 disabled:cursor-not-allowed" 
 									placeholder="Enter your email" 
 									aria-label="Email" 
 									required
+									disabled={isSubscribing}
 								/>
+								{newsletterStatus.type && (
+									<div className={`p-3 rounded text-sm ${
+										newsletterStatus.type === 'success'
+											? 'bg-green-50 dark:bg-green-900/20 text-green-700 dark:text-green-300 border border-green-200 dark:border-green-800'
+											: 'bg-red-50 dark:bg-red-900/20 text-red-700 dark:text-red-300 border border-red-200 dark:border-red-800'
+									}`}>
+										{newsletterStatus.message}
+									</div>
+								)}
 								<button 
 									type="submit"
-									className="w-full px-6 py-2.5 bg-[var(--color-primary-teal)] text-white rounded font-medium hover:opacity-90 transition-opacity text-sm"
+									className="w-full px-6 py-2.5 rounded font-medium transition-all text-sm newsletter-subscribe-btn disabled:opacity-50 disabled:cursor-not-allowed"
+									style={{
+										backgroundColor: 'var(--color-primary-teal)',
+										color: theme === 'dark' ? '#000000' : '#FFFFFF',
+										WebkitTextFillColor: theme === 'dark' ? '#000000' : '#FFFFFF',
+										caretColor: theme === 'dark' ? '#000000' : '#FFFFFF'
+									} as React.CSSProperties}
+									disabled={isSubscribing}
 								>
-									Subscribe
+									{isSubscribing ? 'Subscribing...' : 'Subscribe'}
 								</button>
 							</form>
-							<p className="text-xs text-[var(--color-text-secondary)]">
-								We'll email occasional updates. Unsubscribe anytime.
+							<p className="text-xs text-[var(--color-text-secondary)] mt-auto">
+								Your data will be processed in accordance with our Privacy Policy and Terms of Service. You may opt out of receiving communications at any time.
 							</p>
 						</div>
 					</div>
 
 					{/* Bottom bar */}
-					<div className="mt-12 pt-8 border-t border-[var(--color-divider-gray)]">
-						<div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 sm:gap-6">
+					<div 
+						className="mt-12 md:mt-14 lg:mt-16 pt-6 md:pt-8 lg:pt-10 border-t"
+						style={{
+							borderColor: theme === 'dark' 
+								? 'var(--color-divider-gray)' 
+								: 'rgba(0, 0, 0, 0.2)'
+						}}
+					>
+						<div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 md:gap-5 lg:gap-6">
 							<div className="flex items-center gap-2 text-xs text-[var(--color-text-secondary)]">
 								<CheckCircle2 className="w-4 h-4 text-green-500"/>
 								<span>All systems operational</span>

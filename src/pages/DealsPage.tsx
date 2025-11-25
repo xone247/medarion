@@ -59,10 +59,10 @@ const DealsPage = () => {
           apiService.get('/admin/companies', { limit: '200' })
         ]);
 
-        if (dealsResponse.success && dealsResponse.data) {
+        if (dealsResponse.success && dealsResponse.data && Array.isArray(dealsResponse.data)) {
           // Create a map of company names to logos for quick lookup
           const companyLogoMap = new Map<string, string>();
-          if (companiesResponse.success && companiesResponse.data) {
+          if (companiesResponse.success && companiesResponse.data && Array.isArray(companiesResponse.data)) {
             companiesResponse.data.forEach((company: any) => {
               if (company.name && company.logo_url) {
                 companyLogoMap.set(company.name.toLowerCase().trim(), company.logo_url);
@@ -213,19 +213,19 @@ const DealsPage = () => {
   };
 
   return (
-    <div className="page-container py-6 space-y-6 bg-[var(--color-background-default)] min-h-screen">
+    <div className="w-full space-y-6">
       {/* Header with glassmorphism */}
       <div className="card-glass p-6 shadow-soft">
-        <div className="flex flex-row lg:items-center lg:justify-between gap-4">
+        <div className="flex flex-row items-center justify-between gap-4">
           <div className="flex items-center space-x-3">
             <DollarSign className="h-8 w-8 icon-primary" />
             <div>
-              <h1 className="text-xl md:text-2xl font-bold text-[var(--color-text-primary)]">Deal-flow</h1>
+              <h1 className="text-xl text-2xl font-bold text-[var(--color-text-primary)]">Deal-flow</h1>
               <p className="text-sm text-[var(--color-text-secondary)]">Track mergers & acquisitions, in-licensing of drugs, and out-licensing activity</p>
             </div>
           </div>
           <div className="flex flex-wrap gap-2 items-center">
-            {canAI && <button onClick={runAISummary} className="btn-primary-elevated btn-sm flex items-center gap-2 w-auto"><Bot className="h-4 w-4" /><span className="hidden sm:inline">AI Summary</span></button>}
+            {canAI && <button onClick={runAISummary} className="btn-primary-elevated btn-sm flex items-center gap-2 w-auto"><Bot className="h-4 w-4" /><span className="hidden inline">AI Summary</span></button>}
             {canExport && (
               <>
                 <button onClick={copyJSON} className="btn-outline btn-sm w-auto">Copy</button>
@@ -248,47 +248,47 @@ const DealsPage = () => {
       )}
 
       {/* Summary Stats with glassmorphism */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-6">
-        <div className="card-glass p-4 md:p-6 shadow-soft">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3 sm:gap-6">
+        <div className="card-glass p-4 p-6 shadow-soft">
           <div className="flex items-center space-x-3">
-            <DollarSign className="h-5 w-5 md:h-6 md:w-6 icon-primary" />
+            <DollarSign className="h-5 w-5 h-6 w-6 icon-primary" />
             <div>
-              <p className="text-xs md:text-sm text-[var(--color-text-secondary)]">Total Value</p>
-              <p className="text-lg md:text-2xl font-bold text-[var(--color-text-primary)]">${(totalValue / 1000000).toFixed(1)}M</p>
+              <p className="text-xs text-sm text-[var(--color-text-secondary)]">Total Value</p>
+              <p className="text-lg text-2xl font-bold text-[var(--color-text-primary)]">${(totalValue / 1000000).toFixed(1)}M</p>
             </div>
           </div>
         </div>
-        <div className="card-glass p-4 md:p-6 shadow-soft">
+        <div className="card-glass p-4 p-6 shadow-soft">
           <div className="flex items-center space-x-3">
-            <Building2 className="h-5 w-5 md:h-6 md:w-6 icon-primary" />
+            <Building2 className="h-5 w-5 h-6 w-6 icon-primary" />
             <div>
-              <p className="text-xs md:text-sm text-[var(--color-text-secondary)]">Total Deals</p>
-              <p className="text-lg md:text-2xl font-bold text-[var(--color-text-primary)]">{filteredDeals.length}</p>
+              <p className="text-xs text-sm text-[var(--color-text-secondary)]">Total Deals</p>
+              <p className="text-lg text-2xl font-bold text-[var(--color-text-primary)]">{filteredDeals.length}</p>
             </div>
           </div>
         </div>
-        <div className="card-glass p-4 md:p-6 shadow-soft">
+        <div className="card-glass p-4 p-6 shadow-soft">
           <div className="flex items-center space-x-3">
-            <Users className="h-5 w-5 md:h-6 md:w-6 icon-primary" />
+            <Users className="h-5 w-5 h-6 w-6 icon-primary" />
             <div>
-              <p className="text-xs md:text-sm text-[var(--color-text-secondary)]">Avg Deal Size</p>
-              <p className="text-lg md:text-2xl font-bold text-[var(--color-text-primary)]">${(filteredDeals.length > 0 ? (totalValue / filteredDeals.length / 1000000) : 0).toFixed(1)}M</p>
+              <p className="text-xs text-sm text-[var(--color-text-secondary)]">Avg Deal Size</p>
+              <p className="text-lg text-2xl font-bold text-[var(--color-text-primary)]">${(filteredDeals.length > 0 ? (totalValue / filteredDeals.length / 1000000) : 0).toFixed(1)}M</p>
             </div>
           </div>
         </div>
-        <div className="card-glass p-4 md:p-6 shadow-soft">
+        <div className="card-glass p-4 p-6 shadow-soft">
           <div className="flex items-center space-x-3">
-            <MapPin className="h-5 w-5 md:h-6 md:w-6 icon-primary" />
+            <MapPin className="h-5 w-5 h-6 w-6 icon-primary" />
             <div>
-              <p className="text-xs md:text-sm text-[var(--color-text-secondary)]">Countries</p>
-              <p className="text-lg md:text-2xl font-bold text-[var(--color-text-primary)]">{new Set(filteredDeals.map(d => d.country)).size}</p>
+              <p className="text-xs text-sm text-[var(--color-text-secondary)]">Countries</p>
+              <p className="text-lg text-2xl font-bold text-[var(--color-text-primary)]">{new Set(filteredDeals.map(d => d.country)).size}</p>
             </div>
           </div>
         </div>
       </div>
 
       {/* Charts Section with glassmorphism */}
-      <div className="grid grid-cols-2 gap-6">
+      <div className="grid-2-col gap-4 sm:gap-6">
         <MonthlyDealflowChart />
         
         <div className="card-glass overflow-hidden shadow-soft">
@@ -317,12 +317,12 @@ const DealsPage = () => {
       <VCInvestmentOverTimeChart deals={filteredDeals} />
 
       {/* Filters with glassmorphism */}
-      <div className="card-glass p-4 md:p-6 shadow-soft">
+      <div className="card-glass p-4 p-6 shadow-soft">
         <div className="flex items-center space-x-2 mb-4">
           <Filter className="h-5 w-5 icon-primary" />
           <h3 className="text-lg font-semibold text-[var(--color-text-primary)]">Filters</h3>
         </div>
-        <div className="grid grid-cols-2 lg:grid-cols-5 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
           <div className="relative">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-[var(--color-text-secondary)]" />
             <input type="text" placeholder="Search companies or investors..." value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} className="input pl-10" />
@@ -348,8 +348,8 @@ const DealsPage = () => {
 
       {/* Deals Table with glassmorphism */}
       <div className="card-glass overflow-hidden shadow-soft">
-        <div className="p-4 md:p-6 border-b border-[var(--color-divider-gray)]">
-          <h2 className="text-lg md:text-xl font-semibold text-[var(--color-text-primary)]">Recent Deals</h2>
+        <div className="p-4 p-6 border-b border-[var(--color-divider-gray)]">
+          <h2 className="text-lg text-xl font-semibold text-[var(--color-text-primary)]">Recent Deals</h2>
         </div>
         <div className="overflow-x-auto">
           <table className="w-full">
@@ -369,7 +369,7 @@ const DealsPage = () => {
                 <tr key={deal.id} className="hover:bg-[var(--color-background-default)] transition-colors">
                   <td className="px-4 py-3">
                     <div className="flex items-center">
-                      <div className="w-8 h-8 bg-[var(--color-primary-teal)] rounded-lg flex items-center justify-center border border-[color-mix(in_srgb,var(--color-primary-teal),black_10%)]">
+                      <div className="w-8 h-8 bg-black dark:bg-gray-700 rounded-lg flex items-center justify-center border border-black/20 dark:border-gray-600/30">
                         <Building2 className="h-4 w-4 text-white" />
                       </div>
                       <div className="ml-3">
@@ -418,12 +418,12 @@ const DealsPage = () => {
       {/* Deal Details Modal with glassmorphism */}
       {showDealDetails && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-          <div className="card-glass p-6 max-w-2xl w-full mx-auto max-h-[80vh] overflow-y-auto shadow-elevated">
+          <div className="card-glass p-6 max-w-2xl w-full mx-auto max-h-[600px] overflow-y-auto shadow-elevated">
             <div className="flex items-center justify-between mb-4">
               <h3 className="text-xl font-bold text-[var(--color-text-primary)]">{showDealDetails.company_name}</h3>
               <button onClick={() => setShowDealDetails(null)} className="text-[var(--color-text-secondary)] hover:opacity-80">✕</button>
             </div>
-            <div className="grid grid-cols-2 gap-4 mb-4">
+            <div className="grid-2-col gap-4 mb-4">
               <div><p className="text-sm text-[var(--color-text-secondary)]">Deal Amount</p><p className="text-2xl font-bold text-[var(--color-primary-teal)]">${(showDealDetails.value_usd / 1000000).toFixed(1)}M</p></div>
               <div><p className="text-sm text-[var(--color-text-secondary)]">Deal Type</p><p className="font-medium text-[var(--color-text-primary)]">{showDealDetails.stage}</p></div>
               <div><p className="text-sm text-[var(--color-text-secondary)]">Sector</p><p className="font-medium text-[var(--color-text-primary)]">{showDealDetails.sector}</p></div>

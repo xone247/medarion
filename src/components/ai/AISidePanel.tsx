@@ -30,7 +30,7 @@ const AISidePanel: React.FC<AISidePanelProps> = ({ open, onClose, context }) => 
   };
 
   return (
-    <div className={`fixed top-0 right-0 h-full w-[22rem] sm:w-[26rem] bg-white dark:bg-gray-900 border-l border-gray-200 dark:border-gray-700 shadow-2xl z-40 transform transition-transform ${open ? 'translate-x-0' : 'translate-x-full'}`}>
+    <div className={`fixed top-0 right-0 h-full w-[22rem] w-[26rem] bg-white dark:bg-gray-900 border-l border-gray-200 dark:border-gray-700 shadow-2xl z-40 transform transition-transform ${open ? 'translate-x-0' : 'translate-x-full'}`}>
       <div className="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-700">
         <div className="font-semibold text-gray-900 dark:text-white">AI Assistant</div>
         <button onClick={onClose} className="p-1 rounded hover:bg-gray-100 dark:hover:bg-gray-800">

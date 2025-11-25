@@ -108,8 +108,8 @@ const ChangePasswordModal: React.FC<ChangePasswordModalProps> = ({
 
           <form onSubmit={handleSubmit} className="p-6 space-y-4">
             {error && (
-              <div className="p-3 rounded-lg bg-[var(--color-error)]/10 border border-[var(--color-error)]/20">
-                <p className="text-sm text-[var(--color-error)]">{error}</p>
+              <div className="p-3 rounded-lg bg-red-500/10 dark:bg-red-500/20 border border-red-500/20 dark:border-red-500/30">
+                <p className="text-sm text-red-600 dark:text-red-400">{error}</p>
               </div>
             )}
 
@@ -199,7 +199,7 @@ const ChangePasswordModal: React.FC<ChangePasswordModalProps> = ({
               <button
                 type="submit"
                 disabled={loading}
-                className="px-4 py-2 rounded-lg bg-[var(--color-primary-teal)] text-white hover:opacity-90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center space-x-2"
+                className="px-4 py-2 rounded-lg bg-black dark:bg-white text-white dark:text-black hover:opacity-90 dark:hover:opacity-80 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center space-x-2"
               >
                 <Lock className="h-4 w-4" />
                 <span>{loading ? 'Changing...' : 'Change Password'}</span>

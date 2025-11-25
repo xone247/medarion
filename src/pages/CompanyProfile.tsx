@@ -27,7 +27,7 @@ const CompanyProfile: React.FC<{ companyName: string; onBack: () => void }> = ({
           <ArrowLeft className="h-5 w-5" />
         </button>
         <div className="flex items-center space-x-3">
-          <div className="w-12 h-12 bg-[var(--color-primary-teal)] rounded-lg flex items-center justify-center border border-[color-mix(in_srgb,var(--color-primary-teal),black_10%)]">
+          <div className="w-12 h-12 bg-black dark:bg-gray-700 rounded-lg flex items-center justify-center border border-black/20 dark:border-gray-600/30">
             <Building2 className="h-6 w-6 text-[var(--color-background-surface)]" />
           </div>
           <div>

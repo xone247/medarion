@@ -22,9 +22,9 @@ const ResearcherProfile: React.FC = () => {
   const [showPasswordModal, setShowPasswordModal] = useState(false);
 
   return (
-    <div className="bg-[var(--color-background-default)] min-h-screen">
+    <div className="w-full">
       {/* Profile Content */}
-      <div className="p-6 space-y-6">
+      <div className="space-y-6">
         {/* Edit Button */}
         <div className="flex justify-end">
           <button
@@ -36,7 +36,7 @@ const ResearcherProfile: React.FC = () => {
           </button>
         </div>
 
-      <div className="bg-[var(--color-background-surface)] p-6 rounded-lg border border-[var(--color-divider-gray)] shadow-sm">
+      <div className="card-glass p-6">
         <div className="grid grid-cols-2 gap-4">
           <div>
             <label className="block text-sm text-[var(--color-text-secondary)] mb-1">Name</label>
@@ -54,14 +54,14 @@ const ResearcherProfile: React.FC = () => {
             <label className="block text-sm text-[var(--color-text-secondary)] mb-1">Location</label>
             {isEditing ? <input className="input" value={profile.location} onChange={(e)=>setProfile(p=>({...p, location:e.target.value}))} /> : <p className="text-[var(--color-text-primary)]">{profile.location}</p>}
           </div>
-          <div className="md:col-span-2">
+          <div className="col-span-2">
             <label className="block text-sm text-[var(--color-text-secondary)] mb-1">Website</label>
             {isEditing ? <input className="input" value={profile.website} onChange={(e)=>setProfile(p=>({...p, website:e.target.value}))} /> : <a className="text-[var(--color-primary-teal)] underline text-sm" href={profile.website} target="_blank" rel="noreferrer">{profile.website}</a>}
           </div>
         </div>
       </div>
 
-      <div className="bg-[var(--color-background-surface)] p-6 rounded-lg border border-[var(--color-divider-gray)] shadow-sm">
+      <div className="card-glass p-6">
         <div className="flex items-center justify-between mb-3">
           <h3 className="text-lg font-semibold text-[var(--color-text-primary)]">Publications</h3>
           <button className="btn-outline px-3 py-2 rounded" onClick={()=>setShowAdd(true)}><Plus className="h-4 w-4 inline mr-2"/>Add</button>
@@ -98,17 +98,17 @@ const ResearcherProfile: React.FC = () => {
 
       <div className="grid grid-cols-3 gap-6">
         <div className="bg-[var(--color-background-surface)] p-6 rounded-lg border border-[var(--color-divider-gray)] shadow-sm text-center">
-          <FileText className="h-5 w-5 mx-auto text-[var(--color-primary-teal)]" />
+          <FileText className="h-5 w-5 mx-auto text-black dark:text-white" />
           <p className="text-sm text-[var(--color-text-secondary)] mt-1">Publications</p>
           <p className="text-2xl font-bold text-[var(--color-text-primary)]">{publications.length}</p>
         </div>
-        <div className="bg-[var(--color-background-surface)] p-6 rounded-lg border border-[var(--color-divider-gray)] shadow-sm text-center">
-          <Calendar className="h-5 w-5 mx-auto text-[var(--color-primary-teal)]" />
+        <div className="card-glass p-6 text-center">
+          <Calendar className="h-5 w-5 mx-auto text-black dark:text-white" />
           <p className="text-sm text-[var(--color-text-secondary)] mt-1">Conferences</p>
           <p className="text-2xl font-bold text-[var(--color-text-primary)]">3</p>
         </div>
-        <div className="bg-[var(--color-background-surface)] p-6 rounded-lg border border-[var(--color-divider-gray)] shadow-sm text-center">
-          <MapPin className="h-5 w-5 mx-auto text-[var(--color-primary-teal)]" />
+        <div className="card-glass p-6 text-center">
+          <MapPin className="h-5 w-5 mx-auto text-black dark:text-white" />
           <p className="text-sm text-[var(--color-text-secondary)] mt-1">Location</p>
           <p className="text-2xl font-bold text-[var(--color-text-primary)]">{profile.location}</p>
         </div>
@@ -116,9 +116,9 @@ const ResearcherProfile: React.FC = () => {
       </div>
 
       {/* Account Security Section */}
-      <div className="bg-[var(--color-background-surface)] p-6 rounded-lg border border-[var(--color-divider-gray)] shadow-sm">
+      <div className="card-glass p-6">
         <h3 className="text-lg font-semibold text-[var(--color-text-primary)] mb-4 flex items-center space-x-2">
-          <Lock className="h-5 w-5 text-[var(--color-primary-teal)]" />
+          <Lock className="h-5 w-5 text-black dark:text-white" />
           <span>Account Security</span>
         </h3>
         <div className="space-y-4">
@@ -129,7 +129,7 @@ const ResearcherProfile: React.FC = () => {
             </div>
             <button
               onClick={() => setShowPasswordModal(true)}
-              className="px-4 py-2 rounded-lg bg-[var(--color-primary-teal)] text-white hover:opacity-90 transition-colors flex items-center space-x-2 border border-[color-mix(in_srgb,var(--color-primary-teal),black_10%)]"
+              className="btn-primary px-4 py-2 rounded-lg flex items-center space-x-2"
             >
               <Lock className="h-4 w-4" />
               <span>Change Password</span>

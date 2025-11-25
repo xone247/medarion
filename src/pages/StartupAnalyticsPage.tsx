@@ -85,7 +85,7 @@ const StartupAnalyticsPage = () => {
 
   useEffect(() => {
     dataService.getDeals({ limit: 200 }).then((response: any) => {
-      if (!response.success || !response.data) return;
+      if (!response.success || !response.data || !Array.isArray(response.data)) return;
       const d = response.data.map((deal: any) => ({
         id: deal.id,
         company_name: deal.company_name || 'Unknown',
@@ -139,7 +139,7 @@ const StartupAnalyticsPage = () => {
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-2">
             <TrendingUp className="h-6 w-6 icon-primary" />
-            <h1 className="text-xl md:text-2xl font-bold text-[var(--color-text-primary)]">Startup Analytics</h1>
+            <h1 className="text-xl text-2xl font-bold text-[var(--color-text-primary)]">Startup Analytics</h1>
           </div>
           <div className="flex items-center gap-2">
             <div className="toolbar">
@@ -179,21 +179,21 @@ const StartupAnalyticsPage = () => {
 
       {/* Engagement Metrics */}
       {visibleSections.includes('engagementMetrics') && (
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 mb-6">
+        <div className="grid grid-cols-2 grid-cols-4 gap-4 gap-6 mb-6">
           {engagementData.map((metric, index) => (
-            <div key={index} className="card-glass p-4 md:p-6 shadow-soft">
+            <div key={index} className="card-glass p-4 p-6 shadow-soft">
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-[var(--color-text-secondary)] text-sm">{metric.metric}</p>
-                  <p className="text-xl md:text-2xl font-bold text-[var(--color-text-primary)]">{metric.value}</p>
+                  <p className="text-xl text-2xl font-bold text-[var(--color-text-primary)]">{metric.value}</p>
                   <p className="text-[var(--color-primary-teal)] text-sm">{metric.change} this month</p>
                   <p className="text-[var(--color-text-secondary)] text-xs mt-1">{metric.description}</p>
                 </div>
-                <div className="bg-gradient-to-br from-[var(--color-primary-teal)] to-[var(--color-accent-sky)] p-2 md:p-3 rounded-lg border border-[color-mix(in_srgb,var(--color-primary-teal),black_10%)]">
-                  {index === 0 && <Eye className="h-5 w-5 md:h-6 md:w-6 text-white" />}
-                  {index === 1 && <Download className="h-5 w-5 md:h-6 md:w-6 text-white" />}
-                  {index === 2 && <Users className="h-5 w-5 md:h-6 md:w-6 text-white" />}
-                  {index === 3 && <DollarSign className="h-5 w-5 md:h-6 md:w-6 text-white" />}
+                <div className="bg-gradient-to-br from-[var(--color-primary-teal)] to-[var(--color-accent-sky)] p-2 p-3 rounded-lg border border-[color-mix(in_srgb,var(--color-primary-teal),black_10%)]">
+                  {index === 0 && <Eye className="h-5 w-5 h-6 w-6 text-white" />}
+                  {index === 1 && <Download className="h-5 w-5 h-6 w-6 text-white" />}
+                  {index === 2 && <Users className="h-5 w-5 h-6 w-6 text-white" />}
+                  {index === 3 && <DollarSign className="h-5 w-5 h-6 w-6 text-white" />}
                 </div>
               </div>
             </div>
@@ -204,9 +204,9 @@ const StartupAnalyticsPage = () => {
       {/* Views Trend + Investor Type */}
       <div className="grid grid-cols-2 gap-6 mb-6">
         {visibleSections.includes('viewsTrend') && (
-          <div className="card-glass p-4 md:p-6 shadow-soft">
-            <h3 className="text-base md:text-lg font-semibold text-[var(--color-text-primary)] mb-4">African Market Profile Views Trend</h3>
-            <div className="h-64 md:h-72">
+          <div className="card-glass p-4 p-6 shadow-soft">
+            <h3 className="text-base text-lg font-semibold text-[var(--color-text-primary)] mb-4">African Market Profile Views Trend</h3>
+            <div className="h-64 h-72">
               <ResponsiveContainer width="100%" height="100%">
                 <LineChart data={profileViewsData} margin={{ top: 5, right: 20, bottom: 5, left: 0 }}>
                   <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" className="dark:stroke-gray-600" />
@@ -221,9 +221,9 @@ const StartupAnalyticsPage = () => {
         )}
 
         {visibleSections.includes('investorTypePie') && (
-          <div className="card-glass p-4 md:p-6 shadow-soft">
-            <h3 className="text-base md:text-lg font-semibold text-[var(--color-text-primary)] mb-4">African Investor Type Distribution</h3>
-            <div className="h-64 md:h-72">
+          <div className="card-glass p-4 p-6 shadow-soft">
+            <h3 className="text-base text-lg font-semibold text-[var(--color-text-primary)] mb-4">African Investor Type Distribution</h3>
+            <div className="h-64 h-72">
               <ResponsiveContainer width="100%" height="100%">
                 <PieChart>
                   <Pie data={investorTypeData} cx="50%" cy="50%" outerRadius={80} fill="#8884d8" dataKey="value" label={({ name, percent }: { name: string; percent?: number }) => `${name} ${Number(((percent ?? 0) * 100).toFixed(0))}%`} labelLine={false}>
@@ -240,9 +240,9 @@ const StartupAnalyticsPage = () => {
       {/* Regional Distribution + Top Countries */}
       <div className="grid grid-cols-2 gap-6 mb-6">
         {visibleSections.includes('regionalDistribution') && (
-          <div className="card-glass p-4 md:p-6 shadow-soft">
-            <h3 className="text-base md:text-lg font-semibold text-[var(--color-text-primary)] mb-4">African Regional Distribution</h3>
-            <div className="h-64 md:h-72">
+          <div className="card-glass p-4 p-6 shadow-soft">
+            <h3 className="text-base text-lg font-semibold text-[var(--color-text-primary)] mb-4">African Regional Distribution</h3>
+            <div className="h-64 h-72">
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart data={africanGeographicData} margin={{ top: 5, right: 20, bottom: 5, left: 0 }}>
                   <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" className="dark:stroke-gray-600" />
@@ -257,9 +257,9 @@ const StartupAnalyticsPage = () => {
         )}
 
         {visibleSections.includes('topCountries') && (
-          <div className="card-glass p-4 md:p-6 shadow-soft">
-            <h3 className="text-base md:text-lg font-semibold text-[var(--color-text-primary)] mb-4">Top African Countries by Engagement</h3>
-            <div className="grid grid-cols-2 gap-3 h-64 md:h-72 overflow-y-auto pr-2">
+          <div className="card-glass p-4 p-6 shadow-soft">
+            <h3 className="text-base text-lg font-semibold text-[var(--color-text-primary)] mb-4">Top African Countries by Engagement</h3>
+            <div className="grid grid-cols-2 gap-3 h-64 h-72 overflow-y-auto pr-2">
               {countryViewsData.map((country, index) => (
                 <div key={country.country} className="flex items-center justify-between p-3 card-glass rounded-lg shadow-soft">
                   <div className="flex items-center space-x-3">
@@ -282,8 +282,8 @@ const StartupAnalyticsPage = () => {
 
       {/* Sector Interest */}
       {visibleSections.includes('sectorInterest') && (
-        <div className="card-glass p-4 md:p-6 shadow-soft mb-6">
-          <h3 className="text-base md:text-lg font-semibold text-[var(--color-text-primary)] mb-4">African Investor Interest by Sector</h3>
+        <div className="card-glass p-4 p-6 shadow-soft mb-6">
+          <h3 className="text-base text-lg font-semibold text-[var(--color-text-primary)] mb-4">African Investor Interest by Sector</h3>
           <div className="grid grid-cols-2 gap-6">
             <div className="h-72">
               <ResponsiveContainer width="100%" height="100%">
@@ -321,10 +321,10 @@ const StartupAnalyticsPage = () => {
 
       {/* Market Insights */}
       {visibleSections.includes('marketInsights') && (
-        <div className="card-glass p-4 md:p-6 shadow-soft mb-6">
+        <div className="card-glass p-4 p-6 shadow-soft mb-6">
           <div className="flex items-center space-x-2 mb-4">
             <Globe className="h-5 w-5 text-[var(--color-primary-teal)]" />
-            <h3 className="text-base md:text-lg font-semibold text-[var(--color-text-primary)]">African Market Insights</h3>
+            <h3 className="text-base text-lg font-semibold text-[var(--color-text-primary)]">African Market Insights</h3>
           </div>
           <div className="grid grid-cols-2 gap-4">
             {marketInsights.map((insight, index) => (
@@ -342,24 +342,24 @@ const StartupAnalyticsPage = () => {
 
       {/* Market Summary */}
       {visibleSections.includes('marketSummary') && (
-        <div className="card-glass p-4 md:p-6 shadow-soft">
+        <div className="card-glass p-4 p-6 shadow-soft">
           <div className="flex items-center space-x-3 mb-4">
             <MapPin className="h-5 w-5 text-[var(--color-primary-teal)]" />
-            <h3 className="text-base md:text-lg font-semibold text-[var(--color-text-primary)]">African Healthcare Market Summary</h3>
+            <h3 className="text-base text-lg font-semibold text-[var(--color-text-primary)]">African Healthcare Market Summary</h3>
           </div>
-          <div className="grid grid-cols-3 gap-4 md:gap-6">
+          <div className="grid grid-cols-3 gap-4 gap-6">
             <div className="text-center">
-              <div className="text-2xl md:text-3xl font-bold text-[var(--color-primary-teal)] mb-2">54</div>
+              <div className="text-2xl text-3xl font-bold text-[var(--color-primary-teal)] mb-2">54</div>
               <div className="text-sm text-[var(--color-text-secondary)]">African Countries</div>
               <div className="text-xs text-[var(--color-text-secondary)]">Market Coverage</div>
             </div>
             <div className="text-center">
-              <div className="text-2xl md:text-3xl font-bold text-[var(--color-primary-teal)] mb-2">1.4B</div>
+              <div className="text-2xl text-3xl font-bold text-[var(--color-primary-teal)] mb-2">1.4B</div>
               <div className="text-sm text-[var(--color-text-secondary)]">Total Population</div>
               <div className="text-xs text-[var(--color-text-secondary)]">Addressable Market</div>
             </div>
             <div className="text-center">
-              <div className="text-2xl md:text-3xl font-bold text-[var(--color-primary-teal)] mb-2">$180B</div>
+              <div className="text-2xl text-3xl font-bold text-[var(--color-primary-teal)] mb-2">$180B</div>
               <div className="text-sm text-[var(--color-text-secondary)]">Healthcare Market Size</div>
               <div className="text-xs text-[var(--color-text-secondary)]">Growing at 8.2% CAGR</div>
             </div>

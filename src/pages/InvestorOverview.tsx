@@ -32,7 +32,7 @@ const InvestorOverview = () => {
           dataService.getInvestors({ limit: 200 }).catch(() => ({ success: false, data: [] })),
         ]);
         
-        if (dealsResponse.success) {
+        if (dealsResponse.success && dealsResponse.data && Array.isArray(dealsResponse.data)) {
           const d = dealsResponse.data.map((deal: any) => ({
             id: deal.id,
             company_name: deal.company_name || 'Unknown',
@@ -46,7 +46,7 @@ const InvestorOverview = () => {
           setDeals(d);
         }
         
-        if (grantsResponse.success) {
+        if (grantsResponse.success && grantsResponse.data && Array.isArray(grantsResponse.data)) {
           const g = grantsResponse.data.map((grant: any) => ({
             id: grant.id,
             organizationName: grant.title || grant.funding_agency || 'Unknown',
@@ -60,7 +60,7 @@ const InvestorOverview = () => {
           setGrants(g);
         }
         
-        if (investorsResponse.success) {
+        if (investorsResponse.success && investorsResponse.data && Array.isArray(investorsResponse.data)) {
           const i = investorsResponse.data.map((inv: any) => ({
             id: inv.id,
             name: inv.name,
@@ -101,11 +101,11 @@ const InvestorOverview = () => {
   const { profile } = useAuth();
   const canAI = !!(profile && (profile.is_admin || ['paid','enterprise'].includes((profile as any).account_tier)));
   return (
-    <div className="p-4 md:p-6 space-y-6 bg-[var(--color-background-default)] min-h-screen">
+    <div className="p-4 p-6 space-y-6 bg-[var(--color-background-default)] min-h-screen">
       {/* Header */}
       <div className="flex items-center justify-between border-b border-[var(--color-divider-gray)] pb-4">
         <div>
-          <h1 className="text-xl md:text-2xl font-bold text-[var(--color-text-primary)] mb-1">Investment Overview</h1>
+          <h1 className="text-xl text-2xl font-bold text-[var(--color-text-primary)] mb-1">Investment Overview</h1>
           <p className="text-[var(--color-text-secondary)]">Comprehensive view of African healthcare investments and market intelligence</p>
         </div>
         {canAI && (
@@ -117,57 +117,57 @@ const InvestorOverview = () => {
       </div>
 
       {/* KPI Cards */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
-        <div className="bg-[var(--color-background-surface)] p-4 md:p-6 rounded-lg border border-[var(--color-divider-gray)] shadow-sm">
+      <div className="grid grid-cols-2 grid-cols-4 gap-4 gap-6">
+        <div className="bg-[var(--color-background-surface)] p-4 p-6 rounded-lg border border-[var(--color-divider-gray)] shadow-sm">
           <div className="flex items-center justify-between">
             <div>
               <p className="text-[var(--color-text-secondary)] text-sm font-medium">Deals & Grants</p>
-              <p className="text-xl md:text-2xl font-bold text-[var(--color-text-primary)] mt-1">{kpis.deals_and_grants || 0}</p>
+              <p className="text-xl text-2xl font-bold text-[var(--color-text-primary)] mt-1">{kpis.deals_and_grants || 0}</p>
               <p className="text-[var(--color-primary-teal)] text-sm mt-1">+12% vs last quarter</p>
             </div>
-            <div className="bg-[var(--color-primary-teal)] p-2 md:p-3 rounded-lg shadow-sm border border-[color-mix(in_srgb,var(--color-primary-teal),black_10%)]">
-              <DollarSign className="h-5 w-5 md:h-6 md:w-6 text-[var(--color-background-surface)]" />
+            <div className="bg-black dark:bg-gray-700 p-2 p-3 rounded-lg shadow-sm border border-black/20 dark:border-gray-600/30">
+              <DollarSign className="h-5 w-5 h-6 w-6 text-white dark:text-white" />
             </div>
           </div>
         </div>
 
-        <div className="bg-[var(--color-background-surface)] p-4 md:p-6 rounded-lg border border-[var(--color-divider-gray)] shadow-sm">
+        <div className="bg-[var(--color-background-surface)] p-4 p-6 rounded-lg border border-[var(--color-divider-gray)] shadow-sm">
           <div className="flex items-center justify-between">
             <div>
               <p className="text-[var(--color-text-secondary)] text-sm font-medium">Companies</p>
-              <p className="text-xl md:text-2xl font-bold text-[var(--color-text-primary)] mt-1">{kpis.companies || 0}</p>
+              <p className="text-xl text-2xl font-bold text-[var(--color-text-primary)] mt-1">{kpis.companies || 0}</p>
               <p className="text-[var(--color-primary-teal)] text-sm mt-1">+8% vs last quarter</p>
             </div>
-            <div className="bg-[var(--color-primary-teal)] p-2 md:p-3 rounded-lg shadow-sm border border-[color-mix(in_srgb,var(--color-primary-teal),black_10%)]">
-              <Building2 className="h-5 w-5 md:h-6 md:w-6 text-[var(--color-background-surface)]" />
+            <div className="bg-black dark:bg-gray-700 p-2 p-3 rounded-lg shadow-sm border border-black/20 dark:border-gray-600/30">
+              <Building2 className="h-5 w-5 h-6 w-6 text-white dark:text-white" />
             </div>
           </div>
         </div>
 
-        <div className="bg-[var(--color-background-surface)] p-4 md:p-6 rounded-lg border border-[var(--color-divider-gray)] shadow-sm">
+        <div className="bg-[var(--color-background-surface)] p-4 p-6 rounded-lg border border-[var(--color-divider-gray)] shadow-sm">
           <div className="flex items-center justify-between">
             <div>
               <p className="text-[var(--color-text-secondary)] text-sm font-medium">Investors</p>
-              <p className="text-xl md:text-2xl font-bold text-[var(--color-text-primary)] mt-1">{kpis.investors || 0}</p>
+              <p className="text-xl text-2xl font-bold text-[var(--color-text-primary)] mt-1">{kpis.investors || 0}</p>
               <p className="text-[var(--color-primary-teal)] text-sm mt-1">+5% vs last quarter</p>
             </div>
-            <div className="bg-[var(--color-primary-teal)] p-2 md:p-3 rounded-lg shadow-sm border border-[color-mix(in_srgb,var(--color-primary-teal),black_10%)]">
-              <Users className="h-5 w-5 md:h-6 md:w-6 text-[var(--color-background-surface)]" />
+            <div className="bg-black dark:bg-gray-700 p-2 p-3 rounded-lg shadow-sm border border-black/20 dark:border-gray-600/30">
+              <Users className="h-5 w-5 h-6 w-6 text-white dark:text-white" />
             </div>
           </div>
         </div>
 
-        <div className="bg-[var(--color-background-surface)] p-4 md:p-6 rounded-lg border border-[var(--color-divider-gray)] shadow-sm">
+        <div className="bg-[var(--color-background-surface)] p-4 p-6 rounded-lg border border-[var(--color-divider-gray)] shadow-sm">
           <div className="flex items-center justify-between">
             <div>
               <p className="text-[var(--color-text-secondary)] text-sm font-medium">Total Value (USD)</p>
-              <p className="text-xl md:text-2xl font-bold text-[var(--color-text-primary)] mt-1">
+              <p className="text-xl text-2xl font-bold text-[var(--color-text-primary)] mt-1">
                 {kpis.total_value_usd ? `$${(kpis.total_value_usd / 1000000).toFixed(1)}M` : '$0M'}
               </p>
               <p className="text-[var(--color-primary-teal)] text-sm mt-1">+18% vs last quarter</p>
             </div>
-            <div className="bg-[var(--color-primary-teal)] p-2 md:p-3 rounded-lg shadow-sm border border-[color-mix(in_srgb,var(--color-primary-teal),black_10%)]">
-              <TrendingUp className="h-5 w-5 md:h-6 md:w-6 text-[var(--color-background-surface)]" />
+            <div className="bg-black dark:bg-gray-700 p-2 p-3 rounded-lg shadow-sm border border-black/20 dark:border-gray-600/30">
+              <TrendingUp className="h-5 w-5 h-6 w-6 text-white dark:text-white" />
             </div>
           </div>
         </div>
@@ -176,7 +176,7 @@ const InvestorOverview = () => {
       {/* Notable investors logos removed */}
 
       {/* Charts Section with Interactive Map */}
-      <div className="grid grid-cols-2 gap-4 md:gap-6">
+      <div className="grid grid-cols-2 gap-4 gap-6">
         <div className="border border-[var(--color-divider-gray)] rounded-lg">
           <MonthlyDealflowChart />
         </div>
@@ -184,8 +184,8 @@ const InvestorOverview = () => {
           <div className="bg-[var(--color-background-surface)] rounded-lg border border-[var(--color-divider-gray)] overflow-hidden shadow-sm">
             <div className="p-4 border-b border-[var(--color-divider-gray)] flex items-center justify-between">
               <div>
-                <h3 className="text-base md:text-lg font-semibold text-[var(--color-text-primary)]">African Investment Map</h3>
-                <p className="text-xs md:text-sm text-[var(--color-text-secondary)] mt-1">
+                <h3 className="text-base text-lg font-semibold text-[var(--color-text-primary)]">African Investment Map</h3>
+                <p className="text-xs text-sm text-[var(--color-text-secondary)] mt-1">
                   Interactive visualization of deal activity across Africa
                 </p>
               </div>
@@ -212,7 +212,7 @@ const InvestorOverview = () => {
                 </button>
               </div>
             </div>
-            <div className="h-64 md:h-80">
+            <div className="h-64 h-80">
               <InteractiveMap 
                 title="" 
                 dataType={mapDataType as any} 
@@ -224,18 +224,18 @@ const InvestorOverview = () => {
       </div>
 
       {/* Nation Pulse Charts Section */}
-      <div className="grid grid-cols-2 gap-4 md:gap-6">
+      <div className="grid grid-cols-2 gap-4 gap-6">
         <NationPulseWidget type="health-metrics" />
         <NationPulseWidget type="economic-overview" />
       </div>
 
       {/* Regional Trends */}
-      <div className="grid grid-cols-1 gap-4 md:gap-6">
+      <div className="grid grid-cols-1 gap-4 gap-6">
         <RegionalTrendsChart />
       </div>
 
       {/* Lists Section */}
-      <div className="grid grid-cols-2 gap-4 md:gap-6">
+      <div className="grid grid-cols-2 gap-4 gap-6">
         <div className="border border-[var(--color-divider-gray)] rounded-lg">
           <TopDealsWidget />
         </div>
@@ -245,7 +245,7 @@ const InvestorOverview = () => {
       </div>
 
       {/* Bottom Charts */}
-      <div className="grid grid-cols-2 gap-4 md:gap-6">
+      <div className="grid grid-cols-2 gap-4 gap-6">
         <div className="border border-[var(--color-divider-gray)] rounded-lg">
           <DealsByStageChart />
         </div>
@@ -255,7 +255,7 @@ const InvestorOverview = () => {
       </div>
 
       {/* Dealroom-style Charts */}
-      <div className="grid grid-cols-2 gap-4 md:gap-6">
+      <div className="grid grid-cols-2 gap-4 gap-6">
         <VCInvestmentOverTimeChart />
         <SectorTreemap />
       </div>

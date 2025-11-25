@@ -78,9 +78,9 @@ const MonthlyDealflowChart: React.FC = () => {
   return (
     <div className="tile">
       <div className="tile-header">
-        <h3 className="text-base md:text-lg font-semibold text-[var(--color-text-primary)]">Monthly Dealflow</h3>
+        <h3 className="text-base text-lg font-semibold text-[var(--color-text-primary)]">Monthly Dealflow</h3>
       </div>
-      <div className="h-56 md:h-80">
+      <div className="h-56 h-80">
         <ResponsiveContainer width="100%" height="100%">
           <BarChart data={chartData} margin={{ top: 5, right: 16, left: 8, bottom: isSmall ? 10 : 30 }}>
             <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" className="dark:stroke-gray-600" />

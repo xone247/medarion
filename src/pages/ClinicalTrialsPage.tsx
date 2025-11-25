@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { Microscope, Search, Filter, Calendar, MapPin, Building2, Sparkles, Globe, Bot, FileDown } from 'lucide-react';
+import { Microscope, Search, Filter, Calendar, MapPin, Building2, Sparkles, Globe, Bot, FileDown, FileText } from 'lucide-react';
 import { askMedarion } from '../services/ai';
 import { apiService } from '../services/apiService';
 import { useAuth } from '../contexts/AuthContext';
@@ -8,6 +8,7 @@ const ClinicalTrialsPage: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedPhase, setSelectedPhase] = useState('All');
   const [selectedStatus, setSelectedStatus] = useState('All');
+  const [selectedDateRange, setSelectedDateRange] = useState('All');
   const [showTrialDetails, setShowTrialDetails] = useState<any>(null);
   const [showAISummary, setShowAISummary] = useState(false);
   const [aiSummaryLoading, setAiSummaryLoading] = useState(false);
@@ -112,8 +113,32 @@ const ClinicalTrialsPage: React.FC = () => {
                          (trial.title || '').toLowerCase().includes(searchLower);
     const matchesPhase = selectedPhase === 'All' || trial.phase === selectedPhase;
     const matchesStatus = selectedStatus === 'All' || trial.status === selectedStatus;
-    return matchesSearch && matchesPhase && matchesStatus;
-  }), [enhancedTrialData, searchTerm, selectedPhase, selectedStatus]);
+    
+    // Date filtering
+    let matchesDate = true;
+    if (selectedDateRange !== 'All' && trial.start_date) {
+      const trialDate = new Date(trial.start_date);
+      const now = new Date();
+      const daysDiff = Math.floor((now.getTime() - trialDate.getTime()) / (1000 * 60 * 60 * 24));
+      
+      switch (selectedDateRange) {
+        case 'last7days':
+          matchesDate = daysDiff <= 7;
+          break;
+        case 'last30days':
+          matchesDate = daysDiff <= 30;
+          break;
+        case 'last90days':
+          matchesDate = daysDiff <= 90;
+          break;
+        case 'lastyear':
+          matchesDate = daysDiff <= 365;
+          break;
+      }
+    }
+    
+    return matchesSearch && matchesPhase && matchesStatus && matchesDate;
+  }), [enhancedTrialData, searchTerm, selectedPhase, selectedStatus, selectedDateRange]);
 
   const getPhaseColor = (phase: string) => {
     switch (phase) {
@@ -165,7 +190,7 @@ const ClinicalTrialsPage: React.FC = () => {
   };
 
   return (
-    <div className="page-container py-4 sm:py-6 space-y-4 sm:space-y-6 bg-[var(--color-background-default)] min-h-screen">
+    <div className="w-full space-y-4 sm:space-y-6">
       {/* Header with glassmorphism */}
       <div className="card-glass p-6 shadow-soft">
         <div className="flex flex-row items-center justify-between gap-4">
@@ -243,40 +268,91 @@ const ClinicalTrialsPage: React.FC = () => {
         </div>
       </div>
 
-      {/* Most Active Clinical Trials Countries with glassmorphism */}
+      {/* Data Sources */}
+      <div className="card-glass p-6 shadow-soft">
+        <div className="flex items-center space-x-2 mb-4">
+          <FileText className="h-5 w-5 icon-primary" />
+          <h3 className="text-lg font-semibold text-[var(--color-text-primary)]">Data Sources</h3>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-[var(--color-text-secondary)]">
+          <div>
+            <p className="font-medium text-[var(--color-text-primary)] mb-2">Primary Sources:</p>
+            <ul className="list-disc list-inside space-y-1 ml-2">
+              <li>ClinicalTrials.gov</li>
+              <li>WHO International Clinical Trials Registry Platform</li>
+              <li>Pan African Clinical Trials Registry</li>
+              <li>National regulatory authorities</li>
+            </ul>
+          </div>
+          <div>
+            <p className="font-medium text-[var(--color-text-primary)] mb-2">Additional Sources:</p>
+            <ul className="list-disc list-inside space-y-1 ml-2">
+              <li>Pharmaceutical company announcements</li>
+              <li>Medical research institutions</li>
+              <li>Academic publications</li>
+              <li>Industry reports and databases</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      {/* Clinical Trials Statistics with glassmorphism */}
       <div className="card-glass p-6 shadow-soft">
         <div className="flex items-center space-x-2 mb-6">
           <Globe className="h-5 w-5 icon-primary" />
-          <h3 className="text-lg font-semibold text-[var(--color-text-primary)]">Most Active Clinical Trials Countries</h3>
+          <h3 className="text-lg font-semibold text-[var(--color-text-primary)]">Clinical Trials Statistics</h3>
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-          {topCountries.map((country: any, index: number) => (
-            <div key={country.country} className="card-glass p-4 shadow-soft hover:shadow-elevated transition-all duration-300 card-hover">
-              <div className="flex items-center justify-between mb-2">
-                <div className="flex items-center space-x-2">
-                  <div className="w-8 h-8 bg-[var(--color-primary-teal)] rounded-full flex items-center justify-center text-white font-bold border border-[color-mix(in_srgb,var(--color-primary-teal),black_10%)]">
-                    {index + 1}
-                  </div>
-                  <h4 className="font-medium text-[var(--color-text-primary)]">{country.country}</h4>
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          {/* Highest completed trials by country */}
+          <div className="card-glass p-4 shadow-soft">
+            <h4 className="font-medium text-[var(--color-text-primary)] mb-4">Highest completed trials</h4>
+            <div className="space-y-2">
+              {Object.entries(enhancedTrialData.reduce((acc: any, trial: any) => {
+                if (trial.status === 'Completed') {
+                  acc[trial.country] = (acc[trial.country] || 0) + 1;
+                }
+                return acc;
+              }, {})).sort((a: any, b: any) => b[1] - a[1]).slice(0, 5).map(([country, count]: any, index: number) => (
+                <div key={country} className="flex items-center justify-between text-sm">
+                  <span className="text-[var(--color-text-secondary)]">{index + 1}. {country}</span>
+                  <span className="text-[var(--color-primary-teal)] font-medium">{count}</span>
                 </div>
-                <span className="chip bg-[var(--color-neutral-taupe)] text-[var(--color-text-primary)] px-2 py-1 rounded-full text-xs font-medium border border-[var(--color-divider-gray)]">
-                  {country.count} trials
-                </span>
-              </div>
-              <div className="mt-2">
-                <div className="flex justify-between text-sm mb-1">
-                  <span className="text-[var(--color-text-secondary)]">Active Trials</span>
-                  <span className="text-[var(--color-primary-teal)]">{(country as any).active}</span>
-                </div>
-                <div className="w-full bg-[var(--color-background-default)] rounded-full h-2">
-                  <div 
-                    className="bg-[var(--color-primary-teal)] h-2 rounded-full" 
-                    style={{ width: `${((country as any).active / (country as any).count) * 100}%` }}
-                  ></div>
-                </div>
-              </div>
+              ))}
             </div>
-          ))}
+          </div>
+          
+          {/* Recent trials */}
+          <div className="card-glass p-4 shadow-soft">
+            <h4 className="font-medium text-[var(--color-text-primary)] mb-4">Recent trials</h4>
+            <div className="space-y-2">
+              {enhancedTrialData
+                .sort((a: any, b: any) => new Date(b.start_date || b.created_at || 0).getTime() - new Date(a.start_date || a.created_at || 0).getTime())
+                .slice(0, 5)
+                .map((trial: any, index: number) => (
+                  <div key={trial.trial_id || index} className="flex items-center justify-between text-sm">
+                    <span className="text-[var(--color-text-secondary)] truncate">{trial.trial_id || `Trial ${index + 1}`}</span>
+                    <span className="text-[var(--color-primary-teal)] font-medium text-xs">{trial.companyName?.substring(0, 10)}...</span>
+                  </div>
+                ))}
+            </div>
+          </div>
+          
+          {/* Top Phase */}
+          <div className="card-glass p-4 shadow-soft">
+            <h4 className="font-medium text-[var(--color-text-primary)] mb-4">Top Phase</h4>
+            <div className="space-y-2">
+              {Object.entries(enhancedTrialData.reduce((acc: any, trial: any) => {
+                const phase = trial.phase || 'Unknown';
+                acc[phase] = (acc[phase] || 0) + 1;
+                return acc;
+              }, {})).sort((a: any, b: any) => b[1] - a[1]).slice(0, 5).map(([phase, count]: any, index: number) => (
+                <div key={phase} className="flex items-center justify-between text-sm">
+                  <span className="text-[var(--color-text-secondary)]">{index + 1}. Phase {phase}</span>
+                  <span className="text-[var(--color-primary-teal)] font-medium">{count}</span>
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
       </div>
 
@@ -286,7 +362,7 @@ const ClinicalTrialsPage: React.FC = () => {
           <Filter className="h-5 w-5 icon-primary" />
           <h3 className="text-lg font-semibold text-[var(--color-text-primary)]">Filters</h3>
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
           <div className="relative">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-[var(--color-text-secondary)]" />
             <input
@@ -315,6 +391,17 @@ const ClinicalTrialsPage: React.FC = () => {
               <option key={status} value={status}>{status}</option>
             ))}
           </select>
+          <select
+            value={selectedDateRange}
+            onChange={(e) => setSelectedDateRange(e.target.value)}
+            className="input"
+          >
+            <option value="All">All Dates</option>
+            <option value="last7days">Last 7 Days</option>
+            <option value="last30days">Last 30 Days</option>
+            <option value="last90days">Last 90 Days</option>
+            <option value="lastyear">Last Year</option>
+          </select>
         </div>
       </div>
 
@@ -334,6 +421,7 @@ const ClinicalTrialsPage: React.FC = () => {
                 <th className="px-6 py-4 text-left text-xs font-medium text-[var(--color-text-secondary)] uppercase tracking-wider">Status</th>
                 <th className="px-6 py-4 text-left text-xs font-medium text-[var(--color-text-secondary)] uppercase tracking-wider">Sector</th>
                 <th className="px-6 py-4 text-left text-xs font-medium text-[var(--color-text-secondary)] uppercase tracking-wider">Country</th>
+                <th className="px-6 py-4 text-left text-xs font-medium text-[var(--color-text-secondary)] uppercase tracking-wider">Actions</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-[var(--color-divider-gray)]">
@@ -348,7 +436,7 @@ const ClinicalTrialsPage: React.FC = () => {
                   </td>
                   <td className="px-6 py-4">
                     <div className="flex items-center">
-                      <div className="w-8 h-8 bg-[var(--color-primary-teal)] rounded-lg flex items-center justify-center border border-[color-mix(in_srgb,var(--color-primary-teal),black_10%)]">
+                      <div className="w-8 h-8 bg-black dark:bg-gray-700 rounded-lg flex items-center justify-center border border-black/20 dark:border-gray-600/30">
                         <Building2 className="h-4 w-4 text-white" />
                       </div>
                       <div className="ml-3">
@@ -371,6 +459,29 @@ const ClinicalTrialsPage: React.FC = () => {
                   </td>
                   <td className="px-6 py-4 text-sm text-[var(--color-text-primary)]">{trial.sector}</td>
                   <td className="px-6 py-4 text-sm text-[var(--color-text-primary)]">{trial.country}</td>
+                  <td className="px-6 py-4">
+                    <div className="flex items-center gap-2">
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleRowClick(trial);
+                        }}
+                        className="text-xs text-[var(--color-primary-teal)] hover:underline"
+                      >
+                        More details
+                      </button>
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          // TODO: Implement save functionality
+                          alert('Save functionality to be implemented');
+                        }}
+                        className="text-xs text-[var(--color-primary-teal)] hover:underline"
+                      >
+                        Save
+                      </button>
+                    </div>
+                  </td>
                 </tr>
               ))}
             </tbody>

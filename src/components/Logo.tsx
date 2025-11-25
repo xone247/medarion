@@ -17,7 +17,7 @@ const Logo = () => {
         <img 
           src="/images/logo-light.png" 
           alt="Medarion" 
-          className="h-10 md:h-12"
+          className="h-10 h-12"
           style={{
             filter: theme === 'dark' ? 'brightness(0) invert(1)' : 'brightness(0)',
           }}
@@ -41,7 +41,7 @@ const Logo = () => {
       <img 
         src="/images/logo-light.png" 
         alt="Medarion" 
-        className="h-10 md:h-12"
+        className="h-10 h-12"
         style={{
           filter: theme === 'dark' ? 'brightness(0) invert(1)' : 'brightness(0)',
         }}

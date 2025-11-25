@@ -78,60 +78,70 @@ const InvestorDashboard = () => {
   ];
 
   return (
-    <div className="p-6 space-y-6 bg-[var(--color-background-default)] min-h-screen">
+    <div className="w-full space-y-3">
 
-      {/* KPI Row */}
-      <div className="grid grid-cols-4 gap-6">
+      {/* Page Header - Compact */}
+      <div className="mb-2">
+        <h1 className="text-2xl font-bold text-slate-700 dark:text-slate-200 mb-1">Investor Dashboard</h1>
+        <p className="text-sm text-slate-500 dark:text-slate-400">Portfolio overview and investment opportunities</p>
+      </div>
+
+      {/* KPI Row - Compact */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2">
         <KPICard title="Portfolio Value" value={kpis?.total_value_usd ? `$${(kpis.total_value_usd / 1000000).toFixed(1)}M` : '—'} icon={DollarSign} trend="+18% this quarter" />
         <KPICard title="Active Deals" value={kpis?.deals_and_grants ?? '—'} icon={TrendingUp} trend="+5 this month" />
         <KPICard title="Portfolio Companies" value={kpis?.companies ?? '—'} icon={Building2} trend="+2 this quarter" />
         <KPICard title="Market Opportunities" value={kpis?.investors ?? '—'} icon={Eye} trend="+12% this week" />
       </div>
 
-      {/* Market Intelligence Section */}
-      <div className="grid grid-cols-2 gap-6">
+      {/* Market Intelligence Section - Compact */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
         <NationPulseWidget type="overview" />
         <HealthcareMarketWidget />
       </div>
 
-      {/* Portfolio Overview */}
-      <div className="grid grid-cols-2 gap-6">
-        <div className="bg-[var(--color-background-surface)] p-6 rounded-lg border border-[var(--color-divider-gray)] shadow-sm">
-          <div className="flex items-center space-x-2 mb-4">
-            <Building2 className="h-5 w-5 text-[var(--color-primary-teal)]" />
-            <h3 className="text-lg font-semibold text-[var(--color-text-primary)]">Portfolio Companies</h3>
+      {/* Portfolio Overview - Compact */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
+        <div className="card-glass p-3 rounded-lg">
+          <div className="flex items-center space-x-2 mb-3">
+            <div className="p-1.5 bg-cyan-100 dark:bg-cyan-500/30 rounded-lg">
+              <Building2 className="h-4 w-4 text-cyan-600 dark:text-cyan-400" />
+            </div>
+            <h3 className="text-base font-semibold text-slate-700 dark:text-slate-200">Portfolio Companies</h3>
           </div>
-          <div className="space-y-3">
+          <div className="space-y-2">
             {portfolioCompanies.map((company, index) => (
-              <div key={index} className="flex items-center justify-between p-3 bg-[var(--color-background-default)] rounded-lg border border-[var(--color-divider-gray)]">
-                <div>
-                  <h4 className="text-[var(--color-text-primary)] font-medium">{company.name}</h4>
-                  <p className="text-[var(--color-text-secondary)] text-sm">{company.stage} • {company.investment}</p>
+              <div key={index} className="flex items-center justify-between p-2 card-glass rounded-lg hover:shadow-md transition-all">
+                <div className="min-w-0 flex-1">
+                  <h4 className="text-slate-700 dark:text-slate-200 font-medium text-sm truncate">{company.name}</h4>
+                  <p className="text-slate-500 dark:text-slate-400 text-xs truncate">{company.stage} • {company.investment}</p>
                 </div>
-                <div className="text-right">
-                  <span className="text-[var(--color-primary-teal)] font-semibold">{company.growth}</span>
-                  <p className="text-[var(--color-text-secondary)] text-xs">{company.status}</p>
+                <div className="text-right flex-shrink-0 ml-2">
+                  <span className="text-cyan-600 dark:text-cyan-400 font-semibold text-sm">{company.growth}</span>
+                  <p className="text-slate-500 dark:text-slate-400 text-xs">{company.status}</p>
                 </div>
               </div>
             ))}
           </div>
         </div>
 
-        <div className="bg-[var(--color-background-surface)] p-6 rounded-lg border border-[var(--color-divider-gray)] shadow-sm">
-          <div className="flex items-center space-x-2 mb-4">
-            <Search className="h-5 w-5 text-[var(--color-primary-teal)]" />
-            <h3 className="text-lg font-semibold text-[var(--color-text-primary)]">Deal Flow</h3>
+        <div className="card-glass p-3 rounded-lg">
+          <div className="flex items-center space-x-2 mb-3">
+            <div className="p-1.5 bg-indigo-100 dark:bg-indigo-500/30 rounded-lg">
+              <Search className="h-4 w-4 text-indigo-600 dark:text-indigo-400" />
+            </div>
+            <h3 className="text-base font-semibold text-slate-700 dark:text-slate-200">Deal Flow</h3>
           </div>
-          <div className="space-y-3">
+          <div className="space-y-2">
             {dealFlow.map((deal, index) => (
-              <div key={index} className="flex items-center justify-between p-3 bg-[var(--color-background-default)] rounded-lg border border-[var(--color-divider-gray)]">
-                <div>
-                  <h4 className="text-[var(--color-text-primary)] font-medium">{deal.company}</h4>
-                  <p className="text-[var(--color-text-secondary)] text-sm">{deal.stage} • {deal.sector}</p>
+              <div key={index} className="flex items-center justify-between p-2 card-glass rounded-lg hover:shadow-md transition-all">
+                <div className="min-w-0 flex-1">
+                  <h4 className="text-slate-700 dark:text-slate-200 font-medium text-sm truncate">{deal.company}</h4>
+                  <p className="text-slate-500 dark:text-slate-400 text-xs truncate">{deal.stage} • {deal.sector}</p>
                 </div>
-                <div className="text-right">
-                  <span className="text-[var(--color-primary-teal)] font-semibold">{deal.amount}</span>
-                  <p className="text-[var(--color-text-secondary)] text-xs">{deal.status}</p>
+                <div className="text-right flex-shrink-0 ml-2">
+                  <span className="text-indigo-600 dark:text-indigo-400 font-semibold text-sm">{deal.amount}</span>
+                  <p className="text-slate-500 dark:text-slate-400 text-xs">{deal.status}</p>
                 </div>
               </div>
             ))}
@@ -139,32 +149,32 @@ const InvestorDashboard = () => {
         </div>
       </div>
 
-      {/* Interactive Map Section */}
-      <div className="bg-[var(--color-background-surface)] rounded-lg border border-[var(--color-divider-gray)] overflow-hidden shadow-sm">
-        <div className="p-4 border-b border-[var(--color-divider-gray)] flex items-center justify-between">
+      {/* Interactive Map Section - Compact */}
+      <div className="card-glass rounded-lg overflow-hidden">
+        <div className="p-3 border-b border-slate-200 dark:border-slate-700 flex items-center justify-between">
           <div>
-            <h3 className="text-lg font-semibold text-[var(--color-text-primary)]">Investment Opportunities Map</h3>
-            <p className="text-sm text-[var(--color-text-secondary)] mt-1">
-              Explore investment opportunities and market activity across Africa
+            <h3 className="text-base font-semibold text-slate-700 dark:text-slate-200">Investment Opportunities Map</h3>
+            <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+              Explore investment opportunities across Africa
             </p>
           </div>
-          <div className="flex bg-[var(--color-background-default)] rounded-lg p-1 border border-[var(--color-divider-gray)]">
+          <div className="flex bg-slate-100 dark:bg-slate-800 rounded-lg p-1">
             <button
               onClick={() => setMapDataType('value')}
-              className={`px-3 py-1 text-xs font-medium rounded transition-colors ${
+              className={`px-2 py-1 text-xs font-medium rounded transition-colors ${
                 mapDataType === 'value'
-                  ? 'bg-[var(--color-primary-teal)] text-[var(--color-background-surface)]'
-                  : 'text-[var(--color-text-secondary)] hover:bg-[var(--color-background-default)]'
+                  ? 'bg-gradient-to-br from-cyan-500 to-teal-600 dark:from-cyan-500 dark:to-teal-600 text-white'
+                  : 'text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-700'
               }`}
             >
               Deal Value
             </button>
             <button
               onClick={() => setMapDataType('count')}
-              className={`px-3 py-1 text-xs font-medium rounded transition-colors ${
+              className={`px-2 py-1 text-xs font-medium rounded transition-colors ${
                 mapDataType === 'count'
-                  ? 'bg-[var(--color-primary-teal)] text-[var(--color-background-surface)]'
-                  : 'text-[var(--color-text-secondary)] hover:bg-[var(--color-background-default)]'
+                  ? 'bg-gradient-to-br from-cyan-500 to-teal-600 dark:from-cyan-500 dark:to-teal-600 text-white'
+                  : 'text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-700'
               }`}
             >
               Deal Count
@@ -180,26 +190,29 @@ const InvestorDashboard = () => {
         </div>
       </div>
 
-      {/* Market Insights */}
-      <div className="grid grid-cols-4 gap-6">
+      {/* Market Insights - Compact */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2">
         {marketInsights.map((insight, index) => (
-          <div key={index} className="bg-[var(--color-background-surface)] p-6 rounded-lg border border-[var(--color-divider-gray)] shadow-sm text-center">
-            <div className="flex items-center justify-center mb-2">
-              {insight.trend === 'up' ? (
-                <TrendingUp className="h-5 w-5 text-green-500" />
-              ) : (
-                <TrendingUp className="h-5 w-5 text-red-500 rotate-180" />
-              )}
+          <div key={index} className="card-glass p-3 rounded-lg text-center group relative overflow-hidden">
+            <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/5 to-teal-500/5 dark:from-cyan-500/10 dark:to-teal-500/10 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+            <div className="relative">
+              <div className="flex items-center justify-center mb-1">
+                {insight.trend === 'up' ? (
+                  <TrendingUp className="h-4 w-4 text-emerald-500" />
+                ) : (
+                  <TrendingUp className="h-4 w-4 text-rose-500 rotate-180" />
+                )}
+              </div>
+              <p className="text-xs text-slate-500 dark:text-slate-400 mb-1">{insight.metric}</p>
+              <p className="text-xl font-bold text-slate-700 dark:text-slate-200">{insight.value}</p>
+              <p className="text-xs text-emerald-600 dark:text-emerald-400 mt-0.5 font-semibold">{insight.change}</p>
             </div>
-            <p className="text-sm text-[var(--color-text-secondary)] mb-1">{insight.metric}</p>
-            <p className="text-2xl font-bold text-[var(--color-text-primary)]">{insight.value}</p>
-            <p className="text-xs text-green-500 mt-1">{insight.change}</p>
           </div>
         ))}
       </div>
 
-      {/* Market Opportunity Charts */}
-      <div className="grid grid-cols-2 gap-6">
+      {/* Market Opportunity Charts - Compact */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
         <NationPulseWidget type="health-metrics" />
         <NationPulseWidget type="investment-opportunities" />
       </div>

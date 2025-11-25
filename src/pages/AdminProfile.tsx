@@ -1,55 +1,111 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Shield, Building2, Users, Settings, Crown, Star, Globe, Mail, Phone, MapPin, Calendar, Edit, Save, X, Plus, Lock } from 'lucide-react';
 import { useNavigation } from '../contexts/NavigationContext';
+import { useAuth } from '../contexts/AuthContext';
 import ChangePasswordModal from '../components/ui/ChangePasswordModal';
+import apiService from '../services/apiService';
 
 const AdminProfile: React.FC = () => {
   const { navigateToModule } = useNavigation();
+  const { profile: userProfile, refreshProfile } = useAuth();
   const [isEditing, setIsEditing] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [success, setSuccess] = useState<string | null>(null);
+  
+  // Initialize profile from userProfile data
   const [profile, setProfile] = useState({
-    fullName: 'Super Admin',
-    email: 'superadmin@demo.medarion.com',
-    role: 'Super Administrator',
-    companyName: 'Medarion Platform',
-    phone: '+1 (555) 123-4567',
-    location: 'Global',
-    bio: 'Platform administrator with full access to all system features and user management capabilities.',
-    permissions: ['User Management', 'Content Management', 'System Configuration', 'Analytics Access', 'Security Controls'],
-    lastLogin: '2025-01-26T10:30:00Z',
-    accountCreated: '2024-01-01T00:00:00Z'
+    fullName: '',
+    email: '',
+    role: '',
+    companyName: '',
+    phone: '',
+    location: '',
+    bio: '',
+    permissions: [] as string[],
+    lastLogin: '',
+    accountCreated: ''
   });
 
-  const [newPermission, setNewPermission] = useState('');
-  const [showAddPermission, setShowAddPermission] = useState(false);
+  // Load profile data from userProfile
+  useEffect(() => {
+    if (userProfile) {
+      const firstName = (userProfile as any).firstName || (userProfile as any).first_name || '';
+      const lastName = (userProfile as any).lastName || (userProfile as any).last_name || '';
+      const fullName = `${firstName} ${lastName}`.trim() || 'Admin User';
+      const appRoles = (userProfile as any).app_roles || [];
+      const isAdmin = (userProfile as any).is_admin || (userProfile as any).role === 'admin';
+      
+      setProfile({
+        fullName,
+        email: (userProfile as any).email || '',
+        role: isAdmin ? 'Super Administrator' : (userProfile as any).role || 'Administrator',
+        companyName: (userProfile as any).companyName || (userProfile as any).company_name || '',
+        phone: (userProfile as any).phone || '',
+        location: (userProfile as any).city && (userProfile as any).country 
+          ? `${(userProfile as any).city}, ${(userProfile as any).country}`
+          : (userProfile as any).country || (userProfile as any).city || 'Not set',
+        bio: (userProfile as any).bio || 'Platform administrator with full access to all system features and user management capabilities.',
+        permissions: appRoles.length > 0 ? appRoles : ['User Management', 'Content Management', 'System Configuration', 'Analytics Access', 'Security Controls'],
+        lastLogin: (userProfile as any).lastLogin || new Date().toISOString(),
+        accountCreated: (userProfile as any).createdAt || (userProfile as any).created_at || new Date().toISOString()
+      });
+    }
+  }, [userProfile]);
+
   const [showPasswordModal, setShowPasswordModal] = useState(false);
 
   const handleInputChange = (field: string, value: string) => {
     setProfile(prev => ({ ...prev, [field]: value }));
   };
 
-  const handleSave = () => {
-    setIsEditing(false);
-    // In a real app, you'd send this data to your backend
-    console.log('Admin profile saved:', profile);
-  };
-
-  const handleAddPermission = () => {
-    if (newPermission.trim()) {
-      setProfile(prev => ({
-        ...prev,
-        permissions: [...prev.permissions, newPermission.trim()]
-      }));
-      setNewPermission('');
-      setShowAddPermission(false);
+  const handleSave = async () => {
+    setLoading(true);
+    setError(null);
+    setSuccess(null);
+    
+    try {
+      // Split fullName into firstName and lastName
+      const nameParts = profile.fullName.trim().split(' ');
+      const firstName = nameParts[0] || '';
+      const lastName = nameParts.slice(1).join(' ') || '';
+      
+      // Extract location parts
+      const locationParts = profile.location.split(',').map(s => s.trim());
+      const city = locationParts[0] || '';
+      const country = locationParts[1] || locationParts[0] || '';
+      
+      // Prepare update data
+      const updateData: any = {
+        firstName,
+        lastName,
+        companyName: profile.companyName,
+        phone: profile.phone,
+        bio: profile.bio
+      };
+      
+      if (city) updateData.city = city;
+      if (country) updateData.country = country;
+      
+      // Save to API
+      await apiService.put('/auth/profile', updateData);
+      
+      // Refresh profile
+      if (refreshProfile) {
+        await refreshProfile();
+      }
+      
+      setIsEditing(false);
+      setSuccess('Profile updated successfully!');
+      setTimeout(() => setSuccess(null), 3000);
+    } catch (err: any) {
+      setError(err.message || 'Failed to update profile');
+      console.error('Error updating profile:', err);
+    } finally {
+      setLoading(false);
     }
   };
 
-  const handleRemovePermission = (permission: string) => {
-    setProfile(prev => ({
-      ...prev,
-      permissions: prev.permissions.filter(p => p !== permission)
-    }));
-  };
 
   const handleChangePassword = async (currentPassword: string, newPassword: string) => {
     try {
@@ -76,22 +132,44 @@ const AdminProfile: React.FC = () => {
   };
 
   return (
-    <div className="bg-[var(--color-background-default)] min-h-screen">
+    <div className="w-full">
       {/* Profile Content */}
-      <div className="p-6 space-y-6">
+      <div className="space-y-6">
+        {/* Success/Error Messages */}
+        {success && (
+          <div className="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 text-green-700 dark:text-green-300 px-4 py-3 rounded-lg">
+            {success}
+          </div>
+        )}
+        {error && (
+          <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 text-red-700 dark:text-red-300 px-4 py-3 rounded-lg">
+            {error}
+          </div>
+        )}
+        
         {/* Edit Button */}
         <div className="flex justify-end">
           <button
             onClick={isEditing ? handleSave : () => setIsEditing(true)}
-            className="btn-primary-elevated px-4 py-2 rounded-lg flex items-center space-x-2"
+            disabled={loading}
+            className="btn-primary-elevated px-4 py-2 rounded-lg flex items-center space-x-2 disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            {isEditing ? <Save className="h-4 w-4" /> : <Edit className="h-4 w-4" />}
-            <span>{isEditing ? 'Save Changes' : 'Edit Profile'}</span>
+            {loading ? (
+              <>
+                <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
+                <span>Saving...</span>
+              </>
+            ) : (
+              <>
+                {isEditing ? <Save className="h-4 w-4" /> : <Edit className="h-4 w-4" />}
+                <span>{isEditing ? 'Save Changes' : 'Edit Profile'}</span>
+              </>
+            )}
           </button>
         </div>
 
         {/* Admin Status */}
-        <div className="bg-[var(--color-background-surface)] p-6 rounded-lg border border-[var(--color-divider-gray)]">
+        <div className="card-glass p-6">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-3">
               <Crown className="h-8 w-8 text-[var(--color-primary-teal)]" />
@@ -102,7 +180,7 @@ const AdminProfile: React.FC = () => {
             </div>
             <div className="text-right">
               <p className="text-sm text-[var(--color-text-secondary)]">Account Status</p>
-              <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-[var(--color-success)] text-white border border-[color-mix(in_srgb,var(--color-success),black_10%)]">
+              <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-green-500 dark:bg-green-600 text-white border border-green-600 dark:border-green-500">
                 Active
               </span>
             </div>
@@ -111,7 +189,7 @@ const AdminProfile: React.FC = () => {
 
         {/* Profile Information */}
         <div className="grid grid-cols-3 gap-6">
-          <div className="lg:col-span-2 bg-[var(--color-background-surface)] p-6 rounded-lg border border-[var(--color-divider-gray)] shadow-sm">
+          <div className="col-span-2 card-glass p-6">
             <h3 className="text-lg font-semibold text-[var(--color-text-primary)] mb-4">Profile Information</h3>
             <div className="space-y-4">
               <div className="grid grid-cols-2 gap-4">
@@ -210,19 +288,19 @@ const AdminProfile: React.FC = () => {
           </div>
 
           <div className="space-y-6">
-            <div className="bg-[var(--color-background-surface)] p-6 rounded-lg border border-[var(--color-divider-gray)] shadow-sm text-center">
+            <div className="bg-white dark:bg-[var(--color-background-surface)] p-6 rounded-xl border border-gray-200 dark:border-[var(--color-divider-gray)] shadow-soft text-center">
               <Shield className="h-8 w-8 mx-auto text-[var(--color-primary-teal)] mb-2" />
               <p className="text-sm text-[var(--color-text-secondary)]">Admin Level</p>
               <p className="text-2xl font-bold text-[var(--color-text-primary)]">Super</p>
             </div>
-            <div className="bg-[var(--color-background-surface)] p-6 rounded-lg border border-[var(--color-divider-gray)] shadow-sm text-center">
+            <div className="bg-white dark:bg-[var(--color-background-surface)] p-6 rounded-xl border border-gray-200 dark:border-[var(--color-divider-gray)] shadow-soft text-center">
               <Calendar className="h-8 w-8 mx-auto text-[var(--color-primary-teal)] mb-2" />
               <p className="text-sm text-[var(--color-text-secondary)]">Last Login</p>
               <p className="text-lg font-semibold text-[var(--color-text-primary)]">
                 {new Date(profile.lastLogin).toLocaleDateString()}
               </p>
             </div>
-            <div className="bg-[var(--color-background-surface)] p-6 rounded-lg border border-[var(--color-divider-gray)] shadow-sm text-center">
+            <div className="bg-white dark:bg-[var(--color-background-surface)] p-6 rounded-xl border border-gray-200 dark:border-[var(--color-divider-gray)] shadow-soft text-center">
               <Building2 className="h-8 w-8 mx-auto text-[var(--color-primary-teal)] mb-2" />
               <p className="text-sm text-[var(--color-text-secondary)]">Platform</p>
               <p className="text-lg font-semibold text-[var(--color-text-primary)]">Medarion</p>
@@ -230,101 +308,58 @@ const AdminProfile: React.FC = () => {
           </div>
         </div>
 
-        {/* Permissions */}
-        <div className="bg-[var(--color-background-surface)] p-6 rounded-lg border border-[var(--color-divider-gray)] shadow-sm">
+        {/* Permissions - Read Only */}
+        <div className="card-glass p-6">
           <div className="flex items-center justify-between mb-4">
             <h3 className="text-lg font-semibold text-[var(--color-text-primary)]">System Permissions</h3>
-            {isEditing && (
-              <button
-                onClick={() => setShowAddPermission(true)}
-                className="btn-primary-elevated btn-sm flex items-center gap-1"
-              >
-                <Plus className="h-4 w-4" /> Add Permission
-              </button>
-            )}
+            <p className="text-sm text-[var(--color-text-secondary)]">Managed by system administrators</p>
           </div>
 
-          {showAddPermission && (
-            <div className="bg-[var(--color-background-default)] p-4 rounded-lg border border-[var(--color-divider-gray)] mb-4">
-              <h4 className="text-md font-semibold text-[var(--color-text-primary)] mb-3">Add New Permission</h4>
-              <div className="flex gap-2">
-                <input
-                  type="text"
-                  placeholder="Permission name"
-                  value={newPermission}
-                  onChange={(e) => setNewPermission(e.target.value)}
-                  className="input flex-1"
-                />
-                <button
-                  onClick={handleAddPermission}
-                  className="btn-primary-elevated px-3 py-2 rounded-lg"
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+            {profile.permissions.length > 0 ? (
+              profile.permissions.map((permission, index) => (
+                <div
+                  key={index}
+                  className="flex items-center space-x-2 bg-[var(--color-background-default)] p-3 rounded-lg border border-[var(--color-divider-gray)]"
                 >
-                  Add
-                </button>
-                <button
-                  onClick={() => {
-                    setShowAddPermission(false);
-                    setNewPermission('');
-                  }}
-                  className="btn-outline px-3 py-2 rounded-lg"
-                >
-                  Cancel
-                </button>
-              </div>
-            </div>
-          )}
-
-          <div className="grid grid-cols-2 lg:grid-cols-3 gap-3">
-            {profile.permissions.map((permission, index) => (
-              <div
-                key={index}
-                className="flex items-center justify-between bg-[var(--color-background-default)] p-3 rounded-lg border border-[var(--color-divider-gray)]"
-              >
-                <div className="flex items-center space-x-2">
                   <Shield className="h-4 w-4 text-[var(--color-primary-teal)]" />
                   <span className="text-[var(--color-text-primary)] font-medium">{permission}</span>
                 </div>
-                {isEditing && (
-                  <button
-                    onClick={() => handleRemovePermission(permission)}
-                    className="text-[var(--color-error)] hover:text-[var(--color-error-dark)]"
-                  >
-                    <X className="h-4 w-4" />
-                  </button>
-                )}
-              </div>
-            ))}
+              ))
+            ) : (
+              <p className="text-[var(--color-text-secondary)] col-span-full">No permissions assigned</p>
+            )}
           </div>
         </div>
 
         {/* Quick Actions */}
-        <div className="bg-[var(--color-background-surface)] p-6 rounded-lg border border-[var(--color-divider-gray)] shadow-sm">
+        <div className="card-glass p-6">
           <h3 className="text-lg font-semibold text-[var(--color-text-primary)] mb-4">Quick Actions</h3>
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className="grid grid-cols-2 grid-cols-4 gap-4">
             <button
               onClick={() => navigateToModule('admin-dashboard')}
-              className="btn-outline p-4 rounded-lg text-center hover:bg-[var(--color-primary-teal)] hover:text-white transition-colors"
+              className="btn-outline p-4 rounded-lg text-center hover:bg-black dark:hover:bg-white hover:text-white dark:hover:text-black transition-colors"
             >
               <Building2 className="h-6 w-6 mx-auto mb-2" />
               <p className="font-medium">Admin Dashboard</p>
             </button>
             <button
               onClick={() => navigateToModule('users-manager-dashboard')}
-              className="btn-outline p-4 rounded-lg text-center hover:bg-[var(--color-primary-teal)] hover:text-white transition-colors"
+              className="btn-outline p-4 rounded-lg text-center hover:bg-black dark:hover:bg-white hover:text-white dark:hover:text-black transition-colors"
             >
               <Users className="h-6 w-6 mx-auto mb-2" />
               <p className="font-medium">User Management</p>
             </button>
             <button
               onClick={() => navigateToModule('blog-manager-dashboard')}
-              className="btn-outline p-4 rounded-lg text-center hover:bg-[var(--color-primary-teal)] hover:text-white transition-colors"
+              className="btn-outline p-4 rounded-lg text-center hover:bg-black dark:hover:bg-white hover:text-white dark:hover:text-black transition-colors"
             >
               <Settings className="h-6 w-6 mx-auto mb-2" />
               <p className="font-medium">Content Management</p>
             </button>
             <button
               onClick={() => navigateToModule('settings')}
-              className="btn-outline p-4 rounded-lg text-center hover:bg-[var(--color-primary-teal)] hover:text-white transition-colors"
+              className="btn-outline p-4 rounded-lg text-center hover:bg-black dark:hover:bg-white hover:text-white dark:hover:text-black transition-colors"
             >
               <Settings className="h-6 w-6 mx-auto mb-2" />
               <p className="font-medium">System Settings</p>
@@ -334,7 +369,7 @@ const AdminProfile: React.FC = () => {
       </div>
 
       {/* Account Security Section */}
-      <div className="bg-[var(--color-background-surface)] p-6 rounded-lg border border-[var(--color-divider-gray)] shadow-sm">
+      <div className="bg-white dark:bg-[var(--color-background-surface)] p-6 rounded-xl border border-gray-200 dark:border-[var(--color-divider-gray)] shadow-soft">
         <h3 className="text-lg font-semibold text-[var(--color-text-primary)] mb-4 flex items-center space-x-2">
           <Lock className="h-5 w-5 text-[var(--color-primary-teal)]" />
           <span>Account Security</span>
@@ -347,7 +382,7 @@ const AdminProfile: React.FC = () => {
             </div>
             <button
               onClick={() => setShowPasswordModal(true)}
-              className="px-4 py-2 rounded-lg bg-[var(--color-primary-teal)] text-white hover:opacity-90 transition-colors flex items-center space-x-2 border border-[color-mix(in_srgb,var(--color-primary-teal),black_10%)]"
+              className="px-4 py-2 rounded-lg bg-black dark:bg-white text-white dark:text-black hover:opacity-90 dark:hover:opacity-80 transition-colors flex items-center space-x-2 border border-black dark:border-white"
             >
               <Lock className="h-4 w-4" />
               <span>Change Password</span>

@@ -54,9 +54,9 @@ const InvestorProfile: React.FC = () => {
   };
 
   return (
-    <div className="bg-[var(--color-background-default)] min-h-screen">
+    <div className="w-full">
       {/* Profile Content */}
-      <div className="p-6 space-y-6">
+      <div className="space-y-6">
         {/* Edit Button */}
         <div className="flex justify-end">
           <button
@@ -70,7 +70,7 @@ const InvestorProfile: React.FC = () => {
 
       {/* Firm Overview */}
       <div className="grid grid-cols-3 gap-6">
-        <div className="lg:col-span-2 bg-[var(--color-background-surface)] p-6 rounded-lg border border-[var(--color-divider-gray)] shadow-sm">
+        <div className="col-span-2 card-glass p-6">
           <h3 className="text-lg font-semibold text-[var(--color-text-primary)] mb-4">Firm Overview</h3>
           <div className="space-y-4">
             <div>
@@ -122,19 +122,19 @@ const InvestorProfile: React.FC = () => {
 
         {/* Snapshot */}
         <div className="space-y-4">
-          <div className="bg-[var(--color-background-surface)] p-6 rounded-lg border border-[var(--color-divider-gray)] shadow-sm">
+          <div className="card-glass p-6">
             <h4 className="text-sm font-semibold text-[var(--color-text-primary)] mb-3">Investment Focus</h4>
             <div className="space-y-2 text-sm">
-              <div className="flex items-center gap-2"><TrendingUp className="h-4 w-4 text-[var(--color-primary-teal)]" />Stages: <span className="text-[var(--color-text-secondary)]">{profile.focusStages.join(', ')}</span></div>
-              <div className="flex items-center gap-2"><Building2 className="h-4 w-4 text-[var(--color-primary-teal)]" />Sectors: <span className="text-[var(--color-text-secondary)]">{profile.focusSectors.join(', ')}</span></div>
-              <div className="flex items-center gap-2"><Globe className="h-4 w-4 text-[var(--color-primary-teal)]" />Geographies: <span className="text-[var(--color-text-secondary)]">{profile.focusGeos.join(', ')}</span></div>
+              <div className="flex items-center gap-2"><TrendingUp className="h-4 w-4 text-black dark:text-white" />Stages: <span className="text-[var(--color-text-secondary)]">{profile.focusStages.join(', ')}</span></div>
+              <div className="flex items-center gap-2"><Building2 className="h-4 w-4 text-black dark:text-white" />Sectors: <span className="text-[var(--color-text-secondary)]">{profile.focusSectors.join(', ')}</span></div>
+              <div className="flex items-center gap-2"><Globe className="h-4 w-4 text-black dark:text-white" />Geographies: <span className="text-[var(--color-text-secondary)]">{profile.focusGeos.join(', ')}</span></div>
             </div>
           </div>
-          <div className="bg-[var(--color-background-surface)] p-6 rounded-lg border border-[var(--color-divider-gray)] shadow-sm">
+          <div className="card-glass p-6">
             <h4 className="text-sm font-semibold text-[var(--color-text-primary)] mb-3">Quick Links</h4>
             <div className="space-y-2 text-sm">
-              <a className="flex items-center gap-2 text-[var(--color-primary-teal)]" href="#"><Link2 className="h-4 w-4" />Firm Deck</a>
-              <a className="flex items-center gap-2 text-[var(--color-primary-teal)]" href="#"><FileText className="h-4 w-4" />LP One-Pager</a>
+              <a className="flex items-center gap-2 text-black dark:text-white hover:opacity-80" href="#"><Link2 className="h-4 w-4" />Firm Deck</a>
+              <a className="flex items-center gap-2 text-black dark:text-white hover:opacity-80" href="#"><FileText className="h-4 w-4" />LP One-Pager</a>
             </div>
           </div>
         </div>
@@ -146,12 +146,12 @@ const InvestorProfile: React.FC = () => {
           <h3 className="text-lg font-semibold text-[var(--color-text-primary)]">Recent Deals</h3>
           <button className="btn-outline px-3 py-2 rounded" onClick={()=>setShowAddDeal(true)}><Plus className="h-4 w-4 inline mr-2"/>Add Deal</button>
         </div>
-        <div className="grid grid-cols-2 lg:grid-cols-3 gap-3">
+        <div className="grid grid-cols-2 grid-cols-3 gap-3">
           {recentDeals.map((d, i)=> (
             <div key={i} className="p-3 bg-[var(--color-background-default)] rounded-lg border border-[var(--color-divider-gray)]">
               <div className="flex items-center justify-between">
                 <span className="font-medium text-[var(--color-text-primary)]">{d.company}</span>
-                <span className="text-[var(--color-primary-teal)] font-semibold">{d.amount}</span>
+                <span className="text-black dark:text-white font-semibold">{d.amount}</span>
               </div>
               <div className="text-xs text-[var(--color-text-secondary)]">{d.stage} • {new Date(d.date).toLocaleDateString()}</div>
             </div>
@@ -185,17 +185,17 @@ const InvestorProfile: React.FC = () => {
       {/* Metrics */}
       <div className="grid grid-cols-3 gap-6">
         <div className="bg-[var(--color-background-surface)] p-6 rounded-lg border border-[var(--color-divider-gray)] shadow-sm text-center">
-          <DollarSign className="h-5 w-5 mx-auto text-[var(--color-primary-teal)]" />
+          <DollarSign className="h-5 w-5 mx-auto text-black dark:text-white" />
           <p className="text-sm text-[var(--color-text-secondary)] mt-1">Total AUM</p>
           <p className="text-2xl font-bold text-[var(--color-text-primary)]">${parseInt(profile.aum).toLocaleString()}</p>
         </div>
-        <div className="bg-[var(--color-background-surface)] p-6 rounded-lg border border-[var(--color-divider-gray)] shadow-sm text-center">
-          <TrendingUp className="h-5 w-5 mx-auto text-[var(--color-primary-teal)]" />
+        <div className="card-glass p-6 text-center">
+          <TrendingUp className="h-5 w-5 mx-auto text-black dark:text-white" />
           <p className="text-sm text-[var(--color-text-secondary)] mt-1">Deals (12m)</p>
           <p className="text-2xl font-bold text-[var(--color-text-primary)]">{recentDeals.length}</p>
         </div>
-        <div className="bg-[var(--color-background-surface)] p-6 rounded-lg border border-[var(--color-divider-gray)] shadow-sm text-center">
-          <Globe className="h-5 w-5 mx-auto text-[var(--color-primary-teal)]" />
+        <div className="card-glass p-6 text-center">
+          <Globe className="h-5 w-5 mx-auto text-black dark:text-white" />
           <p className="text-sm text-[var(--color-text-secondary)] mt-1">Regions</p>
           <p className="text-2xl font-bold text-[var(--color-text-primary)]">{profile.focusGeos.length}</p>
         </div>
@@ -203,9 +203,9 @@ const InvestorProfile: React.FC = () => {
       </div>
 
       {/* Account Security Section */}
-      <div className="bg-[var(--color-background-surface)] p-6 rounded-lg border border-[var(--color-divider-gray)] shadow-sm">
+      <div className="card-glass p-6">
         <h3 className="text-lg font-semibold text-[var(--color-text-primary)] mb-4 flex items-center space-x-2">
-          <Lock className="h-5 w-5 text-[var(--color-primary-teal)]" />
+          <Lock className="h-5 w-5 text-black dark:text-white" />
           <span>Account Security</span>
         </h3>
         <div className="space-y-4">
@@ -216,7 +216,7 @@ const InvestorProfile: React.FC = () => {
             </div>
             <button
               onClick={() => setShowPasswordModal(true)}
-              className="px-4 py-2 rounded-lg bg-[var(--color-primary-teal)] text-white hover:opacity-90 transition-colors flex items-center space-x-2 border border-[color-mix(in_srgb,var(--color-primary-teal),black_10%)]"
+              className="btn-primary px-4 py-2 rounded-lg flex items-center space-x-2"
             >
               <Lock className="h-4 w-4" />
               <span>Change Password</span>

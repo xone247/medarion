@@ -225,84 +225,77 @@ const AuthPage: React.FC<AuthPageProps> = ({ onBack }) => {
   }
 
   return (
-    <div className="min-h-screen bg-[var(--color-background-default)] flex items-center px-6 lg:px-8 py-10 relative overflow-hidden">
-      <div className="absolute -top-40 -left-40 w-[520px] h-[520px] rounded-full pointer-events-none" style={{background:'radial-gradient(circle at 30% 30%, rgba(90,215,192,0.22), transparent 60%)'}}/>
-      <div className="absolute -bottom-32 -right-32 w-[600px] h-[600px] rounded-full pointer-events-none" style={{background:'radial-gradient(circle at 70% 70%, rgba(56,189,248,0.20), transparent 60%)'}}/>
+    <div className="min-h-screen bg-[var(--color-background-default)] flex items-center justify-center px-4 sm:px-6 md:px-8 py-10 md:py-16 relative overflow-hidden">
+      <div className="absolute -top-40 -left-40 w-[520px] h-[520px] rounded-full pointer-events-none opacity-30" style={{background:'radial-gradient(circle at 30% 30%, rgba(90,215,192,0.15), transparent 60%)'}}/>
+      <div className="absolute -bottom-32 -right-32 w-[600px] h-[600px] rounded-full pointer-events-none opacity-30" style={{background:'radial-gradient(circle at 70% 70%, rgba(56,189,248,0.15), transparent 60%)'}}/>
 
-      <div className="max-w-5xl w-full mx-auto grid grid-cols-2 gap-6 items-stretch">
+      <div className="max-w-6xl w-full grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-stretch">
         {/* Left showcase panel (hidden on small screens) */}
-        <div className="flex flex-col justify-between card-glass sheen noise-overlay shadow-elevated rounded-2xl p-8 border border-[var(--color-divider-gray)]">
+        <div className="hidden lg:flex flex-col justify-between rounded-2xl p-8 md:p-10 border border-[var(--color-divider-gray)]/20 bg-[var(--color-background-surface)] shadow-lg hover:shadow-xl transition-shadow duration-300">
           <div>
-            <div className="flex items-center gap-3">
-              <div className="w-9 h-9 rounded-lg bg-[var(--color-primary-teal)] flex items-center justify-center">
-                <Globe className="h-5 w-5 text-white" />
-              </div>
-              <div>
-                <h1 className="text-lg font-semibold text-[var(--color-text-primary)]">Medarion</h1>
-                <p className="text-xs text-[var(--color-text-secondary)]">AI Healthcare HUB</p>
-              </div>
-            </div>
-            <h2 className="mt-8 text-3xl font-semibold text-[var(--color-text-primary)]">Sign in to continue</h2>
-            <p className="mt-2 text-[var(--color-text-secondary)]">Market intelligence, clinical trials, investors, and grants at your fingertips.</p>
-            <ul className="mt-6 space-y-3">
-              <li className="flex items-start gap-3"><span className="w-2 h-2 mt-2 rounded-full bg-[var(--color-primary-teal)]" /><span className="text-sm text-[var(--color-text-secondary)]">Glassy, distraction-free UI with dark/light support</span></li>
-              <li className="flex items-start gap-3"><span className="w-2 h-2 mt-2 rounded-full bg-[var(--color-accent-sky)]" /><span className="text-sm text-[var(--color-text-secondary)]">Role-based access and secure sessions</span></li>
-              <li className="flex items-start gap-3"><span className="w-2 h-2 mt-2 rounded-full bg-[var(--color-secondary-gold)]" /><span className="text-sm text-[var(--color-text-secondary)]">AI assistance powered by light RAG</span></li>
+            <h2 className="text-3xl md:text-4xl font-semibold text-[var(--color-text-primary)] leading-tight">Sign in to continue</h2>
+            <p className="mt-4 text-base md:text-lg text-[var(--color-text-secondary)] leading-relaxed">Market intelligence, clinical trials, investors, and grants at your fingertips.</p>
+            <ul className="mt-8 space-y-4">
+              <li className="flex items-start gap-4">
+                <div className="p-2 rounded-lg bg-[var(--color-primary-teal)]/10 mt-0.5">
+                  <CheckCircle className="h-5 w-5 text-[var(--color-primary-teal)]" />
+                </div>
+                <span className="text-sm md:text-base text-[var(--color-text-secondary)] leading-relaxed">Glassy, distraction-free UI with dark/light support</span>
+              </li>
+              <li className="flex items-start gap-4">
+                <div className="p-2 rounded-lg bg-blue-500/10 dark:bg-blue-500/20 mt-0.5">
+                  <CheckCircle className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+                </div>
+                <span className="text-sm md:text-base text-[var(--color-text-secondary)] leading-relaxed">Role-based access and secure sessions</span>
+              </li>
+              <li className="flex items-start gap-4">
+                <div className="p-2 rounded-lg bg-[var(--color-secondary-gold)]/10 mt-0.5">
+                  <CheckCircle className="h-5 w-5 text-[var(--color-secondary-gold)]" />
+                </div>
+                <span className="text-sm md:text-base text-[var(--color-text-secondary)] leading-relaxed">AI assistance powered by light RAG</span>
+              </li>
             </ul>
-          </div>
-          <div className="aspect-[16/9] rounded-xl bg-[var(--color-background-default)] border border-[var(--color-divider-gray)] flex items-center justify-center text-[var(--color-text-secondary)]">
-            Illustration / Preview
           </div>
         </div>
 
         {/* Right auth panel */}
-        <div>
-          <div className="text-center md:text-left">
-            <h2 className="md:hidden text-2xl md:text-3xl font-semibold text-[var(--color-text-primary)]">
-              {isLogin ? 'Welcome back' : 'Create your account'}
-            </h2>
-            <p className="md:hidden mt-2 text-sm text-[var(--color-text-secondary)]">
-              {isLogin ? "Don't have an account? " : "Already have an account? "}
-              <button onClick={switchMode} className="font-medium text-[var(--color-primary-teal)] hover:opacity-80">{isLogin ? 'Sign up' : 'Sign in'}</button>
-            </p>
-            
-            {/* Signup Button */}
-            <div className="mt-4">
+        <div className="flex flex-col">
+          {/* Signup Button */}
+          {isLogin && (
+            <div className="mb-6">
               <button
                 onClick={() => setShowSignup(true)}
-                className="btn-secondary w-full flex items-center justify-center space-x-2"
+                className="w-full py-3 px-6 rounded-lg border-2 border-black dark:border-white text-black dark:text-white hover:bg-black/10 dark:hover:bg-white/10 transition-all duration-200 flex items-center justify-center gap-2 font-semibold"
               >
                 <UserPlus size={18} />
                 <span>Create New Account</span>
               </button>
             </div>
-          </div>
+          )}
 
-          {/* Demo banner removed in production */}
-
-          <div className="mt-4 card-glass sheen noise-overlay shadow-elevated rounded-2xl p-6 sm:p-8 border border-[var(--color-divider-gray)]">
+          <div className="flex-1 rounded-2xl p-6 md:p-8 lg:p-10 border border-[var(--color-divider-gray)]/20 bg-[var(--color-background-surface)] shadow-lg hover:shadow-xl transition-shadow duration-300">
           {/* Success Message */}
           {success && (
-            <div className="mb-6 glass-soft border border-green-400/30 text-green-700 dark:text-green-300 px-4 py-3 rounded-md flex items-center">
-              <CheckCircle className="h-5 w-5 mr-2" />
-              {success}
+            <div className="mb-6 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 text-green-700 dark:text-green-300 px-4 py-3 rounded-lg flex items-center gap-3">
+              <CheckCircle className="h-5 w-5 flex-shrink-0" />
+              <span className="text-sm">{success}</span>
             </div>
           )}
 
           {/* Error Message */}
           {error && (
-            <div className="mb-6 glass-soft border border-red-400/30 text-red-700 dark:text-red-300 px-4 py-3 rounded-md flex items-center">
-              <AlertCircle className="h-5 w-5 mr-2" />
-              {error}
+            <div className="mb-6 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 text-red-700 dark:text-red-300 px-4 py-3 rounded-lg flex items-center gap-3">
+              <AlertCircle className="h-5 w-5 flex-shrink-0" />
+              <span className="text-sm">{error}</span>
             </div>
           )}
 
           {!isLogin && (
             <div className="mb-6">
-              <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-3">
+              <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-4">
                 I am a:
               </label>
-              <div className="space-y-2">
+              <div className="space-y-3">
                 {userTypeOptions.map((option) => {
                   const Icon = option.icon;
                   return (
@@ -310,16 +303,20 @@ const AuthPage: React.FC<AuthPageProps> = ({ onBack }) => {
                       key={option.value}
                       type="button"
                       onClick={() => setUserType(option.value as UserRole)}
-                      className={`w-full flex items-start p-3 rounded-lg transition-colors text-left border ${
+                      className={`w-full flex items-start p-4 rounded-xl transition-all duration-200 text-left border ${
                         userType === option.value
-                          ? 'border-[var(--color-primary-teal)] bg-[color-mix(in_srgb,var(--color-primary-teal),transparent_94%)] text-[var(--color-primary-teal)]'
-                          : 'border-[var(--color-divider-gray)] text-[var(--color-text-primary)] hover:bg-[var(--color-background-default)]'
+                          ? 'border-[var(--color-primary-teal)] bg-[var(--color-primary-teal)]/10 shadow-md'
+                          : 'border-[var(--color-divider-gray)]/20 text-[var(--color-text-primary)] hover:bg-[var(--color-background-default)] hover:border-[var(--color-primary-teal)]/30 hover:shadow-sm'
                       }`}
                     >
-                      <Icon className="h-5 w-5 mr-3 mt-0.5 flex-shrink-0 text-[var(--color-primary-teal)]" />
-                      <div>
-                        <div className="font-medium">{option.label}</div>
-                        <div className="text-xs text-[var(--color-text-secondary)]">{option.description}</div>
+                      <div className={`p-2 rounded-lg mr-3 mt-0.5 flex-shrink-0 ${
+                        userType === option.value ? 'bg-[var(--color-primary-teal)]/20' : 'bg-[var(--color-primary-teal)]/10'
+                      }`}>
+                        <Icon className="h-5 w-5 text-[var(--color-primary-teal)]" />
+                      </div>
+                      <div className="flex-1">
+                        <div className="font-semibold text-[var(--color-text-primary)] mb-1">{option.label}</div>
+                        <div className="text-xs text-[var(--color-text-secondary)] leading-relaxed">{option.description}</div>
                       </div>
                     </button>
                   );
@@ -328,70 +325,64 @@ const AuthPage: React.FC<AuthPageProps> = ({ onBack }) => {
             </div>
           )}
 
-          <form className="space-y-6" onSubmit={handleSubmit}>
+          <form className="space-y-5" onSubmit={handleSubmit}>
             {!isLogin && (
               <>
                 <div>
-                  <label htmlFor="fullName" className="block text-sm font-medium text-[var(--color-text-primary)]">
+                  <label htmlFor="fullName" className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">
                     Full Name *
                   </label>
-                  <div className="mt-1">
-                    <input
-                      id="fullName"
-                      name="fullName"
-                      type="text"
-                      required={!isLogin}
-                      value={formData.fullName}
-                      onChange={(e) => handleInputChange('fullName', e.target.value)}
-                      className="input w-full"
-                      placeholder="Enter your full name"
-                    />
-                  </div>
+                  <input
+                    id="fullName"
+                    name="fullName"
+                    type="text"
+                    required={!isLogin}
+                    value={formData.fullName}
+                    onChange={(e) => handleInputChange('fullName', e.target.value)}
+                    className="w-full px-4 py-3 border border-[var(--color-divider-gray)] rounded-lg bg-[var(--color-background-default)] text-[var(--color-text-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary-teal)] focus:border-[var(--color-primary-teal)] transition-all"
+                    placeholder="Enter your full name"
+                  />
                 </div>
 
                 <div>
-                  <label htmlFor="companyName" className="block text-sm font-medium text-[var(--color-text-primary)]">
+                  <label htmlFor="companyName" className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">
                     {userType === 'startup' ? 'Company Name' : 'Organization Name'}
                   </label>
-                  <div className="mt-1">
-                    <input
-                      id="companyName"
-                      name="companyName"
-                      type="text"
-                      value={formData.companyName}
-                      onChange={(e) => handleInputChange('companyName', e.target.value)}
-                      className="input w-full"
-                      placeholder={userType === 'startup' ? 'Enter your company name' : 'Enter your organization name'}
-                    />
-                  </div>
+                  <input
+                    id="companyName"
+                    name="companyName"
+                    type="text"
+                    value={formData.companyName}
+                    onChange={(e) => handleInputChange('companyName', e.target.value)}
+                    className="w-full px-4 py-3 border border-[var(--color-divider-gray)] rounded-lg bg-[var(--color-background-default)] text-[var(--color-text-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary-teal)] focus:border-[var(--color-primary-teal)] transition-all"
+                    placeholder={userType === 'startup' ? 'Enter your company name' : 'Enter your organization name'}
+                  />
                 </div>
               </>
             )}
 
             <div>
-              <label htmlFor="email" className="block text-sm font-medium text-[var(--color-text-primary)]">
+              <label htmlFor="email" className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">
                 Email address *
               </label>
-              <div className="mt-1">
-                <input
-                  id="email"
-                  name="email"
-                  type="email"
-                  autoComplete="email"
-                  required
-                  value={formData.email}
-                  onChange={(e) => handleInputChange('email', e.target.value)}
-                  className="input w-full"
-                  placeholder="Enter your email"
-                />
-              </div>
+              <input
+                id="email"
+                name="email"
+                type="email"
+                autoComplete="email"
+                required
+                value={formData.email}
+                onChange={(e) => handleInputChange('email', e.target.value)}
+                className="w-full px-4 py-3 border border-[var(--color-divider-gray)] rounded-lg bg-[var(--color-background-default)] text-[var(--color-text-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary-teal)] focus:border-[var(--color-primary-teal)] transition-all"
+                placeholder="Enter your email"
+              />
             </div>
 
             <div>
-              <label htmlFor="password" className="block text-sm font-medium text-[var(--color-text-primary)]">
+              <label htmlFor="password" className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">
                 Password *
               </label>
-              <div className="mt-1 relative">
+              <div className="relative">
                 <input
                   id="password"
                   name="password"
@@ -400,12 +391,12 @@ const AuthPage: React.FC<AuthPageProps> = ({ onBack }) => {
                   required
                   value={formData.password}
                   onChange={(e) => handleInputChange('password', e.target.value)}
-                  className="input w-full pr-10"
+                  className="w-full px-4 py-3 pr-12 border border-[var(--color-divider-gray)] rounded-lg bg-[var(--color-background-default)] text-[var(--color-text-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary-teal)] focus:border-[var(--color-primary-teal)] transition-all"
                   placeholder={isLogin ? 'Enter your password' : 'Create a password (min 6 characters)'}
                 />
                 <button
                   type="button"
-                  className="absolute inset-y-0 right-0 pr-3 flex items-center"
+                  className="absolute inset-y-0 right-0 pr-4 flex items-center hover:opacity-70 transition-opacity"
                   onClick={() => setShowPassword(!showPassword)}
                 >
                   {showPassword ? (
@@ -419,10 +410,10 @@ const AuthPage: React.FC<AuthPageProps> = ({ onBack }) => {
 
             {!isLogin && (
               <div>
-                <label htmlFor="confirmPassword" className="block text-sm font-medium text-[var(--color-text-primary)]">
+                <label htmlFor="confirmPassword" className="block text-sm font-medium text-[var(--color-text-primary)] mb-2">
                   Confirm Password *
                 </label>
-                <div className="mt-1 relative">
+                <div className="relative">
                   <input
                     id="confirmPassword"
                     name="confirmPassword"
@@ -430,12 +421,12 @@ const AuthPage: React.FC<AuthPageProps> = ({ onBack }) => {
                     required={!isLogin}
                     value={formData.confirmPassword}
                     onChange={(e) => handleInputChange('confirmPassword', e.target.value)}
-                    className="input w-full pr-10"
+                    className="w-full px-4 py-3 pr-12 border border-[var(--color-divider-gray)] rounded-lg bg-[var(--color-background-default)] text-[var(--color-text-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary-teal)] focus:border-[var(--color-primary-teal)] transition-all"
                     placeholder="Confirm your password"
                   />
                   <button
                     type="button"
-                    className="absolute inset-y-0 right-0 pr-3 flex items-center"
+                    className="absolute inset-y-0 right-0 pr-4 flex items-center hover:opacity-70 transition-opacity"
                     onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                   >
                     {showConfirmPassword ? (
@@ -448,17 +439,17 @@ const AuthPage: React.FC<AuthPageProps> = ({ onBack }) => {
               </div>
             )}
 
-            <div>
+            <div className="pt-2">
               <button
                 type="submit"
                 disabled={loading}
-                className="btn-primary-elevated btn-lg w-full disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full bg-black dark:bg-white hover:opacity-90 dark:hover:opacity-80 disabled:opacity-50 text-white dark:text-black py-3 px-6 rounded-lg transition-all duration-200 flex items-center justify-center gap-2 font-semibold shadow-md hover:shadow-lg disabled:cursor-not-allowed"
               >
                 {loading ? (
-                  <div className="flex items-center">
-                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
-                    Please wait...
-                  </div>
+                  <>
+                    <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
+                    <span>Please wait...</span>
+                  </>
                 ) : (
                   isLogin ? 'Sign in' : 'Create account'
                 )}
@@ -467,28 +458,25 @@ const AuthPage: React.FC<AuthPageProps> = ({ onBack }) => {
           </form>
 
           {isLogin && (
-            <div className="mt-4 text-center">
+            <div className="mt-6 text-center">
               <Link
                 to="/forgot-password"
-                className="text-sm text-[var(--color-primary)] hover:underline"
+                className="text-sm text-[var(--color-primary-teal)] hover:underline transition-opacity"
               >
                 Forgot your password?
               </Link>
             </div>
           )}
 
-          {/* Quick Demo Login Buttons */}
-          {/* Demo quick login removed in production */}
-
           {!isLogin && (
-            <div className="mt-6">
-              <div className="text-xs text-[var(--color-text-secondary)] text-center">
+            <div className="mt-6 pt-6 border-t border-[var(--color-divider-gray)]/20">
+              <div className="text-xs text-[var(--color-text-secondary)] text-center leading-relaxed">
                 By creating an account, you agree to our{' '}
-                <a href="#" className="text-[var(--color-primary-teal)] hover:opacity-80">
+                <a href="/terms" className="text-[var(--color-primary-teal)] hover:opacity-80 transition-opacity">
                   Terms of Service
                 </a>{' '}
                 and{' '}
-                <a href="#" className="text-[var(--color-primary-teal)] hover:opacity-80">
+                <a href="/privacy" className="text-[var(--color-primary-teal)] hover:opacity-80 transition-opacity">
                   Privacy Policy
                 </a>
               </div>

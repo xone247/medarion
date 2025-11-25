@@ -1,0 +1,12 @@
+Placeholder Analysis
+===================
+
+Total placeholder records found: 984
+
+Healthcare Company \d+: 367 matches
+Healthcare Grant Program \d+: 95 matches
+Clinical Trial Study \d+: 195 matches
+Healthcare Corp \d+: 45 matches
+Clinical Research Center \d+: 95 matches
+Dr\. Investigator \d+: 97 matches
+Healthcare Investor \d+: 90 matches

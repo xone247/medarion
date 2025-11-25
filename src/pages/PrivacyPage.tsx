@@ -11,38 +11,25 @@ const PrivacyPage: React.FC<PrivacyPageProps> = ({ onBack }) => {
       {/* Navigation removed to use global SiteHeader */}
 
       {/* Hero Section */}
-      <div className="relative overflow-hidden border-b border-[var(--color-divider-gray)] bg-[var(--color-background-surface)]" style={{ 
-        marginTop: '-100px',
-        marginLeft: '-50vw',
-        marginRight: '-50vw',
-        left: '50%',
-        right: '50%',
-        width: '100vw',
-        paddingTop: '120px',
-        paddingBottom: '48px',
-        position: 'relative',
-      }}>
-        <div aria-hidden className="absolute inset-0 z-0">
+      <div className="page-hero">
+        <div aria-hidden className="page-hero-bg">
           <img
             src={(import.meta as any).env?.VITE_PRIVACY_HERO_URL || (import.meta as any).env?.VITE_BLOG_HERO_URL || '/images/page hero section.jpeg'}
             alt=""
-            className="w-full h-full object-cover blur-[2px] scale-105 opacity-90"
-            style={{ filter: 'brightness(0.4) saturate(1.1)' }}
           />
-          <div className="absolute inset-0 bg-black/50" />
-          <div className="absolute inset-0 opacity-10 mix-blend-multiply" style={{ background: 'linear-gradient(90deg, var(--color-primary-teal) 0%, var(--color-accent-sky) 100%)' }} />
+          <div className="page-hero-overlay" />
+          <div className="page-hero-gradient" />
         </div>
         
-        <div className="container mx-auto px-4 relative z-10">
-          <div className="max-w-4xl mx-auto text-center">
-            <div className="mx-auto w-16 h-1 rounded-full bg-[var(--color-primary-teal)] mb-6" />
-            <h1 className="text-5xl md:text-6xl font-bold text-white mb-4 leading-tight drop-shadow-lg">
+        <div className="page-hero-content">
+          <div className="page-hero-content-inner">
+            <h1 className="page-hero-heading">
               Privacy Policy
             </h1>
-            <p className="text-lg md:text-xl text-white/90 mb-2 max-w-2xl mx-auto drop-shadow-md">
+            <p className="page-hero-subtext">
               Your privacy is important to us. This policy explains how we collect, use, and protect your information.
             </p>
-            <p className="text-white/70 text-sm">Last updated: December 20, 2024</p>
+            <p className="text-white/70 text-sm mt-4">Last updated: December 20, 2024</p>
           </div>
         </div>
       </div>

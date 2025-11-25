@@ -337,7 +337,7 @@ const AfricaMap: React.FC<AfricaMapProps> = ({
       {selectedCountry && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4" onClick={() => setSelectedCountry(null)}>
           <div 
-            className="bg-[var(--color-background-surface)] rounded-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto border border-[var(--color-divider-gray)] shadow-2xl"
+            className="bg-[var(--color-background-surface)] rounded-xl max-w-2xl w-full max-h-[700px] overflow-y-auto border border-[var(--color-divider-gray)] shadow-2xl"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="p-6">

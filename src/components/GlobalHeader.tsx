@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import { useTheme } from '../contexts/ThemeContext';
 import { useNavigation } from '../contexts/NavigationContext';
@@ -8,12 +8,16 @@ import {
   Star,
   Sun,
   Moon,
-  Menu
+  Menu,
+  Search,
+  Bell
 } from 'lucide-react';
+import Logo from './Logo';
 
 const GlobalHeader: React.FC = () => {
   const { profile } = useAuth();
   const { theme, toggleTheme } = useTheme();
+  const [searchQuery, setSearchQuery] = useState('');
   
   let navigationContext;
   try {
@@ -55,40 +59,51 @@ const GlobalHeader: React.FC = () => {
   };
 
   return (
-    <div className="sticky top-0 z-40 w-full">
-      <div className="px-4 py-3 flex items-center justify-between gap-3 shadow-lg rounded-b-2xl" style={{
-        background: 'rgba(255, 255, 255, 0.15)',
-        backdropFilter: 'blur(20px)', WebkitBackdropFilter: 'blur(20px)',
-        border: '1px solid rgba(255, 255, 255, 0.2)'
-      }}>
-        {/* Left: mobile hamburger + (desktop) title */}
-        <div className="flex items-center gap-3 min-w-0 flex-1">
+    <div className="sticky top-0 z-30 w-full bg-white dark:bg-[var(--color-background-surface)] border-b border-gray-200 dark:border-[var(--color-divider-gray)] shadow-sm">
+      <div className="px-6 py-4 flex items-center justify-between gap-4">
+        {/* Left: Mobile menu button + Search bar */}
+        <div className="flex items-center gap-4 flex-1 min-w-0">
           <button
-            className="lg:hidden p-2 rounded-lg bg-[var(--color-background-surface)] shadow border border-[var(--color-divider-gray)] hover:bg-[var(--color-background-default)] transition-colors"
+            className="lg:hidden p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-[var(--color-background-default)] transition-colors"
             aria-label="Open menu"
             onClick={dispatchSidebarToggle}
           >
-            <Menu className="h-5 w-5 text-[var(--color-text-secondary)]" />
+            <Menu className="h-5 w-5 text-gray-600 dark:text-[var(--color-text-secondary)]" />
           </button>
-          <div className="block min-w-0">
-            <h1 className="text-lg font-bold text-gray-900 dark:text-white truncate">{getCurrentModuleTitle()}</h1>
-            <p className="text-sm text-gray-700 dark:text-white/80 truncate">{(profile as any)?.email || 'User'} • {accountTierInfo.label}</p>
+          
+          {/* Search Bar */}
+          <div className="hidden md:flex flex-1 max-w-md">
+            <div className="relative w-full">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+              <input
+                type="text"
+                placeholder="Search something..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="w-full pl-10 pr-4 py-2 text-sm bg-gray-50 dark:bg-[var(--color-background-default)] border border-gray-200 dark:border-[var(--color-divider-gray)] rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 dark:text-[var(--color-text-primary)]"
+              />
+            </div>
           </div>
         </div>
-        {/* Right: controls */}
-        <div className="flex items-center gap-2 flex-shrink-0">
-          <span className={`inline-flex items-center gap-1 px-3 py-1 rounded-full text-sm font-medium ${accountTierInfo.bgColor} ${accountTierInfo.color}`}>
-            {accountTierInfo.icon}
-            {accountTierInfo.label}
-          </span>
+
+        {/* Right: Notifications */}
+        <div className="flex items-center gap-4 flex-shrink-0">
+          {/* Notifications */}
+          <div className="relative">
+            <button className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-[var(--color-background-default)] transition-colors relative">
+              <Bell className="h-5 w-5 text-gray-600 dark:text-[var(--color-text-secondary)]" />
+              <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
+            </button>
+          </div>
+
+          {/* Theme Toggle */}
           <button
             onClick={toggleTheme}
             title={theme === 'light' ? 'Switch to dark mode' : 'Switch to light mode'}
-            className="card-glass p-2 rounded-md hover:shadow-soft transition-all duration-200 hover:bg-opacity-90 flex-shrink-0"
+            className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-[var(--color-background-default)] transition-colors"
           >
-            {theme === 'light' ? <Moon className="h-5 w-5 text-[var(--color-primary-teal)]" /> : <Sun className="h-5 w-5 text-[var(--color-primary-teal)]" />}
+            {theme === 'light' ? <Moon className="h-5 w-5 text-gray-600 dark:text-[var(--color-text-secondary)]" /> : <Sun className="h-5 w-5 text-gray-600 dark:text-[var(--color-text-secondary)]" />}
           </button>
-          <NotificationDropdown />
         </div>
       </div>
     </div>

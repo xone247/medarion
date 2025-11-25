@@ -1,101 +1,305 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { CheckCircle2, Twitter, Linkedin, Github } from 'lucide-react';
 import { useTheme } from '../../contexts/ThemeContext';
+import { apiService } from '../../services/apiService';
 
 const SiteFooter: React.FC = () => {
   const { theme } = useTheme();
+  const [newsletterStatus, setNewsletterStatus] = useState<{ type: 'success' | 'error' | null; message: string }>({ type: null, message: '' });
+  const [isSubscribing, setIsSubscribing] = useState(false);
   return (
-    <footer className="relative overflow-hidden glass-strong backdrop-blur-xl hairline sheen noise-overlay shadow-elevated rounded-t-2xl md:rounded-t-3xl border-t border-[var(--color-divider-gray)]" style={{ background: 'color-mix(in srgb, var(--color-background-surface), transparent 30%)' }}>
-      {/* Subtle inner highlight for extra glass feel */}
-      <div aria-hidden className="pointer-events-none absolute inset-0 bg-gradient-to-b from-white/10 via-white/5 to-transparent dark:from-white/5 dark:via-white/0 dark:to-transparent" />
-      {/* Top concave cave-out accent - stronger in light mode, subtle in dark */}
-      <div aria-hidden className="absolute -top-6 left-1/2 -translate-x-1/2 w-[88%] h-8 pointer-events-none">
-        <div className="block dark:hidden w-full h-full rounded-b-[40px]"
-          style={{
-            background: 'radial-gradient(120% 120% at 50% 0%, rgba(0,0,0,0.16) 0%, rgba(0,0,0,0.08) 40%, rgba(0,0,0,0.00) 70%)'
-          }}
-        />
-        <div className="hidden dark:block w-full h-full rounded-b-[40px]"
-          style={{
-            background: 'radial-gradient(120% 120% at 50% 0%, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0.06) 40%, rgba(255,255,255,0.00) 70%)'
-          }}
-        />
-      </div>
-      <div className="page-container py-10 md:py-12 px-6 lg:px-8">
-        <div className="grid grid-cols-2 lg:grid-cols-12 gap-1 md:gap-2 lg:gap-2 text-sm">
-          {/* Left: Logo + Promo + Contact */}
-          <div className="lg:col-span-4">
-            <div className="flex items-center gap-2">
+    <footer 
+      className="relative border-t transition-colors duration-500 rounded-t-3xl"
+      style={{ 
+        backgroundColor: theme === 'dark' ? 'var(--color-background-default)' : '#F9F7F4',
+        borderColor: theme === 'dark' 
+          ? 'var(--color-divider-gray)' 
+          : 'rgba(0, 0, 0, 0.2)'
+      }}
+    >
+      <div className="w-full px-6 md:px-8 lg:px-12 xl:px-16 py-12 sm:py-16 md:py-20">
+        <div className="footer-grid items-start">
+          {/* Brand Section - Wider */}
+          <div className="space-y-4 flex flex-col h-full items-center text-center">
+            <div>
               <img 
                 src="/images/logo-light.png" 
                 alt="Medarion" 
-                className="h-12 md:h-14"
+                className="h-14 sm:h-16 md:h-20 lg:h-24 w-auto mx-auto"
                 style={{
                   filter: theme === 'dark' ? 'brightness(0) invert(1)' : 'brightness(0)',
                 }}
               />
             </div>
-            <p className="mt-3 text-[var(--color-text-secondary)] text-base max-w-md">African healthcare market data and AI assistance to keep you prepared on every call.</p>
+            <p className="text-sm sm:text-base text-[var(--color-text-secondary)] leading-relaxed flex-grow max-w-md">
+              African healthcare market data and AI assistance to keep you prepared on every call.
+            </p>
             
-            {/* Contact Details */}
-            <div className="mt-5 space-y-2 text-[var(--color-text-secondary)]">
-              <p className="font-semibold text-[var(--color-text-primary)] text-base">Contact Us</p>
-              <p className="text-sm">Email: <a href="mailto:contact@medarion.com" className="hover:text-[var(--color-primary-teal)] transition-colors">contact@medarion.com</a></p>
-              <p className="text-sm">Phone: <a href="tel:+1234567890" className="hover:text-[var(--color-primary-teal)] transition-colors">+1 (234) 567-890</a></p>
+            {/* Social Links */}
+            <div className="flex items-center justify-center gap-3 pt-2 mt-auto">
+              <a 
+                href="#" 
+                aria-label="Twitter" 
+                className="p-2 text-[var(--color-text-secondary)] hover:text-[var(--color-primary-teal)] transition-colors"
+              >
+                <Twitter className="w-5 h-5"/>
+              </a>
+              <a 
+                href="#" 
+                aria-label="LinkedIn" 
+                className="p-2 text-[var(--color-text-secondary)] hover:text-[var(--color-primary-teal)] transition-colors"
+              >
+                <Linkedin className="w-5 h-5"/>
+              </a>
+              <a 
+                href="#" 
+                aria-label="GitHub" 
+                className="p-2 text-[var(--color-text-secondary)] hover:text-[var(--color-primary-teal)] transition-colors"
+              >
+                <Github className="w-5 h-5"/>
+              </a>
             </div>
-
-            {/* Social links */}
-            <div className="mt-4 flex items-center gap-2">
-              <a href="#" className="btn-outline btn-sm flex items-center gap-1"><Twitter className="w-4 h-4"/><span>Twitter</span></a>
-              <a href="#" className="btn-outline btn-sm flex items-center gap-1"><Linkedin className="w-4 h-4"/><span>LinkedIn</span></a>
-              <a href="#" className="btn-outline btn-sm flex items-center gap-1"><Github className="w-4 h-4"/><span>GitHub</span></a>
-            </div>
           </div>
 
-          {/* Three Menu Columns */}
-          <div className="lg:col-span-2">
-            <h4 className="font-semibold text-[var(--color-text-primary)] mb-2 text-sm">Data</h4>
-            <ul className="space-y-1.5 leading-6">
-              <li><Link to="/companies" className="text-[var(--color-text-secondary)] hover:text-[var(--color-primary-teal)] transition-colors text-sm">Companies</Link></li>
-              <li><Link to="/deals" className="text-[var(--color-text-secondary)] hover:text-[var(--color-primary-teal)] transition-colors text-sm">Deals</Link></li>
-              <li><Link to="/grants" className="text-[var(--color-text-secondary)] hover:text-[var(--color-primary-teal)] transition-colors text-sm">Grants</Link></li>
-              <li><Link to="/clinical-trials" className="text-[var(--color-text-secondary)] hover:text-[var(--color-primary-teal)] transition-colors text-sm">Clinical Trials</Link></li>
+          {/* Data */}
+          <div className="space-y-4 flex flex-col h-full">
+            <h4 className="text-sm font-semibold text-[var(--color-text-primary)] min-h-[1.5rem] flex items-center">Data</h4>
+            <ul className="space-y-3 flex-grow">
+              <li>
+                <Link 
+                  to="/companies" 
+                  className="text-sm text-[var(--color-text-secondary)] hover:text-[var(--color-primary-teal)] transition-colors"
+                >
+                  Companies
+                </Link>
+              </li>
+              <li>
+                <Link 
+                  to="/deals" 
+                  className="text-sm text-[var(--color-text-secondary)] hover:text-[var(--color-primary-teal)] transition-colors"
+                >
+                  Deals
+                </Link>
+              </li>
+              <li>
+                <Link 
+                  to="/grants" 
+                  className="text-sm text-[var(--color-text-secondary)] hover:text-[var(--color-primary-teal)] transition-colors"
+                >
+                  Grants
+                </Link>
+              </li>
+              <li>
+                <Link 
+                  to="/clinical-trials" 
+                  className="text-sm text-[var(--color-text-secondary)] hover:text-[var(--color-primary-teal)] transition-colors"
+                >
+                  Clinical Trials
+                </Link>
+              </li>
             </ul>
           </div>
 
-          <div className="lg:col-span-2">
-            <h4 className="font-semibold text-[var(--color-text-primary)] mb-2 text-sm">Resources</h4>
-            <ul className="space-y-1.5 leading-6">
-              <li><Link to="/arion" className="text-[var(--color-text-secondary)] hover:text-[var(--color-primary-teal)] transition-colors text-sm">Arion</Link></li>
-              <li><Link to="/m-index" className="text-[var(--color-text-secondary)] hover:text-[var(--color-primary-teal)] transition-colors text-sm">m‑index (Glossary)</Link></li>
-              <li><Link to="/nationpulse" className="text-[var(--color-text-secondary)] hover:text-[var(--color-primary-teal)] transition-colors text-sm">Nation Pulse</Link></li>
+          {/* Resources */}
+          <div className="space-y-4 flex flex-col h-full">
+            <h4 className="text-sm font-semibold text-[var(--color-text-primary)] min-h-[1.5rem] flex items-center">Resources</h4>
+            <ul className="space-y-3 flex-grow">
+              <li>
+                <Link 
+                  to="/arion" 
+                  className="text-sm text-[var(--color-text-secondary)] hover:text-[var(--color-primary-teal)] transition-colors"
+                >
+                  Arion
+                </Link>
+              </li>
+              <li>
+                <Link 
+                  to="/m-index" 
+                  className="text-sm text-[var(--color-text-secondary)] hover:text-[var(--color-primary-teal)] transition-colors"
+                >
+                  m‑index (Glossary)
+                </Link>
+              </li>
+              <li>
+                <Link 
+                  to="/nationpulse" 
+                  className="text-sm text-[var(--color-text-secondary)] hover:text-[var(--color-primary-teal)] transition-colors"
+                >
+                  Nation Pulse
+                </Link>
+              </li>
+              <li>
+                <Link 
+                  to="/ergon" 
+                  className="text-sm text-[var(--color-text-secondary)] hover:text-[var(--color-primary-teal)] transition-colors"
+                >
+                  Ergon
+                </Link>
+              </li>
             </ul>
           </div>
 
-          <div className="lg:col-span-2">
-            <h4 className="font-semibold text-[var(--color-text-primary)] mb-2 text-sm">Company</h4>
-            <ul className="space-y-1.5 leading-6">
-              <li><Link to="/about" className="text-[var(--color-text-secondary)] hover:text-[var(--color-primary-teal)] transition-colors text-sm">About</Link></li>
-              <li><Link to="/contact" className="text-[var(--color-text-secondary)] hover:text-[var(--color-primary-teal)] transition-colors text-sm">Contact</Link></li>
-              <li><Link to="/pricing" className="text-[var(--color-text-secondary)] hover:text-[var(--color-primary-teal)] transition-colors text-sm">Pricing</Link></li>
-              <li><Link to="/documentation" className="text-[var(--color-text-secondary)] hover:text-[var(--color-primary-teal)] transition-colors text-sm">Documentation</Link></li>
+          {/* Company */}
+          <div className="space-y-4 flex flex-col h-full">
+            <h4 className="text-sm font-semibold text-[var(--color-text-primary)] min-h-[1.5rem] flex items-center">Company</h4>
+            <ul className="space-y-3 flex-grow">
+              <li>
+                <Link 
+                  to="/about" 
+                  className="text-sm text-[var(--color-text-secondary)] hover:text-[var(--color-primary-teal)] transition-colors"
+                >
+                  About
+                </Link>
+              </li>
+              <li>
+                <Link 
+                  to="/contact" 
+                  className="text-sm text-[var(--color-text-secondary)] hover:text-[var(--color-primary-teal)] transition-colors"
+                >
+                  Contact
+                </Link>
+              </li>
+              <li>
+                <Link 
+                  to="/pricing" 
+                  className="text-sm text-[var(--color-text-secondary)] hover:text-[var(--color-primary-teal)] transition-colors"
+                >
+                  Pricing
+                </Link>
+              </li>
+              <li>
+                <Link 
+                  to="/documentation" 
+                  className="text-sm text-[var(--color-text-secondary)] hover:text-[var(--color-primary-teal)] transition-colors"
+                >
+                  Documentation
+                </Link>
+              </li>
             </ul>
           </div>
 
+          {/* Newsletter Section - Last Column, Biggest */}
+          <div className="space-y-4 flex flex-col h-full">
+            <h4 className="text-sm font-semibold text-[var(--color-text-primary)] min-h-[1.5rem] flex items-center">Stay updated</h4>
+            <p className="text-sm text-[var(--color-text-secondary)]">
+              Get the latest updates and insights delivered to your inbox.
+            </p>
+            <form 
+              className="flex flex-col gap-2 flex-grow" 
+              onSubmit={async (e)=>{
+                e.preventDefault();
+                const form = e.target as HTMLFormElement;
+                const input = form.querySelector('input[type="email"]') as HTMLInputElement;
+                if (input && input.value && !isSubscribing) {
+                  const email = input.value.trim();
+                  setIsSubscribing(true);
+                  setNewsletterStatus({ type: null, message: '' });
+                  
+                  try {
+                    const response = await apiService.post('/newsletter/subscribe', {
+                      email: email,
+                      source: 'footer'
+                    });
+                    
+                    if (response.success) {
+                      setNewsletterStatus({ 
+                        type: 'success', 
+                        message: response.message || 'Successfully subscribed to newsletter!' 
+                      });
+                      input.value = '';
+                      // Clear success message after 5 seconds
+                      setTimeout(() => {
+                        setNewsletterStatus({ type: null, message: '' });
+                      }, 5000);
+                    } else {
+                      throw new Error(response.error || 'Failed to subscribe');
+                    }
+                  } catch (error: any) {
+                    setNewsletterStatus({ 
+                      type: 'error', 
+                      message: error.message || 'Failed to subscribe. Please try again.' 
+                    });
+                    // Clear error message after 5 seconds
+                    setTimeout(() => {
+                      setNewsletterStatus({ type: null, message: '' });
+                    }, 5000);
+                  } finally {
+                    setIsSubscribing(false);
+                  }
+                }
+              }}
+            >
+              <input 
+                type="email" 
+                className="w-full px-4 py-2.5 border border-[var(--color-divider-gray)] bg-[var(--color-background-default)] text-[var(--color-text-primary)] placeholder:text-[var(--color-text-secondary)] focus:outline-none focus:ring-1 focus:ring-[var(--color-primary-teal)] focus:border-[var(--color-primary-teal)] text-sm rounded disabled:opacity-50 disabled:cursor-not-allowed" 
+                placeholder="Enter your email" 
+                aria-label="Email" 
+                required
+                disabled={isSubscribing}
+              />
+              {newsletterStatus.type && (
+                <div className={`p-3 rounded text-sm ${
+                  newsletterStatus.type === 'success'
+                    ? 'bg-green-50 dark:bg-green-900/20 text-green-700 dark:text-green-300 border border-green-200 dark:border-green-800'
+                    : 'bg-red-50 dark:bg-red-900/20 text-red-700 dark:text-red-300 border border-red-200 dark:border-red-800'
+                }`}>
+                  {newsletterStatus.message}
+                </div>
+              )}
+              <button 
+                type="submit"
+                className="w-full px-6 py-2.5 rounded font-medium transition-all text-sm newsletter-subscribe-btn disabled:opacity-50 disabled:cursor-not-allowed"
+                style={{
+                  backgroundColor: 'var(--color-primary-teal)',
+                  color: theme === 'dark' ? '#000000' : '#FFFFFF',
+                  WebkitTextFillColor: theme === 'dark' ? '#000000' : '#FFFFFF',
+                  caretColor: theme === 'dark' ? '#000000' : '#FFFFFF'
+                } as React.CSSProperties}
+                disabled={isSubscribing}
+              >
+                {isSubscribing ? 'Subscribing...' : 'Subscribe'}
+              </button>
+            </form>
+            <p className="text-xs text-[var(--color-text-secondary)] mt-auto">
+              We'll email occasional updates. Unsubscribe anytime.
+            </p>
+          </div>
         </div>
 
-        <div className="mt-8 pt-5 border-t border-[var(--color-divider-gray)] flex flex-row items-center justify-between gap-3 md:gap-4 text-xs text-[var(--color-text-secondary)]">
-          <div className="flex items-center gap-2">
-            <CheckCircle2 className="w-4 h-4" />
-            <span>All systems operational</span>
+        {/* Bottom bar */}
+        <div 
+          className="mt-12 pt-8 border-t"
+          style={{
+            borderColor: theme === 'dark' 
+              ? 'var(--color-divider-gray)' 
+              : 'rgba(0, 0, 0, 0.2)'
+          }}
+        >
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 sm:gap-6">
+            <div className="flex items-center gap-2 text-xs text-[var(--color-text-secondary)]">
+              <CheckCircle2 className="w-4 h-4 text-green-500"/>
+              <span>All systems operational</span>
+            </div>
+            <div className="flex flex-wrap items-center gap-4 text-xs">
+              <Link 
+                to="/privacy" 
+                className="text-[var(--color-text-secondary)] hover:text-[var(--color-primary-teal)] transition-colors"
+              >
+                Privacy Policy
+              </Link>
+              <span className="text-[var(--color-text-secondary)]">•</span>
+              <Link 
+                to="/terms" 
+                className="text-[var(--color-text-secondary)] hover:text-[var(--color-primary-teal)] transition-colors"
+              >
+                Terms of Service
+              </Link>
+            </div>
+            <div className="text-xs text-[var(--color-text-secondary)]">
+              © {new Date().getFullYear()} Medarion. All rights reserved.
+            </div>
           </div>
-          <div className="flex items-center gap-3">
-            <Link to="/privacy" className="hover:text-[var(--color-primary-teal)] transition-colors">Privacy Policy</Link>
-            <span>•</span>
-            <Link to="/terms" className="hover:text-[var(--color-primary-teal)] transition-colors">Terms of Service</Link>
-          </div>
-          <div className="text-[var(--color-text-secondary)]">© {new Date().getFullYear()} Medarion. All rights reserved.</div>
         </div>
       </div>
     </footer>
