@@ -1,0 +1,87 @@
+﻿[
+    {
+        "Module":  "Companies",
+        "Status":  "OK",
+        "Url":  "https://api.medarion.africa/api/admin/companies?page=1\u0026limit=1",
+        "Count":  286,
+        "Expected":  286
+    },
+    {
+        "Module":  "Deals",
+        "Status":  "OK",
+        "Url":  "https://api.medarion.africa/api/admin/deals?page=1\u0026limit=1",
+        "Count":  367,
+        "Expected":  367
+    },
+    {
+        "Module":  "Investors",
+        "Status":  "OK",
+        "Url":  "https://api.medarion.africa/api/admin/investors?page=1\u0026limit=1",
+        "Count":  1,
+        "Expected":  1
+    },
+    {
+        "Module":  "Grants",
+        "Status":  "OK",
+        "Url":  "https://api.medarion.africa/api/admin/grants?page=1\u0026limit=1",
+        "Count":  95,
+        "Expected":  95
+    },
+    {
+        "Module":  "Clinical Trials",
+        "Status":  "OK",
+        "Url":  "https://api.medarion.africa/api/admin/clinical-trials?page=1\u0026limit=1",
+        "Count":  195,
+        "Expected":  195
+    },
+    {
+        "Module":  "Regulatory Bodies",
+        "Status":  "OK",
+        "Url":  "https://api.medarion.africa/api/admin/regulatory-bodies?page=1\u0026limit=1",
+        "Count":  54,
+        "Expected":  54
+    },
+    {
+        "Module":  "Public Stocks",
+        "Status":  "OK",
+        "Url":  "https://api.medarion.africa/api/admin/public-markets?page=1\u0026limit=1",
+        "Count":  45,
+        "Expected":  45
+    },
+    {
+        "Module":  "Clinical Centers",
+        "Status":  "OK",
+        "Url":  "https://api.medarion.africa/api/admin/clinical-centers?page=1\u0026limit=1",
+        "Count":  95,
+        "Expected":  95
+    },
+    {
+        "Module":  "Investigators",
+        "Status":  "OK",
+        "Url":  "https://api.medarion.africa/api/admin/investigators?page=1\u0026limit=1",
+        "Count":  97,
+        "Expected":  97
+    },
+    {
+        "Module":  "Nation Pulse Data",
+        "Status":  "OK",
+        "Url":  "https://api.medarion.africa/api/admin/nation-pulse?page=1\u0026limit=1",
+        "Count":  756,
+        "Expected":  756
+    },
+    {
+        "Module":  "Glossary Terms",
+        "Status":  "OK",
+        "Url":  "https://api.medarion.africa/api/admin/glossary?page=1\u0026limit=1",
+        "Count":  1059,
+        "Expected":  1059
+    },
+    {
+        "Expected":  54,
+        "Error":  "The remote server returned an error: (404) Not Found.",
+        "Module":  "Africa Countries",
+        "Count":  0,
+        "Status":  "ERROR",
+        "Url":  "https://api.medarion.africa/api/admin/africa-countries"
+    }
+]
