@@ -111,7 +111,6 @@ try {
                 $deal['deal_type'] ?? 'Unknown',
                 $deal['lead_investor'] ?? '',
                 $deal['description'] ?? '',
-                $deal['website'] ?? '',
                 $deal['sector'] ?? '',
                 $dealToUpdate['id']
             ]);
