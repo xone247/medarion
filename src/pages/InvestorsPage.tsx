@@ -19,7 +19,7 @@ const InvestorsPage = () => {
     const fetchInvestorsData = async () => {
       setLoading(true);
       try {
-        const response = await apiService.get('/admin/investors', { limit: '200' });
+        const response = await apiService.get('/admin/investors', { limit: '1000' });
         console.log('[InvestorsPage] API Response:', response);
         
         if (response.success && response.data && Array.isArray(response.data)) {

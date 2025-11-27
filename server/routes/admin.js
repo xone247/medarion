@@ -292,7 +292,7 @@ router.get('/blog-posts', authenticateToken, async (req, res) => {
     }
     
     query += ' ORDER BY created_at DESC LIMIT ? OFFSET ?';
-    params.push(parseInt(limit), offset);
+    params.push(actualLimit, offset);
     
     const [posts] = await db.execute(query, params);
     const [countResult] = await db.execute(countQuery, countParams);
@@ -304,7 +304,7 @@ router.get('/blog-posts', authenticateToken, async (req, res) => {
         posts: posts || [],
         pagination: {
           page: parseInt(page),
-          limit: parseInt(limit),
+          limit: actualLimit,
           total: total,
           pages: Math.ceil(total / parseInt(limit))
         }
@@ -558,7 +558,7 @@ router.get('/videos', authenticateToken, async (req, res) => {
     }
     
     query += ' ORDER BY display_order ASC, created_at DESC LIMIT ? OFFSET ?';
-    params.push(parseInt(limit), offset);
+    params.push(actualLimit, offset);
     
     const [videos] = await db.execute(query, params);
     const [countResult] = await db.execute(countQuery, countParams);
@@ -572,7 +572,7 @@ router.get('/videos', authenticateToken, async (req, res) => {
       })),
       pagination: {
         page: parseInt(page),
-        limit: parseInt(limit),
+        limit: actualLimit,
         total,
         pages: Math.ceil(total / parseInt(limit))
       }
@@ -752,7 +752,7 @@ router.get('/advertisements', authenticateToken, async (req, res) => {
     }
     
     query += ' ORDER BY priority ASC, created_at DESC LIMIT ? OFFSET ?';
-    params.push(parseInt(limit), offset);
+    params.push(actualLimit, offset);
     
     const [ads] = await db.execute(query, params);
     const [countResult] = await db.execute(countQuery, countParams);
@@ -771,7 +771,7 @@ router.get('/advertisements', authenticateToken, async (req, res) => {
         advertisements: parsedAds,
         pagination: {
           page: parseInt(page),
-          limit: parseInt(limit),
+          limit: actualLimit,
           total: total,
           pages: Math.ceil(total / parseInt(limit))
         }
@@ -902,7 +902,7 @@ router.get('/announcements', authenticateToken, async (req, res) => {
     }
     
     query += ' ORDER BY created_at DESC LIMIT ? OFFSET ?';
-    params.push(parseInt(limit), offset);
+    params.push(actualLimit, offset);
     
     const [announcements] = await db.execute(query, params);
     const [countResult] = await db.execute(countQuery, countParams);
@@ -914,7 +914,7 @@ router.get('/announcements', authenticateToken, async (req, res) => {
         announcements: announcements || [],
         pagination: {
           page: parseInt(page),
-          limit: parseInt(limit),
+          limit: actualLimit,
           total: total,
           pages: Math.ceil(total / parseInt(limit))
         }
@@ -1293,7 +1293,7 @@ router.get('/modules', async (req, res) => {
     }
     
     query += ' ORDER BY display_order ASC, name ASC LIMIT ? OFFSET ?';
-    params.push(parseInt(limit), offset);
+    params.push(actualLimit, offset);
     
     // Get total count
     const [countResult] = await db.execute(countQuery, countParams);
@@ -1316,7 +1316,7 @@ router.get('/modules', async (req, res) => {
       data: parsedModules, // Return 'data' not 'modules' to match frontend expectation
       pagination: {
         page: parseInt(page),
-        limit: parseInt(limit),
+        limit: actualLimit,
         total: total,
         pages: Math.ceil(total / parseInt(limit))
       }
@@ -1579,7 +1579,7 @@ router.get('/users', authenticateToken, async (req, res) => {
     }
     
     query += ' ORDER BY created_at DESC LIMIT ? OFFSET ?';
-    params.push(parseInt(limit), offset);
+    params.push(actualLimit, offset);
     
     const [users] = await db.execute(query, params);
     const [countResult] = await db.execute(countQuery, countParams);
@@ -1606,7 +1606,7 @@ router.get('/users', authenticateToken, async (req, res) => {
         users: parsedUsers,
         pagination: {
           page: parseInt(page),
-          limit: parseInt(limit),
+          limit: actualLimit,
           total: total,
           pages: Math.ceil(total / parseInt(limit))
         }
@@ -1857,9 +1857,10 @@ router.get('/companies', authenticateToken, async (req, res) => {
   try {
     // Ensure database structure exists
     await ensureImageColumns();
-    
-    const { page = 1, limit = 20, search } = req.query;
-    const offset = (parseInt(page) - 1) * parseInt(limit);
+    // Support 'all' parameter to get all records, default limit is 1000
+    const { page = 1, limit = 1000, search, all } = req.query;
+    const actualLimit = (all === 'true' || all === true) ? 10000 : Math.min(parseInt(limit) || 1000, 1000);
+    const offset = (parseInt(page) - 1) * actualLimit;
     
     let query = 'SELECT * FROM companies WHERE 1=1';
     let countQuery = 'SELECT COUNT(*) as total FROM companies WHERE 1=1';
@@ -1875,7 +1876,7 @@ router.get('/companies', authenticateToken, async (req, res) => {
     }
     
     query += ' ORDER BY created_at DESC LIMIT ? OFFSET ?';
-    params.push(parseInt(limit), offset);
+    params.push(actualLimit, offset);
     
     const [companies] = await db.execute(query, params);
     const [countResult] = await db.execute(countQuery, countParams);
@@ -1887,7 +1888,7 @@ router.get('/companies', authenticateToken, async (req, res) => {
       pagination: {
         total,
         page: parseInt(page),
-        limit: parseInt(limit),
+        limit: actualLimit,
         has_more: offset + companies.length < total
       }
     });
@@ -1979,8 +1980,9 @@ router.delete('/companies/:id', authenticateToken, async (req, res) => {
 
 router.get('/deals', authenticateToken, async (req, res) => {
   try {
-    const { page = 1, limit = 20, search } = req.query;
-    const offset = (parseInt(page) - 1) * parseInt(limit);
+    const { page = 1, limit = 1000, search, all } = req.query;
+    const actualLimit = (all === 'true' || all === true) ? 10000 : Math.min(parseInt(limit) || 1000, 1000);
+    const offset = (parseInt(page) - 1) * actualLimit;
     
     let query = 'SELECT * FROM deals WHERE 1=1';
     let countQuery = 'SELECT COUNT(*) as total FROM deals WHERE 1=1';
@@ -1996,7 +1998,7 @@ router.get('/deals', authenticateToken, async (req, res) => {
     }
     
     query += ' ORDER BY deal_date DESC LIMIT ? OFFSET ?';
-    params.push(parseInt(limit), offset);
+    params.push(actualLimit, offset);
     
     const [deals] = await db.execute(query, params);
     const [countResult] = await db.execute(countQuery, countParams);
@@ -2005,7 +2007,7 @@ router.get('/deals', authenticateToken, async (req, res) => {
     res.json({
       success: true,
       data: deals,
-      pagination: { total, page: parseInt(page), limit: parseInt(limit), has_more: offset + deals.length < total }
+      pagination: { total, page: parseInt(page), limit: actualLimit, has_more: offset + deals.length < total }
     });
   } catch (error) {
     console.error('Error fetching deals:', error);
@@ -2076,8 +2078,9 @@ router.delete('/deals/:id', authenticateToken, async (req, res) => {
 
 router.get('/grants', authenticateToken, async (req, res) => {
   try {
-    const { page = 1, limit = 20, search } = req.query;
-    const offset = (parseInt(page) - 1) * parseInt(limit);
+    const { page = 1, limit = 1000, search, all } = req.query;
+    const actualLimit = (all === 'true' || all === true) ? 10000 : Math.min(parseInt(limit) || 1000, 1000);
+    const offset = (parseInt(page) - 1) * actualLimit;
     
     let query = 'SELECT * FROM grants WHERE 1=1';
     let countQuery = 'SELECT COUNT(*) as total FROM grants WHERE 1=1';
@@ -2093,7 +2096,7 @@ router.get('/grants', authenticateToken, async (req, res) => {
     }
     
     query += ' ORDER BY created_at DESC LIMIT ? OFFSET ?';
-    params.push(parseInt(limit), offset);
+    params.push(actualLimit, offset);
     
     const [grants] = await db.execute(query, params);
     const [countResult] = await db.execute(countQuery, countParams);
@@ -2102,7 +2105,7 @@ router.get('/grants', authenticateToken, async (req, res) => {
     res.json({
       success: true,
       data: grants,
-      pagination: { total, page: parseInt(page), limit: parseInt(limit), has_more: offset + grants.length < total }
+      pagination: { total, page: parseInt(page), limit: actualLimit, has_more: offset + grants.length < total }
     });
   } catch (error) {
     console.error('Error fetching grants:', error);
@@ -2173,8 +2176,9 @@ router.delete('/grants/:id', authenticateToken, async (req, res) => {
 
 router.get('/investors', authenticateToken, async (req, res) => {
   try {
-    const { page = 1, limit = 20, search } = req.query;
-    const offset = (parseInt(page) - 1) * parseInt(limit);
+    const { page = 1, limit = 1000, search, all } = req.query;
+    const actualLimit = (all === 'true' || all === true) ? 10000 : Math.min(parseInt(limit) || 1000, 1000);
+    const offset = (parseInt(page) - 1) * actualLimit;
     
     let query = 'SELECT * FROM investors WHERE 1=1';
     let countQuery = 'SELECT COUNT(*) as total FROM investors WHERE 1=1';
@@ -2190,7 +2194,7 @@ router.get('/investors', authenticateToken, async (req, res) => {
     }
     
     query += ' ORDER BY created_at DESC LIMIT ? OFFSET ?';
-    params.push(parseInt(limit), offset);
+    params.push(actualLimit, offset);
     
     const [investors] = await db.execute(query, params);
     const [countResult] = await db.execute(countQuery, countParams);
@@ -2210,7 +2214,7 @@ router.get('/investors', authenticateToken, async (req, res) => {
     res.json({
       success: true,
       data: parsedInvestors,
-      pagination: { total, page: parseInt(page), limit: parseInt(limit), has_more: offset + investors.length < total }
+      pagination: { total, page: parseInt(page), limit: actualLimit, has_more: offset + investors.length < total }
     });
   } catch (error) {
     console.error('Error fetching investors:', error);
@@ -2298,8 +2302,9 @@ router.delete('/investors/:id', authenticateToken, async (req, res) => {
 
 router.get('/clinical-trials', authenticateToken, async (req, res) => {
   try {
-    const { page = 1, limit = 20, search } = req.query;
-    const offset = (parseInt(page) - 1) * parseInt(limit);
+    const { page = 1, limit = 1000, search, all } = req.query;
+    const actualLimit = (all === 'true' || all === true) ? 10000 : Math.min(parseInt(limit) || 1000, 1000);
+    const offset = (parseInt(page) - 1) * actualLimit;
     
     let query = 'SELECT * FROM clinical_trials WHERE 1=1';
     let countQuery = 'SELECT COUNT(*) as total FROM clinical_trials WHERE 1=1';
@@ -2315,7 +2320,7 @@ router.get('/clinical-trials', authenticateToken, async (req, res) => {
     }
     
     query += ' ORDER BY created_at DESC LIMIT ? OFFSET ?';
-    params.push(parseInt(limit), offset);
+    params.push(actualLimit, offset);
     
     const [trials] = await db.execute(query, params);
     const [countResult] = await db.execute(countQuery, countParams);
@@ -2324,7 +2329,7 @@ router.get('/clinical-trials', authenticateToken, async (req, res) => {
     res.json({
       success: true,
       data: trials,
-      pagination: { total, page: parseInt(page), limit: parseInt(limit), has_more: offset + trials.length < total }
+      pagination: { total, page: parseInt(page), limit: actualLimit, has_more: offset + trials.length < total }
     });
   } catch (error) {
     console.error('Error fetching clinical trials:', error);
@@ -2407,7 +2412,7 @@ router.get('/regulatory', authenticateToken, async (req, res) => {
       return res.json({
         success: true,
         data: [],
-        pagination: { total: 0, page: parseInt(page), limit: parseInt(limit), has_more: false }
+        pagination: { total: 0, page: parseInt(page), limit: actualLimit, has_more: false }
       });
     }
     
@@ -2441,7 +2446,7 @@ router.get('/regulatory', authenticateToken, async (req, res) => {
     }
     
     query += ' ORDER BY created_at DESC LIMIT ? OFFSET ?';
-    params.push(parseInt(limit), offset);
+    params.push(actualLimit, offset);
     
     const [regulatory] = await db.execute(query, params);
     const [countResult] = await db.execute(countQuery, countParams);
@@ -2458,7 +2463,7 @@ router.get('/regulatory', authenticateToken, async (req, res) => {
     res.json({
       success: true,
       data: normalizedData,
-      pagination: { total, page: parseInt(page), limit: parseInt(limit), has_more: offset + regulatory.length < total }
+      pagination: { total, page: parseInt(page), limit: actualLimit, has_more: offset + regulatory.length < total }
     });
   } catch (error) {
     console.error('Error fetching regulatory records:', error);
@@ -2467,7 +2472,7 @@ router.get('/regulatory', authenticateToken, async (req, res) => {
     res.json({
       success: true,
       data: [],
-      pagination: { total: 0, page: parseInt(page), limit: parseInt(limit), has_more: false },
+      pagination: { total: 0, page: parseInt(page), limit: actualLimit, has_more: false },
       error: process.env.NODE_ENV === 'development' ? error.message : undefined
     });
   }
@@ -2536,8 +2541,9 @@ router.delete('/regulatory/:id', authenticateToken, async (req, res) => {
 
 router.get('/regulatory-bodies', authenticateToken, async (req, res) => {
   try {
-    const { page = 1, limit = 20, search } = req.query;
-    const offset = (parseInt(page) - 1) * parseInt(limit);
+    const { page = 1, limit = 1000, search, all } = req.query;
+    const actualLimit = (all === 'true' || all === true) ? 10000 : Math.min(parseInt(limit) || 1000, 1000);
+    const offset = (parseInt(page) - 1) * actualLimit;
     
     let query = 'SELECT * FROM regulatory_bodies WHERE 1=1';
     let countQuery = 'SELECT COUNT(*) as total FROM regulatory_bodies WHERE 1=1';
@@ -2553,7 +2559,7 @@ router.get('/regulatory-bodies', authenticateToken, async (req, res) => {
     }
     
     query += ' ORDER BY created_at DESC LIMIT ? OFFSET ?';
-    params.push(parseInt(limit), offset);
+    params.push(actualLimit, offset);
     
     const [bodies] = await db.execute(query, params);
     const [countResult] = await db.execute(countQuery, countParams);
@@ -2562,7 +2568,7 @@ router.get('/regulatory-bodies', authenticateToken, async (req, res) => {
     res.json({
       success: true,
       data: bodies,
-      pagination: { total, page: parseInt(page), limit: parseInt(limit), has_more: offset + bodies.length < total }
+      pagination: { total, page: parseInt(page), limit: actualLimit, has_more: offset + bodies.length < total }
     });
   } catch (error) {
     console.error('Error fetching regulatory bodies:', error);
@@ -2633,8 +2639,9 @@ router.delete('/regulatory-bodies/:id', authenticateToken, async (req, res) => {
 
 router.get('/public-markets', authenticateToken, async (req, res) => {
   try {
-    const { page = 1, limit = 20, search } = req.query;
-    const offset = (parseInt(page) - 1) * parseInt(limit);
+    const { page = 1, limit = 1000, search, all } = req.query;
+    const actualLimit = (all === 'true' || all === true) ? 10000 : Math.min(parseInt(limit) || 1000, 1000);
+    const offset = (parseInt(page) - 1) * actualLimit;
     
     let query = 'SELECT * FROM public_stocks WHERE 1=1';
     let countQuery = 'SELECT COUNT(*) as total FROM public_stocks WHERE 1=1';
@@ -2650,7 +2657,7 @@ router.get('/public-markets', authenticateToken, async (req, res) => {
     }
     
     query += ' ORDER BY created_at DESC LIMIT ? OFFSET ?';
-    params.push(parseInt(limit), offset);
+    params.push(actualLimit, offset);
     
     const [stocks] = await db.execute(query, params);
     const [countResult] = await db.execute(countQuery, countParams);
@@ -2659,7 +2666,7 @@ router.get('/public-markets', authenticateToken, async (req, res) => {
     res.json({
       success: true,
       data: stocks,
-      pagination: { total, page: parseInt(page), limit: parseInt(limit), has_more: offset + stocks.length < total }
+      pagination: { total, page: parseInt(page), limit: actualLimit, has_more: offset + stocks.length < total }
     });
   } catch (error) {
     console.error('Error fetching public markets:', error);
@@ -2729,8 +2736,9 @@ router.delete('/public-markets/:id', authenticateToken, async (req, res) => {
 
 router.get('/clinical-centers', authenticateToken, async (req, res) => {
   try {
-    const { page = 1, limit = 20, search } = req.query;
-    const offset = (parseInt(page) - 1) * parseInt(limit);
+    const { page = 1, limit = 1000, search, all } = req.query;
+    const actualLimit = (all === 'true' || all === true) ? 10000 : Math.min(parseInt(limit) || 1000, 1000);
+    const offset = (parseInt(page) - 1) * actualLimit;
     
     let query = 'SELECT * FROM clinical_centers WHERE 1=1';
     let countQuery = 'SELECT COUNT(*) as total FROM clinical_centers WHERE 1=1';
@@ -2746,7 +2754,7 @@ router.get('/clinical-centers', authenticateToken, async (req, res) => {
     }
     
     query += ' ORDER BY created_at DESC LIMIT ? OFFSET ?';
-    params.push(parseInt(limit), offset);
+    params.push(actualLimit, offset);
     
     const [centers] = await db.execute(query, params);
     const [countResult] = await db.execute(countQuery, countParams);
@@ -2755,7 +2763,7 @@ router.get('/clinical-centers', authenticateToken, async (req, res) => {
     res.json({
       success: true,
       data: centers,
-      pagination: { total, page: parseInt(page), limit: parseInt(limit), has_more: offset + centers.length < total }
+      pagination: { total, page: parseInt(page), limit: actualLimit, has_more: offset + centers.length < total }
     });
   } catch (error) {
     console.error('Error fetching clinical centers:', error);
@@ -2826,8 +2834,9 @@ router.delete('/clinical-centers/:id', authenticateToken, async (req, res) => {
 
 router.get('/investigators', authenticateToken, async (req, res) => {
   try {
-    const { page = 1, limit = 20, search } = req.query;
-    const offset = (parseInt(page) - 1) * parseInt(limit);
+    const { page = 1, limit = 1000, search, all } = req.query;
+    const actualLimit = (all === 'true' || all === true) ? 10000 : Math.min(parseInt(limit) || 1000, 1000);
+    const offset = (parseInt(page) - 1) * actualLimit;
     
     let query = 'SELECT * FROM investigators WHERE 1=1';
     let countQuery = 'SELECT COUNT(*) as total FROM investigators WHERE 1=1';
@@ -2843,7 +2852,7 @@ router.get('/investigators', authenticateToken, async (req, res) => {
     }
     
     query += ' ORDER BY created_at DESC LIMIT ? OFFSET ?';
-    params.push(parseInt(limit), offset);
+    params.push(actualLimit, offset);
     
     const [investigators] = await db.execute(query, params);
     const [countResult] = await db.execute(countQuery, countParams);
@@ -2852,7 +2861,7 @@ router.get('/investigators', authenticateToken, async (req, res) => {
     res.json({
       success: true,
       data: investigators,
-      pagination: { total, page: parseInt(page), limit: parseInt(limit), has_more: offset + investigators.length < total }
+      pagination: { total, page: parseInt(page), limit: actualLimit, has_more: offset + investigators.length < total }
     });
   } catch (error) {
     console.error('Error fetching investigators:', error);
@@ -2973,7 +2982,7 @@ router.get('/nation-pulse', authenticateToken, async (req, res) => {
       // Fallback to simple ordering
       query += ' ORDER BY id DESC LIMIT ? OFFSET ?';
     }
-    params.push(parseInt(limit), offset);
+    params.push(actualLimit, offset);
     
     const [data] = await db.execute(query, params);
     
@@ -3005,7 +3014,7 @@ router.get('/nation-pulse', authenticateToken, async (req, res) => {
       data,
       pagination: {
         page: parseInt(page),
-        limit: parseInt(limit),
+        limit: actualLimit,
         total,
         pages: Math.ceil(total / parseInt(limit))
       }
@@ -3129,7 +3138,7 @@ router.get('/crm-investors', authenticateToken, async (req, res) => {
     }
     
     query += ' ORDER BY updated_at DESC LIMIT ? OFFSET ?';
-    params.push(parseInt(limit), offset);
+    params.push(actualLimit, offset);
     
     const [data] = await db.execute(query, params);
     
@@ -3157,7 +3166,7 @@ router.get('/crm-investors', authenticateToken, async (req, res) => {
       data,
       pagination: {
         page: parseInt(page),
-        limit: parseInt(limit),
+        limit: actualLimit,
         total,
         pages: Math.ceil(total / parseInt(limit))
       }
@@ -3324,7 +3333,7 @@ router.get('/crm-meetings', authenticateToken, async (req, res) => {
     }
     
     query += ' ORDER BY m.meeting_date DESC LIMIT ? OFFSET ?';
-    params.push(parseInt(limit), offset);
+    params.push(actualLimit, offset);
     
     const [data] = await db.execute(query, params);
     
@@ -3502,7 +3511,7 @@ router.get('/glossary', authenticateToken, async (req, res) => {
     }
     
     query += ' ORDER BY category, term LIMIT ? OFFSET ?';
-    params.push(parseInt(limit), offset);
+    params.push(actualLimit, offset);
     
     const [data] = await db.execute(query, params);
     
@@ -3526,7 +3535,7 @@ router.get('/glossary', authenticateToken, async (req, res) => {
       data,
       pagination: {
         page: parseInt(page),
-        limit: parseInt(limit),
+        limit: actualLimit,
         total,
         pages: Math.ceil(total / parseInt(limit))
       }
