@@ -24,27 +24,35 @@ class ApiService {
 
   // Update auth token from localStorage
   updateAuthToken() {
-    // Try to get token from localStorage (check multiple possible keys)
-    const authToken = localStorage.getItem('auth_token') || 
+    // Try to get token from localStorage (check all possible keys)
+    const authToken = localStorage.getItem('medarionAuthToken') ||
+                     localStorage.getItem('medarionSessionToken') ||
+                     localStorage.getItem('auth_token') || 
                      localStorage.getItem('token') || 
                      localStorage.getItem('authToken');
     
-    // For development, use test-token if no token found, otherwise use the actual token
-    this.authToken = authToken || 'test-token';
+    // Use actual token if found, otherwise null (don't use test-token in production)
+    this.authToken = authToken;
     
     // Debug logging (can be removed in production)
     if (!authToken && process.env.NODE_ENV === 'development') {
-      console.warn('[apiService] No auth token found in localStorage, using test-token');
+      console.warn('[apiService] No auth token found in localStorage');
     }
   }
 
   // Get headers with authentication
   private getHeaders(): HeadersInit {
     this.updateAuthToken();
-    return {
+    const headers: HeadersInit = {
       'Content-Type': 'application/json',
-      'Authorization': `Bearer ${this.authToken}`,
     };
+    
+    // Only add Authorization header if token exists
+    if (this.authToken) {
+      headers['Authorization'] = `Bearer ${this.authToken}`;
+    }
+    
+    return headers;
   }
 
   // Generic request method
