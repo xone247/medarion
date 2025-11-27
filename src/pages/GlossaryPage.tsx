@@ -48,7 +48,7 @@ const GlossaryPage: React.FC = () => {
   return (
     <div className="p-6 space-y-6">
       <div className="bg-background-surface p-6 rounded-lg border border-divider shadow-sm">
-        <h1 className="text-2xl font-bold text-text-primary">Glossary</h1>
+        <h1 className="text-2xl font-medium text-text-primary">Glossary</h1>
         <p className="text-text-secondary">Key terms to help you navigate funding, grants, and regulation.</p>
       </div>
       <div className="bg-background-surface p-4 rounded-lg border border-divider">
@@ -69,7 +69,7 @@ const GlossaryPage: React.FC = () => {
           <ul className="space-y-3">
             {terms.map((t, idx)=> (
               <li key={idx} className="p-3 border border-divider rounded-lg">
-                <div className="font-semibold text-text-primary">{t.term}</div>
+                <div className="font-medium text-text-primary">{t.term}</div>
                 <div className="text-sm text-text-secondary mt-1">{t.def}</div>
               </li>
             ))}

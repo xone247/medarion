@@ -193,7 +193,7 @@ const BlogDetailPage: React.FC = () => {
 					<div className="max-w-4xl mx-auto text-center">
 						<div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8">
 							<div className="text-red-500 text-6xl mb-4">⚠️</div>
-							<h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">Post Not Found</h1>
+							<h1 className="text-2xl font-medium text-gray-900 dark:text-white mb-2">Post Not Found</h1>
 							<p className="text-gray-600 dark:text-gray-400 mb-6">{error}</p>
 							<button
 								onClick={() => navigate('/arion')}
@@ -216,7 +216,7 @@ const BlogDetailPage: React.FC = () => {
 					<div className="max-w-4xl mx-auto text-center">
 						<div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8">
 							<div className="text-gray-400 text-6xl mb-4">📝</div>
-							<h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">Post Not Found</h1>
+							<h1 className="text-2xl font-medium text-gray-900 dark:text-white mb-2">Post Not Found</h1>
 							<p className="text-gray-600 dark:text-gray-400 mb-6">The blog post you're looking for doesn't exist or has been removed.</p>
 							<button
 								onClick={() => navigate('/arion')}
@@ -280,7 +280,7 @@ const BlogDetailPage: React.FC = () => {
 							{/* Category and Featured Badges - Modern horizontal layout */}
 							<div className="flex items-center gap-3 mb-6 flex-wrap">
 								{post.featured && (
-									<div className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-[var(--color-secondary-gold)] to-yellow-500 text-white rounded-full text-sm font-semibold shadow-lg backdrop-blur-sm border border-yellow-400/30">
+									<div className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-[var(--color-secondary-gold)] to-yellow-500 text-white rounded-full text-sm font-medium shadow-lg backdrop-blur-sm border border-yellow-400/30">
 										<span className="text-base">⭐</span>
 										<span>Featured</span>
 									</div>
@@ -369,7 +369,7 @@ const BlogDetailPage: React.FC = () => {
 										) : (
 											<div className="text-center py-16">
 												<div className="text-gray-400 text-8xl mb-6">📝</div>
-												<h3 className="text-2xl font-semibold text-gray-600 dark:text-gray-400 mb-4">No Content Available</h3>
+												<h3 className="text-2xl font-medium text-gray-600 dark:text-gray-400 mb-4">No Content Available</h3>
 												<p className="text-gray-500 dark:text-gray-500 text-lg">This post doesn't have any content yet.</p>
 											</div>
 										)}
@@ -396,7 +396,7 @@ const BlogDetailPage: React.FC = () => {
 														<Play className="h-6 w-6 text-white ml-1" />
 													</div>
 													<div>
-														<h3 className="text-xl font-bold text-gray-900 dark:text-white">Watch Video</h3>
+														<h3 className="text-xl font-medium text-gray-900 dark:text-white">Watch Video</h3>
 														<p className="text-sm text-gray-600 dark:text-gray-400">Related video content</p>
 													</div>
 												</div>
@@ -431,7 +431,7 @@ const BlogDetailPage: React.FC = () => {
 							{relatedPosts.length > 0 && (
 							<div className="bg-[var(--color-background-surface)] rounded-3xl shadow-2xl overflow-hidden border border-[var(--color-divider-gray)]">
 								<div className="px-8 px-12 py-8 border-b border-[var(--color-divider-gray)]">
-									<h3 className="text-3xl font-bold text-[var(--color-text-primary)] flex items-center gap-3">
+									<h3 className="text-3xl font-medium text-[var(--color-text-primary)] flex items-center gap-3">
 										<span className="w-1 h-8 bg-black dark:bg-white rounded-full"></span>
 										{relatedPosts.some(r => r.category === post?.category) ? 'Related Articles' : 'You Might Also Like'}
 									</h3>
@@ -454,7 +454,7 @@ const BlogDetailPage: React.FC = () => {
 															/>
 															<div className="absolute inset-0 bg-black/40" />
 															<div className="absolute top-4 left-4">
-																<span className="px-3 py-1 bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm text-xs font-semibold rounded-full text-gray-700 dark:text-gray-300">
+																<span className="px-3 py-1 bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm text-xs font-medium rounded-full text-gray-700 dark:text-gray-300">
 																	{r.category}
 																</span>
 															</div>
@@ -465,7 +465,7 @@ const BlogDetailPage: React.FC = () => {
 																<span>•</span>
 																<span>{r.readTime}</span>
 															</div>
-															<h4 className="font-bold text-[var(--color-text-primary)] text-lg leading-snug group-hover:text-[var(--color-primary-teal)] transition-colors mb-2">
+															<h4 className="font-medium text-[var(--color-text-primary)] text-lg leading-snug group-hover:text-[var(--color-primary-teal)] transition-colors mb-2">
 																	{r.title}
 															</h4>
 															<div className="flex items-center text-[var(--color-primary-teal)] text-sm font-medium group-hover:gap-2 transition-all">
@@ -494,10 +494,10 @@ const BlogDetailPage: React.FC = () => {
 							{/* Author Card */}
 							<div className="bg-[var(--color-background-surface)] rounded-3xl shadow-2xl p-8 border border-[var(--color-divider-gray)]">
 								<div className="text-center">
-									<div className="w-20 h-20 bg-black dark:bg-white rounded-full flex items-center justify-center text-white dark:text-black font-bold text-2xl mx-auto mb-4 shadow-lg">
+									<div className="w-20 h-20 bg-black dark:bg-white rounded-full flex items-center justify-center text-white dark:text-black font-medium text-2xl mx-auto mb-4 shadow-lg">
 										{post.author.charAt(0)}
 									</div>
-									<h4 className="text-xl font-bold text-[var(--color-text-primary)] mb-2">{post.author}</h4>
+									<h4 className="text-xl font-medium text-[var(--color-text-primary)] mb-2">{post.author}</h4>
 									<p className="text-sm text-[var(--color-text-secondary)] mb-4">Author & Healthcare Expert</p>
 									<p className="text-[var(--color-text-secondary)] text-sm leading-relaxed">
 										Insights and analysis on African healthcare markets, startups, investment, and policy.
@@ -508,7 +508,7 @@ const BlogDetailPage: React.FC = () => {
 							{/* Sponsored Content or Announcements */}
 							<div className="bg-[var(--color-background-surface)] rounded-3xl shadow-2xl overflow-hidden border border-[var(--color-divider-gray)]">
 								<div className="px-8 py-6 border-b border-[var(--color-divider-gray)]">
-									<h3 className="font-bold text-[var(--color-text-primary)] text-lg">
+									<h3 className="font-medium text-[var(--color-text-primary)] text-lg">
 										{showAds ? 'Sponsored' : 'Announcements'}
 									</h3>
 								</div>
@@ -523,11 +523,11 @@ const BlogDetailPage: React.FC = () => {
 
 							{/* About Medarion */}
 							<div className="bg-[var(--color-background-surface)] rounded-3xl shadow-2xl p-8 border border-[var(--color-divider-gray)]">
-								<h3 className="font-bold text-[var(--color-text-primary)] text-lg mb-4">About Medarion</h3>
+								<h3 className="font-medium text-[var(--color-text-primary)] text-lg mb-4">About Medarion</h3>
 								<p className="text-[var(--color-text-secondary)] text-sm leading-relaxed mb-4">
 									Insights and analysis on African healthcare markets, startups, investment, and policy.
 								</p>
-								<button className="w-full btn-primary-elevated py-3 px-6 rounded-xl font-semibold hover:opacity-90 transition-all duration-200 shadow-lg">
+								<button className="w-full btn-primary-elevated py-3 px-6 rounded-xl font-medium hover:opacity-90 transition-all duration-200 shadow-lg">
 									Learn More
 								</button>
 							</div>

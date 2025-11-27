@@ -345,7 +345,7 @@ const AfricaMap: React.FC<AfricaMapProps> = ({
                 <div className="flex items-center gap-4">
                   <div className="text-6xl">{selectedCountry.flag}</div>
                   <div>
-                    <h3 className="text-2xl font-bold text-[var(--color-text-primary)]">{selectedCountry.name}</h3>
+                    <h3 className="text-2xl font-medium text-[var(--color-text-primary)]">{selectedCountry.name}</h3>
                     <p className="text-sm text-[var(--color-text-secondary)] mt-1">Capital: {selectedCountry.capital}</p>
                   </div>
                 </div>
@@ -361,21 +361,21 @@ const AfricaMap: React.FC<AfricaMapProps> = ({
               <div className="grid grid-cols-2 gap-6">
                 <div className="space-y-4">
                   <div>
-                    <h4 className="text-sm font-semibold text-[var(--color-text-secondary)] uppercase tracking-wide mb-2">Currency</h4>
+                    <h4 className="text-sm font-medium text-[var(--color-text-secondary)] uppercase tracking-wide mb-2">Currency</h4>
                     <p className="text-lg font-medium text-[var(--color-text-primary)]">
                       {selectedCountry.currency} ({selectedCountry.currencyCode})
                     </p>
                   </div>
 
                   <div>
-                    <h4 className="text-sm font-semibold text-[var(--color-text-secondary)] uppercase tracking-wide mb-2">Population</h4>
+                    <h4 className="text-sm font-medium text-[var(--color-text-secondary)] uppercase tracking-wide mb-2">Population</h4>
                     <p className="text-lg font-medium text-[var(--color-text-primary)]">
                       {formatPopulation(selectedCountry.population)} ({selectedCountry.population.toLocaleString()})
                     </p>
                   </div>
 
                   <div>
-                    <h4 className="text-sm font-semibold text-[var(--color-text-secondary)] uppercase tracking-wide mb-2">Official Languages</h4>
+                    <h4 className="text-sm font-medium text-[var(--color-text-secondary)] uppercase tracking-wide mb-2">Official Languages</h4>
                     <div className="flex flex-wrap gap-2 mt-2">
                       {selectedCountry.languages.map((lang, idx) => (
                         <span
@@ -391,21 +391,21 @@ const AfricaMap: React.FC<AfricaMapProps> = ({
 
                 <div className="space-y-4">
                   <div>
-                    <h4 className="text-sm font-semibold text-[var(--color-text-secondary)] uppercase tracking-wide mb-2">GDP</h4>
+                    <h4 className="text-sm font-medium text-[var(--color-text-secondary)] uppercase tracking-wide mb-2">GDP</h4>
                     <p className="text-lg font-medium text-[var(--color-text-primary)]">
                       {formatNumber(selectedCountry.gdp)}
                     </p>
                   </div>
 
                   <div>
-                    <h4 className="text-sm font-semibold text-[var(--color-text-secondary)] uppercase tracking-wide mb-2">GDP per Capita</h4>
+                    <h4 className="text-sm font-medium text-[var(--color-text-secondary)] uppercase tracking-wide mb-2">GDP per Capita</h4>
                     <p className="text-lg font-medium text-[var(--color-text-primary)]">
                       {formatNumber(selectedCountry.gdpPerCapita)}
                     </p>
                   </div>
 
                   <div>
-                    <h4 className="text-sm font-semibold text-[var(--color-text-secondary)] uppercase tracking-wide mb-2">Country Size (Area)</h4>
+                    <h4 className="text-sm font-medium text-[var(--color-text-secondary)] uppercase tracking-wide mb-2">Country Size (Area)</h4>
                     <p className="text-lg font-medium text-[var(--color-text-primary)]">
                       {formatArea(selectedCountry.area)}
                     </p>

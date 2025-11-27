@@ -64,7 +64,7 @@ const SiteFooter: React.FC = () => {
 
           {/* Data */}
           <div className="space-y-4 flex flex-col h-full">
-            <h4 className="text-sm font-semibold text-[var(--color-text-primary)] min-h-[1.5rem] flex items-center">Data</h4>
+            <h4 className="text-sm font-medium text-[var(--color-text-primary)] min-h-[1.5rem] flex items-center">Data</h4>
             <ul className="space-y-3 flex-grow">
               <li>
                 <Link 
@@ -103,7 +103,7 @@ const SiteFooter: React.FC = () => {
 
           {/* Resources */}
           <div className="space-y-4 flex flex-col h-full">
-            <h4 className="text-sm font-semibold text-[var(--color-text-primary)] min-h-[1.5rem] flex items-center">Resources</h4>
+            <h4 className="text-sm font-medium text-[var(--color-text-primary)] min-h-[1.5rem] flex items-center">Resources</h4>
             <ul className="space-y-3 flex-grow">
               <li>
                 <Link 
@@ -142,7 +142,7 @@ const SiteFooter: React.FC = () => {
 
           {/* Company */}
           <div className="space-y-4 flex flex-col h-full">
-            <h4 className="text-sm font-semibold text-[var(--color-text-primary)] min-h-[1.5rem] flex items-center">Company</h4>
+            <h4 className="text-sm font-medium text-[var(--color-text-primary)] min-h-[1.5rem] flex items-center">Company</h4>
             <ul className="space-y-3 flex-grow">
               <li>
                 <Link 
@@ -181,7 +181,7 @@ const SiteFooter: React.FC = () => {
 
           {/* Newsletter Section - Last Column, Biggest */}
           <div className="space-y-4 flex flex-col h-full">
-            <h4 className="text-sm font-semibold text-[var(--color-text-primary)] min-h-[1.5rem] flex items-center">Stay updated</h4>
+            <h4 className="text-sm font-medium text-[var(--color-text-primary)] min-h-[1.5rem] flex items-center">Stay updated</h4>
             <p className="text-sm text-[var(--color-text-secondary)]">
               Get the latest updates and insights delivered to your inbox.
             </p>

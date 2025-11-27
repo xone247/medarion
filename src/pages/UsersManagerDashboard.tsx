@@ -119,7 +119,7 @@ const UsersManagerDashboard: React.FC = () => {
 				<div className="tile">
 					<div className="tile-header flex items-center gap-2">
 						<Users className="h-4 w-4 icon-primary" />
-						<h3 className="font-semibold text-[var(--color-text-primary)]">Filters</h3>
+						<h3 className="font-medium text-[var(--color-text-primary)]">Filters</h3>
 					</div>
 					<div className="tile-body space-y-3">
 						<div>
@@ -161,7 +161,7 @@ const UsersManagerDashboard: React.FC = () => {
 				</div>
 
 				<div className="tile">
-					<div className="tile-header"><h3 className="font-semibold text-[var(--color-text-primary)]">Bulk</h3></div>
+					<div className="tile-header"><h3 className="font-medium text-[var(--color-text-primary)]">Bulk</h3></div>
 					<div className="tile-body space-y-2">
 						<button className="btn-outline w-full px-3 py-2 rounded flex items-center gap-2" onClick={()=>{ try { navigator.clipboard.writeText(JSON.stringify(users, null, 2)); } catch {} }}><Download className="h-4 w-4"/> Export JSON</button>
 						<button className="btn-outline w-full px-3 py-2 rounded flex items-center gap-2" onClick={()=>{ setPromptModal({ isOpen: true, title: 'Import Users', message: 'Paste the JSON data for users:', placeholder: 'Paste JSON here...', onConfirm: (pasted) => { setPromptModal(prev => ({ ...prev, isOpen: false })); if (!pasted) return; try { const arr = JSON.parse(pasted) as ManagedUser[]; saveUsers(arr); setAlertModal({ isOpen: true, title: 'Success', message: `${arr.length} user(s) imported successfully`, variant: 'success' }); } catch { setAlertModal({ isOpen: true, title: 'Error', message: 'Invalid JSON format', variant: 'error' }); } } }); }}><Upload className="h-4 w-4"/> Import JSON</button>
@@ -173,7 +173,7 @@ const UsersManagerDashboard: React.FC = () => {
 			<section className="col-span-3 space-y-4">
 				<div className="tile">
 					<div className="tile-header flex items-center gap-2">
-						<h3 className="font-semibold text-[var(--color-text-primary)]">Users</h3>
+						<h3 className="font-medium text-[var(--color-text-primary)]">Users</h3>
 						<span className="text-xs text-[var(--color-text-secondary)]">{filtered.length} results</span>
 						<button className="ml-auto btn-primary px-3 py-2 rounded flex items-center gap-2" onClick={()=> setEditing(defaultUser())}><Plus className="h-4 w-4"/> New User</button>
 					</div>
@@ -245,7 +245,7 @@ const UsersManagerDashboard: React.FC = () => {
 					<div className="absolute inset-0 bg-black/40" onClick={()=> setEditing(null)} />
 					<div className="relative bg-[var(--color-background-surface)] border border-[var(--color-divider-gray)] rounded-xl w-full max-w-3xl p-5">
 						<div className="flex items-center justify-between mb-3">
-							<h3 className="text-lg font-semibold text-[var(--color-text-primary)]">{editing.id ? 'Edit User' : 'New User'}</h3>
+							<h3 className="text-lg font-medium text-[var(--color-text-primary)]">{editing.id ? 'Edit User' : 'New User'}</h3>
 							<button className="btn-outline px-2 py-1 rounded" onClick={()=> setEditing(null)}>Close</button>
 						</div>
 						<div className="grid grid-cols-2 gap-3">

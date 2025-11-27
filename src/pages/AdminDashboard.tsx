@@ -31,7 +31,7 @@ const RevenueByTierChart: React.FC<{
   if (!data || data.length === 0) {
     return (
       <div className="card-glass p-3 rounded-lg">
-        <h3 className="text-base font-semibold text-slate-700 dark:text-slate-200 mb-3">{title}</h3>
+        <h3 className="text-base font-medium text-slate-700 dark:text-slate-200 mb-3">{title}</h3>
         <div className="text-center text-slate-500 dark:text-slate-400 py-6">
           <p className="text-xs">No data available</p>
         </div>
@@ -44,7 +44,7 @@ const RevenueByTierChart: React.FC<{
   if (validData.length === 0) {
     return (
       <div className="card-glass p-3 rounded-lg">
-        <h3 className="text-base font-semibold text-slate-700 dark:text-slate-200 mb-3">{title}</h3>
+        <h3 className="text-base font-medium text-slate-700 dark:text-slate-200 mb-3">{title}</h3>
         <div className="text-center text-slate-500 dark:text-slate-400 py-6">
           <p className="text-xs">No valid data available</p>
         </div>
@@ -72,9 +72,9 @@ const RevenueByTierChart: React.FC<{
   return (
     <div className="card-glass p-3 rounded-lg h-full flex flex-col">
       <div className="flex items-center justify-between mb-3">
-        <h3 className="text-base font-semibold text-slate-700 dark:text-slate-200">{title}</h3>
+        <h3 className="text-base font-medium text-slate-700 dark:text-slate-200">{title}</h3>
         <div className="text-right">
-          <div className="text-xl font-bold text-slate-700 dark:text-slate-200">${totalRevenue.toLocaleString()}</div>
+          <div className="text-xl font-medium text-slate-700 dark:text-slate-200">${totalRevenue.toLocaleString()}</div>
           <div className="text-xs text-slate-500 dark:text-slate-400">Total Revenue</div>
         </div>
       </div>
@@ -93,7 +93,7 @@ const RevenueByTierChart: React.FC<{
                   <span className="text-sm font-medium text-slate-700 dark:text-slate-200">{item.label}</span>
                 </div>
                 <div className="text-right">
-                  <div className="text-sm font-semibold text-slate-700 dark:text-slate-200">${item.value.toLocaleString()}</div>
+                  <div className="text-sm font-medium text-slate-700 dark:text-slate-200">${item.value.toLocaleString()}</div>
                   <div className="text-xs text-slate-500 dark:text-slate-400">{revenuePercentage.toFixed(1)}%</div>
                 </div>
               </div>
@@ -177,9 +177,9 @@ const StatCard: React.FC<{
       <div className="relative flex items-center justify-between flex-1">
         <div className="flex-1 min-w-0">
           <p className="text-xs font-medium text-slate-500 dark:text-slate-400 mb-1 uppercase tracking-wide">{title}</p>
-          <p className={`text-2xl font-bold mb-1.5 ${classes.text}`}>{value}</p>
+          <p className={`text-2xl font-medium mb-1.5 ${classes.text}`}>{value}</p>
           {change !== undefined && (
-            <div className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-semibold ${
+            <div className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${
               change >= 0 
                 ? 'bg-emerald-100 dark:bg-emerald-500/20 text-emerald-700 dark:text-emerald-300' 
                 : 'bg-rose-100 dark:bg-rose-500/20 text-rose-700 dark:text-rose-300'
@@ -221,7 +221,7 @@ const SimpleBarChart: React.FC<{
   
   return (
     <div className="card-glass p-3 rounded-lg">
-      <h3 className="text-base font-semibold text-slate-700 dark:text-slate-200 mb-3">{title}</h3>
+      <h3 className="text-base font-medium text-slate-700 dark:text-slate-200 mb-3">{title}</h3>
       <div className="space-y-2">
         {data.map((item, index) => {
           const percentage = (item.value / maxValue) * 100;
@@ -231,7 +231,7 @@ const SimpleBarChart: React.FC<{
             <div key={index} className="space-y-1.5">
               <div className="flex items-center justify-between">
                 <div className="text-xs font-medium text-slate-700 dark:text-slate-200">{item.label}</div>
-                <div className="text-xs font-semibold text-slate-700 dark:text-slate-200">{item.value.toLocaleString()}</div>
+                <div className="text-xs font-medium text-slate-700 dark:text-slate-200">{item.value.toLocaleString()}</div>
               </div>
               <div className="relative">
                 <div className="w-full bg-slate-100 dark:bg-slate-700/30 rounded-full h-2 overflow-hidden">
@@ -258,7 +258,7 @@ const UserGrowthChart: React.FC<{
   if (!data || data.length === 0) {
     return (
       <div className="card-glass p-4 rounded-lg">
-        <h3 className="text-base font-semibold text-slate-700 dark:text-slate-200 mb-3">{title}</h3>
+        <h3 className="text-base font-medium text-slate-700 dark:text-slate-200 mb-3">{title}</h3>
         <div className="text-center text-slate-500 dark:text-slate-400 py-6">
           <p className="text-sm">No data available</p>
         </div>
@@ -281,11 +281,11 @@ const UserGrowthChart: React.FC<{
       {/* Header */}
       <div className="relative z-10 flex items-center justify-between mb-3">
         <div>
-          <h3 className="text-base font-semibold text-slate-700 dark:text-slate-200 mb-0.5">{title}</h3>
+          <h3 className="text-base font-medium text-slate-700 dark:text-slate-200 mb-0.5">{title}</h3>
           <p className="text-xs text-slate-500 dark:text-slate-400">User acquisition over time</p>
         </div>
         <div className="text-right">
-          <div className="text-xl font-bold text-slate-700 dark:text-slate-200">
+          <div className="text-xl font-medium text-slate-700 dark:text-slate-200">
             {totalUsers}
           </div>
           <div className="text-xs text-slate-500 dark:text-slate-400">Total Users</div>
@@ -360,7 +360,7 @@ const UserGrowthChart: React.FC<{
             </div>
             <div className="min-w-0">
               <div className="text-xs text-slate-500 dark:text-slate-400">Peak</div>
-              <div className="text-xs font-semibold text-slate-700 dark:text-slate-200 truncate">
+              <div className="text-xs font-medium text-slate-700 dark:text-slate-200 truncate">
                 {peakMonth?.label || 'N/A'}
               </div>
             </div>
@@ -374,7 +374,7 @@ const UserGrowthChart: React.FC<{
             </div>
             <div className="min-w-0">
               <div className="text-xs text-slate-500 dark:text-slate-400">Growth</div>
-              <div className="text-xs font-semibold text-slate-700 dark:text-slate-200">
+              <div className="text-xs font-medium text-slate-700 dark:text-slate-200">
                 +{totalUsers}
               </div>
             </div>
@@ -388,7 +388,7 @@ const UserGrowthChart: React.FC<{
             </div>
             <div className="min-w-0">
               <div className="text-xs text-slate-500 dark:text-slate-400">Avg</div>
-              <div className="text-xs font-semibold text-slate-700 dark:text-slate-200">
+              <div className="text-xs font-medium text-slate-700 dark:text-slate-200">
                 +{avgGrowth}/mo
               </div>
             </div>
@@ -408,7 +408,7 @@ const CustomPieChart: React.FC<{
   if (!data || data.length === 0) {
     return (
       <div className="card-glass p-3 rounded-lg">
-        <h3 className="text-base font-semibold text-slate-700 dark:text-slate-200 mb-3">{title}</h3>
+        <h3 className="text-base font-medium text-slate-700 dark:text-slate-200 mb-3">{title}</h3>
         <div className="text-center text-slate-500 dark:text-slate-400 py-6">
           <p className="text-xs">No data available</p>
         </div>
@@ -421,7 +421,7 @@ const CustomPieChart: React.FC<{
   if (total === 0) {
     return (
       <div className="card-glass p-3 rounded-lg">
-        <h3 className="text-base font-semibold text-slate-700 dark:text-slate-200 mb-3">{title}</h3>
+        <h3 className="text-base font-medium text-slate-700 dark:text-slate-200 mb-3">{title}</h3>
         <div className="text-center text-slate-500 dark:text-slate-400 py-6">
           <p className="text-xs">No data to display</p>
         </div>
@@ -456,7 +456,7 @@ const CustomPieChart: React.FC<{
   
   return (
     <div className="card-glass p-3 rounded-lg h-full flex flex-col">
-      <h3 className="text-base font-semibold text-slate-700 dark:text-slate-200 mb-3">{title}</h3>
+      <h3 className="text-base font-medium text-slate-700 dark:text-slate-200 mb-3">{title}</h3>
       <div className="flex items-center justify-center mb-3 flex-1">
         <div className="relative w-32 h-32">
           <svg className="w-full h-full transform -rotate-90" viewBox="0 0 100 100">
@@ -519,7 +519,7 @@ const CustomPieChart: React.FC<{
           </svg>
           {/* Center circle for donut effect */}
           <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-            <div className="text-xl font-bold text-slate-700 dark:text-slate-200">{total}</div>
+            <div className="text-xl font-medium text-slate-700 dark:text-slate-200">{total}</div>
           </div>
         </div>
       </div>
@@ -534,7 +534,7 @@ const CustomPieChart: React.FC<{
               <span className="text-slate-600 dark:text-slate-400 font-medium">{item.label}</span>
             </div>
             <div className="text-right">
-              <div className="font-semibold text-slate-700 dark:text-slate-200">{item.value}</div>
+              <div className="font-medium text-slate-700 dark:text-slate-200">{item.value}</div>
               <div className="text-xs text-slate-500 dark:text-slate-400">
                 {((item.value / total) * 100).toFixed(1)}%
               </div>
@@ -574,7 +574,7 @@ const ActivityFeed: React.FC<{
   return (
     <div className="card-glass p-3 rounded-lg h-full flex flex-col">
       <div className="flex items-center justify-between mb-3">
-        <h3 className="text-base font-semibold text-slate-700 dark:text-slate-200">Recent Activity</h3>
+        <h3 className="text-base font-medium text-slate-700 dark:text-slate-200">Recent Activity</h3>
         <button className="text-xs text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 transition-colors">
           View All →
         </button>
@@ -2022,15 +2022,21 @@ const AdminDashboard: React.FC = () => {
     try {
       setLoading(true);
       const data = await apiService.get('/admin/user-overrides');
-      if (data.success) {
+      if (data && data.success) {
         setUserOverrides(data.users || data.data || []);
       } else {
-        throw new Error(data.error || 'Failed to fetch user overrides');
+        // If table doesn't exist or no data, just set empty array without error
+        setUserOverrides([]);
       }
     } catch (err: any) {
-      setError(`Failed to load user overrides: ${err?.message || 'Unknown error'}`);
-      console.error('Error loading user overrides:', err);
+      // User overrides are optional - don't set error state, just log and continue
+      // This prevents the error from showing in the UI
+      if (process.env.NODE_ENV === 'development') {
+        console.warn('User overrides not available (this is optional):', err?.message);
+      }
+      // Silently set empty array - user overrides are optional
       setUserOverrides([]);
+      // Don't call setError() - this is not a critical error
     } finally {
       setLoading(false);
     }
@@ -3593,7 +3599,7 @@ const AdminDashboard: React.FC = () => {
     return (
       <div className="p-6">
         <div className="p-6 bg-background-surface rounded-lg border border-divider">
-          <h2 className="text-xl font-semibold text-text-primary mb-2">Unauthorized</h2>
+          <h2 className="text-xl font-medium text-text-primary mb-2">Unauthorized</h2>
           <p className="text-text-secondary">You do not have permission to access the Admin area.</p>
         </div>
       </div>
@@ -3658,12 +3664,6 @@ const AdminDashboard: React.FC = () => {
             
             {overviewData && !loading && (
               <div className="space-y-3">
-            {/* Page Header - Compact */}
-            <div className="mb-2">
-              <h1 className="text-2xl font-bold text-slate-700 dark:text-slate-200 mb-1">Dashboard Overview</h1>
-              <p className="text-sm text-slate-500 dark:text-slate-400">Welcome back! Here's what's happening with your platform.</p>
-            </div>
-
             {/* Key Metrics - Compact Style */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2">
               <StatCard
@@ -3732,7 +3732,7 @@ const AdminDashboard: React.FC = () => {
               {/* Recent Users Section */}
               <div className="card-glass p-3 rounded-lg h-full flex flex-col">
                 <div className="flex items-center justify-between mb-3">
-                  <h3 className="text-base font-semibold text-slate-700 dark:text-slate-200">Recent Users</h3>
+                  <h3 className="text-base font-medium text-slate-700 dark:text-slate-200">Recent Users</h3>
                   <button 
                     onClick={() => setActiveTab('users')}
                     className="text-xs text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 transition-colors"
@@ -3745,7 +3745,7 @@ const AdminDashboard: React.FC = () => {
                     usersData.users.slice(0, 5).map((user, index) => (
                       <div key={user.id || index} className="flex items-center justify-between p-2 card-glass rounded-lg hover:shadow-md transition-all">
                         <div className="flex items-center space-x-2 min-w-0 flex-1">
-                          <div className="w-8 h-8 bg-teal-600 dark:bg-gradient-to-br dark:from-cyan-500 dark:to-teal-500 rounded-full flex items-center justify-center text-white !text-white text-xs font-semibold flex-shrink-0">
+                          <div className="w-8 h-8 bg-teal-600 dark:bg-gradient-to-br dark:from-cyan-500 dark:to-teal-500 rounded-full flex items-center justify-center text-white !text-white text-xs font-medium flex-shrink-0">
                             {user.first_name?.charAt(0) || user.email?.charAt(0)?.toUpperCase() || 'U'}
                           </div>
                           <div className="min-w-0 flex-1">
@@ -3778,7 +3778,7 @@ const AdminDashboard: React.FC = () => {
                 <div className="relative flex items-center justify-between flex-1">
                   <div className="min-w-0 flex-1">
                     <p className="text-xs font-medium text-slate-500 dark:text-slate-400 mb-1 uppercase tracking-wide">New Users</p>
-                    <p className="text-2xl font-bold text-slate-700 dark:text-slate-200 mb-1">{overviewData?.userStats.newUsersThisMonth || 0}</p>
+                    <p className="text-2xl font-medium text-slate-700 dark:text-slate-200 mb-1">{overviewData?.userStats.newUsersThisMonth || 0}</p>
                     <p className="text-xs text-slate-500 dark:text-slate-400">This month</p>
                   </div>
                   <div className="p-2.5 rounded-lg bg-teal-600 dark:bg-gradient-to-br dark:from-cyan-500 dark:to-teal-500 shadow-md group-hover:scale-105 transition-transform duration-200 flex-shrink-0 ml-3">
@@ -3792,7 +3792,7 @@ const AdminDashboard: React.FC = () => {
                 <div className="relative flex items-center justify-between flex-1">
                   <div className="min-w-0 flex-1">
                     <p className="text-xs font-medium text-slate-500 dark:text-slate-400 mb-1 uppercase tracking-wide">Total Revenue</p>
-                    <p className="text-2xl font-bold text-slate-700 dark:text-slate-200 mb-1">${overviewData?.revenueStats.totalRevenue.toLocaleString() || '0'}</p>
+                    <p className="text-2xl font-medium text-slate-700 dark:text-slate-200 mb-1">${overviewData?.revenueStats.totalRevenue.toLocaleString() || '0'}</p>
                     <p className="text-xs text-slate-500 dark:text-slate-400">All time</p>
                   </div>
                   <div className="p-2.5 rounded-lg bg-green-600 dark:bg-gradient-to-br dark:from-emerald-500 dark:to-green-500 shadow-md group-hover:scale-105 transition-transform duration-200 flex-shrink-0 ml-3">
@@ -3806,7 +3806,7 @@ const AdminDashboard: React.FC = () => {
                 <div className="relative flex items-center justify-between flex-1">
                   <div className="min-w-0 flex-1">
                     <p className="text-xs font-medium text-slate-500 dark:text-slate-400 mb-1 uppercase tracking-wide">Conversion Rate</p>
-                    <p className="text-2xl font-bold text-slate-700 dark:text-slate-200 mb-1">{overviewData?.metrics.conversion_rate || '12.5'}%</p>
+                    <p className="text-2xl font-medium text-slate-700 dark:text-slate-200 mb-1">{overviewData?.metrics.conversion_rate || '12.5'}%</p>
                     <p className="text-xs text-slate-500 dark:text-slate-400">Overall</p>
                   </div>
                   <div className="p-2.5 rounded-lg bg-orange-600 dark:bg-gradient-to-br dark:from-amber-500 dark:to-orange-500 shadow-md group-hover:scale-105 transition-transform duration-200 flex-shrink-0 ml-3">
@@ -3820,7 +3820,7 @@ const AdminDashboard: React.FC = () => {
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-3">
               {/* System Status - Compact Style */}
               <div className="card-glass p-3 rounded-lg">
-                <h3 className="text-base font-semibold text-slate-700 dark:text-slate-200 mb-3">System Status</h3>
+                <h3 className="text-base font-medium text-slate-700 dark:text-slate-200 mb-3">System Status</h3>
                 <div className="grid grid-cols-2 gap-3">
                 <div className="flex items-center space-x-3">
                   <div className="p-2 bg-emerald-100 dark:bg-emerald-500/30 rounded-lg">
@@ -3863,7 +3863,7 @@ const AdminDashboard: React.FC = () => {
 
               {/* Quick Actions Section */}
               <div className="card-glass p-3 rounded-lg">
-                <h3 className="text-base font-semibold text-slate-700 dark:text-slate-200 mb-3">Quick Actions</h3>
+                <h3 className="text-base font-medium text-slate-700 dark:text-slate-200 mb-3">Quick Actions</h3>
                 <div className="space-y-2">
                   <button 
                     onClick={() => setActiveTab('users')}
@@ -3919,7 +3919,7 @@ const AdminDashboard: React.FC = () => {
               {/* Recent Blog Posts Section */}
               <div className="card-glass p-3 rounded-lg h-full flex flex-col">
                 <div className="flex items-center justify-between mb-3">
-                  <h3 className="text-base font-semibold text-slate-700 dark:text-slate-200">Recent Blog Posts</h3>
+                  <h3 className="text-base font-medium text-slate-700 dark:text-slate-200">Recent Blog Posts</h3>
                   <button 
                     onClick={() => setActiveTab('blog')}
                     className="text-xs text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 transition-colors"
@@ -3964,7 +3964,7 @@ const AdminDashboard: React.FC = () => {
               {/* Module Overview Section - 2 columns */}
               <div className="lg:col-span-2 card-glass p-3 rounded-lg">
                 <div className="flex items-center justify-between mb-3">
-                  <h3 className="text-base font-semibold text-slate-700 dark:text-slate-200">Module Overview</h3>
+                  <h3 className="text-base font-medium text-slate-700 dark:text-slate-200">Module Overview</h3>
                   <button className="text-xs text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 transition-colors">
                     View All →
                   </button>
@@ -3975,26 +3975,26 @@ const AdminDashboard: React.FC = () => {
                 {/* Companies Module */}
                 <div className="card-glass p-3 rounded-lg hover:shadow-md transition-all duration-200 group h-full flex flex-col">
                   <div className="flex items-center justify-between mb-2">
-                    <h4 className="text-sm font-semibold text-slate-700 dark:text-slate-200">Companies</h4>
+                    <h4 className="text-sm font-medium text-slate-700 dark:text-slate-200">Companies</h4>
                     <div className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></div>
                   </div>
                   <div className="flex-1 flex flex-col">
                     <div className="space-y-2">
                     <div className="flex justify-between items-center">
                       <span className="text-xs text-slate-500 dark:text-slate-400">Total Companies</span>
-                      <span className="text-base font-bold text-slate-700 dark:text-slate-200">
+                      <span className="text-base font-medium text-slate-700 dark:text-slate-200">
                         {overviewData?.moduleStats?.companies || 0}
                       </span>
                     </div>
                     <div className="flex justify-between items-center">
                       <span className="text-xs text-slate-500 dark:text-slate-400">Active</span>
-                      <span className="text-xs font-semibold text-emerald-600 dark:text-emerald-400">
+                      <span className="text-xs font-medium text-emerald-600 dark:text-emerald-400">
                         {Math.floor((overviewData?.moduleStats?.companies || 0) * 0.95)}
                       </span>
                     </div>
                     <div className="flex justify-between items-center pt-2 border-t border-slate-200 dark:border-slate-700">
                       <span className="text-xs text-slate-500 dark:text-slate-400">New This Month</span>
-                      <span className="text-xs font-semibold text-cyan-600 dark:text-cyan-400">
+                      <span className="text-xs font-medium text-cyan-600 dark:text-cyan-400">
                         +{Math.floor((overviewData?.moduleStats?.companies || 0) * 0.02)}
                       </span>
                     </div>
@@ -4005,26 +4005,26 @@ const AdminDashboard: React.FC = () => {
                 {/* Deals Module */}
                 <div className="card-glass p-3 rounded-lg hover:shadow-md transition-all duration-200 group h-full flex flex-col">
                   <div className="flex items-center justify-between mb-2">
-                    <h4 className="text-sm font-semibold text-slate-700 dark:text-slate-200">Deals</h4>
+                    <h4 className="text-sm font-medium text-slate-700 dark:text-slate-200">Deals</h4>
                     <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
                   </div>
                   <div className="flex-1 flex flex-col">
                     <div className="space-y-2">
                     <div className="flex justify-between items-center">
                       <span className="text-sm text-slate-500 dark:text-slate-400">Total Deals</span>
-                      <span className="text-lg font-bold text-slate-700 dark:text-slate-200">
+                      <span className="text-lg font-medium text-slate-700 dark:text-slate-200">
                         {overviewData?.moduleStats?.deals || 0}
                       </span>
                     </div>
                     <div className="flex justify-between items-center">
                       <span className="text-sm text-slate-500 dark:text-slate-400">Value</span>
-                      <span className="text-sm font-semibold text-emerald-600 dark:text-emerald-400">
+                      <span className="text-sm font-medium text-emerald-600 dark:text-emerald-400">
                         ${((overviewData?.moduleStats?.deals || 0) * 7.2).toFixed(1)}M
                       </span>
                     </div>
                     <div className="flex justify-between items-center pt-2 border-t border-slate-200 dark:border-slate-700">
                       <span className="text-xs text-slate-500 dark:text-slate-400">This Month</span>
-                      <span className="text-xs font-semibold text-cyan-600 dark:text-cyan-400">
+                      <span className="text-xs font-medium text-cyan-600 dark:text-cyan-400">
                         +{Math.floor((overviewData?.moduleStats?.deals || 0) * 0.05)}
                       </span>
                     </div>
@@ -4035,26 +4035,26 @@ const AdminDashboard: React.FC = () => {
                 {/* Grants Module */}
                 <div className="card-glass p-3 rounded-lg hover:shadow-md transition-all duration-200 group h-full flex flex-col">
                   <div className="flex items-center justify-between mb-2">
-                    <h4 className="text-sm font-semibold text-slate-700 dark:text-slate-200">Grants</h4>
+                    <h4 className="text-sm font-medium text-slate-700 dark:text-slate-200">Grants</h4>
                     <div className="w-2 h-2 bg-yellow-500 rounded-full animate-pulse"></div>
                   </div>
                   <div className="flex-1 flex flex-col">
                     <div className="space-y-2">
                     <div className="flex justify-between items-center">
                       <span className="text-sm text-slate-500 dark:text-slate-400">Available</span>
-                      <span className="text-lg font-bold text-slate-700 dark:text-slate-200">
+                      <span className="text-lg font-medium text-slate-700 dark:text-slate-200">
                         {overviewData?.moduleStats?.grants || 0}
                       </span>
                     </div>
                     <div className="flex justify-between items-center">
                       <span className="text-sm text-slate-500 dark:text-slate-400">Total Value</span>
-                      <span className="text-sm font-semibold text-emerald-600 dark:text-emerald-400">
+                      <span className="text-sm font-medium text-emerald-600 dark:text-emerald-400">
                         ${((overviewData?.moduleStats?.grants || 0) * 0.3).toFixed(1)}M
                       </span>
                     </div>
                     <div className="flex justify-between items-center pt-2 border-t border-slate-200 dark:border-slate-700">
                       <span className="text-xs text-slate-500 dark:text-slate-400">Deadline Soon</span>
-                      <span className="text-xs font-semibold text-orange-600 dark:text-orange-400">
+                      <span className="text-xs font-medium text-orange-600 dark:text-orange-400">
                         {Math.floor((overviewData?.moduleStats?.grants || 0) * 0.08)}
                       </span>
                     </div>
@@ -4065,26 +4065,26 @@ const AdminDashboard: React.FC = () => {
                 {/* Clinical Trials Module */}
                 <div className="card-glass p-3 rounded-lg hover:shadow-md transition-all duration-200 group h-full flex flex-col">
                   <div className="flex items-center justify-between mb-2">
-                    <h4 className="text-sm font-semibold text-slate-700 dark:text-slate-200">Clinical Trials</h4>
+                    <h4 className="text-sm font-medium text-slate-700 dark:text-slate-200">Clinical Trials</h4>
                     <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
                   </div>
                   <div className="flex-1 flex flex-col">
                     <div className="space-y-2">
                     <div className="flex justify-between items-center">
                       <span className="text-sm text-slate-500 dark:text-slate-400">Active Trials</span>
-                      <span className="text-lg font-bold text-slate-700 dark:text-slate-200">
+                      <span className="text-lg font-medium text-slate-700 dark:text-slate-200">
                         {overviewData?.moduleStats?.clinical_trials || 0}
                       </span>
                     </div>
                     <div className="flex justify-between items-center">
                       <span className="text-sm text-slate-500 dark:text-slate-400">Recruiting</span>
-                      <span className="text-sm font-semibold text-cyan-600 dark:text-cyan-400">
+                      <span className="text-sm font-medium text-cyan-600 dark:text-cyan-400">
                         {Math.floor((overviewData?.moduleStats?.clinical_trials || 0) * 0.38)}
                       </span>
                     </div>
                     <div className="flex justify-between items-center pt-2 border-t border-slate-200 dark:border-slate-700">
                       <span className="text-xs text-slate-500 dark:text-slate-400">Completed</span>
-                      <span className="text-xs font-semibold text-emerald-600 dark:text-emerald-400">
+                      <span className="text-xs font-medium text-emerald-600 dark:text-emerald-400">
                         {Math.floor((overviewData?.moduleStats?.clinical_trials || 0) * 1.75)}
                       </span>
                     </div>
@@ -4095,26 +4095,26 @@ const AdminDashboard: React.FC = () => {
                 {/* Investors Module */}
                 <div className="card-glass p-3 rounded-lg hover:shadow-md transition-all duration-200 group h-full flex flex-col">
                   <div className="flex items-center justify-between mb-2">
-                    <h4 className="text-sm font-semibold text-slate-700 dark:text-slate-200">Investors</h4>
+                    <h4 className="text-sm font-medium text-slate-700 dark:text-slate-200">Investors</h4>
                     <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
                   </div>
                   <div className="flex-1 flex flex-col">
                     <div className="space-y-2">
                     <div className="flex justify-between items-center">
                       <span className="text-sm text-slate-500 dark:text-slate-400">Total Investors</span>
-                      <span className="text-lg font-bold text-slate-700 dark:text-slate-200">
+                      <span className="text-lg font-medium text-slate-700 dark:text-slate-200">
                         {overviewData?.moduleStats?.investors || 0}
                       </span>
                     </div>
                     <div className="flex justify-between items-center">
                       <span className="text-sm text-slate-500 dark:text-slate-400">Active</span>
-                      <span className="text-sm font-semibold text-emerald-600 dark:text-emerald-400">
+                      <span className="text-sm font-medium text-emerald-600 dark:text-emerald-400">
                         {Math.floor((overviewData?.moduleStats?.investors || 0) * 0.85)}
                       </span>
                     </div>
                     <div className="flex justify-between items-center pt-2 border-t border-slate-200 dark:border-slate-700">
                       <span className="text-xs text-slate-500 dark:text-slate-400">New This Month</span>
-                      <span className="text-xs font-semibold text-cyan-600 dark:text-cyan-400">
+                      <span className="text-xs font-medium text-cyan-600 dark:text-cyan-400">
                         +{Math.floor((overviewData?.moduleStats?.investors || 0) * 0.02)}
                       </span>
                     </div>
@@ -4125,26 +4125,26 @@ const AdminDashboard: React.FC = () => {
                 {/* Regulatory Module */}
                 <div className="card-glass p-3 rounded-lg hover:shadow-md transition-all duration-200 group h-full flex flex-col">
                   <div className="flex items-center justify-between mb-2">
-                    <h4 className="text-sm font-semibold text-slate-700 dark:text-slate-200">Regulatory</h4>
+                    <h4 className="text-sm font-medium text-slate-700 dark:text-slate-200">Regulatory</h4>
                     <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></div>
                   </div>
                   <div className="flex-1 flex flex-col">
                     <div className="space-y-2">
                     <div className="flex justify-between items-center">
                       <span className="text-sm text-slate-500 dark:text-slate-400">Regulations</span>
-                      <span className="text-lg font-bold text-slate-700 dark:text-slate-200">
+                      <span className="text-lg font-medium text-slate-700 dark:text-slate-200">
                         {overviewData?.moduleStats?.regulatory_bodies || 0}
                       </span>
                     </div>
                     <div className="flex justify-between items-center">
                       <span className="text-sm text-slate-500 dark:text-slate-400">Updated</span>
-                      <span className="text-sm font-semibold text-emerald-600 dark:text-emerald-400">
+                      <span className="text-sm font-medium text-emerald-600 dark:text-emerald-400">
                         {Math.floor((overviewData?.moduleStats?.regulatory_bodies || 0) * 0.02)}
                       </span>
                     </div>
                     <div className="flex justify-between items-center pt-2 border-t border-slate-200 dark:border-slate-700">
                       <span className="text-xs text-slate-500 dark:text-slate-400">Pending</span>
-                      <span className="text-xs font-semibold text-orange-600 dark:text-orange-400">
+                      <span className="text-xs font-medium text-orange-600 dark:text-orange-400">
                         {Math.floor((overviewData?.moduleStats?.regulatory_bodies || 0) * 0.005)}
                       </span>
                     </div>
@@ -4156,12 +4156,12 @@ const AdminDashboard: React.FC = () => {
 
               {/* Performance Metrics Section */}
               <div className="card-glass p-3 rounded-lg h-full flex flex-col">
-                <h3 className="text-base font-semibold text-slate-700 dark:text-slate-200 mb-3">Performance Metrics</h3>
+                <h3 className="text-base font-medium text-slate-700 dark:text-slate-200 mb-3">Performance Metrics</h3>
                 <div className="space-y-3 flex-1">
                   <div className="p-2.5 card-glass rounded-lg">
                     <div className="flex items-center justify-between mb-1.5">
                       <span className="text-xs text-slate-500 dark:text-slate-400">Page Load Time</span>
-                      <span className="text-xs font-semibold text-emerald-600 dark:text-emerald-400">0.8s</span>
+                      <span className="text-xs font-medium text-emerald-600 dark:text-emerald-400">0.8s</span>
                     </div>
                     <div className="w-full bg-slate-200 dark:bg-slate-700/30 rounded-full h-1.5">
                       <div className="bg-green-500 h-1.5 rounded-full" style={{ width: '85%' }}></div>
@@ -4170,7 +4170,7 @@ const AdminDashboard: React.FC = () => {
                   <div className="p-2.5 card-glass rounded-lg">
                     <div className="flex items-center justify-between mb-1.5">
                       <span className="text-xs text-slate-500 dark:text-slate-400">API Response</span>
-                      <span className="text-xs font-semibold text-emerald-600 dark:text-emerald-400">120ms</span>
+                      <span className="text-xs font-medium text-emerald-600 dark:text-emerald-400">120ms</span>
                     </div>
                     <div className="w-full bg-slate-200 dark:bg-slate-700/30 rounded-full h-1.5">
                       <div className="bg-green-500 h-1.5 rounded-full" style={{ width: '92%' }}></div>
@@ -4179,7 +4179,7 @@ const AdminDashboard: React.FC = () => {
                   <div className="p-2.5 card-glass rounded-lg">
                     <div className="flex items-center justify-between mb-1.5">
                       <span className="text-xs text-slate-500 dark:text-slate-400">Uptime</span>
-                      <span className="text-xs font-semibold text-emerald-600 dark:text-emerald-400">99.9%</span>
+                      <span className="text-xs font-medium text-emerald-600 dark:text-emerald-400">99.9%</span>
                     </div>
                     <div className="w-full bg-slate-200 dark:bg-slate-700/30 rounded-full h-1.5">
                       <div className="bg-green-500 h-1.5 rounded-full" style={{ width: '99.9%' }}></div>
@@ -4188,7 +4188,7 @@ const AdminDashboard: React.FC = () => {
                   <div className="p-2.5 card-glass rounded-lg">
                     <div className="flex items-center justify-between mb-1.5">
                       <span className="text-xs text-slate-500 dark:text-slate-400">Error Rate</span>
-                      <span className="text-xs font-semibold text-emerald-600 dark:text-emerald-400">0.01%</span>
+                      <span className="text-xs font-medium text-emerald-600 dark:text-emerald-400">0.01%</span>
                     </div>
                     <div className="w-full bg-slate-200 dark:bg-slate-700/30 rounded-full h-1.5">
                       <div className="bg-green-500 h-1.5 rounded-full" style={{ width: '99%' }}></div>
@@ -4197,7 +4197,7 @@ const AdminDashboard: React.FC = () => {
                   <div className="pt-2 border-t border-slate-200 dark:border-slate-700">
                     <div className="flex items-center justify-between">
                       <span className="text-xs text-slate-500 dark:text-slate-400">Active Sessions</span>
-                      <span className="text-sm font-bold text-slate-700 dark:text-slate-200">
+                      <span className="text-sm font-medium text-slate-700 dark:text-slate-200">
                         {overviewData?.userStats.activeUsers || 0}
                       </span>
                     </div>
@@ -4212,12 +4212,12 @@ const AdminDashboard: React.FC = () => {
               <div className="lg:col-span-2 card-glass p-3 rounded-lg">
               <div className="flex items-center justify-between mb-3">
                 <div>
-                  <h3 className="text-base font-bold text-slate-700 dark:text-slate-200 mb-0.5">Advertisement Overview</h3>
+                  <h3 className="text-base font-medium text-slate-700 dark:text-slate-200 mb-0.5">Advertisement Overview</h3>
                   <p className="text-xs text-slate-500 dark:text-slate-400">Campaign performance and ad management</p>
                 </div>
                 <div className="flex items-center space-x-2 px-2 py-1 bg-emerald-100 dark:bg-emerald-500/20 rounded-full">
                   <div className="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse"></div>
-                  <span className="text-xs font-semibold text-emerald-700 dark:text-emerald-300">Live</span>
+                  <span className="text-xs font-medium text-emerald-700 dark:text-emerald-300">Live</span>
                 </div>
               </div>
               
@@ -4228,10 +4228,10 @@ const AdminDashboard: React.FC = () => {
                     <div className="p-2 bg-cyan-100 dark:bg-cyan-500/30 rounded-lg">
                       <Target className="h-4 w-4 text-cyan-600 dark:text-cyan-400" />
                     </div>
-                    <span className="text-xs bg-cyan-100 dark:bg-cyan-500/30 text-cyan-700 dark:text-cyan-300 px-1.5 py-0.5 rounded-full font-semibold">Active</span>
+                    <span className="text-xs bg-cyan-100 dark:bg-cyan-500/30 text-cyan-700 dark:text-cyan-300 px-1.5 py-0.5 rounded-full font-medium">Active</span>
                   </div>
                   <div className="flex-1">
-                    <div className="text-xl font-bold text-slate-700 dark:text-slate-200 mb-0.5">
+                    <div className="text-xl font-medium text-slate-700 dark:text-slate-200 mb-0.5">
                       {overviewData?.adsStats?.activeCampaigns || 0}
                     </div>
                     <div className="text-xs text-slate-500 dark:text-slate-400">Active Campaigns</div>
@@ -4244,10 +4244,10 @@ const AdminDashboard: React.FC = () => {
                     <div className="p-2 bg-emerald-100 dark:bg-emerald-500/30 rounded-lg">
                       <Eye className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
                     </div>
-                    <span className="text-xs bg-emerald-100 dark:bg-emerald-500/30 text-emerald-700 dark:text-emerald-300 px-1.5 py-0.5 rounded-full font-semibold">+12%</span>
+                    <span className="text-xs bg-emerald-100 dark:bg-emerald-500/30 text-emerald-700 dark:text-emerald-300 px-1.5 py-0.5 rounded-full font-medium">+12%</span>
                   </div>
                   <div className="flex-1">
-                    <div className="text-xl font-bold text-slate-700 dark:text-slate-200 mb-0.5">
+                    <div className="text-xl font-medium text-slate-700 dark:text-slate-200 mb-0.5">
                       {overviewData?.adsStats?.totalImpressions ? (overviewData.adsStats.totalImpressions / 1000).toFixed(1) + 'K' : '0'}
                     </div>
                     <div className="text-xs text-slate-500 dark:text-slate-400">Total Impressions</div>
@@ -4260,10 +4260,10 @@ const AdminDashboard: React.FC = () => {
                     <div className="p-2 bg-purple-100 dark:!bg-purple-100 rounded-lg">
                       <MousePointer className="h-4 w-4 text-purple-600 dark:text-purple-600" />
                     </div>
-                    <span className="text-xs bg-purple-100 dark:!bg-purple-100 text-purple-700 dark:text-purple-700 px-1.5 py-0.5 rounded-full font-semibold">+8%</span>
+                    <span className="text-xs bg-purple-100 dark:!bg-purple-100 text-purple-700 dark:text-purple-700 px-1.5 py-0.5 rounded-full font-medium">+8%</span>
                   </div>
                   <div className="flex-1">
-                    <div className="text-xl font-bold text-slate-700 dark:text-slate-200 mb-0.5">
+                    <div className="text-xl font-medium text-slate-700 dark:text-slate-200 mb-0.5">
                       {overviewData?.adsStats?.clickThroughRate || 0}%
                     </div>
                     <div className="text-xs text-slate-500 dark:text-slate-400">Click-Through Rate</div>
@@ -4276,10 +4276,10 @@ const AdminDashboard: React.FC = () => {
                     <div className="p-2 bg-orange-100 dark:!bg-orange-100 rounded-lg">
                       <DollarSign className="h-4 w-4 text-orange-600 dark:text-black" />
                     </div>
-                    <span className="text-xs bg-orange-100 dark:!bg-orange-100 text-orange-700 dark:text-orange-700 px-1.5 py-0.5 rounded-full font-semibold">+15%</span>
+                    <span className="text-xs bg-orange-100 dark:!bg-orange-100 text-orange-700 dark:text-orange-700 px-1.5 py-0.5 rounded-full font-medium">+15%</span>
                   </div>
                   <div className="flex-1">
-                    <div className="text-xl font-bold text-slate-700 dark:text-slate-200 mb-0.5">
+                    <div className="text-xl font-medium text-slate-700 dark:text-slate-200 mb-0.5">
                       {`$${overviewData?.adsStats?.revenueGenerated ? (overviewData.adsStats.revenueGenerated / 1000).toFixed(1) + 'K' : '0'}`}
                     </div>
                     <div className="text-xs text-slate-500 dark:text-slate-400">Revenue Generated</div>
@@ -4292,7 +4292,7 @@ const AdminDashboard: React.FC = () => {
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
                   <div className="flex items-center justify-between mb-2">
-                    <h4 className="text-xs font-semibold text-slate-700 dark:text-slate-200">Top Campaigns</h4>
+                    <h4 className="text-xs font-medium text-slate-700 dark:text-slate-200">Top Campaigns</h4>
                     <button className="text-xs text-slate-500 dark:text-slate-400 hover:text-gray-900 dark:hover:text-white transition-colors">
                       View All →
                     </button>
@@ -4312,7 +4312,7 @@ const AdminDashboard: React.FC = () => {
                           </div>
                         </div>
                         <div className="text-right ml-1.5 flex-shrink-0">
-                          <div className="text-xs font-semibold text-slate-700 dark:text-slate-200">{campaign.ctr}</div>
+                          <div className="text-xs font-medium text-slate-700 dark:text-slate-200">{campaign.ctr}</div>
                           <div className="text-xs text-slate-500 dark:text-slate-400">{campaign.revenue}</div>
                         </div>
                       </div>
@@ -4321,7 +4321,7 @@ const AdminDashboard: React.FC = () => {
                 </div>
                 
                 <div>
-                  <h4 className="text-xs font-semibold text-slate-700 dark:text-slate-200 mb-2">Placement Performance</h4>
+                  <h4 className="text-xs font-medium text-slate-700 dark:text-slate-200 mb-2">Placement Performance</h4>
                   <div className="space-y-1">
                     <div className="flex items-center justify-between p-1.5 card-glass rounded-lg hover:shadow-md transition-all duration-200 group">
                       <div className="flex items-center space-x-1.5 min-w-0 flex-1">
@@ -4334,7 +4334,7 @@ const AdminDashboard: React.FC = () => {
                         </div>
                       </div>
                       <div className="text-right ml-1.5 flex-shrink-0">
-                        <div className="text-xs font-semibold text-emerald-600 dark:text-emerald-400">5.2%</div>
+                        <div className="text-xs font-medium text-emerald-600 dark:text-emerald-400">5.2%</div>
                         <div className="text-xs text-slate-500 dark:text-slate-400">Best</div>
                       </div>
                     </div>
@@ -4350,7 +4350,7 @@ const AdminDashboard: React.FC = () => {
                         </div>
                       </div>
                       <div className="text-right ml-1.5 flex-shrink-0">
-                        <div className="text-xs font-semibold text-cyan-600 dark:text-cyan-400">3.1%</div>
+                        <div className="text-xs font-medium text-cyan-600 dark:text-cyan-400">3.1%</div>
                         <div className="text-xs text-slate-500 dark:text-slate-400">Good</div>
                       </div>
                     </div>
@@ -4366,7 +4366,7 @@ const AdminDashboard: React.FC = () => {
                         </div>
                       </div>
                       <div className="text-right ml-1.5 flex-shrink-0">
-                        <div className="text-xs font-semibold text-orange-600 dark:text-orange-400">2.8%</div>
+                        <div className="text-xs font-medium text-orange-600 dark:text-orange-400">2.8%</div>
                         <div className="text-xs text-slate-500 dark:text-slate-400">Avg</div>
                       </div>
                     </div>
@@ -4378,7 +4378,7 @@ const AdminDashboard: React.FC = () => {
               {/* Campaign Performance Chart - Compact Style */}
               <div className="max-w-full">
                 <div className="card-glass p-3 rounded-lg">
-                  <h4 className="text-sm font-semibold text-slate-700 dark:text-slate-200 mb-3">Campaign Performance (Last 7 Days)</h4>
+                  <h4 className="text-sm font-medium text-slate-700 dark:text-slate-200 mb-3">Campaign Performance (Last 7 Days)</h4>
                   <div className="card-glass p-3 rounded-lg bg-slate-50 dark:bg-slate-800/50">
                     <div className="flex items-end justify-between h-32 space-x-2">
                       {[
@@ -4437,16 +4437,10 @@ const AdminDashboard: React.FC = () => {
 
         {activeTab==='users' && (
           <div className="space-y-3">
-            {/* Page Header - Compact */}
-            <div className="mb-2">
-              <h1 className="text-2xl font-bold text-slate-700 dark:text-slate-200 mb-1">User Management</h1>
-              <p className="text-sm text-slate-500 dark:text-slate-400">Manage all platform users and their access</p>
-            </div>
-
             {/* Enhanced User Management Header */}
             <div className="card-glass p-3 rounded-lg">
               <div className="flex items-center justify-between mb-4">
-                <h3 className="text-base font-semibold text-slate-700 dark:text-slate-200">User Management</h3>
+                <h3 className="text-base font-medium text-slate-700 dark:text-slate-200">User Management</h3>
                 <div className="flex items-center gap-3">
                   <button 
                     className="btn-outline px-4 py-2 rounded-lg flex items-center gap-2"
@@ -4560,13 +4554,13 @@ const AdminDashboard: React.FC = () => {
                           className="rounded"
                         />
                       </th>
-                      <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700 dark:text-slate-200">User</th>
-                      <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700 dark:text-slate-200">Role</th>
-                      <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700 dark:text-slate-200">Tier</th>
-                      <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700 dark:text-slate-200">Status</th>
-                      <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700 dark:text-slate-200">Verified</th>
-                      <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700 dark:text-slate-200">Joined</th>
-                      <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700 dark:text-slate-200">Actions</th>
+                      <th className="px-4 py-3 text-left text-sm font-medium text-slate-700 dark:text-slate-200">User</th>
+                      <th className="px-4 py-3 text-left text-sm font-medium text-slate-700 dark:text-slate-200">Role</th>
+                      <th className="px-4 py-3 text-left text-sm font-medium text-slate-700 dark:text-slate-200">Tier</th>
+                      <th className="px-4 py-3 text-left text-sm font-medium text-slate-700 dark:text-slate-200">Status</th>
+                      <th className="px-4 py-3 text-left text-sm font-medium text-slate-700 dark:text-slate-200">Verified</th>
+                      <th className="px-4 py-3 text-left text-sm font-medium text-slate-700 dark:text-slate-200">Joined</th>
+                      <th className="px-4 py-3 text-left text-sm font-medium text-slate-700 dark:text-slate-200">Actions</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-slate-200 dark:divide-slate-700">
@@ -4582,7 +4576,7 @@ const AdminDashboard: React.FC = () => {
                         </td>
                         <td className="px-4 py-3">
                           <div className="flex items-center gap-3">
-                            <div className="w-10 h-10 bg-teal-600 dark:bg-gradient-to-br dark:from-cyan-500 dark:to-teal-500 rounded-full flex items-center justify-center text-white !text-white font-semibold">
+                            <div className="w-10 h-10 bg-teal-600 dark:bg-gradient-to-br dark:from-cyan-500 dark:to-teal-500 rounded-full flex items-center justify-center text-white !text-white font-medium">
                               {user.first_name?.charAt(0) || user.email.charAt(0).toUpperCase()}
                             </div>
                             <div>
@@ -4727,15 +4721,9 @@ const AdminDashboard: React.FC = () => {
 
         {activeTab==='modules' && (
           <div className="space-y-3">
-            {/* Page Header - Compact */}
-            <div className="mb-2">
-              <h1 className="text-2xl font-bold text-slate-700 dark:text-slate-200 mb-1">Module Management</h1>
-              <p className="text-sm text-slate-500 dark:text-slate-400">Manage all platform modules and their configurations</p>
-            </div>
-
             {/* Create New Module */}
             <div id="create-module-section" className="card-glass p-3 rounded-lg">
-              <h3 className="text-base font-semibold text-slate-700 dark:text-slate-200 mb-3">Create New Module</h3>
+              <h3 className="text-base font-medium text-slate-700 dark:text-slate-200 mb-3">Create New Module</h3>
               <div className="grid grid-cols-2 gap-4">
                 <input className="input" placeholder="Module ID (e.g., new_module)" value={draftModule.module_id} onChange={e=>setDraftModule(prev=>({...prev, module_id:e.target.value}))}/>
                 <input className="input" placeholder="Module Name" value={draftModule.name} onChange={e=>setDraftModule(prev=>({...prev, name:e.target.value}))}/>
@@ -4828,7 +4816,7 @@ const AdminDashboard: React.FC = () => {
             {/* Modules Table */}
             <div className="card-glass rounded-lg overflow-hidden">
               <div className="p-3 border-b border-slate-200 dark:border-slate-700">
-                <h3 className="text-base font-semibold text-slate-700 dark:text-slate-200">Modules ({filteredModules.length})</h3>
+                <h3 className="text-base font-medium text-slate-700 dark:text-slate-200">Modules ({filteredModules.length})</h3>
                 <p className="text-sm text-slate-500 dark:text-slate-400">Manage your platform modules</p>
               </div>
               <div className="overflow-x-auto">
@@ -4838,13 +4826,13 @@ const AdminDashboard: React.FC = () => {
                       <th className="px-4 py-3 text-left">
                         <input type="checkbox" checked={selectedModules.length === filteredModules.length && filteredModules.length > 0} onChange={handleSelectAllModules} className="w-4 h-4"/>
                       </th>
-                      <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700 dark:text-slate-200">Module</th>
-                      <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700 dark:text-slate-200">Category</th>
-                      <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700 dark:text-slate-200">Tier</th>
-                      <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700 dark:text-slate-200">Order</th>
-                      <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700 dark:text-slate-200">Status</th>
-                      <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700 dark:text-slate-200">Core</th>
-                      <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700 dark:text-slate-200">Actions</th>
+                      <th className="px-4 py-3 text-left text-sm font-medium text-slate-700 dark:text-slate-200">Module</th>
+                      <th className="px-4 py-3 text-left text-sm font-medium text-slate-700 dark:text-slate-200">Category</th>
+                      <th className="px-4 py-3 text-left text-sm font-medium text-slate-700 dark:text-slate-200">Tier</th>
+                      <th className="px-4 py-3 text-left text-sm font-medium text-slate-700 dark:text-slate-200">Order</th>
+                      <th className="px-4 py-3 text-left text-sm font-medium text-slate-700 dark:text-slate-200">Status</th>
+                      <th className="px-4 py-3 text-left text-sm font-medium text-slate-700 dark:text-slate-200">Core</th>
+                      <th className="px-4 py-3 text-left text-sm font-medium text-slate-700 dark:text-slate-200">Actions</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-slate-200 dark:divide-slate-700">
@@ -4961,7 +4949,7 @@ const AdminDashboard: React.FC = () => {
           <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
             <div className="bg-white dark:bg-slate-800 rounded-xl p-6 w-full max-w-3xl mx-4 max-h-[700px] overflow-y-auto">
               <div className="flex items-center justify-between mb-6">
-                <h3 className="text-xl font-semibold text-slate-700 dark:text-slate-200">Edit Module</h3>
+                <h3 className="text-xl font-medium text-slate-700 dark:text-slate-200">Edit Module</h3>
                 <button 
                   className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
                   onClick={() => {
@@ -5133,12 +5121,6 @@ const AdminDashboard: React.FC = () => {
               </div>
             ) : (
               <>
-                {/* Page Header - Compact */}
-                <div className="mb-2">
-                  <h1 className="text-2xl font-bold text-slate-700 dark:text-slate-200 mb-1">Blog Management</h1>
-                  <p className="text-sm text-slate-500 dark:text-slate-400">Create and manage your blog content</p>
-                </div>
-
                 {/* Create New Post Button */}
                 <div className="flex justify-between items-center">
                   <div></div>
@@ -5163,7 +5145,7 @@ const AdminDashboard: React.FC = () => {
                 {/* Blog Posts List - Always visible */}
                 <div className="card-glass rounded-lg overflow-hidden">
                   <div className="p-3 border-b border-slate-200 dark:border-slate-700">
-                    <h3 className="text-base font-semibold text-slate-700 dark:text-slate-200">Blog Posts ({blogPosts.length})</h3>
+                    <h3 className="text-base font-medium text-slate-700 dark:text-slate-200">Blog Posts ({blogPosts.length})</h3>
                     <p className="text-sm text-slate-500 dark:text-slate-400">Manage your blog content</p>
                   </div>
                   {loading && blogPosts.length === 0 ? (
@@ -5179,7 +5161,7 @@ const AdminDashboard: React.FC = () => {
                             <div className="flex-1 min-w-0">
                               <div className="flex flex-wrap items-center gap-2 mb-2">
                                 <h4 
-                                  className="font-semibold text-sm sm:text-base text-slate-700 dark:text-slate-200 cursor-pointer hover:text-teal-600 dark:hover:text-teal-400 transition-colors flex-shrink-0"
+                                  className="font-medium text-sm sm:text-base text-slate-700 dark:text-slate-200 cursor-pointer hover:text-teal-600 dark:hover:text-teal-400 transition-colors flex-shrink-0"
                                   onClick={() => {
                                     const blogUrl = p.slug 
                                       ? `/blog/${p.slug}` 
@@ -5191,22 +5173,22 @@ const AdminDashboard: React.FC = () => {
                                   {p.title}
                                 </h4>
                                 <div className="flex items-center gap-1.5 flex-wrap">
-                                  {p.status === 'published' && (
+                                {p.status === 'published' && (
                                     <span className="px-2 py-0.5 bg-emerald-100 dark:bg-emerald-500/40 text-emerald-700 dark:text-emerald-300 rounded-full text-xs font-medium whitespace-nowrap">
-                                      Published
-                                    </span>
-                                  )}
-                                  {p.status === 'draft' && (
+                                    Published
+                                  </span>
+                                )}
+                                {p.status === 'draft' && (
                                     <span className="px-2 py-0.5 bg-amber-100 dark:bg-amber-500/40 text-amber-700 dark:text-amber-300 rounded-full text-xs font-medium whitespace-nowrap">
-                                      Draft
-                                    </span>
-                                  )}
-                                  {p.featured && (
+                                    Draft
+                                  </span>
+                                )}
+                                {p.featured && (
                                     <span className="px-2 py-0.5 bg-indigo-100 dark:bg-indigo-500/40 text-indigo-700 dark:text-indigo-300 rounded-full text-xs font-medium whitespace-nowrap">
-                                      Featured
-                                    </span>
-                                  )}
-                                </div>
+                                    Featured
+                                  </span>
+                                )}
+                              </div>
                               </div>
                               <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mb-2 line-clamp-2">{p.excerpt}</p>
                               <div className="flex flex-wrap items-center gap-2 sm:gap-3 text-xs sm:text-sm text-slate-500 dark:text-slate-400">
@@ -5261,13 +5243,13 @@ const AdminDashboard: React.FC = () => {
                 {/* Video Management Section */}
                 <div className="card-glass rounded-lg overflow-hidden mt-3">
                   <div className="p-3 border-b border-slate-200 dark:border-slate-700">
-                    <h3 className="text-base font-semibold text-slate-700 dark:text-slate-200">Video Management ({videos.length})</h3>
+                    <h3 className="text-base font-medium text-slate-700 dark:text-slate-200">Video Management ({videos.length})</h3>
                     <p className="text-sm text-slate-500 dark:text-slate-400">Manage videos for the blog page video section</p>
                   </div>
                   
                   {/* Create/Edit Video Form */}
                   <div className="p-3 border-b border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/30">
-                    <h4 className="text-sm font-semibold text-slate-700 dark:text-slate-200 mb-3">
+                    <h4 className="text-sm font-medium text-slate-700 dark:text-slate-200 mb-3">
                       {editingVideo ? 'Edit Video' : 'Create New Video'}
                     </h4>
                     <div className="grid grid-cols-2 gap-4">
@@ -5377,7 +5359,7 @@ const AdminDashboard: React.FC = () => {
                           <div className="flex items-start justify-between">
                             <div className="flex-1">
                               <div className="flex items-center gap-3 mb-2">
-                                <h4 className="font-semibold text-slate-700 dark:text-slate-200">{video.title}</h4>
+                                <h4 className="font-medium text-slate-700 dark:text-slate-200">{video.title}</h4>
                                 {video.is_active ? (
                                   <span className="px-2 py-1 bg-emerald-100 dark:bg-emerald-500/40 text-emerald-700 dark:text-emerald-300 rounded-full text-xs font-medium">
                                     Active
@@ -5440,12 +5422,6 @@ const AdminDashboard: React.FC = () => {
 
         {activeTab==='newsletter' && (
           <div className="space-y-3">
-            {/* Page Header - Compact */}
-            <div className="mb-2">
-              <h1 className="text-2xl font-bold text-slate-700 dark:text-slate-200 mb-1">Newsletter Management</h1>
-              <p className="text-sm text-slate-500 dark:text-slate-400">Manage subscribers, campaigns, and email settings</p>
-            </div>
-
             {/* Header */}
             <div className="flex justify-between items-center">
               <div></div>
@@ -5465,40 +5441,40 @@ const AdminDashboard: React.FC = () => {
                   <div className="flex items-center justify-between">
                     <div>
                       <p className="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wide">Total Subscribers</p>
-                      <p className="text-2xl font-bold text-slate-700 dark:text-slate-200 mt-1">{newsletterStats.total || 0}</p>
+                      <p className="text-2xl font-medium text-slate-700 dark:text-slate-200 mt-1">{newsletterStats.total || 0}</p>
                     </div>
                     <div className="p-2.5 rounded-lg bg-teal-600 dark:bg-gradient-to-br dark:from-cyan-500 dark:to-teal-500 shadow-md">
                       <Mail className="h-5 w-5 text-white !text-white" />
-                    </div>
                   </div>
+                </div>
                 </div>
                 <div className="card-glass p-3 rounded-lg border border-slate-200 dark:border-slate-700">
                   <div className="flex items-center justify-between">
                     <div>
                       <p className="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wide">Active</p>
-                      <p className="text-2xl font-bold text-slate-700 dark:text-slate-200 mt-1">{newsletterStats.active || 0}</p>
+                      <p className="text-2xl font-medium text-slate-700 dark:text-slate-200 mt-1">{newsletterStats.active || 0}</p>
                     </div>
                     <div className="p-2.5 rounded-lg bg-emerald-600 dark:bg-gradient-to-br dark:from-emerald-500 dark:to-green-500 shadow-md">
                       <CheckCircle className="h-5 w-5 text-white !text-white" />
-                    </div>
                   </div>
+                </div>
                 </div>
                 <div className="card-glass p-3 rounded-lg border border-slate-200 dark:border-slate-700">
                   <div className="flex items-center justify-between">
                     <div>
                       <p className="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wide">This Week</p>
-                      <p className="text-2xl font-bold text-slate-700 dark:text-slate-200 mt-1">{newsletterStats.this_week || 0}</p>
+                      <p className="text-2xl font-medium text-slate-700 dark:text-slate-200 mt-1">{newsletterStats.this_week || 0}</p>
                     </div>
                     <div className="p-2.5 rounded-lg bg-teal-600 dark:bg-gradient-to-br dark:from-cyan-500 dark:to-teal-500 shadow-md">
                       <TrendingUp className="h-5 w-5 text-white !text-white" />
-                    </div>
                   </div>
+                </div>
                 </div>
                 <div className="card-glass p-3 rounded-lg border border-slate-200 dark:border-slate-700">
                   <div className="flex items-center justify-between">
                     <div>
                       <p className="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wide">This Month</p>
-                      <p className="text-2xl font-bold text-slate-700 dark:text-slate-200 mt-1">{newsletterStats.this_month || 0}</p>
+                      <p className="text-2xl font-medium text-slate-700 dark:text-slate-200 mt-1">{newsletterStats.this_month || 0}</p>
                     </div>
                     <div className="p-2.5 rounded-lg bg-teal-600 dark:bg-gradient-to-br dark:from-cyan-500 dark:to-teal-500 shadow-md">
                       <Calendar className="h-5 w-5 text-white !text-white" />
@@ -5512,7 +5488,7 @@ const AdminDashboard: React.FC = () => {
             <div className="card-glass rounded-lg overflow-hidden border border-slate-200 dark:border-slate-700">
               <div className="p-3 border-b border-slate-200 dark:border-slate-700 flex items-center justify-between">
                 <div>
-                  <h3 className="text-base font-semibold text-slate-700 dark:text-slate-200">Email Configuration</h3>
+                  <h3 className="text-base font-medium text-slate-700 dark:text-slate-200">Email Configuration</h3>
                   <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">Configure SMTP settings for sending newsletters</p>
                 </div>
                 <button
@@ -5657,7 +5633,7 @@ const AdminDashboard: React.FC = () => {
             {/* Campaigns Section */}
             <div className="card-glass rounded-lg overflow-hidden border border-slate-200 dark:border-slate-700">
               <div className="p-3 border-b border-slate-200 dark:border-slate-700">
-                <h3 className="text-base font-semibold text-slate-700 dark:text-slate-200">
+                <h3 className="text-base font-medium text-slate-700 dark:text-slate-200">
                   Newsletter Campaigns ({newsletterCampaigns.length})
                 </h3>
               </div>
@@ -5675,7 +5651,7 @@ const AdminDashboard: React.FC = () => {
                       <div className="flex items-start justify-between">
                         <div className="flex-1">
                           <div className="flex items-center gap-3 mb-2">
-                            <h4 className="font-semibold text-slate-700 dark:text-slate-200">{campaign.title}</h4>
+                            <h4 className="font-medium text-slate-700 dark:text-slate-200">{campaign.title}</h4>
                             <span className={`px-2 py-1 rounded-full text-xs font-medium ${
                               campaign.status === 'sent' 
                                 ? 'bg-emerald-100 dark:bg-emerald-500/40 text-emerald-700 dark:text-emerald-300'
@@ -5739,7 +5715,7 @@ const AdminDashboard: React.FC = () => {
             {/* Subscribers Section */}
             <div className="card-glass rounded-lg overflow-hidden border border-slate-200 dark:border-slate-700">
               <div className="p-3 border-b border-slate-200 dark:border-slate-700">
-                <h3 className="text-base font-semibold text-slate-700 dark:text-slate-200">
+                <h3 className="text-base font-medium text-slate-700 dark:text-slate-200">
                   Subscribers ({newsletterSubscribers.length})
                 </h3>
               </div>
@@ -5810,12 +5786,12 @@ const AdminDashboard: React.FC = () => {
                       <div className="flex items-start justify-between">
                         <div className="flex-1">
                           <div className="flex items-center gap-3 mb-2">
-                            <div className="w-10 h-10 bg-slate-800 dark:bg-slate-700 rounded-full flex items-center justify-center text-white dark:text-white font-semibold">
+                            <div className="w-10 h-10 bg-slate-800 dark:bg-slate-700 rounded-full flex items-center justify-center text-white dark:text-white font-medium">
                               {subscriber.email.charAt(0).toUpperCase()}
                             </div>
                             <div className="flex-1">
                               <div className="flex items-center gap-2">
-                                <h4 className="font-semibold text-slate-700 dark:text-slate-200">{subscriber.email}</h4>
+                                <h4 className="font-medium text-slate-700 dark:text-slate-200">{subscriber.email}</h4>
                                 {subscriber.is_active ? (
                                   <span className="px-2 py-1 bg-emerald-100 dark:bg-emerald-500/40 text-emerald-700 dark:text-emerald-300 rounded-full text-xs font-medium">
                                     Active
@@ -5873,17 +5849,11 @@ const AdminDashboard: React.FC = () => {
 
         {activeTab==='ads' && (
           <div className="space-y-3">
-            {/* Page Header - Compact */}
-            <div className="mb-2">
-              <h1 className="text-2xl font-bold text-slate-700 dark:text-slate-200 mb-1">Advertisement Management</h1>
-              <p className="text-sm text-slate-500 dark:text-slate-400">Manage all advertisements across the platform</p>
-            </div>
-
             {/* Search and Filters moved below near the list */}
 
             {/* Create New Ad */}
             <div id="create-ad-section" className="card-glass p-3 rounded-lg">
-              <h3 className="text-base font-semibold text-slate-700 dark:text-slate-200 mb-3">Create New Advertisement</h3>
+              <h3 className="text-base font-medium text-slate-700 dark:text-slate-200 mb-3">Create New Advertisement</h3>
               <div className="grid grid-cols-2 gap-4">
                 <input className="input" placeholder="Ad Title" value={draftAd.title} onChange={e=>setDraftAd(prev=>({...prev, title:e.target.value}))}/>
                 <input className="input" placeholder="Advertiser Name" value={draftAd.advertiser||''} onChange={e=>setDraftAd(prev=>({...prev, advertiser:e.target.value}))}/>
@@ -5972,7 +5942,7 @@ const AdminDashboard: React.FC = () => {
             {/* Ads Table */}
             <div className="card-glass rounded-xl overflow-hidden">
               <div className="p-4 border-b border-slate-200 dark:border-slate-700">
-                <h3 className="text-lg font-semibold text-slate-700 dark:text-slate-200">Advertisements ({filteredAds.length})</h3>
+                <h3 className="text-lg font-medium text-slate-700 dark:text-slate-200">Advertisements ({filteredAds.length})</h3>
                 <p className="text-sm text-slate-500 dark:text-slate-400">Manage your advertising content</p>
               </div>
               <div className="overflow-x-auto">
@@ -6101,14 +6071,14 @@ const AdminDashboard: React.FC = () => {
             <div className="mt-12">
               <div className="flex items-center justify-between mb-6">
                 <div>
-                  <h2 className="text-2xl font-bold text-slate-700 dark:text-slate-200">Announcements Management</h2>
+                  <h2 className="text-2xl font-medium text-slate-700 dark:text-slate-200">Announcements Management</h2>
                   <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">Manage announcements for paid account users</p>
                 </div>
               </div>
 
               {/* Create New Announcement */}
               <div id="create-announcement-section" className="card-glass p-6 rounded-xl mb-6">
-                <h3 className="text-lg font-semibold text-slate-700 dark:text-slate-200 mb-4">Create New Announcement</h3>
+                <h3 className="text-lg font-medium text-slate-700 dark:text-slate-200 mb-4">Create New Announcement</h3>
                 <div className="grid grid-cols-2 gap-4">
                   <input className="input" placeholder="Announcement Title *" value={draftAnnouncement.title} onChange={e=>setDraftAnnouncement(prev=>({...prev, title:e.target.value}))}/>
                   <div className="flex items-center gap-2">
@@ -6209,7 +6179,7 @@ const AdminDashboard: React.FC = () => {
               {/* Announcements Table */}
               <div className="card-glass rounded-xl overflow-hidden">
                 <div className="p-4 border-b border-slate-200 dark:border-slate-700">
-                  <h3 className="text-lg font-semibold text-slate-700 dark:text-slate-200">Announcements ({filteredAnnouncements.length})</h3>
+                  <h3 className="text-lg font-medium text-slate-700 dark:text-slate-200">Announcements ({filteredAnnouncements.length})</h3>
                   <p className="text-sm text-slate-500 dark:text-slate-400">Manage announcements for paid account users</p>
                 </div>
                 <div className="overflow-x-auto">
@@ -6322,12 +6292,6 @@ const AdminDashboard: React.FC = () => {
         {/* Data Management Tab */}
         {activeTab === 'data-management' && (
           <div className="space-y-3 pb-8 mb-8">
-            {/* Page Header - Compact */}
-            <div className="mb-2">
-              <h1 className="text-2xl font-bold text-slate-700 dark:text-slate-200 mb-1">Data Management</h1>
-              <p className="text-sm text-slate-500 dark:text-slate-400">Manage all data modules and their content</p>
-            </div>
-
             {/* AI Update Controls - Only runs when requested (pay-per-use) */}
             <div className="card-glass p-3 rounded-lg bg-gradient-to-br from-cyan-50/50 to-teal-50/50 dark:from-cyan-950/30 dark:to-teal-950/30 border border-slate-200 dark:border-slate-700">
               <div className="flex items-center justify-between mb-3">
@@ -6336,7 +6300,7 @@ const AdminDashboard: React.FC = () => {
                     <Sparkles className="h-5 w-5 text-white !text-white" />
                   </div>
                   <div>
-                    <h3 className="text-base font-semibold text-slate-700 dark:text-slate-200">AI Data Update</h3>
+                    <h3 className="text-base font-medium text-slate-700 dark:text-slate-200">AI Data Update</h3>
                     <p className="text-sm text-slate-500 dark:text-slate-400">Update data modules with AI-powered insights (Pay-per-use)</p>
                   </div>
                 </div>
@@ -6362,7 +6326,7 @@ const AdminDashboard: React.FC = () => {
 
             {/* Module Selector */}
             <div className="card-glass p-3 rounded-lg border border-slate-200 dark:border-slate-700">
-              <h3 className="text-base font-semibold text-slate-700 dark:text-slate-200 mb-3">Select Data Module</h3>
+              <h3 className="text-base font-medium text-slate-700 dark:text-slate-200 mb-3">Select Data Module</h3>
               <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-3">
                 <button
                   onClick={() => handleModuleChange('companies')}
@@ -6485,14 +6449,14 @@ const AdminDashboard: React.FC = () => {
                   <Database className="h-6 w-6" />
                   <span className="text-sm font-medium">Fundraising CRM</span>
                 </button>
-              </div>
+          </div>
             </div>
 
             {/* Data Tables - Will be rendered here based on selectedDataModule */}
             {/* Note: The actual data tables are rendered after line 6339, outside this section */}
             {/* They need to be moved here or conditionally rendered when activeTab === 'data-management' */}
-          </div>
-        )}
+      </div>
+      )}
 
       </div>
 
@@ -6500,7 +6464,7 @@ const AdminDashboard: React.FC = () => {
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white dark:bg-slate-800 rounded-xl p-6 w-full max-w-2xl mx-4 max-h-[700px] overflow-y-auto">
             <div className="flex items-center justify-between mb-6">
-              <h3 className="text-xl font-semibold text-slate-700 dark:text-slate-200">Add New User</h3>
+              <h3 className="text-xl font-medium text-slate-700 dark:text-slate-200">Add New User</h3>
               <button 
                 className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
                 onClick={() => {
@@ -6672,7 +6636,7 @@ const AdminDashboard: React.FC = () => {
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white dark:bg-slate-800 rounded-xl p-6 w-full max-w-2xl mx-4 max-h-[700px] overflow-y-auto">
             <div className="flex items-center justify-between mb-6">
-              <h3 className="text-xl font-semibold text-slate-700 dark:text-slate-200">Edit User</h3>
+              <h3 className="text-xl font-medium text-slate-700 dark:text-slate-200">Edit User</h3>
               <button 
                 className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
                 onClick={() => {
@@ -6845,7 +6809,7 @@ const AdminDashboard: React.FC = () => {
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white dark:bg-slate-800 rounded-xl p-6 w-full max-w-3xl mx-4 max-h-[700px] overflow-y-auto">
             <div className="flex items-center justify-between mb-6">
-              <h3 className="text-xl font-semibold text-slate-700 dark:text-slate-200">
+              <h3 className="text-xl font-medium text-slate-700 dark:text-slate-200">
                 {editingAnnouncement ? 'Edit Announcement' : 'Edit Advertisement'}
               </h3>
               <button 
@@ -7160,7 +7124,7 @@ const AdminDashboard: React.FC = () => {
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white dark:bg-slate-800 rounded-xl p-6 w-full max-w-4xl mx-4 max-h-[700px] overflow-y-auto">
             <div className="flex items-center justify-between mb-6">
-              <h3 className="text-xl font-semibold text-slate-700 dark:text-slate-200">
+              <h3 className="text-xl font-medium text-slate-700 dark:text-slate-200">
                 {editingCompany ? 'Edit Company' : 'Create New Company'}
               </h3>
               <button 
@@ -7245,7 +7209,7 @@ const AdminDashboard: React.FC = () => {
               <div className="grid grid-cols-2 gap-4 mb-4">
                 {/* Basic Information */}
                 <div className="col-span-2">
-                  <h4 className="text-lg font-semibold text-slate-700 dark:text-slate-200 mb-3">Basic Information</h4>
+                  <h4 className="text-lg font-medium text-slate-700 dark:text-slate-200 mb-3">Basic Information</h4>
                 </div>
                 <div className="col-span-2">
                   <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2">Company Name *</label>
@@ -7370,7 +7334,7 @@ const AdminDashboard: React.FC = () => {
 
                 {/* Location & Details */}
                 <div className="col-span-2">
-                  <h4 className="text-lg font-semibold text-slate-700 dark:text-slate-200 mt-4 mb-3">Location & Details</h4>
+                  <h4 className="text-lg font-medium text-slate-700 dark:text-slate-200 mt-4 mb-3">Location & Details</h4>
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2">Country</label>
@@ -7412,7 +7376,7 @@ const AdminDashboard: React.FC = () => {
 
                 {/* Funding Information */}
                 <div className="col-span-2">
-                  <h4 className="text-lg font-semibold text-slate-700 dark:text-slate-200 mt-4 mb-3">Funding Information</h4>
+                  <h4 className="text-lg font-medium text-slate-700 dark:text-slate-200 mt-4 mb-3">Funding Information</h4>
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-2">Total Funding ($)</label>
@@ -7437,7 +7401,7 @@ const AdminDashboard: React.FC = () => {
 
                 {/* JSON Array Fields */}
                 <div className="col-span-2">
-                  <h4 className="text-lg font-semibold text-slate-700 dark:text-slate-200 mt-4 mb-3">Additional Information</h4>
+                  <h4 className="text-lg font-medium text-slate-700 dark:text-slate-200 mt-4 mb-3">Additional Information</h4>
                 </div>
                 
                 {/* Investors Array */}
@@ -7569,7 +7533,7 @@ const AdminDashboard: React.FC = () => {
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white dark:bg-slate-800 rounded-xl p-6 w-full max-w-3xl mx-4 max-h-[700px] overflow-y-auto">
             <div className="flex items-center justify-between mb-6">
-              <h3 className="text-xl font-semibold text-slate-700 dark:text-slate-200">
+              <h3 className="text-xl font-medium text-slate-700 dark:text-slate-200">
                 {editingTrial ? 'Edit Clinical Trial' : 'Create New Clinical Trial'}
               </h3>
               <button 
@@ -7797,7 +7761,7 @@ const AdminDashboard: React.FC = () => {
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white dark:bg-slate-800 rounded-xl p-6 w-full max-w-3xl mx-4 max-h-[700px] overflow-y-auto">
             <div className="flex items-center justify-between mb-6">
-              <h3 className="text-xl font-semibold text-slate-700 dark:text-slate-200">
+              <h3 className="text-xl font-medium text-slate-700 dark:text-slate-200">
                 {editingRegulatory ? 'Edit Regulatory Record' : 'Create New Regulatory Record'}
               </h3>
               <button 
@@ -7970,7 +7934,7 @@ const AdminDashboard: React.FC = () => {
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white dark:bg-slate-800 rounded-xl p-6 w-full max-w-3xl mx-4 max-h-[700px] overflow-y-auto">
             <div className="flex items-center justify-between mb-6">
-              <h3 className="text-xl font-semibold text-slate-700 dark:text-slate-200">
+              <h3 className="text-xl font-medium text-slate-700 dark:text-slate-200">
                 {editingRegulatoryBody ? 'Edit Regulatory Body' : 'Create New Regulatory Body'}
               </h3>
               <button 
@@ -8162,7 +8126,7 @@ const AdminDashboard: React.FC = () => {
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white dark:bg-slate-800 rounded-xl p-6 w-full max-w-3xl mx-4 max-h-[700px] overflow-y-auto">
             <div className="flex items-center justify-between mb-6">
-              <h3 className="text-xl font-semibold text-slate-700 dark:text-slate-200">
+              <h3 className="text-xl font-medium text-slate-700 dark:text-slate-200">
                 {editingStock ? 'Edit Stock' : 'Create New Stock'}
               </h3>
               <button 
@@ -8341,7 +8305,7 @@ const AdminDashboard: React.FC = () => {
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white dark:bg-slate-800 rounded-xl p-6 w-full max-w-3xl mx-4 max-h-[700px] overflow-y-auto">
             <div className="flex items-center justify-between mb-6">
-              <h3 className="text-xl font-semibold text-slate-700 dark:text-slate-200">
+              <h3 className="text-xl font-medium text-slate-700 dark:text-slate-200">
                 {editingCenter ? 'Edit Clinical Center' : 'Create New Clinical Center'}
               </h3>
               <button 
@@ -8527,7 +8491,7 @@ const AdminDashboard: React.FC = () => {
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white dark:bg-slate-800 rounded-xl p-6 w-full max-w-3xl mx-4 max-h-[700px] overflow-y-auto">
             <div className="flex items-center justify-between mb-6">
-              <h3 className="text-xl font-semibold text-slate-700 dark:text-slate-200">
+              <h3 className="text-xl font-medium text-slate-700 dark:text-slate-200">
                 {editingInvestigator ? 'Edit Investigator' : 'Create New Investigator'}
               </h3>
               <button 
@@ -8760,7 +8724,7 @@ const AdminDashboard: React.FC = () => {
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white dark:bg-slate-800 rounded-xl p-6 w-full max-w-3xl mx-4 max-h-[700px] overflow-y-auto">
             <div className="flex items-center justify-between mb-6">
-              <h3 className="text-xl font-semibold text-slate-700 dark:text-slate-200">
+              <h3 className="text-xl font-medium text-slate-700 dark:text-slate-200">
                 {editingDeal ? 'Edit Deal' : 'Create New Deal'}
               </h3>
               <button 
@@ -8984,7 +8948,7 @@ const AdminDashboard: React.FC = () => {
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white dark:bg-slate-800 rounded-xl p-6 w-full max-w-3xl mx-4 max-h-[700px] overflow-y-auto">
             <div className="flex items-center justify-between mb-6">
-              <h3 className="text-xl font-semibold text-slate-700 dark:text-slate-200">
+              <h3 className="text-xl font-medium text-slate-700 dark:text-slate-200">
                 {editingGrant ? 'Edit Grant' : 'Create New Grant'}
               </h3>
               <button 
@@ -9244,12 +9208,12 @@ const AdminDashboard: React.FC = () => {
           {/* Header Section */}
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <div>
-              <h2 className="text-3xl font-bold text-slate-800 dark:text-slate-100 mb-2">Companies</h2>
+              <h2 className="text-3xl font-medium text-slate-800 dark:text-slate-100 mb-2">Companies</h2>
               <p className="text-sm text-slate-600 dark:text-slate-400">Explore African healthcare companies and their funding history</p>
             </div>
             <button 
               onClick={() => { setEditingCompany(null); setShowCompanyForm(true); }} 
-              className="group relative inline-flex items-center justify-center gap-2 px-6 py-3 bg-gradient-to-r from-teal-600 via-cyan-600 to-teal-600 hover:from-teal-700 hover:via-cyan-700 hover:to-teal-700 text-white font-semibold rounded-xl shadow-lg shadow-teal-500/30 hover:shadow-xl hover:shadow-teal-500/40 transition-all duration-300 transform hover:scale-105 active:scale-95 overflow-hidden"
+              className="group relative inline-flex items-center justify-center gap-2 px-6 py-3 bg-gradient-to-r from-teal-600 via-cyan-600 to-teal-600 hover:from-teal-700 hover:via-cyan-700 hover:to-teal-700 text-white font-medium rounded-xl shadow-lg shadow-teal-500/30 hover:shadow-xl hover:shadow-teal-500/40 transition-all duration-300 transform hover:scale-105 active:scale-95 overflow-hidden"
             >
               <span className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700"></span>
               <Plus className="h-5 w-5 relative z-10" />
@@ -9257,42 +9221,15 @@ const AdminDashboard: React.FC = () => {
             </button>
           </div>
 
-          {/* Search Bar - Modern Design */}
-          <div className="relative">
-            <div className="absolute inset-0 bg-gradient-to-r from-teal-500/10 via-cyan-500/10 to-teal-500/10 rounded-2xl blur-xl"></div>
-            <div className="relative card-glass p-4 rounded-2xl border border-slate-200/50 dark:border-slate-700/50 backdrop-blur-sm">
-              <div className="flex items-center gap-3">
-                <div className="p-2 rounded-xl bg-teal-100 dark:bg-teal-500/20">
-                  <Search className="h-5 w-5 text-teal-600 dark:text-teal-400" />
-                </div>
-                <input 
-                  type="text" 
-                  placeholder="Search companies by name, industry, or country..." 
-                  value={companiesSearch} 
-                  onChange={(e) => setCompaniesSearch(e.target.value)} 
-                  className="flex-1 bg-transparent border-0 focus:ring-0 text-slate-700 dark:text-slate-200 placeholder-slate-400 dark:placeholder-slate-500 text-sm" 
-                />
-                {companiesSearch && (
-                  <button
-                    onClick={() => setCompaniesSearch('')}
-                    className="p-1.5 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 transition-colors"
-                  >
-                    <X className="h-4 w-4" />
-                  </button>
-                )}
-              </div>
-            </div>
-          </div>
-
           {/* Stats Bar */}
           {companiesData && !loading && (
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
               <div className="card-glass p-3 rounded-xl bg-gradient-to-br from-teal-50/50 to-cyan-50/50 dark:from-teal-950/30 dark:to-cyan-950/30 border border-teal-200/50 dark:border-teal-800/50">
-                <div className="flex items-center justify-between">
-                  <div>
+          <div className="flex items-center justify-between">
+            <div>
                     <p className="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wide">Total</p>
-                    <p className="text-xl font-bold text-slate-800 dark:text-slate-100 mt-1">{companiesData.pagination?.total || 0}</p>
-                  </div>
+                    <p className="text-xl font-medium text-slate-800 dark:text-slate-100 mt-1">{companiesData.pagination?.total || 0}</p>
+            </div>
                   <Building2 className="h-8 w-8 text-teal-600 dark:text-teal-400 opacity-60" />
                 </div>
               </div>
@@ -9300,7 +9237,7 @@ const AdminDashboard: React.FC = () => {
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wide">Showing</p>
-                    <p className="text-xl font-bold text-slate-800 dark:text-slate-100 mt-1">{companiesData.companies?.length || 0}</p>
+                    <p className="text-xl font-medium text-slate-800 dark:text-slate-100 mt-1">{companiesData.companies?.length || 0}</p>
                   </div>
                   <Activity className="h-8 w-8 text-emerald-600 dark:text-emerald-400 opacity-60" />
                 </div>
@@ -9309,7 +9246,7 @@ const AdminDashboard: React.FC = () => {
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wide">Page</p>
-                    <p className="text-xl font-bold text-slate-800 dark:text-slate-100 mt-1">{companiesData.pagination?.page || 1}</p>
+                    <p className="text-xl font-medium text-slate-800 dark:text-slate-100 mt-1">{companiesData.pagination?.page || 1}</p>
                   </div>
                   <FileText className="h-8 w-8 text-amber-600 dark:text-amber-400 opacity-60" />
                 </div>
@@ -9318,7 +9255,7 @@ const AdminDashboard: React.FC = () => {
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wide">Industries</p>
-                    <p className="text-xl font-bold text-slate-800 dark:text-slate-100 mt-1">
+                    <p className="text-xl font-medium text-slate-800 dark:text-slate-100 mt-1">
                       {new Set(companiesData.companies?.map((c: any) => c.industry).filter(Boolean)).size || 0}
                     </p>
                   </div>
@@ -9342,7 +9279,7 @@ const AdminDashboard: React.FC = () => {
               <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-red-100 dark:bg-red-500/20 mb-4">
                 <AlertCircle className="h-8 w-8 text-red-600 dark:text-red-400" />
               </div>
-              <p className="text-base font-semibold text-red-700 dark:text-red-300">Error Loading Companies</p>
+              <p className="text-base font-medium text-red-700 dark:text-red-300">Error Loading Companies</p>
               <p className="text-sm text-red-600 dark:text-red-400 mt-1">{error}</p>
             </div>
           ) : (
@@ -9374,7 +9311,7 @@ const AdminDashboard: React.FC = () => {
                                     const parent = target.parentElement;
                                     if (parent) {
                                       const fallback = document.createElement('div');
-                                      fallback.className = 'w-full h-full flex items-center justify-center bg-gradient-to-br from-teal-600 to-cyan-600 text-white text-lg font-bold';
+                                      fallback.className = 'w-full h-full flex items-center justify-center bg-gradient-to-br from-teal-600 to-cyan-600 text-white text-lg font-medium';
                                       fallback.textContent = (company.name || 'C').charAt(0).toUpperCase();
                                       parent.appendChild(fallback);
                                     }
@@ -9382,12 +9319,12 @@ const AdminDashboard: React.FC = () => {
                                 />
                               </div>
                             ) : (
-                              <div className="flex-shrink-0 w-14 h-14 rounded-xl bg-gradient-to-br from-teal-600 to-cyan-600 flex items-center justify-center text-white text-lg font-bold shadow-md group-hover:shadow-lg transition-shadow">
+                              <div className="flex-shrink-0 w-14 h-14 rounded-xl bg-gradient-to-br from-teal-600 to-cyan-600 flex items-center justify-center text-white text-lg font-medium shadow-md group-hover:shadow-lg transition-shadow">
                                 {(company.name || 'C').charAt(0).toUpperCase()}
                               </div>
                             )}
                             <div className="min-w-0 flex-1">
-                              <h3 className="font-bold text-lg text-slate-800 dark:text-slate-100 truncate group-hover:text-teal-600 dark:group-hover:text-teal-400 transition-colors">
+                              <h3 className="font-medium text-lg text-slate-800 dark:text-slate-100 truncate group-hover:text-teal-600 dark:group-hover:text-teal-400 transition-colors">
                                 {company.name || 'N/A'}
                               </h3>
                               {company.industry && (
@@ -9410,7 +9347,7 @@ const AdminDashboard: React.FC = () => {
                           {company.total_funding && (
                             <div className="flex items-center gap-2 text-sm">
                               <DollarSign className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
-                              <span className="font-semibold text-slate-800 dark:text-slate-100">
+                              <span className="font-medium text-slate-800 dark:text-slate-100">
                                 ${(parseFloat(company.total_funding) / 1000000).toFixed(1)}M
                               </span>
                               <span className="text-xs text-slate-500 dark:text-slate-400">funding</span>
@@ -9433,10 +9370,10 @@ const AdminDashboard: React.FC = () => {
                             title="Delete"
                           >
                             <Trash2 className="h-4 w-4" />
-                          </button>
-                        </div>
-                      </div>
-                    </div>
+            </button>
+          </div>
+              </div>
+            </div>
                   ))}
                 </div>
               ) : (
@@ -9444,11 +9381,11 @@ const AdminDashboard: React.FC = () => {
                   <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-slate-100 dark:bg-slate-800 mb-4">
                     <Building2 className="h-10 w-10 text-slate-400 dark:text-slate-500" />
                   </div>
-                  <p className="text-lg font-semibold text-slate-700 dark:text-slate-200 mb-2">No companies found</p>
+                  <p className="text-lg font-medium text-slate-700 dark:text-slate-200 mb-2">No companies found</p>
                   <p className="text-sm text-slate-500 dark:text-slate-400 mb-6">Get started by adding your first company</p>
                   <button 
                     onClick={() => { setEditingCompany(null); setShowCompanyForm(true); }} 
-                    className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-teal-600 to-cyan-600 hover:from-teal-700 hover:to-cyan-700 text-white font-semibold rounded-xl shadow-lg shadow-teal-500/30 hover:shadow-xl transition-all duration-300"
+                    className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-teal-600 to-cyan-600 hover:from-teal-700 hover:to-cyan-700 text-white font-medium rounded-xl shadow-lg shadow-teal-500/30 hover:shadow-xl transition-all duration-300"
                   >
                     <Plus className="h-5 w-5" />
                     <span>Add Your First Company</span>
@@ -9462,8 +9399,8 @@ const AdminDashboard: React.FC = () => {
                   <div className="flex items-center gap-2">
                     <FileText className="h-4 w-4 text-slate-400 dark:text-slate-500" />
                     <span className="text-sm font-medium text-slate-700 dark:text-slate-200">
-                      Page <span className="font-bold text-teal-600 dark:text-teal-400">{companiesData.pagination.page}</span> of{' '}
-                      <span className="font-bold">{Math.ceil(companiesData.pagination.total / 20)}</span>
+                      Page <span className="font-medium text-teal-600 dark:text-teal-400">{companiesData.pagination.page}</span> of{' '}
+                      <span className="font-medium">{Math.ceil(companiesData.pagination.total / 20)}</span>
                     </span>
                     <span className="text-xs text-slate-500 dark:text-slate-400">
                       ({companiesData.pagination.total} total)
@@ -9497,7 +9434,7 @@ const AdminDashboard: React.FC = () => {
         <div className="space-y-4 pb-8">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <div>
-              <h2 className="text-3xl font-bold text-slate-800 dark:text-slate-100 mb-2">Deals</h2>
+              <h2 className="text-3xl font-medium text-slate-800 dark:text-slate-100 mb-2">Deals</h2>
               <p className="text-sm text-slate-600 dark:text-slate-400">Track M&A, licensing, and funding deal activity across African healthcare</p>
             </div>
             <button 
@@ -9508,14 +9445,6 @@ const AdminDashboard: React.FC = () => {
               <span>Add Deal</span>
             </button>
           </div>
-          <div className="card-glass p-4 rounded-lg">
-            <div className="flex gap-4 items-center">
-              <div className="flex-1 relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-slate-500 dark:text-slate-400" />
-                <input type="text" placeholder="Search deals..." value={dealsSearch} onChange={(e) => setDealsSearch(e.target.value)} className="input pl-10 w-full" />
-              </div>
-            </div>
-          </div>
           {loading ? (
             <div className="text-center py-12 text-slate-500 dark:text-slate-400">Loading...</div>
           ) : error ? (
@@ -9525,11 +9454,11 @@ const AdminDashboard: React.FC = () => {
               <table className="w-full">
                 <thead>
                   <tr className="border-b border-slate-200 dark:border-slate-700">
-                    <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700 dark:text-slate-200">Company</th>
-                    <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700 dark:text-slate-200">Deal Type</th>
-                    <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700 dark:text-slate-200">Amount</th>
-                    <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700 dark:text-slate-200">Date</th>
-                    <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700 dark:text-slate-200">Actions</th>
+                    <th className="px-4 py-3 text-left text-sm font-medium text-slate-700 dark:text-slate-200">Company</th>
+                    <th className="px-4 py-3 text-left text-sm font-medium text-slate-700 dark:text-slate-200">Deal Type</th>
+                    <th className="px-4 py-3 text-left text-sm font-medium text-slate-700 dark:text-slate-200">Amount</th>
+                    <th className="px-4 py-3 text-left text-sm font-medium text-slate-700 dark:text-slate-200">Date</th>
+                    <th className="px-4 py-3 text-left text-sm font-medium text-slate-700 dark:text-slate-200">Actions</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -9572,7 +9501,7 @@ const AdminDashboard: React.FC = () => {
         <div className="space-y-4 pb-8">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <div>
-              <h2 className="text-3xl font-bold text-slate-800 dark:text-slate-100 mb-2">Grants</h2>
+              <h2 className="text-3xl font-medium text-slate-800 dark:text-slate-100 mb-2">Grants</h2>
               <p className="text-sm text-slate-600 dark:text-slate-400">Monitor grants and funding opportunities from global health organizations</p>
             </div>
             <button 
@@ -9583,14 +9512,6 @@ const AdminDashboard: React.FC = () => {
               <span>Add Grant</span>
             </button>
           </div>
-          <div className="card-glass p-4 rounded-lg">
-            <div className="flex gap-4 items-center">
-              <div className="flex-1 relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-slate-500 dark:text-slate-400" />
-                <input type="text" placeholder="Search grants..." value={grantsSearch} onChange={(e) => setGrantsSearch(e.target.value)} className="input pl-10 w-full" />
-              </div>
-            </div>
-          </div>
           {loading ? (
             <div className="text-center py-12 text-slate-500 dark:text-slate-400">Loading...</div>
           ) : error ? (
@@ -9600,11 +9521,11 @@ const AdminDashboard: React.FC = () => {
               <table className="w-full">
                 <thead>
                   <tr className="border-b border-slate-200 dark:border-slate-700">
-                    <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700 dark:text-slate-200">Title</th>
-                    <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700 dark:text-slate-200">Amount</th>
-                    <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700 dark:text-slate-200">Country</th>
-                    <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700 dark:text-slate-200">Deadline</th>
-                    <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700 dark:text-slate-200">Actions</th>
+                    <th className="px-4 py-3 text-left text-sm font-medium text-slate-700 dark:text-slate-200">Title</th>
+                    <th className="px-4 py-3 text-left text-sm font-medium text-slate-700 dark:text-slate-200">Amount</th>
+                    <th className="px-4 py-3 text-left text-sm font-medium text-slate-700 dark:text-slate-200">Country</th>
+                    <th className="px-4 py-3 text-left text-sm font-medium text-slate-700 dark:text-slate-200">Deadline</th>
+                    <th className="px-4 py-3 text-left text-sm font-medium text-slate-700 dark:text-slate-200">Actions</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -9647,7 +9568,7 @@ const AdminDashboard: React.FC = () => {
         <div className="space-y-4 pb-8">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <div>
-              <h2 className="text-3xl font-bold text-slate-800 dark:text-slate-100 mb-2">Investors</h2>
+              <h2 className="text-3xl font-medium text-slate-800 dark:text-slate-100 mb-2">Investors</h2>
               <p className="text-sm text-slate-600 dark:text-slate-400">Explore investor profiles and their activity in African healthcare</p>
             </div>
             <button 
@@ -9658,14 +9579,6 @@ const AdminDashboard: React.FC = () => {
               <span>Add Investor</span>
             </button>
           </div>
-          <div className="card-glass p-4 rounded-lg">
-            <div className="flex gap-4 items-center">
-              <div className="flex-1 relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-slate-500 dark:text-slate-400" />
-                <input type="text" placeholder="Search investors..." value={investorsSearch} onChange={(e) => setInvestorsSearch(e.target.value)} className="input pl-10 w-full" />
-              </div>
-            </div>
-          </div>
           {loading ? (
             <div className="text-center py-12 text-slate-500 dark:text-slate-400">Loading...</div>
           ) : error ? (
@@ -9675,11 +9588,11 @@ const AdminDashboard: React.FC = () => {
               <table className="w-full">
                 <thead>
                   <tr className="border-b border-slate-200 dark:border-slate-700">
-                    <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700 dark:text-slate-200">Name</th>
-                    <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700 dark:text-slate-200">Type</th>
-                    <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700 dark:text-slate-200">Headquarters</th>
-                    <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700 dark:text-slate-200">Total Investments</th>
-                    <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700 dark:text-slate-200">Actions</th>
+                    <th className="px-4 py-3 text-left text-sm font-medium text-slate-700 dark:text-slate-200">Name</th>
+                    <th className="px-4 py-3 text-left text-sm font-medium text-slate-700 dark:text-slate-200">Type</th>
+                    <th className="px-4 py-3 text-left text-sm font-medium text-slate-700 dark:text-slate-200">Headquarters</th>
+                    <th className="px-4 py-3 text-left text-sm font-medium text-slate-700 dark:text-slate-200">Total Investments</th>
+                    <th className="px-4 py-3 text-left text-sm font-medium text-slate-700 dark:text-slate-200">Actions</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -9722,7 +9635,7 @@ const AdminDashboard: React.FC = () => {
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white dark:bg-slate-800 rounded-xl p-6 w-full max-w-4xl mx-4 max-h-[700px] overflow-y-auto">
             <div className="flex items-center justify-between mb-6">
-              <h3 className="text-xl font-semibold text-slate-700 dark:text-slate-200">
+              <h3 className="text-xl font-medium text-slate-700 dark:text-slate-200">
                 {editingInvestor ? 'Edit Investor' : 'Create New Investor'}
               </h3>
               <button 
@@ -10056,7 +9969,7 @@ const AdminDashboard: React.FC = () => {
         <div className="space-y-4 pb-8">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <div>
-              <h2 className="text-3xl font-bold text-slate-800 dark:text-slate-100 mb-2">Clinical Trials</h2>
+              <h2 className="text-3xl font-medium text-slate-800 dark:text-slate-100 mb-2">Clinical Trials</h2>
               <p className="text-sm text-slate-600 dark:text-slate-400">Track clinical research and trials data across African healthcare</p>
             </div>
             <button 
@@ -10067,14 +9980,6 @@ const AdminDashboard: React.FC = () => {
               <span>Add Clinical Trial</span>
             </button>
           </div>
-          <div className="card-glass p-4 rounded-lg">
-            <div className="flex gap-4 items-center">
-              <div className="flex-1 relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-slate-500 dark:text-slate-400" />
-                <input type="text" placeholder="Search clinical trials..." value={trialsSearch} onChange={(e) => setTrialsSearch(e.target.value)} className="input pl-10 w-full" />
-              </div>
-            </div>
-          </div>
           {loading ? (
             <div className="text-center py-12 text-slate-500 dark:text-slate-400">Loading...</div>
           ) : error ? (
@@ -10084,12 +9989,12 @@ const AdminDashboard: React.FC = () => {
               <table className="w-full">
                 <thead>
                   <tr className="border-b border-slate-200 dark:border-slate-700">
-                    <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700 dark:text-slate-200">Title</th>
-                    <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700 dark:text-slate-200">Phase</th>
-                    <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700 dark:text-slate-200">Status</th>
-                    <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700 dark:text-slate-200">Sponsor</th>
-                    <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700 dark:text-slate-200">Location</th>
-                    <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700 dark:text-slate-200">Actions</th>
+                    <th className="px-4 py-3 text-left text-sm font-medium text-slate-700 dark:text-slate-200">Title</th>
+                    <th className="px-4 py-3 text-left text-sm font-medium text-slate-700 dark:text-slate-200">Phase</th>
+                    <th className="px-4 py-3 text-left text-sm font-medium text-slate-700 dark:text-slate-200">Status</th>
+                    <th className="px-4 py-3 text-left text-sm font-medium text-slate-700 dark:text-slate-200">Sponsor</th>
+                    <th className="px-4 py-3 text-left text-sm font-medium text-slate-700 dark:text-slate-200">Location</th>
+                    <th className="px-4 py-3 text-left text-sm font-medium text-slate-700 dark:text-slate-200">Actions</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -10132,7 +10037,7 @@ const AdminDashboard: React.FC = () => {
         <div className="space-y-6 pb-8">
           <div className="flex items-center justify-between">
             <div>
-              <h2 className="text-2xl font-bold text-slate-700 dark:text-slate-200">Regulatory Management</h2>
+              <h2 className="text-2xl font-medium text-slate-700 dark:text-slate-200">Regulatory Management</h2>
               <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">Manage all regulatory approvals in the platform</p>
             </div>
             <button 
@@ -10143,14 +10048,6 @@ const AdminDashboard: React.FC = () => {
               <span>Add Regulatory Record</span>
             </button>
           </div>
-          <div className="card-glass p-4 rounded-lg">
-            <div className="flex gap-4 items-center">
-              <div className="flex-1 relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-slate-500 dark:text-slate-400" />
-                <input type="text" placeholder="Search regulatory records..." value={regulatorySearch} onChange={(e) => setRegulatorySearch(e.target.value)} className="input pl-10 w-full" />
-              </div>
-            </div>
-          </div>
           {loading ? (
             <div className="text-center py-12 text-slate-500 dark:text-slate-400">Loading...</div>
           ) : error ? (
@@ -10160,12 +10057,12 @@ const AdminDashboard: React.FC = () => {
               <table className="w-full">
                 <thead>
                   <tr className="border-b border-slate-200 dark:border-slate-700">
-                    <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700 dark:text-slate-200">Company</th>
-                    <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700 dark:text-slate-200">Product/Approval</th>
-                    <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700 dark:text-slate-200">Regulatory Body</th>
-                    <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700 dark:text-slate-200">Status</th>
-                    <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700 dark:text-slate-200">Date</th>
-                    <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700 dark:text-slate-200">Actions</th>
+                    <th className="px-4 py-3 text-left text-sm font-medium text-slate-700 dark:text-slate-200">Company</th>
+                    <th className="px-4 py-3 text-left text-sm font-medium text-slate-700 dark:text-slate-200">Product/Approval</th>
+                    <th className="px-4 py-3 text-left text-sm font-medium text-slate-700 dark:text-slate-200">Regulatory Body</th>
+                    <th className="px-4 py-3 text-left text-sm font-medium text-slate-700 dark:text-slate-200">Status</th>
+                    <th className="px-4 py-3 text-left text-sm font-medium text-slate-700 dark:text-slate-200">Date</th>
+                    <th className="px-4 py-3 text-left text-sm font-medium text-slate-700 dark:text-slate-200">Actions</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -10209,7 +10106,7 @@ const AdminDashboard: React.FC = () => {
         <div className="space-y-4 pb-8">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <div>
-              <h2 className="text-3xl font-bold text-slate-800 dark:text-slate-100 mb-2">Regulatory Ecosystem</h2>
+              <h2 className="text-3xl font-medium text-slate-800 dark:text-slate-100 mb-2">Regulatory Ecosystem</h2>
               <p className="text-sm text-slate-600 dark:text-slate-400">Explore regulatory bodies and compliance across African healthcare markets</p>
             </div>
             <button 
@@ -10220,14 +10117,6 @@ const AdminDashboard: React.FC = () => {
               <span>Add Regulatory Body</span>
             </button>
           </div>
-          <div className="card-glass p-4 rounded-lg">
-            <div className="flex gap-4 items-center">
-              <div className="flex-1 relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-slate-500 dark:text-slate-400" />
-                <input type="text" placeholder="Search regulatory bodies..." value={regulatoryBodiesSearch} onChange={(e) => setRegulatoryBodiesSearch(e.target.value)} className="input pl-10 w-full" />
-              </div>
-            </div>
-          </div>
           {loading ? (
             <div className="text-center py-12 text-slate-500 dark:text-slate-400">Loading...</div>
           ) : error ? (
@@ -10237,12 +10126,12 @@ const AdminDashboard: React.FC = () => {
               <table className="w-full">
                 <thead>
                   <tr className="border-b border-slate-200 dark:border-slate-700">
-                    <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700 dark:text-slate-200">Name</th>
-                    <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700 dark:text-slate-200">Country</th>
-                    <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700 dark:text-slate-200">Abbreviation</th>
-                    <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700 dark:text-slate-200">Website</th>
-                    <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700 dark:text-slate-200">Status</th>
-                    <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700 dark:text-slate-200">Actions</th>
+                    <th className="px-4 py-3 text-left text-sm font-medium text-slate-700 dark:text-slate-200">Name</th>
+                    <th className="px-4 py-3 text-left text-sm font-medium text-slate-700 dark:text-slate-200">Country</th>
+                    <th className="px-4 py-3 text-left text-sm font-medium text-slate-700 dark:text-slate-200">Abbreviation</th>
+                    <th className="px-4 py-3 text-left text-sm font-medium text-slate-700 dark:text-slate-200">Website</th>
+                    <th className="px-4 py-3 text-left text-sm font-medium text-slate-700 dark:text-slate-200">Status</th>
+                    <th className="px-4 py-3 text-left text-sm font-medium text-slate-700 dark:text-slate-200">Actions</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -10296,7 +10185,7 @@ const AdminDashboard: React.FC = () => {
         <div className="space-y-4 pb-8">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <div>
-              <h2 className="text-3xl font-bold text-slate-800 dark:text-slate-100 mb-2">Public Markets</h2>
+              <h2 className="text-3xl font-medium text-slate-800 dark:text-slate-100 mb-2">Public Markets</h2>
               <p className="text-sm text-slate-600 dark:text-slate-400">Comprehensive financial data hub for African healthcare public markets</p>
             </div>
             <button 
@@ -10307,14 +10196,6 @@ const AdminDashboard: React.FC = () => {
               <span>Add Stock</span>
             </button>
           </div>
-          <div className="card-glass p-4 rounded-lg">
-            <div className="flex gap-4 items-center">
-              <div className="flex-1 relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-slate-500 dark:text-slate-400" />
-                <input type="text" placeholder="Search stocks..." value={publicMarketsSearch} onChange={(e) => setPublicMarketsSearch(e.target.value)} className="input pl-10 w-full" />
-              </div>
-            </div>
-          </div>
           {loading ? (
             <div className="text-center py-12 text-slate-500 dark:text-slate-400">Loading...</div>
           ) : error ? (
@@ -10324,12 +10205,12 @@ const AdminDashboard: React.FC = () => {
               <table className="w-full">
                 <thead>
                   <tr className="border-b border-slate-200 dark:border-slate-700">
-                    <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700 dark:text-slate-200">Company</th>
-                    <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700 dark:text-slate-200">Ticker</th>
-                    <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700 dark:text-slate-200">Exchange</th>
-                    <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700 dark:text-slate-200">Price</th>
-                    <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700 dark:text-slate-200">Market Cap</th>
-                    <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700 dark:text-slate-200">Actions</th>
+                    <th className="px-4 py-3 text-left text-sm font-medium text-slate-700 dark:text-slate-200">Company</th>
+                    <th className="px-4 py-3 text-left text-sm font-medium text-slate-700 dark:text-slate-200">Ticker</th>
+                    <th className="px-4 py-3 text-left text-sm font-medium text-slate-700 dark:text-slate-200">Exchange</th>
+                    <th className="px-4 py-3 text-left text-sm font-medium text-slate-700 dark:text-slate-200">Price</th>
+                    <th className="px-4 py-3 text-left text-sm font-medium text-slate-700 dark:text-slate-200">Market Cap</th>
+                    <th className="px-4 py-3 text-left text-sm font-medium text-slate-700 dark:text-slate-200">Actions</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -10373,7 +10254,7 @@ const AdminDashboard: React.FC = () => {
         <div className="space-y-4 pb-8">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <div>
-              <h2 className="text-3xl font-bold text-slate-800 dark:text-slate-100 mb-2">Clinical Centers</h2>
+              <h2 className="text-3xl font-medium text-slate-800 dark:text-slate-100 mb-2">Clinical Centers</h2>
               <p className="text-sm text-slate-600 dark:text-slate-400">Discover centers conducting clinical trials and research across Africa</p>
             </div>
             <button 
@@ -10384,14 +10265,6 @@ const AdminDashboard: React.FC = () => {
               <span>Add Clinical Center</span>
             </button>
           </div>
-          <div className="card-glass p-4 rounded-lg">
-            <div className="flex gap-4 items-center">
-              <div className="flex-1 relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-slate-500 dark:text-slate-400" />
-                <input type="text" placeholder="Search clinical centers..." value={clinicalCentersSearch} onChange={(e) => setClinicalCentersSearch(e.target.value)} className="input pl-10 w-full" />
-              </div>
-            </div>
-          </div>
           {loading ? (
             <div className="text-center py-12 text-slate-500 dark:text-slate-400">Loading...</div>
           ) : error ? (
@@ -10401,11 +10274,11 @@ const AdminDashboard: React.FC = () => {
               <table className="w-full">
                 <thead>
                   <tr className="border-b border-slate-200 dark:border-slate-700">
-                    <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700 dark:text-slate-200">Name</th>
-                    <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700 dark:text-slate-200">Country</th>
-                    <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700 dark:text-slate-200">City</th>
-                    <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700 dark:text-slate-200">Capacity</th>
-                    <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700 dark:text-slate-200">Actions</th>
+                    <th className="px-4 py-3 text-left text-sm font-medium text-slate-700 dark:text-slate-200">Name</th>
+                    <th className="px-4 py-3 text-left text-sm font-medium text-slate-700 dark:text-slate-200">Country</th>
+                    <th className="px-4 py-3 text-left text-sm font-medium text-slate-700 dark:text-slate-200">City</th>
+                    <th className="px-4 py-3 text-left text-sm font-medium text-slate-700 dark:text-slate-200">Capacity</th>
+                    <th className="px-4 py-3 text-left text-sm font-medium text-slate-700 dark:text-slate-200">Actions</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -10448,7 +10321,7 @@ const AdminDashboard: React.FC = () => {
         <div className="space-y-4 pb-8">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <div>
-              <h2 className="text-3xl font-bold text-slate-800 dark:text-slate-100 mb-2">Investigators</h2>
+              <h2 className="text-3xl font-medium text-slate-800 dark:text-slate-100 mb-2">Investigators</h2>
               <p className="text-sm text-slate-600 dark:text-slate-400">Explore clinical trial investigators and physicians across Africa</p>
             </div>
             <button 
@@ -10459,14 +10332,6 @@ const AdminDashboard: React.FC = () => {
               <span>Add Investigator</span>
             </button>
           </div>
-          <div className="card-glass p-4 rounded-lg">
-            <div className="flex gap-4 items-center">
-              <div className="flex-1 relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-slate-500 dark:text-slate-400" />
-                <input type="text" placeholder="Search investigators..." value={investigatorsSearch} onChange={(e) => setInvestigatorsSearch(e.target.value)} className="input pl-10 w-full" />
-              </div>
-            </div>
-          </div>
           {loading ? (
             <div className="text-center py-12 text-slate-500 dark:text-slate-400">Loading...</div>
           ) : error ? (
@@ -10476,11 +10341,11 @@ const AdminDashboard: React.FC = () => {
               <table className="w-full">
                 <thead>
                   <tr className="border-b border-slate-200 dark:border-slate-700">
-                    <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700 dark:text-slate-200">Name</th>
-                    <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700 dark:text-slate-200">Title</th>
-                    <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700 dark:text-slate-200">Affiliation</th>
-                    <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700 dark:text-slate-200">Country</th>
-                    <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700 dark:text-slate-200">Actions</th>
+                    <th className="px-4 py-3 text-left text-sm font-medium text-slate-700 dark:text-slate-200">Name</th>
+                    <th className="px-4 py-3 text-left text-sm font-medium text-slate-700 dark:text-slate-200">Title</th>
+                    <th className="px-4 py-3 text-left text-sm font-medium text-slate-700 dark:text-slate-200">Affiliation</th>
+                    <th className="px-4 py-3 text-left text-sm font-medium text-slate-700 dark:text-slate-200">Country</th>
+                    <th className="px-4 py-3 text-left text-sm font-medium text-slate-700 dark:text-slate-200">Actions</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -10521,17 +10386,9 @@ const AdminDashboard: React.FC = () => {
       {/* Nation Pulse Module */}
       {selectedDataModule === 'nation-pulse' && (
         <div className="space-y-4 pb-8">
-          <div>
-            <h2 className="text-3xl font-bold text-slate-800 dark:text-slate-100 mb-2">Nation Pulse</h2>
+            <div>
+            <h2 className="text-3xl font-medium text-slate-800 dark:text-slate-100 mb-2">Nation Pulse</h2>
             <p className="text-sm text-slate-600 dark:text-slate-400">Health and economic indicators across African nations (read-only)</p>
-          </div>
-          <div className="card-glass p-4 rounded-lg">
-            <div className="flex gap-4 items-center">
-              <div className="flex-1 relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-slate-500 dark:text-slate-400" />
-                <input type="text" placeholder="Search metrics..." value={nationPulseSearch} onChange={(e) => setNationPulseSearch(e.target.value)} className="input pl-10 w-full" />
-              </div>
-            </div>
           </div>
           {loading ? (
             <div className="text-center py-12 text-slate-500 dark:text-slate-400">Loading...</div>
@@ -10542,12 +10399,12 @@ const AdminDashboard: React.FC = () => {
               <table className="w-full">
                 <thead>
                   <tr className="border-b border-slate-200 dark:border-slate-700">
-                    <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700 dark:text-slate-200">Country</th>
-                    <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700 dark:text-slate-200">Data Type</th>
-                    <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700 dark:text-slate-200">Metric</th>
-                    <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700 dark:text-slate-200">Value</th>
-                    <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700 dark:text-slate-200">Year</th>
-                    <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700 dark:text-slate-200">Actions</th>
+                    <th className="px-4 py-3 text-left text-sm font-medium text-slate-700 dark:text-slate-200">Country</th>
+                    <th className="px-4 py-3 text-left text-sm font-medium text-slate-700 dark:text-slate-200">Data Type</th>
+                    <th className="px-4 py-3 text-left text-sm font-medium text-slate-700 dark:text-slate-200">Metric</th>
+                    <th className="px-4 py-3 text-left text-sm font-medium text-slate-700 dark:text-slate-200">Value</th>
+                    <th className="px-4 py-3 text-left text-sm font-medium text-slate-700 dark:text-slate-200">Year</th>
+                    <th className="px-4 py-3 text-left text-sm font-medium text-slate-700 dark:text-slate-200">Actions</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -10586,17 +10443,9 @@ const AdminDashboard: React.FC = () => {
       {/* Fundraising CRM Module */}
       {selectedDataModule === 'fundraising-crm' && (
         <div className="space-y-4 pb-8">
-          <div>
-            <h2 className="text-3xl font-bold text-slate-800 dark:text-slate-100 mb-2">Fundraising CRM</h2>
+            <div>
+            <h2 className="text-3xl font-medium text-slate-800 dark:text-slate-100 mb-2">Fundraising CRM</h2>
             <p className="text-sm text-slate-600 dark:text-slate-400">View investor relationships and pipeline (account-specific, read-only)</p>
-          </div>
-          <div className="card-glass p-4 rounded-lg">
-            <div className="flex gap-4 items-center">
-              <div className="flex-1 relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-slate-500 dark:text-slate-400" />
-                <input type="text" placeholder="Search investors..." value={fundraisingCRMSearch} onChange={(e) => setFundraisingCRMSearch(e.target.value)} className="input pl-10 w-full" />
-              </div>
-            </div>
           </div>
           {loading ? (
             <div className="text-center py-12 text-slate-500 dark:text-slate-400">Loading...</div>
@@ -10607,12 +10456,12 @@ const AdminDashboard: React.FC = () => {
               <table className="w-full">
                 <thead>
                   <tr className="border-b border-slate-200 dark:border-slate-700">
-                    <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700 dark:text-slate-200">Name</th>
-                    <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700 dark:text-slate-200">Type</th>
-                    <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700 dark:text-slate-200">Pipeline Stage</th>
-                    <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700 dark:text-slate-200">Email</th>
-                    <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700 dark:text-slate-200">Last Contact</th>
-                    <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700 dark:text-slate-200">Actions</th>
+                    <th className="px-4 py-3 text-left text-sm font-medium text-slate-700 dark:text-slate-200">Name</th>
+                    <th className="px-4 py-3 text-left text-sm font-medium text-slate-700 dark:text-slate-200">Type</th>
+                    <th className="px-4 py-3 text-left text-sm font-medium text-slate-700 dark:text-slate-200">Pipeline Stage</th>
+                    <th className="px-4 py-3 text-left text-sm font-medium text-slate-700 dark:text-slate-200">Email</th>
+                    <th className="px-4 py-3 text-left text-sm font-medium text-slate-700 dark:text-slate-200">Last Contact</th>
+                    <th className="px-4 py-3 text-left text-sm font-medium text-slate-700 dark:text-slate-200">Actions</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -10657,7 +10506,7 @@ const AdminDashboard: React.FC = () => {
             {/* Modal Header */}
             <div className="flex items-center justify-between p-6 border-b border-slate-200 dark:border-slate-700 bg-gradient-to-r from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-750">
               <div>
-                <h3 className="text-xl font-bold text-slate-700 dark:text-slate-200">Blog Categories</h3>
+                <h3 className="text-xl font-medium text-slate-700 dark:text-slate-200">Blog Categories</h3>
                 <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">Manage blog post categories</p>
               </div>
               <button

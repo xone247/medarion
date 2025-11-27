@@ -420,7 +420,7 @@ const SiteHeader: React.FC<SiteHeaderProps> = ({ currentPage }) => {
 										theme === 'dark' 
 											? 'hover:bg-black/5 text-gray-900' 
 											: 'hover:bg-white/10 text-white'
-									} ${isActive('about') ? 'font-semibold' : 'font-normal'}`}
+									} ${isActive('about') ? 'font-medium' : 'font-normal'}`}
 									onClick={() => { nav('about'); closeMenu(); }}
 									style={{ fontSize: '14px' }}
 								>
@@ -431,7 +431,7 @@ const SiteHeader: React.FC<SiteHeaderProps> = ({ currentPage }) => {
 										theme === 'dark' 
 											? 'hover:bg-black/5 text-gray-900' 
 											: 'hover:bg-white/10 text-white'
-									} ${isActive('arion') ? 'font-semibold' : 'font-normal'}`}
+									} ${isActive('arion') ? 'font-medium' : 'font-normal'}`}
 									onClick={() => { nav('arion'); closeMenu(); }}
 									style={{ fontSize: '14px' }}
 								>
@@ -442,7 +442,7 @@ const SiteHeader: React.FC<SiteHeaderProps> = ({ currentPage }) => {
 										theme === 'dark' 
 											? 'hover:bg-black/5 text-gray-900' 
 											: 'hover:bg-white/10 text-white'
-									} ${isActive('m-index') ? 'font-semibold' : 'font-normal'}`}
+									} ${isActive('m-index') ? 'font-medium' : 'font-normal'}`}
 									onClick={() => { nav('m-index'); closeMenu(); }}
 									style={{ fontSize: '14px' }}
 								>

@@ -44,7 +44,7 @@ const ResearcherDashboard = () => {
 
       {/* Page Header - Compact */}
       <div className="mb-2">
-        <h1 className="text-2xl font-bold text-slate-700 dark:text-slate-200 mb-1">Researcher Dashboard</h1>
+        <h1 className="text-2xl font-medium text-slate-700 dark:text-slate-200 mb-1">Researcher Dashboard</h1>
         <p className="text-sm text-slate-500 dark:text-slate-400">Track your research projects and publications</p>
       </div>
 
@@ -63,7 +63,7 @@ const ResearcherDashboard = () => {
             <div className="p-1.5 bg-cyan-100 dark:bg-cyan-500/30 rounded-lg">
               <Microscope className="h-4 w-4 text-cyan-600 dark:text-cyan-400" />
             </div>
-            <h3 className="text-base font-semibold text-slate-700 dark:text-slate-200">Active Research Projects</h3>
+            <h3 className="text-base font-medium text-slate-700 dark:text-slate-200">Active Research Projects</h3>
           </div>
           <div className="space-y-2">
             {researchProjects.map((project, index) => (
@@ -93,7 +93,7 @@ const ResearcherDashboard = () => {
             <div className="p-1.5 bg-indigo-100 dark:bg-indigo-500/30 rounded-lg">
               <FileText className="h-4 w-4 text-indigo-600 dark:text-indigo-400" />
             </div>
-            <h3 className="text-base font-semibold text-slate-700 dark:text-slate-200">Recent Publications</h3>
+            <h3 className="text-base font-medium text-slate-700 dark:text-slate-200">Recent Publications</h3>
           </div>
           <div className="space-y-2">
             {publications.map((pub, index) => (
@@ -101,7 +101,7 @@ const ResearcherDashboard = () => {
                 <h4 className="text-slate-700 dark:text-slate-200 font-medium text-xs mb-1 truncate">{pub.title}</h4>
                 <div className="flex items-center justify-between text-xs">
                   <span className="text-slate-500 dark:text-slate-400 truncate">{pub.journal} • {pub.year}</span>
-                  <span className="text-cyan-600 dark:text-cyan-400 font-semibold flex-shrink-0 ml-2">{pub.citations} citations</span>
+                  <span className="text-cyan-600 dark:text-cyan-400 font-medium flex-shrink-0 ml-2">{pub.citations} citations</span>
                 </div>
               </div>
             ))}
@@ -113,7 +113,7 @@ const ResearcherDashboard = () => {
       <div className="card-glass p-6">
         <div className="flex items-center space-x-2 mb-4">
           <Users className="h-5 w-5 text-slate-700 dark:text-slate-200" />
-          <h3 className="text-lg font-semibold text-[var(--color-text-primary)]">Research Collaborations</h3>
+          <h3 className="text-lg font-medium text-[var(--color-text-primary)]">Research Collaborations</h3>
         </div>
         <div className="grid grid-cols-3 gap-4">
           {collaborations.map((collab, index) => (
@@ -139,7 +139,7 @@ const ResearcherDashboard = () => {
       <div className="card-glass overflow-hidden">
         <div className="p-4 border-b border-[var(--color-divider-gray)] flex items-center justify-between">
           <div>
-            <h3 className="text-lg font-semibold text-[var(--color-text-primary)]">Research Activity Map</h3>
+            <h3 className="text-lg font-medium text-[var(--color-text-primary)]">Research Activity Map</h3>
             <p className="text-sm text-[var(--color-text-secondary)] mt-1">
               Explore research activity and clinical trials across Africa
             </p>
@@ -183,7 +183,7 @@ const ResearcherDashboard = () => {
             <Award className="h-5 w-5 text-cyan-600 dark:text-cyan-400" />
           </div>
           <p className="text-sm text-slate-500 dark:text-slate-400 mb-1">Total Funding</p>
-          <p className="text-xl font-bold text-slate-700 dark:text-slate-200">$450K</p>
+          <p className="text-xl font-medium text-slate-700 dark:text-slate-200">$450K</p>
           <p className="text-xs text-emerald-600 dark:text-emerald-400 mt-1">+$50K this year</p>
         </div>
         <div className="card-glass p-3 rounded-lg text-center">
@@ -191,7 +191,7 @@ const ResearcherDashboard = () => {
             <Activity className="h-5 w-5 text-emerald-600 dark:text-emerald-400" />
           </div>
           <p className="text-sm text-slate-500 dark:text-slate-400 mb-1">Research Impact</p>
-          <p className="text-xl font-bold text-slate-700 dark:text-slate-200">8.2</p>
+          <p className="text-xl font-medium text-slate-700 dark:text-slate-200">8.2</p>
           <p className="text-xs text-emerald-600 dark:text-emerald-400 mt-1">+0.3 this quarter</p>
         </div>
         <div className="card-glass p-3 rounded-lg text-center">
@@ -199,7 +199,7 @@ const ResearcherDashboard = () => {
             <Globe className="h-5 w-5 text-indigo-600 dark:text-indigo-400" />
           </div>
           <p className="text-sm text-slate-500 dark:text-slate-400 mb-1">Countries</p>
-          <p className="text-xl font-bold text-slate-700 dark:text-slate-200">5</p>
+          <p className="text-xl font-medium text-slate-700 dark:text-slate-200">5</p>
           <p className="text-xs text-emerald-600 dark:text-emerald-400 mt-1">+1 this year</p>
         </div>
         <div className="card-glass p-3 rounded-lg text-center">
@@ -207,7 +207,7 @@ const ResearcherDashboard = () => {
             <Calendar className="h-5 w-5 text-amber-600 dark:text-amber-400" />
           </div>
           <p className="text-sm text-slate-500 dark:text-slate-400 mb-1">Conferences</p>
-          <p className="text-xl font-bold text-slate-700 dark:text-slate-200">3</p>
+          <p className="text-xl font-medium text-slate-700 dark:text-slate-200">3</p>
           <p className="text-xs text-emerald-600 dark:text-emerald-400 mt-1">This year</p>
         </div>
       </div>

@@ -102,7 +102,7 @@ const DashboardCustomizer: React.FC<DashboardCustomizerProps> = ({ onClose }) =>
         {/* Header */}
         <div className="flex items-center justify-between p-6 border-b border-gray-200 dark:border-gray-700 bg-gradient-to-r from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-750">
           <div>
-            <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Customize Your Dashboard</h2>
+            <h2 className="text-2xl font-medium text-gray-900 dark:text-white">Customize Your Dashboard</h2>
             <p className="text-gray-600 dark:text-gray-400 mt-1">Add, remove, and reorder modules to personalize your experience</p>
           </div>
           <button

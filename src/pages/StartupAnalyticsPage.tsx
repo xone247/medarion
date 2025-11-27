@@ -6,6 +6,7 @@ import VCInvestmentOverTimeChart from '../components/VCInvestmentOverTimeChart';
 import DealsByStageChart from '../components/DealsByStageChart';
 import DealsBySectorChart from '../components/DealsBySectorChart';
 import SectorTreemap from '../components/SectorTreemap';
+import { exportToExcel, exportToCSV, exportToJSON } from '../utils/exportUtils';
 
 const StartupAnalyticsPage = () => {
   // Engagement mock data (kept as-is)
@@ -134,28 +135,22 @@ const StartupAnalyticsPage = () => {
 
   return (
     <div className="page-container">
-      {/* Header with glassmorphism */}
-      <div className="card-glass p-6 shadow-soft mb-6">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-2">
-            <TrendingUp className="h-6 w-6 icon-primary" />
-            <h1 className="text-xl text-2xl font-bold text-[var(--color-text-primary)]">Startup Analytics</h1>
-          </div>
-          <div className="flex items-center gap-2">
-            <div className="toolbar">
-              <select className="input w-40" value={filters.sector||''} onChange={(e)=>setFilters(prev=>({...prev, sector: e.target.value || undefined}))}>
+      {/* Action Buttons and Filters - Header removed, title now in GlobalHeader */}
+      <div className="flex flex-wrap items-center gap-3 justify-between mb-4">
+        <div className="flex flex-wrap items-center gap-2 flex-1">
+          <select className="input w-full max-w-40" value={filters.sector||''} onChange={(e)=>setFilters(prev=>({...prev, sector: e.target.value || undefined}))}>
                 <option value="">All sectors</option>
                 {options.sectors.map(s=> (<option key={s} value={s}>{s}</option>))}
               </select>
-              <select className="input w-40" value={filters.country||''} onChange={(e)=>setFilters(prev=>({...prev, country: e.target.value || undefined}))}>
+          <select className="input w-full max-w-40" value={filters.country||''} onChange={(e)=>setFilters(prev=>({...prev, country: e.target.value || undefined}))}>
                 <option value="">All countries</option>
                 {options.countries.map(c=> (<option key={c} value={c}>{c}</option>))}
               </select>
-              <select className="input w-36" value={filters.stage||''} onChange={(e)=>setFilters(prev=>({...prev, stage: e.target.value || undefined}))}>
+          <select className="input w-full max-w-36" value={filters.stage||''} onChange={(e)=>setFilters(prev=>({...prev, stage: e.target.value || undefined}))}>
                 <option value="">All stages</option>
                 {options.stages.map(s=> (<option key={s} value={s}>{s}</option>))}
               </select>
-              <select className="input w-32" value={filters.timeframe||'12m'} onChange={(e)=>setFilters(prev=>({...prev, timeframe: e.target.value || '12m'}))}>
+          <select className="input w-full max-w-32" value={filters.timeframe||'12m'} onChange={(e)=>setFilters(prev=>({...prev, timeframe: e.target.value || '12m'}))}>
                 <option value="3m">3m</option>
                 <option value="6m">6m</option>
                 <option value="12m">12m</option>
@@ -163,17 +158,36 @@ const StartupAnalyticsPage = () => {
                 <option value="all">All</option>
               </select>
             </div>
-            <div className="toolbar">
-              <button className="btn-outline px-3 py-2 rounded" onClick={()=>{
-                try{ const data = { filters, generatedAt:new Date().toISOString(), deals: filteredDeals.slice(0,200) }; const blob = new Blob([JSON.stringify(data,null,2)], { type:'application/json' }); const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'analytics-export.json'; a.click(); URL.revokeObjectURL(a.href);}catch{}
-              }}><FileDown className="h-4 w-4 inline mr-2"/>Export JSON</button>
-              <button className="btn-primary px-3 py-2 rounded" onClick={()=>{ try{ window.print(); }catch{} }}><Printer className="h-4 w-4 inline mr-2"/>Print</button>
-            </div>
-            <button className="btn-outline px-3 py-2 rounded" onClick={()=>{
+        <div className="flex flex-wrap items-center gap-2">
+          <button className="btn-outline px-4 py-2 rounded-lg flex items-center gap-2" onClick={()=>{
+            try{
+              const excelData = filteredDeals.slice(0,200).map((deal: any) => ({
+                'Company Name': deal.company_name,
+                'Deal Value (USD)': deal.value_usd,
+                Stage: deal.stage,
+                Country: deal.country,
+                Sector: deal.sector,
+                Date: deal.date,
+                Investors: Array.isArray(deal.investors) ? deal.investors.join('; ') : deal.investors || ''
+              }));
+              exportToExcel(excelData, 'analytics-export', 'Analytics');
+            }catch(error){
+              console.error('Error exporting Excel:', error);
+            }
+          }}><FileDown className="h-4 w-4"/>Export Excel</button>
+          <button className="btn-outline px-4 py-2 rounded-lg flex items-center gap-2" onClick={()=>{
+            try{
+              const data = { filters, generatedAt:new Date().toISOString(), deals: filteredDeals.slice(0,200) };
+              exportToJSON(data, 'analytics-export');
+            }catch(error){
+              console.error('Error exporting JSON:', error);
+            }
+          }}><FileDown className="h-4 w-4"/>Export JSON</button>
+          <button className="btn-primary px-4 py-2 rounded-lg flex items-center gap-2" onClick={()=>{ try{ window.print(); }catch{} }}><Printer className="h-4 w-4"/>Print</button>
+          <button className="btn-outline px-4 py-2 rounded-lg flex items-center gap-2" onClick={()=>{
               const next = visibleSections.length ? [] : ['engagementMetrics','viewsTrend','investorTypePie','regionalDistribution','topCountries','sectorInterest','marketInsights','marketSummary','investmentOverTime','dealsByStage','dealsBySector','sectorTreemap'];
               saveSections(next);
-            }}><SlidersHorizontal className="h-4 w-4 inline mr-2"/>Customize</button>
-          </div>
+          }}><SlidersHorizontal className="h-4 w-4"/>Customize</button>
         </div>
       </div>
 
@@ -185,7 +199,7 @@ const StartupAnalyticsPage = () => {
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-[var(--color-text-secondary)] text-sm">{metric.metric}</p>
-                  <p className="text-xl text-2xl font-bold text-[var(--color-text-primary)]">{metric.value}</p>
+                  <p className="text-xl text-2xl font-medium text-[var(--color-text-primary)]">{metric.value}</p>
                   <p className="text-[var(--color-primary-teal)] text-sm">{metric.change} this month</p>
                   <p className="text-[var(--color-text-secondary)] text-xs mt-1">{metric.description}</p>
                 </div>
@@ -205,7 +219,7 @@ const StartupAnalyticsPage = () => {
       <div className="grid grid-cols-2 gap-6 mb-6">
         {visibleSections.includes('viewsTrend') && (
           <div className="card-glass p-4 p-6 shadow-soft">
-            <h3 className="text-base text-lg font-semibold text-[var(--color-text-primary)] mb-4">African Market Profile Views Trend</h3>
+            <h3 className="text-base text-lg font-medium text-[var(--color-text-primary)] mb-4">African Market Profile Views Trend</h3>
             <div className="h-64 h-72">
               <ResponsiveContainer width="100%" height="100%">
                 <LineChart data={profileViewsData} margin={{ top: 5, right: 20, bottom: 5, left: 0 }}>
@@ -222,7 +236,7 @@ const StartupAnalyticsPage = () => {
 
         {visibleSections.includes('investorTypePie') && (
           <div className="card-glass p-4 p-6 shadow-soft">
-            <h3 className="text-base text-lg font-semibold text-[var(--color-text-primary)] mb-4">African Investor Type Distribution</h3>
+            <h3 className="text-base text-lg font-medium text-[var(--color-text-primary)] mb-4">African Investor Type Distribution</h3>
             <div className="h-64 h-72">
               <ResponsiveContainer width="100%" height="100%">
                 <PieChart>
@@ -241,7 +255,7 @@ const StartupAnalyticsPage = () => {
       <div className="grid grid-cols-2 gap-6 mb-6">
         {visibleSections.includes('regionalDistribution') && (
           <div className="card-glass p-4 p-6 shadow-soft">
-            <h3 className="text-base text-lg font-semibold text-[var(--color-text-primary)] mb-4">African Regional Distribution</h3>
+            <h3 className="text-base text-lg font-medium text-[var(--color-text-primary)] mb-4">African Regional Distribution</h3>
             <div className="h-64 h-72">
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart data={africanGeographicData} margin={{ top: 5, right: 20, bottom: 5, left: 0 }}>
@@ -258,7 +272,7 @@ const StartupAnalyticsPage = () => {
 
         {visibleSections.includes('topCountries') && (
           <div className="card-glass p-4 p-6 shadow-soft">
-            <h3 className="text-base text-lg font-semibold text-[var(--color-text-primary)] mb-4">Top African Countries by Engagement</h3>
+            <h3 className="text-base text-lg font-medium text-[var(--color-text-primary)] mb-4">Top African Countries by Engagement</h3>
             <div className="grid grid-cols-2 gap-3 h-64 h-72 overflow-y-auto pr-2">
               {countryViewsData.map((country, index) => (
                 <div key={country.country} className="flex items-center justify-between p-3 card-glass rounded-lg shadow-soft">
@@ -270,7 +284,7 @@ const StartupAnalyticsPage = () => {
                     </div>
                   </div>
                   <div className="text-right">
-                    <p className="text-lg font-bold text-[var(--color-primary-teal)]">{country.views}</p>
+                    <p className="text-lg font-medium text-[var(--color-primary-teal)]">{country.views}</p>
                     <p className="text-xs text-[var(--color-text-secondary)]">views</p>
                   </div>
                 </div>
@@ -283,7 +297,7 @@ const StartupAnalyticsPage = () => {
       {/* Sector Interest */}
       {visibleSections.includes('sectorInterest') && (
         <div className="card-glass p-4 p-6 shadow-soft mb-6">
-          <h3 className="text-base text-lg font-semibold text-[var(--color-text-primary)] mb-4">African Investor Interest by Sector</h3>
+          <h3 className="text-base text-lg font-medium text-[var(--color-text-primary)] mb-4">African Investor Interest by Sector</h3>
           <div className="grid grid-cols-2 gap-6">
             <div className="h-72">
               <ResponsiveContainer width="100%" height="100%">
@@ -299,7 +313,7 @@ const StartupAnalyticsPage = () => {
               </ResponsiveContainer>
             </div>
             <div className="space-y-4">
-              <h4 className="text-md font-semibold text-[var(--color-text-primary)]">African Market Relevance</h4>
+              <h4 className="text-md font-medium text-[var(--color-text-primary)]">African Market Relevance</h4>
               <div className="grid grid-cols-2 gap-3 h-64 overflow-y-auto pr-2">
                 {sectorInterestData.map((sector, index) => (
                   <div key={sector.sector} className="p-3 card-glass rounded-lg shadow-soft">
@@ -324,7 +338,7 @@ const StartupAnalyticsPage = () => {
         <div className="card-glass p-4 p-6 shadow-soft mb-6">
           <div className="flex items-center space-x-2 mb-4">
             <Globe className="h-5 w-5 text-[var(--color-primary-teal)]" />
-            <h3 className="text-base text-lg font-semibold text-[var(--color-text-primary)]">African Market Insights</h3>
+            <h3 className="text-base text-lg font-medium text-[var(--color-text-primary)]">African Market Insights</h3>
           </div>
           <div className="grid grid-cols-2 gap-4">
             {marketInsights.map((insight, index) => (
@@ -345,21 +359,21 @@ const StartupAnalyticsPage = () => {
         <div className="card-glass p-4 p-6 shadow-soft">
           <div className="flex items-center space-x-3 mb-4">
             <MapPin className="h-5 w-5 text-[var(--color-primary-teal)]" />
-            <h3 className="text-base text-lg font-semibold text-[var(--color-text-primary)]">African Healthcare Market Summary</h3>
+            <h3 className="text-base text-lg font-medium text-[var(--color-text-primary)]">African Healthcare Market Summary</h3>
           </div>
           <div className="grid grid-cols-3 gap-4 gap-6">
             <div className="text-center">
-              <div className="text-2xl text-3xl font-bold text-[var(--color-primary-teal)] mb-2">54</div>
+              <div className="text-2xl text-3xl font-medium text-[var(--color-primary-teal)] mb-2">54</div>
               <div className="text-sm text-[var(--color-text-secondary)]">African Countries</div>
               <div className="text-xs text-[var(--color-text-secondary)]">Market Coverage</div>
             </div>
             <div className="text-center">
-              <div className="text-2xl text-3xl font-bold text-[var(--color-primary-teal)] mb-2">1.4B</div>
+              <div className="text-2xl text-3xl font-medium text-[var(--color-primary-teal)] mb-2">1.4B</div>
               <div className="text-sm text-[var(--color-text-secondary)]">Total Population</div>
               <div className="text-xs text-[var(--color-text-secondary)]">Addressable Market</div>
             </div>
             <div className="text-center">
-              <div className="text-2xl text-3xl font-bold text-[var(--color-primary-teal)] mb-2">$180B</div>
+              <div className="text-2xl text-3xl font-medium text-[var(--color-primary-teal)] mb-2">$180B</div>
               <div className="text-sm text-[var(--color-text-secondary)]">Healthcare Market Size</div>
               <div className="text-xs text-[var(--color-text-secondary)]">Growing at 8.2% CAGR</div>
             </div>

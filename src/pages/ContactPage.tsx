@@ -201,14 +201,14 @@ const ContactPage: React.FC<ContactPageProps> = ({ onBack }) => {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 lg:gap-16 items-stretch">
           {/* Contact Form */}
           <div className="p-8 md:p-10 lg:p-12 rounded-2xl border border-[var(--color-divider-gray)]/20 bg-[var(--color-background-surface)] shadow-sm hover:shadow-md transition-shadow duration-300 flex flex-col h-full">
-            <h2 className="text-2xl md:text-3xl font-semibold text-[var(--color-text-primary)] mb-8">Send us a Message</h2>
+            <h2 className="text-2xl md:text-3xl font-medium text-[var(--color-text-primary)] mb-8">Send us a Message</h2>
             
             {submitted ? (
               <div className="text-center py-12">
                 <div className="w-16 h-16 flex items-center justify-center mx-auto mb-4 rounded-full bg-green-100 dark:bg-green-500/40">
                   <Send className="h-8 w-8 text-green-600 dark:text-green-400" />
                 </div>
-                <h3 className="text-xl font-semibold text-[var(--color-text-primary)] mb-2">Message Sent!</h3>
+                <h3 className="text-xl font-medium text-[var(--color-text-primary)] mb-2">Message Sent!</h3>
                 <p className="text-[var(--color-text-secondary)]">Thank you for reaching out. We'll get back to you within 24 hours.</p>
               </div>
             ) : (
@@ -304,7 +304,7 @@ const ContactPage: React.FC<ContactPageProps> = ({ onBack }) => {
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="w-full bg-black dark:bg-white hover:opacity-90 dark:hover:opacity-80 disabled:opacity-50 text-white dark:text-black py-3 px-6 rounded-lg transition-all duration-200 flex items-center justify-center gap-2 font-semibold shadow-md hover:shadow-lg disabled:cursor-not-allowed"
+                  className="w-full bg-black dark:bg-white hover:opacity-90 dark:hover:opacity-80 disabled:opacity-50 text-white dark:text-black py-3 px-6 rounded-lg transition-all duration-200 flex items-center justify-center gap-2 font-medium shadow-md hover:shadow-lg disabled:cursor-not-allowed"
                 >
                   {isSubmitting ? (
                     <>
@@ -325,7 +325,7 @@ const ContactPage: React.FC<ContactPageProps> = ({ onBack }) => {
           {/* Contact Information */}
           <div className="space-y-6 md:space-y-8 flex flex-col h-full">
             <div className="p-8 md:p-10 lg:p-12 rounded-2xl border border-[var(--color-divider-gray)]/20 bg-[var(--color-background-surface)] shadow-sm hover:shadow-md transition-shadow duration-300">
-              <h3 className="text-xl md:text-2xl font-semibold text-[var(--color-text-primary)] mb-8">Quick Contact</h3>
+              <h3 className="text-xl md:text-2xl font-medium text-[var(--color-text-primary)] mb-8">Quick Contact</h3>
               <div className="space-y-6">
                 <div className="flex items-start gap-4 p-4 rounded-lg hover:bg-[var(--color-background-default)] transition-colors">
                   <div className="p-2 rounded-lg bg-black/10 dark:bg-white/10">
@@ -377,7 +377,7 @@ const ContactPage: React.FC<ContactPageProps> = ({ onBack }) => {
 
             {/* Response Time */}
             <div className="p-6 md:p-8 rounded-2xl border border-[var(--color-divider-gray)]/20 bg-[var(--color-background-surface)] shadow-sm flex-1 flex flex-col justify-center">
-              <h4 className="text-lg font-semibold text-[var(--color-text-primary)] mb-3">Response Time</h4>
+              <h4 className="text-lg font-medium text-[var(--color-text-primary)] mb-3">Response Time</h4>
               <p className="text-[var(--color-text-secondary)] text-sm leading-relaxed">
                 We typically respond to all inquiries within 24 hours during business days.
               </p>
@@ -387,14 +387,14 @@ const ContactPage: React.FC<ContactPageProps> = ({ onBack }) => {
 
         {/* Office Locations */}
         <div>
-          <h2 className="text-2xl md:text-3xl font-semibold text-[var(--color-text-primary)] text-center mb-12 md:mb-16">Our Offices</h2>
+          <h2 className="text-2xl md:text-3xl font-medium text-[var(--color-text-primary)] text-center mb-12 md:mb-16">Our Offices</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
             {offices.map((office, index) => (
               <div key={index} className="p-6 md:p-8 rounded-2xl border border-[var(--color-divider-gray)]/20 bg-[var(--color-background-surface)] shadow-sm hover:shadow-md hover:border-[var(--color-primary-teal)]/30 transition-all duration-300">
                 <div className="flex items-center gap-4 mb-6">
                   <span className="text-4xl">{office.flag}</span>
                   <div>
-                    <h3 className="text-lg md:text-xl font-semibold text-[var(--color-text-primary)]">{office.city}</h3>
+                    <h3 className="text-lg md:text-xl font-medium text-[var(--color-text-primary)]">{office.city}</h3>
                     <p className="text-[var(--color-text-secondary)] text-sm">{office.country}</p>
                   </div>
                 </div>
@@ -426,7 +426,7 @@ const ContactPage: React.FC<ContactPageProps> = ({ onBack }) => {
 
         {/* FAQ Section */}
         <div>
-          <h2 className="text-2xl md:text-3xl font-semibold text-[var(--color-text-primary)] text-center mb-12 md:mb-16">Frequently Asked Questions</h2>
+          <h2 className="text-2xl md:text-3xl font-medium text-[var(--color-text-primary)] text-center mb-12 md:mb-16">Frequently Asked Questions</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
             {faqs.map((faq, index) => {
               const isOpen = openFaqIndex === index;
@@ -439,7 +439,7 @@ const ContactPage: React.FC<ContactPageProps> = ({ onBack }) => {
                     onClick={() => setOpenFaqIndex(isOpen ? null : index)}
                     className="w-full p-5 md:p-6 flex items-center justify-between gap-3 text-left hover:bg-[var(--color-background-default)]/50 transition-colors"
                   >
-                    <h3 className="text-base md:text-lg font-semibold text-[var(--color-text-primary)] pr-2 flex-1">
+                    <h3 className="text-base md:text-lg font-medium text-[var(--color-text-primary)] pr-2 flex-1">
                       {faq.question}
                     </h3>
                     <ChevronDown 

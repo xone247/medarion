@@ -19,31 +19,10 @@ import {
   draftIntroEmail,
 } from '../services/ai';
 import {
-  Shield, Users, BarChart3, FileSearch, TrendingUp, Presentation,
-  Target, Bot, Map, Heart, FileText, Award, Handshake, Mail,
-  Search, Filter, X, Sparkles, Zap, CheckCircle, AlertCircle,
-  Clock, Loader2, Copy, Download, ExternalLink, ChevronRight,
-  Star, ArrowRight, Info
+  X, Loader2, Copy, Download, ArrowRight
 } from 'lucide-react';
 import AIChatInterface from '../components/ai/AIChatInterface';
 
-// Icon mapping for tools
-const iconMap: Record<string, React.ComponentType<any>> = {
-  'market-risk-assessment': Shield,
-  'competitor-analysis': Users,
-  'valuation-benchmarking': BarChart3,
-  'due-diligence-summary': FileSearch,
-  'trend-detection': TrendingUp,
-  'pitch-deck-analyzer': Presentation,
-  'fundraising-strategy': Target,
-  'medarion-assistant': Bot,
-  'market-entry-report': Map,
-  'impact-report-generator': Heart,
-  'deal-summarizer': FileText,
-  'grant-target-suggester': Award,
-  'investor-matcher': Handshake,
-  'email-drafter': Mail,
-};
 
 const AIToolsPage: React.FC = () => {
   const { profile } = useAuth();
@@ -174,7 +153,7 @@ const AIToolsPage: React.FC = () => {
     if (result.statement) {
       return (
         <div className="space-y-3">
-          <div className="text-sm font-semibold text-[var(--color-text-primary)] mb-2">Impact Statement</div>
+          <div className="text-sm font-medium text-[var(--color-text-primary)] mb-2">Impact Statement</div>
           <pre className="text-sm text-[var(--color-text-primary)] overflow-x-auto overflow-y-auto whitespace-pre-wrap font-medium leading-relaxed max-h-[500px] p-4 bg-[var(--color-background-surface)]/50 rounded-lg border border-[var(--color-divider-gray)]/30" style={{ wordBreak: 'break-word', overflowWrap: 'break-word' }}>
             {result.statement}
           </pre>
@@ -187,11 +166,11 @@ const AIToolsPage: React.FC = () => {
       return (
         <div className="space-y-4">
           <div className="flex items-center gap-3">
-            <div className="text-3xl font-bold text-[var(--color-primary-teal)]">{result.score}</div>
-            <div className="text-sm font-semibold text-[var(--color-text-primary)]">Risk Score (0-100)</div>
+            <div className="text-3xl font-medium text-[var(--color-primary-teal)]">{result.score}</div>
+            <div className="text-sm font-medium text-[var(--color-text-primary)]">Risk Score (0-100)</div>
           </div>
           <div>
-            <div className="text-sm font-semibold text-[var(--color-text-primary)] mb-2">Key Risk Factors:</div>
+            <div className="text-sm font-medium text-[var(--color-text-primary)] mb-2">Key Risk Factors:</div>
             <ul className="space-y-2">
               {result.factors.map((factor: string, idx: number) => (
                 <li key={idx} className="text-sm text-[var(--color-text-primary)] flex items-start gap-2">
@@ -211,7 +190,7 @@ const AIToolsPage: React.FC = () => {
         <div className="space-y-4 max-h-[500px] overflow-y-auto overflow-x-hidden">
           <div className="grid grid-cols-2 gap-4">
             <div className="p-4 rounded-lg bg-[var(--color-primary-teal)]/10 border border-[var(--color-primary-teal)]/30">
-              <div className="text-sm font-semibold text-[var(--color-primary-teal)] mb-2">Strengths</div>
+              <div className="text-sm font-medium text-[var(--color-primary-teal)] mb-2">Strengths</div>
               <ul className="space-y-1">
                 {result.swot.strengths?.map((s: string, idx: number) => (
                   <li key={idx} className="text-xs text-[var(--color-text-primary)]">• {s}</li>
@@ -219,7 +198,7 @@ const AIToolsPage: React.FC = () => {
               </ul>
             </div>
             <div className="p-4 rounded-lg bg-red-500/10 border border-red-500/30">
-              <div className="text-sm font-semibold text-red-600 dark:text-red-400 mb-2">Weaknesses</div>
+              <div className="text-sm font-medium text-red-600 dark:text-red-400 mb-2">Weaknesses</div>
               <ul className="space-y-1">
                 {result.swot.weaknesses?.map((w: string, idx: number) => (
                   <li key={idx} className="text-xs text-[var(--color-text-primary)]">• {w}</li>
@@ -227,7 +206,7 @@ const AIToolsPage: React.FC = () => {
               </ul>
             </div>
             <div className="p-4 rounded-lg bg-blue-500/10 border border-blue-500/30">
-              <div className="text-sm font-semibold text-blue-600 dark:text-blue-400 mb-2">Opportunities</div>
+              <div className="text-sm font-medium text-blue-600 dark:text-blue-400 mb-2">Opportunities</div>
               <ul className="space-y-1">
                 {result.swot.opportunities?.map((o: string, idx: number) => (
                   <li key={idx} className="text-xs text-[var(--color-text-primary)]">• {o}</li>
@@ -235,7 +214,7 @@ const AIToolsPage: React.FC = () => {
               </ul>
             </div>
             <div className="p-4 rounded-lg bg-amber-500/10 border border-amber-500/30">
-              <div className="text-sm font-semibold text-amber-600 dark:text-amber-400 mb-2">Threats</div>
+              <div className="text-sm font-medium text-amber-600 dark:text-amber-400 mb-2">Threats</div>
               <ul className="space-y-1">
                 {result.swot.threats?.map((t: string, idx: number) => (
                   <li key={idx} className="text-xs text-[var(--color-text-primary)]">• {t}</li>
@@ -245,7 +224,7 @@ const AIToolsPage: React.FC = () => {
           </div>
           {result.questions && result.questions.length > 0 && (
             <div className="mt-4">
-              <div className="text-sm font-semibold text-[var(--color-text-primary)] mb-2">Key Questions for Investors:</div>
+              <div className="text-sm font-medium text-[var(--color-text-primary)] mb-2">Key Questions for Investors:</div>
               <ul className="space-y-2">
                 {result.questions.map((q: string, idx: number) => (
                   <li key={idx} className="text-sm text-[var(--color-text-primary)] flex items-start gap-2">
@@ -266,7 +245,7 @@ const AIToolsPage: React.FC = () => {
         <div className="space-y-4 max-h-[500px] overflow-y-auto overflow-x-hidden">
           {result.opportunities && result.opportunities.length > 0 && (
             <div>
-              <div className="text-sm font-semibold text-[var(--color-primary-teal)] mb-2">Opportunities</div>
+              <div className="text-sm font-medium text-[var(--color-primary-teal)] mb-2">Opportunities</div>
               <ul className="space-y-2">
                 {result.opportunities.map((opp: string, idx: number) => (
                   <li key={idx} className="text-sm text-[var(--color-text-primary)] flex items-start gap-2">
@@ -279,7 +258,7 @@ const AIToolsPage: React.FC = () => {
           )}
           {result.challenges && result.challenges.length > 0 && (
             <div>
-              <div className="text-sm font-semibold text-red-600 dark:text-red-400 mb-2">Challenges</div>
+              <div className="text-sm font-medium text-red-600 dark:text-red-400 mb-2">Challenges</div>
               <ul className="space-y-2">
                 {result.challenges.map((ch: string, idx: number) => (
                   <li key={idx} className="text-sm text-[var(--color-text-primary)] flex items-start gap-2">
@@ -298,18 +277,18 @@ const AIToolsPage: React.FC = () => {
     if (result.low !== undefined && result.high !== undefined) {
       return (
         <div className="space-y-3">
-          <div className="text-sm font-semibold text-[var(--color-text-primary)] mb-2">Valuation Range</div>
+          <div className="text-sm font-medium text-[var(--color-text-primary)] mb-2">Valuation Range</div>
           <div className="flex items-center gap-4">
             <div>
               <div className="text-xs text-[var(--color-text-secondary)] mb-1">Low</div>
-              <div className="text-lg font-bold text-[var(--color-text-primary)]">
+              <div className="text-lg font-medium text-[var(--color-text-primary)]">
                 ${(result.low / 1_000_000).toFixed(1)}M
               </div>
             </div>
             <div className="text-[var(--color-text-secondary)]">→</div>
             <div>
               <div className="text-xs text-[var(--color-text-secondary)] mb-1">High</div>
-              <div className="text-lg font-bold text-[var(--color-text-primary)]">
+              <div className="text-lg font-medium text-[var(--color-text-primary)]">
                 ${(result.high / 1_000_000).toFixed(1)}M
               </div>
             </div>
@@ -345,7 +324,7 @@ const AIToolsPage: React.FC = () => {
         <ul className="space-y-3">
           {result.map((item: any, idx: number) => (
             <li key={idx} className="text-sm text-[var(--color-text-primary)]">
-              <div className="font-semibold">{item.topic}</div>
+              <div className="font-medium">{item.topic}</div>
               {item.change && <div className="text-xs text-[var(--color-text-secondary)]">{item.change}</div>}
             </li>
           ))}
@@ -357,7 +336,7 @@ const AIToolsPage: React.FC = () => {
     if (result.feedback && Array.isArray(result.feedback)) {
       return (
         <div className="space-y-3">
-          <div className="text-sm font-semibold text-[var(--color-text-primary)] mb-2">Feedback</div>
+          <div className="text-sm font-medium text-[var(--color-text-primary)] mb-2">Feedback</div>
           <ul className="space-y-2">
             {result.feedback.map((fb: string, idx: number) => (
               <li key={idx} className="text-sm text-[var(--color-text-primary)] flex items-start gap-2">
@@ -374,11 +353,11 @@ const AIToolsPage: React.FC = () => {
     if (result.competitors && Array.isArray(result.competitors)) {
       return (
         <div className="space-y-3">
-          <div className="text-sm font-semibold text-[var(--color-text-primary)] mb-2">Top Competitors</div>
+          <div className="text-sm font-medium text-[var(--color-text-primary)] mb-2">Top Competitors</div>
           <ul className="space-y-2">
             {result.competitors.map((comp: any, idx: number) => (
               <li key={idx} className="text-sm text-[var(--color-text-primary)] flex items-start gap-2">
-                <span className="text-[var(--color-primary-teal)] mt-1 font-bold">{idx + 1}.</span>
+                <span className="text-[var(--color-primary-teal)] mt-1 font-medium">{idx + 1}.</span>
                 <span>{typeof comp === 'string' ? comp : comp.name || JSON.stringify(comp)}</span>
               </li>
             ))}
@@ -461,7 +440,6 @@ const AIToolsPage: React.FC = () => {
   };
 
   const selectedToolData = selectedTool ? aiToolsData.find(t => t.id === selectedTool) : null;
-  const ToolIcon = selectedToolData ? iconMap[selectedToolData.id] || Bot : Bot;
 
   // Lock body scroll when modal is open
   React.useEffect(() => {
@@ -548,137 +526,112 @@ const AIToolsPage: React.FC = () => {
   return (
     <div className="w-full">
       <div className="w-full">
-        {/* Hero Header */}
-        <div className="mb-8">
-          <div className="card-glass p-6 shadow-soft mb-6">
-            <div className="flex items-center gap-4 mb-4">
-              <div className="p-4 rounded-xl bg-black dark:bg-white shadow-lg">
-                <Sparkles className="h-6 w-6 text-white dark:text-black" />
-              </div>
-              <div>
-                <h1 className="text-3xl font-bold text-[var(--color-text-primary)]">AI Tools</h1>
-                <p className="text-[var(--color-text-primary)] mt-1 opacity-90">Powerful AI-driven insights for African healthcare innovation</p>
-              </div>
-            </div>
-            
-            {/* Status Bar */}
-            {profile && (
-              <div className="flex items-center gap-4 p-4 rounded-lg card-glass shadow-soft">
-                <div className="flex items-center gap-2">
-                  <div className={`w-3 h-3 rounded-full ${aiPolicy.enabled ? 'bg-[var(--color-primary-teal)] shadow-lg shadow-[var(--color-primary-teal)]/50' : 'bg-gray-400'}`} />
-                  <span className="text-sm font-medium text-[var(--color-text-primary)]">
-                    AI Access: <span className={`${aiPolicy.enabled ? 'text-[var(--color-primary-teal)]' : 'text-gray-600 dark:text-gray-400'}`}>
-                      {aiPolicy.enabled ? 'Enabled' : 'Disabled'}
-                    </span>
+        {/* Status Bar - Compact */}
+        {profile && (
+          <div className="mb-3">
+            <div className="flex items-center gap-4 p-3 rounded-lg bg-gradient-to-r from-cyan-50 to-teal-50 dark:from-cyan-950/30 dark:to-teal-950/30 border border-cyan-200/50 dark:border-cyan-800/50">
+              <div className="flex items-center gap-2">
+                <div className={`w-2.5 h-2.5 rounded-full ${aiPolicy.enabled ? 'bg-cyan-600 dark:bg-cyan-400 shadow-lg shadow-cyan-500/50' : 'bg-gray-400'}`} />
+                <span className="text-sm font-medium text-slate-700 dark:text-slate-200">
+                  AI Access: <span className={`${aiPolicy.enabled ? 'text-cyan-600 dark:text-cyan-400' : 'text-slate-500 dark:text-slate-400'}`}>
+                    {aiPolicy.enabled ? 'Enabled' : 'Disabled'}
                   </span>
-                </div>
-                {aiPolicy.quota ? (
-                  <div className="text-sm font-medium text-[var(--color-text-primary)]">
-                    Usage: <span className="text-[var(--color-primary-teal)] font-bold">{getUsage()}</span> / <span className="text-[var(--color-text-primary)]">{aiPolicy.quota}</span> this month
-                  </div>
-                ) : (
-                  <div className="text-sm font-medium text-[var(--color-text-primary)]">
-                    Quota: <span className="text-[var(--color-primary-teal)]">{aiPolicy.enabled ? 'Unlimited (demo)' : '—'}</span>
-                  </div>
-                )}
+                </span>
               </div>
-            )}
-          </div>
-        </div>
-
-        {/* Search and Filters */}
-        <div className="card-glass p-6 shadow-soft mb-6">
-          <div className="flex flex-row gap-4">
-            <div className="flex-1 relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-[var(--color-text-secondary)]" />
-              <input
-                type="text"
-                placeholder="Search AI tools..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-10 pr-4 py-2.5 rounded-lg border border-[var(--color-divider-gray)] bg-[var(--color-background-surface)]/80 backdrop-blur-sm text-[var(--color-text-primary)] dark:text-white placeholder:text-[var(--color-text-secondary)] dark:placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-[var(--color-primary-teal)]/30 focus:border-[var(--color-primary-teal)] transition-all"
-              />
+              {aiPolicy.quota ? (
+                <div className="text-sm font-medium text-slate-700 dark:text-slate-200">
+                  Usage: <span className="text-cyan-600 dark:text-cyan-400 font-medium">{getUsage()}</span> / <span className="text-slate-700 dark:text-slate-200">{aiPolicy.quota}</span> this month
+                </div>
+              ) : (
+                <div className="text-sm font-medium text-slate-700 dark:text-slate-200">
+                  Quota: <span className="text-cyan-600 dark:text-cyan-400">{aiPolicy.enabled ? 'Unlimited (demo)' : '—'}</span>
+                </div>
+              )}
             </div>
+          </div>
+        )}
+
+        {/* Search and Filters - Compact */}
+        <div className="bg-white dark:bg-slate-800/50 p-3 rounded-lg mb-3 border border-slate-200 dark:border-slate-700 shadow-sm">
+          <div className="flex flex-col lg:flex-row gap-2">
+            <input
+              type="text"
+              placeholder="Search AI tools..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="flex-1 px-3 py-2 text-sm bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-black dark:text-white placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-cyan-500/30"
+            />
             <select
               value={selectedCategory}
               onChange={(e) => setSelectedCategory(e.target.value)}
-              className="px-4 py-2.5 rounded-lg border border-[var(--color-divider-gray)] bg-[var(--color-background-surface)] dark:bg-[var(--color-background-surface)] backdrop-blur-sm text-[var(--color-text-primary)] dark:text-white font-medium focus:outline-none focus:ring-2 focus:ring-[var(--color-primary-teal)]/30 focus:border-[var(--color-primary-teal)] transition-all"
+              className="px-3 py-2 text-sm bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-black dark:text-white focus:outline-none focus:ring-2 focus:ring-cyan-500/30 min-w-[160px]"
             >
-              <option value="all" className="bg-[var(--color-background-surface)] text-[var(--color-text-primary)] dark:bg-[var(--color-background-surface)] dark:text-white">All Categories</option>
+              <option value="all">All Categories</option>
               {Object.entries(aiToolCategories).map(([key, label]) => (
-                <option key={key} value={key} className="bg-[var(--color-background-surface)] text-[var(--color-text-primary)] dark:bg-[var(--color-background-surface)] dark:text-white">{label}</option>
+                <option key={key} value={key}>{label}</option>
               ))}
             </select>
             <select
               value={selectedTier}
               onChange={(e) => setSelectedTier(e.target.value)}
-              className="px-4 py-2.5 rounded-lg border border-[var(--color-divider-gray)] bg-[var(--color-background-surface)] dark:bg-[var(--color-background-surface)] backdrop-blur-sm text-[var(--color-text-primary)] dark:text-white font-medium focus:outline-none focus:ring-2 focus:ring-[var(--color-primary-teal)]/30 focus:border-[var(--color-primary-teal)] transition-all"
+              className="px-3 py-2 text-sm bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-black dark:text-white focus:outline-none focus:ring-2 focus:ring-cyan-500/30 min-w-[140px]"
             >
-              <option value="all" className="bg-[var(--color-background-surface)] text-[var(--color-text-primary)] dark:bg-[var(--color-background-surface)] dark:text-white">All Tiers</option>
+              <option value="all">All Tiers</option>
               {Object.entries(aiToolTiers).map(([key, label]) => (
-                <option key={key} value={key} className="bg-[var(--color-background-surface)] text-[var(--color-text-primary)] dark:bg-[var(--color-background-surface)] dark:text-white">{label}</option>
+                <option key={key} value={key}>{label}</option>
               ))}
             </select>
           </div>
         </div>
 
         {/* Tools Grid */}
-        <div className="grid grid-cols-2 grid-cols-3 gap-6 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 mb-6">
           {filteredTools.map((tool) => {
             const enabled = canAccessTool(tool);
-            const Icon = iconMap[tool.id] || Bot;
-            const categoryColor = getCategoryColor(tool.category);
             
             return (
               <div
                 key={tool.id}
                 onClick={() => enabled && setSelectedTool(tool.id)}
-                className={`group relative card-glass p-6 shadow-soft hover:shadow-md transition-all duration-300 cursor-pointer ${
-                  enabled ? 'hover:scale-[1.02] hover:border-[var(--color-primary-teal)]/30' : 'opacity-60 cursor-not-allowed'
+                className={`group relative bg-white dark:bg-slate-800/50 p-4 rounded-lg border border-slate-200 dark:border-slate-700 shadow-sm hover:shadow-md transition-all duration-200 cursor-pointer ${
+                  enabled ? 'hover:border-cyan-500/50 hover:bg-cyan-50/30 dark:hover:bg-cyan-950/20' : 'opacity-60 cursor-not-allowed'
                 }`}
               >
                 {/* Status Badge */}
-                <div className="absolute top-4 right-4 flex items-center gap-2 z-10">
-                  <span className={`px-2.5 py-1 rounded-md text-xs font-semibold ${getStatusColor(tool.status)} shadow-lg`}>
+                <div className="absolute top-3 right-3 flex items-center gap-1.5 z-10">
+                  <span className={`px-2 py-0.5 rounded text-xs font-medium ${getStatusColor(tool.status)}`}>
                     {tool.status.replace('_', ' ')}
                   </span>
-                  <span className={`px-2.5 py-1 rounded-md text-xs font-semibold ${getTierColor(tool.requiredTier)} shadow-lg`}>
+                  <span className={`px-2 py-0.5 rounded text-xs font-medium ${getTierColor(tool.requiredTier)}`}>
                     {aiToolTiers[tool.requiredTier as keyof typeof aiToolTiers]}
                   </span>
                 </div>
 
-                {/* Icon */}
-                <div className="mb-4">
-                  <div className="w-12 h-12 rounded-xl bg-black dark:bg-gray-700 flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-lg">
-                    <Icon className="h-6 w-6 text-white dark:text-white" />
-                  </div>
-                </div>
-
                 {/* Content */}
-                <h3 className="text-lg font-bold text-[var(--color-text-primary)] mb-2 group-hover:text-[var(--color-primary-teal)] transition-colors">
+                <h3 className="text-base font-medium text-slate-700 dark:text-slate-200 mb-1.5 pr-20 group-hover:text-cyan-600 dark:group-hover:text-cyan-400 transition-colors">
                   {tool.name}
                 </h3>
-                <p className="text-sm text-[var(--color-text-primary)]/80 mb-4 line-clamp-2 leading-relaxed">
+                <p className="text-xs text-slate-600 dark:text-slate-400 mb-3 line-clamp-2 leading-relaxed">
                   {tool.description}
                 </p>
 
                 {/* Features Preview */}
-                <div className="flex flex-wrap gap-1.5 mb-4">
+                <div className="flex flex-wrap gap-1 mb-3">
                   {tool.features.slice(0, 2).map((feature, idx) => (
-                    <span key={idx} className="px-2.5 py-1 text-xs font-medium bg-[var(--color-background-surface)]/60 rounded-md border border-[var(--color-divider-gray)] text-[var(--color-text-primary)]/90 backdrop-blur-sm">
+                    <span key={idx} className="px-2 py-0.5 text-xs font-medium bg-slate-100 dark:bg-slate-700/50 rounded border border-slate-200 dark:border-slate-600 text-slate-700 dark:text-slate-300">
                       {feature.split('(')[0].trim()}
                     </span>
                   ))}
                   {tool.features.length > 2 && (
-                    <span className="px-2.5 py-1 text-xs font-medium text-[var(--color-text-primary)]/70">
+                    <span className="px-2 py-0.5 text-xs font-medium text-slate-500 dark:text-slate-400">
                       +{tool.features.length - 2} more
                     </span>
                   )}
                 </div>
 
                 {/* Action Button */}
-                <div className="flex items-center justify-between pt-4 border-t border-[var(--color-divider-gray)]/50">
-                  <span className="text-xs font-medium text-[var(--color-text-primary)]/70">
+                <div className="flex items-center justify-between pt-3 border-t border-slate-200 dark:border-slate-700">
+                  <span className="text-xs font-medium text-slate-500 dark:text-slate-400">
                     {aiToolCategories[tool.category as keyof typeof aiToolCategories]}
                   </span>
                   {enabled ? (
@@ -689,13 +642,12 @@ const AIToolsPage: React.FC = () => {
                         setActionParams({});
                         setActionResult(null);
                       }}
-                      className="btn-primary-elevated rounded-md px-3 py-1.5 text-[11px] font-semibold inline-flex items-center gap-1.5"
+                      className="px-3 py-1 bg-cyan-600 hover:bg-cyan-700 text-white text-xs font-medium rounded transition-colors"
                     >
                       Launch
-                      <ChevronRight className="h-3 w-3" />
                     </button>
                   ) : (
-                    <span className="text-xs font-medium text-[var(--color-text-primary)]/60">Upgrade Required</span>
+                    <span className="text-xs font-medium text-slate-400 dark:text-slate-500">Upgrade Required</span>
                   )}
                 </div>
               </div>
@@ -705,13 +657,8 @@ const AIToolsPage: React.FC = () => {
 
         {/* Recent Activity */}
         {runHistory.length > 0 && (
-          <div className="card-glass p-6 shadow-soft mb-8">
-            <div className="flex items-center gap-3 mb-4">
-              <div className="w-10 h-10 rounded-lg bg-black dark:bg-white flex items-center justify-center shadow-lg">
-                <Clock className="h-5 w-5 text-white dark:text-black" />
-              </div>
-              <h3 className="text-lg font-bold text-[var(--color-text-primary)]">Recent Activity</h3>
-            </div>
+          <div className="bg-white dark:bg-slate-800/50 p-4 rounded-lg border border-slate-200 dark:border-slate-700 shadow-sm mb-6">
+            <h3 className="text-base font-medium text-slate-700 dark:text-slate-200 mb-3">Recent Activity</h3>
             <div className="space-y-2">
               {runHistory.slice(0, 5).map((run, idx) => {
                 const tool = aiToolsData.find(t => t.id === run.id);
@@ -723,20 +670,12 @@ const AIToolsPage: React.FC = () => {
                       setActionParams(run.params);
                       setActionResult(run.result);
                     }}
-                    className="flex items-center justify-between p-3 rounded-lg card-glass shadow-soft hover:shadow-md cursor-pointer transition-all hover:border-[var(--color-primary-teal)]/30"
+                    className="flex items-center justify-between p-2.5 rounded-lg bg-slate-50 dark:bg-slate-700/50 border border-slate-200 dark:border-slate-600 hover:border-cyan-500/50 hover:bg-cyan-50/30 dark:hover:bg-cyan-950/20 cursor-pointer transition-all"
                   >
-                    <div className="flex items-center gap-3">
-                      {tool && iconMap[tool.id] ? (
-                        <div className="w-10 h-10 rounded-lg bg-black dark:bg-white flex items-center justify-center shadow-lg">
-                          {React.createElement(iconMap[tool.id], { className: "h-5 w-5 text-white dark:text-black" })}
-                        </div>
-                      ) : null}
-                      <div>
-                        <div className="text-sm font-semibold text-[var(--color-text-primary)]">{tool?.name || run.id}</div>
-                        <div className="text-xs text-[var(--color-text-primary)]/70 font-medium">{new Date(run.at).toLocaleString()}</div>
-                      </div>
+                    <div>
+                      <div className="text-sm font-medium text-slate-700 dark:text-slate-200">{tool?.name || run.id}</div>
+                      <div className="text-xs text-slate-500 dark:text-slate-400 font-medium">{new Date(run.at).toLocaleString()}</div>
                     </div>
-                    <ChevronRight className="h-5 w-5 text-[var(--color-text-primary)]/70" />
                   </div>
                 );
               })}
@@ -746,25 +685,20 @@ const AIToolsPage: React.FC = () => {
 
         {/* Upgrade CTA */}
         {!aiPolicy.enabled && (
-          <div className="card-glass p-8 shadow-soft mb-8 text-center border-2 border-[var(--color-primary-teal)]/20">
-            <div className="flex items-center justify-center gap-3 mb-4">
-              <div className="w-12 h-12 rounded-xl bg-black dark:bg-white flex items-center justify-center shadow-lg">
-                <Sparkles className="h-6 w-6 text-white dark:text-black" />
-              </div>
-              <h3 className="text-xl font-bold text-[var(--color-text-primary)]">Unlock AI Tools</h3>
-            </div>
-            <p className="text-[var(--color-text-primary)]/90 mb-6 max-w-2xl mx-auto font-medium">
+          <div className="bg-gradient-to-r from-cyan-50 to-teal-50 dark:from-cyan-950/30 dark:to-teal-950/30 p-6 rounded-lg border-2 border-cyan-200/50 dark:border-cyan-800/50 shadow-sm mb-6 text-center">
+            <h3 className="text-lg font-medium text-slate-700 dark:text-slate-200 mb-2">Unlock AI Tools</h3>
+            <p className="text-sm text-slate-600 dark:text-slate-400 mb-4 max-w-2xl mx-auto">
               Upgrade your plan to access AI-powered insights, automation, and research copilots that accelerate your healthcare innovation journey.
             </p>
             <div className="flex items-center justify-center gap-3">
               <button
                 onClick={() => window.dispatchEvent(new CustomEvent('medarion:navigate:static', { detail: { page: 'pricing' } }))}
-                className="btn-primary-elevated px-6 py-3 rounded-lg flex items-center gap-2 font-semibold shadow-lg hover:shadow-xl"
+                className="px-6 py-2.5 bg-cyan-600 hover:bg-cyan-700 text-white rounded-lg flex items-center gap-2 font-medium shadow-md hover:shadow-lg transition-all"
               >
                 View Plans
                 <ArrowRight className="h-4 w-4" />
               </button>
-              <button className="btn-outline px-6 py-3 rounded-lg font-semibold">Contact Sales</button>
+              <button className="px-6 py-2.5 bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-200 rounded-lg font-medium hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors">Contact Sales</button>
             </div>
           </div>
         )}
@@ -788,21 +722,16 @@ const AIToolsPage: React.FC = () => {
           >
             {/* Modal Header - Hidden for chat interface */}
             {selectedTool !== 'medarion-assistant' && (
-              <div className="sticky top-0 z-10 p-6 border-b border-[var(--color-divider-gray)]/50 card-glass backdrop-blur-lg flex-shrink-0">
-                <div className="flex items-start justify-between mb-4">
-                  <div className="flex items-start gap-4">
-                    <div className="w-14 h-14 rounded-xl bg-black dark:bg-white flex items-center justify-center shadow-lg">
-                      <ToolIcon className="h-7 w-7 text-white dark:text-black" />
+              <div className="sticky top-0 z-10 p-4 border-b border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 flex-shrink-0">
+                <div className="flex items-start justify-between mb-3">
+                  <div className="flex-1">
+                    <div className="flex items-center gap-2 mb-2">
+                      <h2 className="text-xl font-medium text-slate-700 dark:text-slate-200">{selectedToolData.name}</h2>
+                      <span className={`px-2 py-0.5 rounded text-xs font-medium ${getStatusColor(selectedToolData.status)}`}>
+                        {selectedToolData.status.replace('_', ' ')}
+                      </span>
                     </div>
-                    <div>
-                      <div className="flex items-center gap-2 mb-2">
-                        <h2 className="text-2xl font-bold text-[var(--color-text-primary)]">{selectedToolData.name}</h2>
-                        <span className={`px-2.5 py-1 rounded-md text-xs font-semibold ${getStatusColor(selectedToolData.status)} shadow-lg`}>
-                          {selectedToolData.status.replace('_', ' ')}
-                        </span>
-                      </div>
-                      <p className="text-[var(--color-text-primary)]/90 font-medium">{selectedToolData.description}</p>
-                    </div>
+                    <p className="text-sm text-slate-600 dark:text-slate-400">{selectedToolData.description}</p>
                   </div>
                   <button
                     onClick={() => {
@@ -810,38 +739,34 @@ const AIToolsPage: React.FC = () => {
                       setActionResult(null);
                       setActionParams({});
                     }}
-                    className="p-2 rounded-lg hover:bg-[var(--color-divider-gray)]/50 transition-colors"
+                    className="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors"
                   >
-                    <X className="h-5 w-5 text-[var(--color-text-primary)]" />
+                    <X className="h-5 w-5 text-slate-600 dark:text-slate-400" />
                   </button>
                 </div>
 
                 {/* Features & Use Cases */}
-                <div className="grid grid-cols-2 gap-4 mt-4">
-                  <div className="card-glass p-3 shadow-soft">
-                    <h4 className="text-sm font-bold text-[var(--color-text-primary)] mb-2 flex items-center gap-2">
-                      <Star className="h-4 w-4 text-[var(--color-primary-teal)]" />
+                <div className="grid grid-cols-2 gap-3 mt-3">
+                  <div className="bg-slate-50 dark:bg-slate-700/50 p-3 rounded-lg border border-slate-200 dark:border-slate-600">
+                    <h4 className="text-xs font-medium text-slate-700 dark:text-slate-200 mb-2">
                       Key Features
                     </h4>
-                    <ul className="space-y-1.5">
+                    <ul className="space-y-1">
                       {selectedToolData.features.slice(0, 3).map((feature, idx) => (
-                        <li key={idx} className="text-xs text-[var(--color-text-primary)]/90 flex items-start gap-2 font-medium">
-                          <CheckCircle className="h-3.5 w-3.5 text-[var(--color-primary-teal)] mt-0.5 flex-shrink-0" />
-                          {feature}
+                        <li key={idx} className="text-xs text-slate-600 dark:text-slate-400 font-medium">
+                          • {feature}
                         </li>
                       ))}
                     </ul>
                   </div>
-                  <div className="card-glass p-3 shadow-soft">
-                    <h4 className="text-sm font-bold text-[var(--color-text-primary)] mb-2 flex items-center gap-2">
-                      <Target className="h-4 w-4 text-[var(--color-primary-teal)]" />
+                  <div className="bg-slate-50 dark:bg-slate-700/50 p-3 rounded-lg border border-slate-200 dark:border-slate-600">
+                    <h4 className="text-xs font-medium text-slate-700 dark:text-slate-200 mb-2">
                       Use Cases
                     </h4>
-                    <ul className="space-y-1.5">
+                    <ul className="space-y-1">
                       {selectedToolData.useCases.slice(0, 3).map((useCase, idx) => (
-                        <li key={idx} className="text-xs text-[var(--color-text-primary)]/90 flex items-start gap-2 font-medium">
-                          <CheckCircle className="h-3.5 w-3.5 text-blue-500 mt-0.5 flex-shrink-0" />
-                          {useCase}
+                        <li key={idx} className="text-xs text-slate-600 dark:text-slate-400 font-medium">
+                          • {useCase}
                         </li>
                       ))}
                     </ul>
@@ -870,12 +795,12 @@ const AIToolsPage: React.FC = () => {
               ) : (
                 <div className="p-6 overflow-y-auto overflow-x-hidden flex-1" style={{ maxHeight: '100%' }}>
                   {/* Parameters Form */}
-                  <div className="mb-6">
-                    <h3 className="text-lg font-bold text-[var(--color-text-primary)] mb-4">Configure Parameters</h3>
-                    <div className="grid grid-cols-2 gap-4">
+                  <div className="mb-4">
+                    <h3 className="text-base font-medium text-slate-700 dark:text-slate-200 mb-3">Configure Parameters</h3>
+                    <div className="grid grid-cols-2 gap-3">
                       {getToolParams(selectedTool).map((param) => (
                         <div key={param.key} className={param.type === 'textarea' ? 'col-span-2' : ''}>
-                          <label className="block text-sm font-semibold text-[var(--color-text-primary)] mb-2">
+                          <label className="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-1.5">
                             {param.label}
                           </label>
                           {param.type === 'textarea' ? (
@@ -884,14 +809,14 @@ const AIToolsPage: React.FC = () => {
                               onChange={(e) => setActionParams(prev => ({...prev, [param.key]: e.target.value}))}
                               placeholder={param.placeholder}
                               rows={4}
-                              className="w-full px-4 py-2.5 rounded-lg border border-[var(--color-divider-gray)] bg-[var(--color-background-surface)]/80 backdrop-blur-sm text-[var(--color-text-primary)] dark:text-white placeholder:text-[var(--color-text-secondary)] dark:placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-[var(--color-primary-teal)]/30 focus:border-[var(--color-primary-teal)] transition-all resize-none font-medium"
+                              className="w-full px-3 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-black dark:text-white placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-cyan-500/30 focus:border-cyan-500 transition-all resize-none"
                             />
                           ) : param.type === 'file' ? (
                             <input
                               type="file"
                               accept=".pdf"
                               onChange={(e) => setActionParams(prev => ({...prev, file: e.target.files?.[0]}))}
-                              className="w-full px-4 py-2.5 rounded-lg border border-[var(--color-divider-gray)] bg-[var(--color-background-surface)]/80 backdrop-blur-sm text-[var(--color-text-primary)] focus:outline-none focus:ring-2 focus:ring-black/30 dark:focus:ring-white/30 focus:border-black dark:focus:border-white transition-all file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-black dark:file:bg-white file:text-white dark:file:text-black hover:file:bg-black/90 dark:hover:file:bg-white/80"
+                              className="w-full px-3 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-black dark:text-white focus:outline-none focus:ring-2 focus:ring-cyan-500/30 focus:border-cyan-500 transition-all file:mr-4 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-sm file:font-medium file:bg-cyan-600 file:text-white hover:file:bg-cyan-700"
                             />
                           ) : (
                             <input
@@ -899,7 +824,7 @@ const AIToolsPage: React.FC = () => {
                               value={actionParams[param.key] || ''}
                               onChange={(e) => setActionParams(prev => ({...prev, [param.key]: e.target.value}))}
                               placeholder={param.placeholder}
-                              className="w-full px-4 py-2.5 rounded-lg border border-[var(--color-divider-gray)] bg-[var(--color-background-surface)]/80 backdrop-blur-sm text-[var(--color-text-primary)] dark:text-white placeholder:text-[var(--color-text-secondary)] dark:placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-[var(--color-primary-teal)]/30 focus:border-[var(--color-primary-teal)] transition-all font-medium"
+                              className="w-full px-3 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-black dark:text-white placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-cyan-500/30 focus:border-cyan-500 transition-all"
                             />
                           )}
                         </div>
@@ -908,25 +833,23 @@ const AIToolsPage: React.FC = () => {
                   </div>
 
                   {/* Action Button */}
-                  <div className="flex items-center justify-between mb-6 p-4 rounded-lg card-glass shadow-soft">
-                    <div className="text-sm font-semibold text-[var(--color-text-primary)]">
+                  <div className="flex items-center justify-between mb-4 p-3 rounded-lg bg-slate-50 dark:bg-slate-700/50 border border-slate-200 dark:border-slate-600">
+                    <div className="text-sm font-medium text-slate-700 dark:text-slate-200">
                       {aiPolicy.enabled ? (
                         <>
-                          <CheckCircle className="h-5 w-5 text-[var(--color-primary-teal)] inline mr-2" />
-                          AI Enabled
-                          {aiPolicy.quota && <span className="ml-2 text-[var(--color-primary-teal)]">Usage: {getUsage()} / {aiPolicy.quota}</span>}
+                          <span className="text-cyan-600 dark:text-cyan-400">✓</span> AI Enabled
+                          {aiPolicy.quota && <span className="ml-2 text-cyan-600 dark:text-cyan-400">Usage: {getUsage()} / {aiPolicy.quota}</span>}
                         </>
                       ) : (
                         <>
-                          <AlertCircle className="h-5 w-5 text-amber-500 inline mr-2" />
-                          AI Access Disabled
+                          <span className="text-amber-500">⚠</span> AI Access Disabled
                         </>
                       )}
                     </div>
                     <button
                       disabled={actionLoading || !aiPolicy.enabled}
                       onClick={() => runAction(selectedTool)}
-                      className="btn-primary-elevated px-6 py-3 rounded-lg flex items-center gap-2 font-bold shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+                      className="px-6 py-2.5 bg-cyan-600 hover:bg-cyan-700 text-white rounded-lg flex items-center gap-2 font-medium shadow-md hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed transition-all"
                     >
                       {actionLoading ? (
                         <>
@@ -935,7 +858,6 @@ const AIToolsPage: React.FC = () => {
                         </>
                       ) : (
                         <>
-                          <Zap className="h-5 w-5" />
                           Run Analysis
                         </>
                       )}
@@ -944,21 +866,17 @@ const AIToolsPage: React.FC = () => {
 
                   {/* Results - Very Prominent */}
                   {actionResult && (
-                    <div className="mt-6 card-glass p-6 shadow-elevated border-2 border-[var(--color-primary-teal)]/30">
-                      <div className="flex items-center justify-between mb-4 pb-4 border-b border-[var(--color-divider-gray)]/50">
-                        <h3 className="text-xl font-bold text-[var(--color-text-primary)] flex items-center gap-3">
+                    <div className="mt-4 bg-white dark:bg-slate-800/50 p-4 rounded-lg border-2 border-cyan-200 dark:border-cyan-800 shadow-sm">
+                      <div className="flex items-center justify-between mb-3 pb-3 border-b border-slate-200 dark:border-slate-700">
+                        <h3 className="text-lg font-medium text-slate-700 dark:text-slate-200 flex items-center gap-2">
                           {actionResult.error ? (
                             <>
-                              <div className="w-10 h-10 rounded-lg bg-red-500/20 flex items-center justify-center">
-                                <AlertCircle className="h-6 w-6 text-red-500" />
-                              </div>
+                              <span className="text-red-500">⚠</span>
                               <span>Error</span>
                             </>
                           ) : (
                             <>
-                              <div className="w-10 h-10 rounded-lg bg-[var(--color-primary-teal)]/20 flex items-center justify-center">
-                                <CheckCircle className="h-6 w-6 text-[var(--color-primary-teal)]" />
-                              </div>
+                              <span className="text-cyan-600 dark:text-cyan-400">✓</span>
                               <span>AI Results</span>
                             </>
                           )}
@@ -967,10 +885,10 @@ const AIToolsPage: React.FC = () => {
                           <div className="flex items-center gap-2">
                             <button
                               onClick={() => copyToClipboard(typeof actionResult === 'string' ? actionResult : JSON.stringify(actionResult, null, 2))}
-                              className="p-2.5 rounded-lg bg-[var(--color-background-surface)] border border-[var(--color-divider-gray)] shadow-soft hover:shadow-md transition-all hover:border-[var(--color-primary-teal)]/30 hover:bg-[var(--color-background-default)]"
+                              className="p-2 rounded-lg bg-slate-100 dark:bg-slate-700 border border-slate-300 dark:border-slate-600 hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors"
                               title="Copy to clipboard"
                             >
-                              <Copy className="h-5 w-5 text-[var(--color-text-primary)]" />
+                              <Copy className="h-4 w-4 text-slate-700 dark:text-slate-200" />
                             </button>
                             <button
                               onClick={() => {
@@ -982,21 +900,21 @@ const AIToolsPage: React.FC = () => {
                                 a.click();
                                 URL.revokeObjectURL(url);
                               }}
-                              className="p-2.5 rounded-lg bg-[var(--color-background-surface)] border border-[var(--color-divider-gray)] shadow-soft hover:shadow-md transition-all hover:border-[var(--color-primary-teal)]/30 hover:bg-[var(--color-background-default)]"
+                              className="p-2 rounded-lg bg-slate-100 dark:bg-slate-700 border border-slate-300 dark:border-slate-600 hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors"
                               title="Download results"
                             >
-                              <Download className="h-5 w-5 text-[var(--color-text-primary)]" />
+                              <Download className="h-4 w-4 text-slate-700 dark:text-slate-200" />
                             </button>
                           </div>
                         )}
                       </div>
                       <div className="prose prose-sm max-w-none">
                         {actionResult.error ? (
-                          <div className="p-5 rounded-lg bg-red-500/10 border-2 border-red-500/30 text-red-600 dark:text-red-400 font-semibold text-base">
+                          <div className="p-4 rounded-lg bg-red-50 dark:bg-red-950/20 border-2 border-red-200 dark:border-red-800 text-red-600 dark:text-red-400 font-medium text-sm">
                             {actionResult.error}
                           </div>
                         ) : (
-                          <div className="card-glass p-5 shadow-soft border border-[var(--color-primary-teal)]/20">
+                          <div className="bg-slate-50 dark:bg-slate-700/50 p-4 rounded-lg border border-cyan-200 dark:border-cyan-800">
                             {formatActionResult(actionResult)}
                           </div>
                         )}
@@ -1006,20 +924,15 @@ const AIToolsPage: React.FC = () => {
 
                   {/* Example */}
                   {selectedToolData.examples && selectedToolData.examples.length > 0 && (
-                    <div className="mt-6 card-glass p-4 shadow-soft border border-[var(--color-primary-teal)]/20">
-                      <div className="flex items-start gap-2 mb-3">
-                        <div className="w-8 h-8 rounded-lg bg-blue-500/20 flex items-center justify-center">
-                          <Info className="h-4 w-4 text-blue-500" />
-                        </div>
-                        <h4 className="text-sm font-bold text-[var(--color-text-primary)]">Example</h4>
-                      </div>
-                      <div className="text-sm text-[var(--color-text-primary)]/90 space-y-2 font-medium">
+                    <div className="mt-4 bg-slate-50 dark:bg-slate-700/50 p-3 rounded-lg border border-cyan-200 dark:border-cyan-800">
+                      <h4 className="text-sm font-medium text-slate-700 dark:text-slate-200 mb-2">Example</h4>
+                      <div className="text-sm text-slate-600 dark:text-slate-400 space-y-2">
                         <div>
-                          <span className="font-bold text-[var(--color-primary-teal)]">Input: </span>
+                          <span className="font-medium text-cyan-600 dark:text-cyan-400">Input: </span>
                           {selectedToolData.examples[0].input}
                         </div>
                         <div>
-                          <span className="font-bold text-[var(--color-primary-teal)]">Output: </span>
+                          <span className="font-medium text-cyan-600 dark:text-cyan-400">Output: </span>
                           {selectedToolData.examples[0].output}
                         </div>
                       </div>

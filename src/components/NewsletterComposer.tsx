@@ -274,7 +274,7 @@ const NewsletterComposer: React.FC<NewsletterComposerProps> = ({
         {/* Header */}
         <div className="flex items-center justify-between p-6 border-b border-[var(--color-divider-gray)]">
           <div>
-            <h2 className="text-2xl font-bold text-[var(--color-text-primary)]">
+            <h2 className="text-2xl font-medium text-[var(--color-text-primary)]">
               {campaign ? 'Edit Campaign' : 'Create Newsletter Campaign'}
             </h2>
             <p className="text-sm text-[var(--color-text-secondary)] mt-1">
@@ -410,7 +410,7 @@ const NewsletterComposer: React.FC<NewsletterComposerProps> = ({
                         {template === 'modern' && (
                           <>
                             <div className="h-14 bg-gradient-to-r from-[#00665C] via-[#00897B] to-[#00665C] flex items-center justify-center">
-                              <span className="text-white text-xs font-bold">MODERN</span>
+                              <span className="text-white text-xs font-medium">MODERN</span>
                             </div>
                             <div className="flex-1 p-3 space-y-2 bg-white">
                               <div className="h-2 bg-gray-300 rounded w-2/3"></div>
@@ -472,7 +472,7 @@ const NewsletterComposer: React.FC<NewsletterComposerProps> = ({
                       {/* Template Info */}
                       <div className="p-3 border-t border-[var(--color-divider-gray)]">
                         <div className="flex items-center justify-between mb-1">
-                          <h4 className="font-semibold text-sm text-[var(--color-text-primary)]">
+                          <h4 className="font-medium text-sm text-[var(--color-text-primary)]">
                             {templateInfo.name}
                           </h4>
                           {isSelected && (
@@ -671,7 +671,7 @@ const NewsletterComposer: React.FC<NewsletterComposerProps> = ({
           <div className="bg-white dark:bg-gray-800 rounded-xl shadow-2xl max-w-4xl w-full max-h-[700px] overflow-hidden flex flex-col">
             <div className="flex items-center justify-between p-4 border-b border-[var(--color-divider-gray)]">
               <div>
-                <h3 className="text-lg font-semibold text-[var(--color-text-primary)]">Email Preview</h3>
+                <h3 className="text-lg font-medium text-[var(--color-text-primary)]">Email Preview</h3>
                 <p className="text-xs text-[var(--color-text-secondary)] mt-1">
                   Template: <span className="font-medium capitalize">{selectedTemplate}</span>
                 </p>

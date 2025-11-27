@@ -3090,19 +3090,33 @@ router.get('/crm-investors', authenticateToken, async (req, res) => {
     const { page = 1, limit = 50, search, user_id, pipeline_stage } = req.query;
     const offset = (parseInt(page) - 1) * parseInt(limit);
     
-    let query = 'SELECT * FROM crm_investors WHERE 1=1';
+    const userId = req.user?.id;
+    const isAdmin = req.user?.is_admin === true || req.user?.is_admin === 1 || 
+                    req.user?.role === 'admin' || req.user?.role === 'superadmin' ||
+                    (Array.isArray(req.user?.app_roles) && (req.user.app_roles.includes('super_admin') || req.user.app_roles.includes('admin'))) ||
+                    (typeof req.user?.app_roles === 'string' && (req.user.app_roles.includes('super_admin') || req.user.app_roles.includes('admin')));
+    
+    let query = 'SELECT ci.*, u.email as user_email, u.first_name, u.last_name FROM crm_investors ci LEFT JOIN users u ON ci.user_id = u.id WHERE 1=1';
     const params = [];
     
+    // Determine target user
+    let targetUserId = userId; // Default to current user
     if (user_id) {
-      query += ' AND user_id = ?';
-      params.push(parseInt(user_id));
-    } else {
-      // If not admin, only show own records
-      const userId = req.user?.id;
-      if (userId) {
-        query += ' AND user_id = ?';
-        params.push(userId);
+      const requestedUserId = parseInt(user_id);
+      if (isAdmin) {
+        // Admin can view any user's data
+        targetUserId = requestedUserId;
+      } else if (requestedUserId !== userId) {
+        // Non-admin can only view their own data
+        return res.status(403).json({ success: false, message: 'Access denied' });
+      } else {
+        targetUserId = requestedUserId;
       }
+    }
+    
+    if (targetUserId) {
+      query += ' AND ci.user_id = ?';
+      params.push(targetUserId);
     }
     
     if (search) {
@@ -3122,15 +3136,9 @@ router.get('/crm-investors', authenticateToken, async (req, res) => {
     // Get total count
     let countQuery = 'SELECT COUNT(*) as total FROM crm_investors WHERE 1=1';
     const countParams = [];
-    if (user_id) {
+    if (targetUserId) {
       countQuery += ' AND user_id = ?';
-      countParams.push(parseInt(user_id));
-    } else {
-      const userId = req.user?.id;
-      if (userId) {
-        countQuery += ' AND user_id = ?';
-        countParams.push(userId);
-      }
+      countParams.push(targetUserId);
     }
     if (search) {
       countQuery += ' AND (name LIKE ? OR email LIKE ? OR type LIKE ?)';
@@ -3185,16 +3193,27 @@ router.get('/crm-investors/:id', authenticateToken, async (req, res) => {
 router.post('/crm-investors', authenticateToken, async (req, res) => {
   try {
     const userId = req.user?.id;
-    const { name, type, focus, email, phone, website, headquarters, last_contact, notes, deal_size, timeline, pipeline_stage, probability_percent, next_action, next_action_date } = req.body;
+    const isAdmin = req.user?.is_admin === true || req.user?.is_admin === 1 || 
+                    req.user?.role === 'admin' || req.user?.role === 'superadmin' ||
+                    (Array.isArray(req.user?.app_roles) && (req.user.app_roles.includes('super_admin') || req.user.app_roles.includes('admin'))) ||
+                    (typeof req.user?.app_roles === 'string' && (req.user.app_roles.includes('super_admin') || req.user.app_roles.includes('admin')));
+    
+    const { name, type, focus, email, phone, website, headquarters, last_contact, notes, deal_size, timeline, pipeline_stage, probability_percent, next_action, next_action_date, user_id } = req.body;
     
     if (!name) {
       return res.status(400).json({ success: false, message: 'Name is required' });
     }
     
+    // Allow admin to create for other users if specified
+    let targetUserId = userId;
+    if (user_id && isAdmin) {
+      targetUserId = parseInt(user_id);
+    }
+    
     const [result] = await db.execute(
       `INSERT INTO crm_investors (user_id, name, type, focus, email, phone, website, headquarters, last_contact, notes, deal_size, timeline, pipeline_stage, probability_percent, next_action, next_action_date)
        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-      [userId, name, type || null, focus || null, email || null, phone || null, website || null, headquarters || null, last_contact || null, notes || null, deal_size || null, timeline || null, pipeline_stage || 'Not Contacted', probability_percent || 0, next_action || null, next_action_date || null]
+      [targetUserId, name, type || null, focus || null, email || null, phone || null, website || null, headquarters || null, last_contact || null, notes || null, deal_size || null, timeline || null, pipeline_stage || 'Lead', probability_percent || 0, next_action || null, next_action_date || null]
     );
     
     res.json({ success: true, data: { id: result.insertId, ...req.body, user_id: userId } });
@@ -3208,7 +3227,10 @@ router.put('/crm-investors/:id', authenticateToken, async (req, res) => {
   try {
     const { id } = req.params;
     const userId = req.user?.id;
-    const isAdmin = req.user?.is_admin;
+    const isAdmin = req.user?.is_admin === true || req.user?.is_admin === 1 || 
+                    req.user?.role === 'admin' || req.user?.role === 'superadmin' ||
+                    (Array.isArray(req.user?.app_roles) && (req.user.app_roles.includes('super_admin') || req.user.app_roles.includes('admin'))) ||
+                    (typeof req.user?.app_roles === 'string' && (req.user.app_roles.includes('super_admin') || req.user.app_roles.includes('admin')));
     
     // Check ownership
     const [existing] = await db.execute('SELECT user_id FROM crm_investors WHERE id = ?', [id]);
@@ -3225,7 +3247,7 @@ router.put('/crm-investors/:id', authenticateToken, async (req, res) => {
       `UPDATE crm_investors 
        SET name = ?, type = ?, focus = ?, email = ?, phone = ?, website = ?, headquarters = ?, last_contact = ?, notes = ?, deal_size = ?, timeline = ?, pipeline_stage = ?, probability_percent = ?, next_action = ?, next_action_date = ?, updated_at = CURRENT_TIMESTAMP
        WHERE id = ?`,
-      [name, type || null, focus || null, email || null, phone || null, website || null, headquarters || null, last_contact || null, notes || null, deal_size || null, timeline || null, pipeline_stage || 'Not Contacted', probability_percent || 0, next_action || null, next_action_date || null, id]
+      [name, type || null, focus || null, email || null, phone || null, website || null, headquarters || null, last_contact || null, notes || null, deal_size || null, timeline || null, pipeline_stage || 'Lead', probability_percent || 0, next_action || null, next_action_date || null, id]
     );
     
     res.json({ success: true, message: 'CRM investor updated successfully' });
@@ -3239,7 +3261,10 @@ router.delete('/crm-investors/:id', authenticateToken, async (req, res) => {
   try {
     const { id } = req.params;
     const userId = req.user?.id;
-    const isAdmin = req.user?.is_admin;
+    const isAdmin = req.user?.is_admin === true || req.user?.is_admin === 1 || 
+                    req.user?.role === 'admin' || req.user?.role === 'superadmin' ||
+                    (Array.isArray(req.user?.app_roles) && (req.user.app_roles.includes('super_admin') || req.user.app_roles.includes('admin'))) ||
+                    (typeof req.user?.app_roles === 'string' && (req.user.app_roles.includes('super_admin') || req.user.app_roles.includes('admin')));
     
     // Check ownership
     const [existing] = await db.execute('SELECT user_id FROM crm_investors WHERE id = ?', [id]);
@@ -3264,7 +3289,13 @@ router.get('/crm-meetings', authenticateToken, async (req, res) => {
     const { page = 1, limit = 50, crm_investor_id, user_id } = req.query;
     const offset = (parseInt(page) - 1) * parseInt(limit);
     
-    let query = 'SELECT m.*, i.name as investor_name FROM crm_meetings m LEFT JOIN crm_investors i ON m.crm_investor_id = i.id WHERE 1=1';
+    const userId = req.user?.id;
+    const isAdmin = req.user?.is_admin === true || req.user?.is_admin === 1 || 
+                    req.user?.role === 'admin' || req.user?.role === 'superadmin' ||
+                    (Array.isArray(req.user?.app_roles) && (req.user.app_roles.includes('super_admin') || req.user.app_roles.includes('admin'))) ||
+                    (typeof req.user?.app_roles === 'string' && (req.user.app_roles.includes('super_admin') || req.user.app_roles.includes('admin')));
+    
+    let query = 'SELECT m.*, i.name as investor_name, i.user_id FROM crm_meetings m LEFT JOIN crm_investors i ON m.crm_investor_id = i.id WHERE 1=1';
     const params = [];
     
     if (crm_investor_id) {
@@ -3272,15 +3303,24 @@ router.get('/crm-meetings', authenticateToken, async (req, res) => {
       params.push(parseInt(crm_investor_id));
     }
     
+    // Determine target user
+    let targetUserId = userId; // Default to current user
     if (user_id) {
-      query += ' AND m.user_id = ?';
-      params.push(parseInt(user_id));
-    } else {
-      const userId = req.user?.id;
-      if (userId) {
-        query += ' AND m.user_id = ?';
-        params.push(userId);
+      const requestedUserId = parseInt(user_id);
+      if (isAdmin) {
+        // Admin can view any user's data
+        targetUserId = requestedUserId;
+      } else if (requestedUserId !== userId) {
+        // Non-admin can only view their own data
+        return res.status(403).json({ success: false, message: 'Access denied' });
+      } else {
+        targetUserId = requestedUserId;
       }
+    }
+    
+    if (targetUserId) {
+      query += ' AND i.user_id = ?';
+      params.push(targetUserId);
     }
     
     query += ' ORDER BY m.meeting_date DESC LIMIT ? OFFSET ?';
@@ -3298,16 +3338,31 @@ router.get('/crm-meetings', authenticateToken, async (req, res) => {
 router.post('/crm-meetings', authenticateToken, async (req, res) => {
   try {
     const userId = req.user?.id;
-    const { crm_investor_id, meeting_date, meeting_type, location, notes, outcome, next_steps } = req.body;
+    const { crm_investor_id, meeting_date, meeting_type, duration_minutes, notes, outcome, follow_up_required, follow_up_date } = req.body;
     
     if (!crm_investor_id || !meeting_date) {
       return res.status(400).json({ success: false, message: 'CRM investor ID and meeting date are required' });
     }
     
+    // Check ownership of the investor
+    const [investorCheck] = await db.execute('SELECT user_id FROM crm_investors WHERE id = ?', [crm_investor_id]);
+    if (investorCheck.length === 0) {
+      return res.status(404).json({ success: false, message: 'CRM investor not found' });
+    }
+    
+    const isAdmin = req.user?.is_admin === true || req.user?.is_admin === 1 || 
+                    req.user?.role === 'admin' || req.user?.role === 'superadmin' ||
+                    (Array.isArray(req.user?.app_roles) && (req.user.app_roles.includes('super_admin') || req.user.app_roles.includes('admin'))) ||
+                    (typeof req.user?.app_roles === 'string' && (req.user.app_roles.includes('super_admin') || req.user.app_roles.includes('admin')));
+    
+    if (!isAdmin && investorCheck[0].user_id !== userId) {
+      return res.status(403).json({ success: false, message: 'Access denied' });
+    }
+    
     const [result] = await db.execute(
-      `INSERT INTO crm_meetings (crm_investor_id, user_id, meeting_date, meeting_type, location, notes, outcome, next_steps)
+      `INSERT INTO crm_meetings (crm_investor_id, meeting_type, meeting_date, duration_minutes, notes, outcome, follow_up_required, follow_up_date)
        VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
-      [crm_investor_id, userId, meeting_date, meeting_type || 'Initial', location || null, notes || null, outcome || null, next_steps || null]
+      [crm_investor_id, meeting_type || 'Call', meeting_date, duration_minutes || null, notes || null, outcome || null, follow_up_required || false, follow_up_date || null]
     );
     
     res.json({ success: true, data: { id: result.insertId, ...req.body, user_id: userId } });
@@ -3320,13 +3375,29 @@ router.post('/crm-meetings', authenticateToken, async (req, res) => {
 router.put('/crm-meetings/:id', authenticateToken, async (req, res) => {
   try {
     const { id } = req.params;
-    const { meeting_date, meeting_type, location, notes, outcome, next_steps } = req.body;
+    const userId = req.user?.id;
+    const isAdmin = req.user?.is_admin === true || req.user?.is_admin === 1 || 
+                    req.user?.role === 'admin' || req.user?.role === 'superadmin' ||
+                    (Array.isArray(req.user?.app_roles) && (req.user.app_roles.includes('super_admin') || req.user.app_roles.includes('admin'))) ||
+                    (typeof req.user?.app_roles === 'string' && (req.user.app_roles.includes('super_admin') || req.user.app_roles.includes('admin')));
+    
+    // Check ownership through investor
+    const [meeting] = await db.execute('SELECT m.crm_investor_id, i.user_id FROM crm_meetings m JOIN crm_investors i ON m.crm_investor_id = i.id WHERE m.id = ?', [id]);
+    if (meeting.length === 0) {
+      return res.status(404).json({ success: false, message: 'CRM meeting not found' });
+    }
+    
+    if (!isAdmin && meeting[0].user_id !== userId) {
+      return res.status(403).json({ success: false, message: 'Access denied' });
+    }
+    
+    const { meeting_date, meeting_type, duration_minutes, notes, outcome, follow_up_required, follow_up_date } = req.body;
     
     await db.execute(
       `UPDATE crm_meetings 
-       SET meeting_date = ?, meeting_type = ?, location = ?, notes = ?, outcome = ?, next_steps = ?, updated_at = CURRENT_TIMESTAMP
+       SET meeting_date = ?, meeting_type = ?, duration_minutes = ?, notes = ?, outcome = ?, follow_up_required = ?, follow_up_date = ?
        WHERE id = ?`,
-      [meeting_date, meeting_type || 'Initial', location || null, notes || null, outcome || null, next_steps || null, id]
+      [meeting_date, meeting_type || 'Call', duration_minutes || null, notes || null, outcome || null, follow_up_required || false, follow_up_date || null, id]
     );
     
     res.json({ success: true, message: 'CRM meeting updated successfully' });
@@ -3339,6 +3410,22 @@ router.put('/crm-meetings/:id', authenticateToken, async (req, res) => {
 router.delete('/crm-meetings/:id', authenticateToken, async (req, res) => {
   try {
     const { id } = req.params;
+    const userId = req.user?.id;
+    const isAdmin = req.user?.is_admin === true || req.user?.is_admin === 1 || 
+                    req.user?.role === 'admin' || req.user?.role === 'superadmin' ||
+                    (Array.isArray(req.user?.app_roles) && (req.user.app_roles.includes('super_admin') || req.user.app_roles.includes('admin'))) ||
+                    (typeof req.user?.app_roles === 'string' && (req.user.app_roles.includes('super_admin') || req.user.app_roles.includes('admin')));
+    
+    // Check ownership through investor
+    const [meeting] = await db.execute('SELECT m.crm_investor_id, i.user_id FROM crm_meetings m JOIN crm_investors i ON m.crm_investor_id = i.id WHERE m.id = ?', [id]);
+    if (meeting.length === 0) {
+      return res.status(404).json({ success: false, message: 'CRM meeting not found' });
+    }
+    
+    if (!isAdmin && meeting[0].user_id !== userId) {
+      return res.status(403).json({ success: false, message: 'Access denied' });
+    }
+    
     await db.execute('DELETE FROM crm_meetings WHERE id = ?', [id]);
     res.json({ success: true, message: 'CRM meeting deleted successfully' });
   } catch (error) {

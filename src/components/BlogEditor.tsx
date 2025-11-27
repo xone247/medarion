@@ -284,7 +284,7 @@ const BlogEditor: React.FC<BlogEditorProps> = ({ post, onChange, onSave, onCance
     <div className="space-y-6">
       {/* Header */}
       <div className="flex items-center justify-between">
-        <h2 className="text-2xl font-bold text-[var(--color-text-primary)]">
+        <h2 className="text-2xl font-medium text-[var(--color-text-primary)]">
           {isEditing ? 'Edit Blog Post' : 'Create New Blog Post'}
         </h2>
         <div className="flex items-center gap-2">
@@ -311,7 +311,7 @@ const BlogEditor: React.FC<BlogEditorProps> = ({ post, onChange, onSave, onCance
         <div className="space-y-6">
           {/* Basic Information */}
           <div className="card-glass p-6 rounded-xl">
-            <h3 className="text-lg font-semibold text-[var(--color-text-primary)] mb-4">Basic Information</h3>
+            <h3 className="text-lg font-medium text-[var(--color-text-primary)] mb-4">Basic Information</h3>
             <div className="space-y-4">
               <div>
                 <label className="block text-sm font-medium text-[var(--color-text-secondary)] mb-2">Post Title *</label>
@@ -385,7 +385,7 @@ const BlogEditor: React.FC<BlogEditorProps> = ({ post, onChange, onSave, onCance
 
           {/* Video URL */}
           <div className="card-glass p-6 rounded-xl">
-            <h3 className="text-lg font-semibold text-[var(--color-text-primary)] mb-4">Video (YouTube)</h3>
+            <h3 className="text-lg font-medium text-[var(--color-text-primary)] mb-4">Video (YouTube)</h3>
             <div className="space-y-4">
               {post.video_url && videoUrlSaved ? (
                 <div className="space-y-3">
@@ -539,7 +539,7 @@ const BlogEditor: React.FC<BlogEditorProps> = ({ post, onChange, onSave, onCance
 
           {/* Featured Image */}
           <div className="card-glass p-6 rounded-xl">
-            <h3 className="text-lg font-semibold text-[var(--color-text-primary)] mb-4">Featured Image</h3>
+            <h3 className="text-lg font-medium text-[var(--color-text-primary)] mb-4">Featured Image</h3>
             <div className="space-y-4">
               {post.featured_image ? (
                 <div className="space-y-3">
@@ -677,7 +677,7 @@ const BlogEditor: React.FC<BlogEditorProps> = ({ post, onChange, onSave, onCance
 
           {/* Excerpt */}
           <div className="card-glass p-6 rounded-xl">
-            <h3 className="text-lg font-semibold text-[var(--color-text-primary)] mb-4">Excerpt</h3>
+            <h3 className="text-lg font-medium text-[var(--color-text-primary)] mb-4">Excerpt</h3>
             <textarea
               className="input w-full"
               placeholder="Write a brief excerpt for this post..."
@@ -695,7 +695,7 @@ const BlogEditor: React.FC<BlogEditorProps> = ({ post, onChange, onSave, onCance
         <div className="space-y-6">
           {/* Content Editor */}
           <div className="card-glass p-6 rounded-xl">
-            <h3 className="text-lg font-semibold text-[var(--color-text-primary)] mb-4">Content Editor</h3>
+            <h3 className="text-lg font-medium text-[var(--color-text-primary)] mb-4">Content Editor</h3>
             
             {/* Quill Editor */}
             <div className="border border-[var(--color-divider-gray)] rounded-lg overflow-hidden">
@@ -729,7 +729,7 @@ const BlogEditor: React.FC<BlogEditorProps> = ({ post, onChange, onSave, onCance
           {/* Live Preview */}
           {showPreview && (
             <div className="card-glass p-6 rounded-xl">
-              <h3 className="text-lg font-semibold text-[var(--color-text-primary)] mb-4">Live Preview</h3>
+              <h3 className="text-lg font-medium text-[var(--color-text-primary)] mb-4">Live Preview</h3>
               <div
                 className="prose dark:prose-invert max-w-none p-4 border border-[var(--color-divider-gray)] rounded-lg bg-[var(--color-background-default)]"
                 dangerouslySetInnerHTML={{ 
@@ -747,7 +747,7 @@ const BlogEditor: React.FC<BlogEditorProps> = ({ post, onChange, onSave, onCance
           <div className="bg-[var(--color-background-surface)] rounded-2xl shadow-2xl w-full max-w-2xl mx-4 border-2 border-[var(--color-divider-gray)]">
             <div className="p-6 border-b border-[var(--color-divider-gray)]">
               <div className="flex items-center justify-between">
-                <h3 className="text-xl font-semibold text-[var(--color-text-primary)] flex items-center gap-2">
+                <h3 className="text-xl font-medium text-[var(--color-text-primary)] flex items-center gap-2">
                   <ImageIcon className="h-5 w-5 text-[var(--color-primary-teal)]" />
                   Upload Featured Image
                 </h3>

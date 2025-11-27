@@ -231,3 +231,10 @@ print(f"  - Glossary Terms: {len(excel_data['clinical_terms']) + len(excel_data[
 
 
 
+
+
+
+
+
+
+

@@ -64,7 +64,7 @@ const MIndexPage: React.FC<MIndexPageProps> = ({ onBack }) => {
           <div className="absolute inset-0 pointer-events-none" style={{ background: 'linear-gradient(180deg, rgba(255,255,255,0.00) 70%, var(--color-background-default) 100%)' }} />
         </div>
         <div className="page-hero-content" style={{ maxWidth: '72rem', paddingTop: '4rem', paddingBottom: '2.5rem' }}>
-          <h1 className="text-4xl text-5xl font-bold text-gray-900 dark:text-white mb-3">m‑index</h1>
+          <h1 className="text-4xl text-5xl font-medium text-gray-900 dark:text-white mb-3">m‑index</h1>
           <p className="text-lg text-xl text-[var(--color-text-primary)] opacity-90 dark:text-white/85">
             Key terms to help you navigate the African healthcare ecosystem.
           </p>
@@ -95,7 +95,7 @@ const MIndexPage: React.FC<MIndexPageProps> = ({ onBack }) => {
           {filtered.map((i, idx) => (
             <div key={`${i.term}-${idx}`} className="bg-[var(--color-background-surface)] border border-[var(--color-divider-gray)] rounded-xl p-4 shadow-sm">
               <div className="text-xs text-[var(--color-text-secondary)] mb-1">{i.category}</div>
-              <div className="font-semibold">{i.term}</div>
+              <div className="font-medium">{i.term}</div>
               <div className="text-sm text-[var(--color-text-secondary)] mt-1">{i.def}</div>
             </div>
           ))}

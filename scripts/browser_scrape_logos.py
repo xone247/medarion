@@ -184,3 +184,10 @@ print(f"\n\nDownloaded: {downloaded} logos")
 print("\nRemaining logos need to be scraped using browser tool.")
 
 
+
+
+
+
+
+
+

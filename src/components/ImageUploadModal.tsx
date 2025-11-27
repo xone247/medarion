@@ -155,7 +155,7 @@ const ImageUploadModal: React.FC<ImageUploadModalProps> = ({
       <div className="bg-[var(--color-background-surface)] rounded-2xl shadow-2xl w-full max-w-2xl mx-4 border-2 border-[var(--color-divider-gray)]">
         <div className="p-6 border-b border-[var(--color-divider-gray)]">
           <div className="flex items-center justify-between">
-            <h3 className="text-xl font-semibold text-[var(--color-text-primary)] flex items-center gap-2">
+            <h3 className="text-xl font-medium text-[var(--color-text-primary)] flex items-center gap-2">
               <ImageIcon className="h-5 w-5 text-[var(--color-primary-teal)]" />
               {title}
             </h3>

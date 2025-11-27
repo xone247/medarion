@@ -6,6 +6,7 @@ import { suggestGrantTargets } from '../services/ai';
 import { apiService } from '../services/apiService';
 import { badgeClassesFromVar, grantTypeToVar } from '../lib/badges';
 import { useAuth } from '../contexts/AuthContext';
+import { exportToExcel, exportToCSV, exportToJSON } from '../utils/exportUtils';
 
 type GrantsView = {
   name: string;
@@ -155,8 +156,42 @@ const GrantsPage = () => {
 
   const totalValue = useMemo(() => filteredGrants.reduce((sum: number, grant: any) => sum + grant.value, 0), [filteredGrants]);
 
-  const exportCSV = () => { try { const rows = [['Organization','Amount(USD)','Type','Sector','Country','Duration','Date','Funders']]; filteredGrants.forEach(g => rows.push([g.organizationName, String(g.value), g.type, g.sector, g.country, g.duration, g.date, (g.funders||[]).join('; ')])); const csv = rows.map(r=> r.map(v=>`"${String(v).replace(/"/g,'""')}"`).join(',')).join('\n'); const blob=new Blob([csv],{type:'text/csv'}); const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='grants.csv'; a.click(); URL.revokeObjectURL(a.href);} catch {} };
-  const exportJSON = () => { try { const data = { filters: { searchTerm, selectedSector, selectedType, selectedCountry, timeframe }, grants: filteredGrants, exportedAt: new Date().toISOString() }; const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'}); const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='grants.json'; a.click(); URL.revokeObjectURL(a.href);} catch {} };
+  const exportCSV = () => {
+    try {
+      const rows = [['Organization','Amount(USD)','Type','Sector','Country','Duration','Date','Funders']];
+      filteredGrants.forEach(g => rows.push([g.organizationName, String(g.value), g.type, g.sector, g.country, g.duration, g.date, (g.funders||[]).join('; ')]));
+      exportToCSV(rows, 'grants');
+    } catch (error) {
+      console.error('Error exporting CSV:', error);
+    }
+  };
+
+  const exportJSON = () => {
+    try {
+      const data = { filters: { searchTerm, selectedSector, selectedType, selectedCountry, timeframe }, grants: filteredGrants, exportedAt: new Date().toISOString() };
+      exportToJSON(data, 'grants');
+    } catch (error) {
+      console.error('Error exporting JSON:', error);
+    }
+  };
+
+  const exportExcel = () => {
+    try {
+      const excelData = filteredGrants.map(g => ({
+        Organization: g.organizationName,
+        'Amount (USD)': g.value,
+        Type: g.type,
+        Sector: g.sector,
+        Country: g.country,
+        Duration: g.duration,
+        Date: g.date,
+        Funders: (g.funders || []).join('; ')
+      }));
+      exportToExcel(excelData, 'grants', 'Grants');
+    } catch (error) {
+      console.error('Error exporting Excel:', error);
+    }
+  };
 
   const copyJSON = async () => {
     try {
@@ -207,74 +242,76 @@ const GrantsPage = () => {
 
   return (
     <div className="w-full space-y-6">
-      {/* Header with glassmorphism */}
-      <div className="card-glass p-6 shadow-soft">
-        <div className="flex flex-row items-center justify-between gap-4">
-          <div className="flex items-center space-x-3">
-            <DollarSign className="h-8 w-8 icon-primary" />
-            <div>
-              <h1 className="text-xl text-2xl font-bold text-[var(--color-text-primary)]">Grants & Funding</h1>
-              <p className="text-sm text-[var(--color-text-secondary)]">Track non-dilutive grants, VC rounds, donor funding, and other financing</p>
-            </div>
-          </div>
-          <div className="flex flex-wrap items-center gap-2">
-            {(() => { try { const { useAuth } = require('../contexts/AuthContext'); const { profile } = useAuth(); const canAI = !!(profile && (profile.is_admin || ['paid','enterprise'].includes((profile as any).account_tier))); return canAI; } catch { return false; } })() && <button onClick={runAISuggest} className="btn-primary-elevated btn-sm flex items-center gap-2 w-auto"><Bot className="h-4 w-4" /><span className="text-sm">AI Summary</span></button>}
+      {/* Action Buttons */}
+      <div className="flex flex-wrap gap-2 items-center justify-end">
+        {(() => { try { const { useAuth } = require('../contexts/AuthContext'); const { profile } = useAuth(); const canAI = !!(profile && (profile.is_admin || ['paid','enterprise'].includes((profile as any).account_tier))); return canAI; } catch { return false; } })() && <button onClick={runAISuggest} className="btn-primary-elevated flex items-center gap-2 px-4 py-2 rounded-lg"><Bot className="h-4 w-4" /><span className="text-sm">AI Summary</span></button>}
             {canExport && (
               <>
-                <button onClick={copyJSON} className="btn-outline btn-sm w-auto">Copy</button>
-                <button onClick={exportJSON} className="btn-outline btn-sm w-auto"><FileDown className="h-4 w-4 inline mr-2" /><span>Export JSON</span></button>
-                <button onClick={exportCSV} className="btn-outline btn-sm w-auto"><FileDown className="h-4 w-4 inline mr-2" /><span>Export CSV</span></button>
+            <button onClick={copyJSON} className="btn-outline px-4 py-2 rounded-lg">Copy</button>
+            <button onClick={exportExcel} className="btn-outline px-4 py-2 rounded-lg flex items-center gap-2"><FileDown className="h-4 w-4" /><span>Export Excel</span></button>
+            <button onClick={exportJSON} className="btn-outline px-4 py-2 rounded-lg flex items-center gap-2"><FileDown className="h-4 w-4" /><span>Export JSON</span></button>
+            <button onClick={exportCSV} className="btn-outline px-4 py-2 rounded-lg flex items-center gap-2"><FileDown className="h-4 w-4" /><span>Export CSV</span></button>
               </>
             )}
-          </div>
-        </div>
       </div>
 
       {aiSuggest && (
         <div className="card-glass p-4 shadow-soft">
           <div className="flex items-center justify-between">
-            <h3 className="font-semibold text-[var(--color-text-primary)]">AI Suggestions</h3>
+            <h3 className="font-medium text-[var(--color-text-primary)]">AI Suggestions</h3>
             {aiLoading && <span className="text-xs text-[var(--color-text-secondary)]">Updating…</span>}
           </div>
           <pre className="mt-2 text-sm whitespace-pre-wrap text-[var(--color-text-primary)]">{aiSuggest}</pre>
         </div>
       )}
 
-      {/* Summary Stats with glassmorphism */}
-      <div className="grid grid-cols-4 gap-6">
-        <div className="card-glass p-6 shadow-soft">
-          <div className="flex items-center space-x-3">
-            <DollarSign className="h-6 w-6 icon-primary" />
-            <div>
-              <p className="text-[var(--color-text-secondary)] text-sm">Total Value</p>
-              <p className="text-2xl font-bold text-[var(--color-text-primary)]">${(totalValue / 1000000).toFixed(1)}M</p>
+      {/* Summary Stats - Compact Modern Style */}
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+        <div className="card-glass p-3 rounded-lg hover:shadow-lg transition-all duration-200 group relative overflow-hidden h-full flex flex-col bg-emerald-50/50 dark:bg-emerald-950/30">
+          <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/10 to-green-500/10 dark:from-emerald-500/15 dark:to-green-500/15 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+          <div className="relative flex items-center justify-between flex-1">
+            <div className="min-w-0 flex-1">
+              <p className="text-xs font-medium text-slate-500 dark:text-slate-400 mb-1 uppercase tracking-wide">Total Value</p>
+              <p className="text-2xl font-medium text-slate-700 dark:text-slate-200 mb-1">${(totalValue / 1000000).toFixed(1)}M</p>
+            </div>
+            <div className="p-2.5 rounded-lg bg-emerald-600 dark:bg-gradient-to-br dark:from-emerald-500 dark:to-green-500 shadow-md group-hover:scale-105 transition-transform duration-200 flex-shrink-0 ml-3">
+              <DollarSign className="h-5 w-5 text-white" />
             </div>
           </div>
         </div>
-        <div className="card-glass p-6 shadow-soft">
-          <div className="flex items-center space-x-3">
-            <Building2 className="h-6 w-6 icon-primary" />
-            <div>
-              <p className="text-[var(--color-text-secondary)] text-sm">Total Grants</p>
-              <p className="text-2xl font-bold text-[var(--color-text-primary)]">{filteredGrants.length}</p>
+        <div className="card-glass p-3 rounded-lg hover:shadow-lg transition-all duration-200 group relative overflow-hidden h-full flex flex-col bg-cyan-50/50 dark:bg-cyan-950/30">
+          <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/10 to-teal-500/10 dark:from-cyan-500/15 dark:to-teal-500/15 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+          <div className="relative flex items-center justify-between flex-1">
+            <div className="min-w-0 flex-1">
+              <p className="text-xs font-medium text-slate-500 dark:text-slate-400 mb-1 uppercase tracking-wide">Total Grants</p>
+              <p className="text-2xl font-medium text-slate-700 dark:text-slate-200 mb-1">{filteredGrants.length}</p>
+            </div>
+            <div className="p-2.5 rounded-lg bg-cyan-600 dark:bg-gradient-to-br dark:from-cyan-500 dark:to-teal-500 shadow-md group-hover:scale-105 transition-transform duration-200 flex-shrink-0 ml-3">
+              <Building2 className="h-5 w-5 text-white" />
             </div>
           </div>
         </div>
-        <div className="card-glass p-6 shadow-soft">
-          <div className="flex items-center space-x-3">
-            <Users className="h-6 w-6 icon-primary" />
-            <div>
-              <p className="text-[var(--color-text-secondary)] text-sm">Avg Grant Size</p>
-              <p className="text-2xl font-bold text-[var(--color-text-primary)]">${(filteredGrants.length > 0 ? (totalValue / filteredGrants.length / 1000000) : 0).toFixed(1)}M</p>
+        <div className="card-glass p-3 rounded-lg hover:shadow-lg transition-all duration-200 group relative overflow-hidden h-full flex flex-col bg-indigo-50/50 dark:bg-indigo-950/30">
+          <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/10 to-purple-500/10 dark:from-indigo-500/15 dark:to-purple-500/15 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+          <div className="relative flex items-center justify-between flex-1">
+            <div className="min-w-0 flex-1">
+              <p className="text-xs font-medium text-slate-500 dark:text-slate-400 mb-1 uppercase tracking-wide">Avg Grant Size</p>
+              <p className="text-2xl font-medium text-slate-700 dark:text-slate-200 mb-1">${(filteredGrants.length > 0 ? (totalValue / filteredGrants.length / 1000000) : 0).toFixed(1)}M</p>
+            </div>
+            <div className="p-2.5 rounded-lg bg-indigo-600 dark:bg-gradient-to-br dark:from-indigo-500 dark:to-purple-500 shadow-md group-hover:scale-105 transition-transform duration-200 flex-shrink-0 ml-3">
+              <Users className="h-5 w-5 text-white" />
             </div>
           </div>
         </div>
-        <div className="card-glass p-6 shadow-soft">
-          <div className="flex items-center space-x-3">
-            <MapPin className="h-6 w-6 icon-primary" />
-            <div>
-              <p className="text-[var(--color-text-secondary)] text-sm">Countries</p>
-              <p className="text-2xl font-bold text-[var(--color-text-primary)]">{new Set(filteredGrants.map((g: any) => g.country)).size}</p>
+        <div className="card-glass p-3 rounded-lg hover:shadow-lg transition-all duration-200 group relative overflow-hidden h-full flex flex-col bg-amber-50/50 dark:bg-amber-950/30">
+          <div className="absolute inset-0 bg-gradient-to-br from-amber-500/10 to-orange-500/10 dark:from-amber-500/15 dark:to-orange-500/15 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+          <div className="relative flex items-center justify-between flex-1">
+            <div className="min-w-0 flex-1">
+              <p className="text-xs font-medium text-slate-500 dark:text-slate-400 mb-1 uppercase tracking-wide">Countries</p>
+              <p className="text-2xl font-medium text-slate-700 dark:text-slate-200 mb-1">{new Set(filteredGrants.map((g: any) => g.country)).size}</p>
+            </div>
+            <div className="p-2.5 rounded-lg bg-amber-600 dark:bg-gradient-to-br dark:from-amber-500 dark:to-orange-500 shadow-md group-hover:scale-105 transition-transform duration-200 flex-shrink-0 ml-3">
+              <MapPin className="h-5 w-5 text-white" />
             </div>
           </div>
         </div>
@@ -287,7 +324,7 @@ const GrantsPage = () => {
         <div className="card-glass overflow-hidden shadow-soft">
           <div className="p-4 border-b border-[var(--color-divider-gray)] flex items-center justify-between">
             <div>
-              <h3 className="text-lg font-semibold text-[var(--color-text-primary)]">African Funding Map</h3>
+              <h3 className="text-lg font-medium text-[var(--color-text-primary)]">African Funding Map</h3>
               <p className="text-sm text-[var(--color-text-secondary)] mt-1">Grant and funding activity across Africa</p>
             </div>
             <div className="flex bg-[var(--color-background-default)] rounded-lg p-1 border border-[var(--color-divider-gray)]">
@@ -305,7 +342,7 @@ const GrantsPage = () => {
       <div className="card-glass p-6 shadow-soft">
         <div className="flex items-center space-x-2 mb-4">
           <Filter className="h-5 w-5 icon-primary" />
-          <h3 className="text-lg font-semibold text-[var(--color-text-primary)]">Filters</h3>
+          <h3 className="text-lg font-medium text-[var(--color-text-primary)]">Filters</h3>
         </div>
         <div className="grid grid-cols-5 gap-4">
           <div className="relative">
@@ -328,7 +365,7 @@ const GrantsPage = () => {
       {/* Grants Table with glassmorphism */}
       <div className="card-glass overflow-hidden shadow-soft">
         <div className="p-6 border-b border-[var(--color-divider-gray)]">
-          <h2 className="text-xl font-semibold text-[var(--color-text-primary)]">Recent Grants</h2>
+          <h2 className="text-xl font-medium text-[var(--color-text-primary)]">Recent Grants</h2>
         </div>
         <div className="overflow-x-auto">
           <table className="w-full">
@@ -357,7 +394,7 @@ const GrantsPage = () => {
                       </div>
                     </div>
                   </td>
-                  <td className="px-6 py-4"><span className="text-[var(--color-primary-teal)] font-bold">${(grant.value / 1000000).toFixed(1)}M</span></td>
+                  <td className="px-6 py-4"><span className="text-[var(--color-primary-teal)] font-medium">${(grant.value / 1000000).toFixed(1)}M</span></td>
                   <td className="px-6 py-4">
                     <span className={`${badgeClassesFromVar(grantTypeToVar(grant.type))} px-2 py-1 rounded text-xs font-medium`}>{grant.type}</span>
                   </td>
@@ -382,12 +419,13 @@ const GrantsPage = () => {
       {showExportModal && canExport && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
           <div className="card-glass p-6 max-w-md w-full mx-auto shadow-elevated">
-            <h3 className="text-lg font-bold text-[var(--color-text-primary)] mb-4">Export Grants Data</h3>
+            <h3 className="text-lg font-medium text-[var(--color-text-primary)] mb-4">Export Grants Data</h3>
             <p className="text-[var(--color-text-secondary)] mb-6">Export {filteredGrants.length} grants in your preferred format:</p>
             <div className="space-y-3">
-              <button onClick={() => { exportCSV(); setShowExportModal(false); }} className="btn-primary-elevated w-full btn-sm">Export as CSV</button>
-              <button onClick={() => { exportJSON(); setShowExportModal(false); }} className="btn-outline w-full btn-sm">Export as JSON</button>
-              <button onClick={() => { try{ window.print(); }catch{}; setShowExportModal(false); }} className="btn-outline w-full btn-sm">Print (PDF)</button>
+              <button onClick={() => { exportExcel(); setShowExportModal(false); }} className="btn-primary-elevated w-full px-4 py-2 rounded-lg">Export as Excel</button>
+              <button onClick={() => { exportCSV(); setShowExportModal(false); }} className="btn-outline w-full px-4 py-2 rounded-lg">Export as CSV</button>
+              <button onClick={() => { exportJSON(); setShowExportModal(false); }} className="btn-outline w-full px-4 py-2 rounded-lg">Export as JSON</button>
+              <button onClick={() => { try{ window.print(); }catch{}; setShowExportModal(false); }} className="btn-outline w-full px-4 py-2 rounded-lg">Print (PDF)</button>
             </div>
             <button onClick={() => setShowExportModal(false)} className="btn-outline w-full mt-4 btn-sm">Cancel</button>
           </div>
@@ -399,11 +437,11 @@ const GrantsPage = () => {
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
           <div className="card-glass p-6 max-w-2xl w-full mx-auto max-h-96 overflow-y-auto shadow-elevated">
             <div className="flex items-center justify-between mb-4">
-              <h3 className="text-xl font-bold text-[var(--color-text-primary)]">{showGrantDetails.organizationName}</h3>
+              <h3 className="text-xl font-medium text-[var(--color-text-primary)]">{showGrantDetails.organizationName}</h3>
               <button onClick={() => setShowGrantDetails(null)} className="text-[var(--color-text-secondary)] hover:opacity-80">✕</button>
             </div>
             <div className="grid grid-cols-2 gap-4 mb-4">
-              <div><p className="text-sm text-[var(--color-text-secondary)]">Grant Amount</p><p className="text-2xl font-bold text-[var(--color-primary-teal)]">${(showGrantDetails.value / 1000000).toFixed(1)}M</p></div>
+              <div><p className="text-sm text-[var(--color-text-secondary)]">Grant Amount</p><p className="text-2xl font-medium text-[var(--color-primary-teal)]">${(showGrantDetails.value / 1000000).toFixed(1)}M</p></div>
               <div><p className="text-sm text-[var(--color-text-secondary)]">Grant Type</p><p className="font-medium text-[var(--color-text-primary)]">{showGrantDetails.type}</p></div>
               <div><p className="text-sm text-[var(--color-text-secondary)]">Sector</p><p className="font-medium text-[var(--color-text-primary)]">{showGrantDetails.sector}</p></div>
               <div><p className="text-sm text-[var(--color-text-secondary)]">Duration</p><p className="font-medium text-[var(--color-text-primary)]">{showGrantDetails.duration}</p></div>

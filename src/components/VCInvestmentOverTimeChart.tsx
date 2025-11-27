@@ -45,7 +45,7 @@ const VCInvestmentOverTimeChart: React.FC<{ deals?: any[] }> = ({ deals: dealsPr
 
   return (
     <div className="bg-[var(--color-background-surface)] p-4 p-6 rounded-lg border border-[var(--color-divider-gray)] shadow-sm">
-      <h3 className="text-base text-lg font-semibold text-[var(--color-text-primary)] mb-4">VC Investment Over Time</h3>
+      <h3 className="text-base text-lg font-medium text-[var(--color-text-primary)] mb-4">VC Investment Over Time</h3>
       <div className="h-64 h-72">
         <ResponsiveContainer width="100%" height="100%">
           <ComposedChart data={series} />

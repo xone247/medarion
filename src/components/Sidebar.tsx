@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { 
-  LogOut,
   Menu,
   X,
   Plus,
@@ -19,7 +18,6 @@ import {
   Search,
   Square,
   Grid3X3,
-  ChevronDown,
   Settings,
   Star
 } from 'lucide-react';
@@ -36,7 +34,7 @@ interface SidebarProps {
 }
 
 const Sidebar = ({ userType }: SidebarProps) => {
-  const { signOut, profile } = useAuth();
+  const { profile } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
   const { 
@@ -53,41 +51,8 @@ const Sidebar = ({ userType }: SidebarProps) => {
   } = useDashboard();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [showCustomizer, setShowCustomizer] = useState(false);
-  const [showUserDropdown, setShowUserDropdown] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
 
-  // Close dropdown when clicking outside
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      const target = event.target as HTMLElement;
-      if (showUserDropdown && !target.closest('.user-dropdown-container')) {
-        setShowUserDropdown(false);
-      }
-    };
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, [showUserDropdown]);
-
-  // Get profile route based on user type
-  const getProfileRoute = (userProfile: any): string => {
-    if (!userProfile) return '/startup-profile';
-    const userType = userProfile.user_type || userProfile.role || '';
-    const isAdmin = userProfile.is_admin === true || 
-                    userProfile.role === 'admin' || 
-                    (userProfile.app_roles && (
-                      typeof userProfile.app_roles === 'string' 
-                        ? JSON.parse(userProfile.app_roles) 
-                        : userProfile.app_roles
-                    )?.includes('super_admin'));
-    
-    if (isAdmin) return '/admin-profile';
-    if (userType === 'startup') return '/startup-profile';
-    if (userType === 'investor' || userType === 'investors_finance') return '/investor-profile';
-    if (userType === 'researcher' || userType === 'health_science_experts') return '/researcher-profile';
-    if (userType === 'executive' || userType === 'industry_executives') return '/executive-profile';
-    if (userType === 'regulator') return '/regulator-profile';
-    return '/startup-profile'; // default
-  };
 
   // Map module IDs to their route paths
   // Priority: Use explicit routes when available, fallback to catch-all /module/:id
@@ -138,14 +103,6 @@ const Sidebar = ({ userType }: SidebarProps) => {
     return routeMap[moduleId] || `/module/${moduleId}`;
   };
  
-  const handleSignOut = async () => {
-    try {
-      await signOut();
-      // The auth context will handle redirecting to sign-in page
-    } catch (error) {
-      console.error('Error signing out:', error);
-    }
-  };
 
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
@@ -268,122 +225,89 @@ const Sidebar = ({ userType }: SidebarProps) => {
       {/* Mobile Sidebar Overlay */}
       {isMobileMenuOpen && (
         <div 
-          className="lg:hidden fixed inset-0 bg-black bg-opacity-50 z-40"
+          className="lg:hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-40 transition-opacity duration-300"
           onClick={() => setIsMobileMenuOpen(false)}
         ></div>
       )}
 
       {/* Sidebar - Responsive: Always visible on desktop, hidden on mobile unless menu is open */}
-      <div className={`w-64 h-screen lg:static fixed lg:z-auto z-50 transition-all duration-300 bg-white dark:bg-[var(--color-background-surface)] border-r border-gray-200 dark:border-[var(--color-divider-gray)] shadow-xl ${
+      <div className={`w-72 h-screen lg:static fixed lg:z-auto z-50 transition-all duration-300 bg-white/95 dark:bg-slate-900/95 border-r border-slate-100 dark:border-slate-800/50 shadow-xl backdrop-blur-xl ${
         isMobileMenuOpen 
           ? 'translate-x-0' 
           : 'lg:translate-x-0 -translate-x-full'
       }`}>
-        <div className="flex h-full flex-col overflow-hidden">
-          {/* User Profile Section at Top */}
-          <div className="flex-shrink-0 px-4 py-4 border-b border-gray-200 dark:border-[var(--color-divider-gray)] bg-white dark:bg-[var(--color-background-surface)]">
-            <div className="relative user-dropdown-container">
-              <button
-                onClick={() => setShowUserDropdown(!showUserDropdown)}
-                className="w-full flex items-center space-x-3 p-2 rounded-lg hover:bg-gray-50 dark:hover:bg-[var(--color-background-default)] transition-colors"
-              >
-                {(profile as any)?.profileImage ? (
-                  <img 
-                    src={(profile as any).profileImage} 
-                    alt="Profile" 
-                    className="w-10 h-10 rounded-full object-cover border-2 border-gray-200 dark:border-[var(--color-divider-gray)]"
-                  />
-                ) : (
-                  <div className="w-10 h-10 rounded-full bg-black dark:bg-white flex items-center justify-center text-white dark:text-black font-semibold">
-                    {profile?.firstName?.[0]?.toUpperCase() || profile?.email?.[0]?.toUpperCase() || 'U'}
-                  </div>
-                )}
-                <div className="flex-1 text-left min-w-0">
-                  <p className="text-sm font-medium text-gray-900 dark:text-[var(--color-text-primary)] truncate">
-                    {profile?.firstName && profile?.lastName 
-                      ? `${profile.firstName} ${profile.lastName}`
-                      : profile?.username || profile?.email?.split('@')[0] || 'User'}
-                  </p>
-                  <p className="text-xs text-gray-500 dark:text-[var(--color-text-secondary)] truncate">
-                    {profile?.email || 'user@example.com'}
-                  </p>
-                </div>
-                <ChevronDown className={`h-4 w-4 text-gray-400 transition-transform ${showUserDropdown ? 'rotate-180' : ''}`} />
-              </button>
-              
-              {/* User Dropdown Menu */}
-              {showUserDropdown && (
-                <div className="absolute top-full left-0 right-0 mt-2 bg-white dark:bg-[var(--color-background-surface)] border border-gray-200 dark:border-[var(--color-divider-gray)] rounded-lg shadow-lg z-50">
-                  <button
-                    onClick={() => {
-                      const profileRoute = getProfileRoute(profile);
-                      navigate(profileRoute);
-                      setShowUserDropdown(false);
-                    }}
-                    className="w-full flex items-center space-x-2 px-4 py-2 text-sm text-gray-700 dark:text-[var(--color-text-primary)] hover:bg-gray-50 dark:hover:bg-[var(--color-background-default)] transition-colors"
-                  >
-                    <User className="h-4 w-4" />
-                    <span>My Profile</span>
-                  </button>
-                  <button
-                    onClick={() => {
-                      setShowUserDropdown(false);
-                      handleSignOut();
-                    }}
-                    className="w-full flex items-center space-x-2 px-4 py-2 text-sm text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors"
-                  >
-                    <LogOut className="h-4 w-4" />
-                    <span>Sign Out</span>
-                  </button>
-                </div>
-              )}
-            </div>
+        <div className="flex h-full flex-col overflow-hidden relative">
+          {/* Subtle gradient overlay */}
+          <div className="absolute inset-0 bg-gradient-to-br from-cyan-50/30 via-transparent to-teal-50/20 dark:from-cyan-950/20 dark:via-transparent dark:to-teal-950/10 pointer-events-none" />
+          
+          {/* Logo Section - More refined */}
+          <div className="flex-shrink-0 px-5 py-5 border-b border-slate-100 dark:border-slate-800/50 bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl">
+            <Logo />
           </div>
 
-          {/* Search Bar */}
-          <div className="flex-shrink-0 px-4 py-3 border-b border-gray-200 dark:border-[var(--color-divider-gray)] bg-white dark:bg-[var(--color-background-surface)]">
+          {/* Search Bar - Sleeker design */}
+          <div className="flex-shrink-0 px-5 py-4 border-b border-slate-100 dark:border-slate-800/50 bg-white/60 dark:bg-slate-900/60 backdrop-blur-xl">
             <div className="relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+              <Search className="absolute left-3.5 top-1/2 transform -translate-y-1/2 h-4 w-4 text-slate-400 dark:text-slate-500" />
               <input
                 type="text"
-                placeholder="Search..."
+                placeholder="Search modules..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-10 pr-4 py-2 text-sm bg-gray-50 dark:bg-[var(--color-background-default)] border border-gray-200 dark:border-[var(--color-divider-gray)] rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--color-primary-teal)] focus:border-transparent text-gray-900 dark:text-[var(--color-text-primary)]"
+                className="w-full pl-11 pr-4 py-2.5 text-sm bg-slate-50/80 dark:bg-slate-800/50 border border-slate-200/60 dark:border-slate-700/50 rounded-lg focus:outline-none focus:ring-1 focus:ring-cyan-400/40 focus:border-cyan-400/60 dark:focus:ring-cyan-500/40 dark:focus:border-cyan-500/60 text-slate-900 dark:text-slate-100 placeholder:text-slate-400 dark:placeholder:text-slate-500 backdrop-blur-sm transition-all duration-200 hover:border-slate-300 dark:hover:border-slate-600"
               />
             </div>
           </div>
 
           {/* Scrollable content area */}
-          <div className="flex-1 min-h-0 overflow-y-auto">
-            <div className="px-4 py-4 space-y-4">
+          <div className="flex-1 min-h-0 overflow-y-auto scrollbar-thin scrollbar-thumb-slate-300/50 dark:scrollbar-thumb-slate-600/50 scrollbar-track-transparent hover:scrollbar-thumb-slate-300 dark:hover:scrollbar-thumb-slate-600">
+            <div className="px-5 py-4 space-y-1">
               <button
                 onClick={handleDashboardClick}
-                className={`w-full flex items-center space-x-3 px-3 py-2 rounded-lg text-left transition-all duration-200 ${
+                className={`group w-full flex items-center space-x-3 px-3.5 py-2.5 rounded-lg text-left transition-all duration-200 relative overflow-hidden ${
                   (location.pathname.includes('-dashboard') && !location.pathname.includes('manager')) ||
                   (location.pathname === getModuleRoute(defaultModule) && !location.pathname.includes('-profile')) ||
                   (currentModule === defaultModule && currentModule !== 'my_profile' && !location.pathname.includes('-profile'))
-                    ? 'bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 border border-blue-200 dark:border-blue-800'
-                    : 'text-gray-600 dark:text-[var(--color-text-secondary)] hover:bg-gray-50 dark:hover:bg-[var(--color-background-default)] hover:text-gray-900 dark:hover:text-[var(--color-text-primary)]'
+                    ? 'bg-black dark:from-cyan-500/20 dark:to-teal-500/20 text-white dark:text-white shadow-sm'
+                    : 'text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800/50 hover:text-slate-900 dark:hover:text-slate-200'
                 }`}
               >
-                <Grid3X3 className={`h-5 w-5 ${
-                  ((location.pathname.includes('-dashboard') && !location.pathname.includes('manager')) ||
-                   (location.pathname === getModuleRoute(defaultModule) && !location.pathname.includes('-profile')) ||
-                   (currentModule === defaultModule && currentModule !== 'my_profile' && !location.pathname.includes('-profile')))
-                    ? 'text-blue-600 dark:text-blue-400' 
-                    : 'text-gray-500 dark:text-[var(--color-primary-teal)]'
-                }`} />
-                <span className="font-medium">Home</span>
+                {((location.pathname.includes('-dashboard') && !location.pathname.includes('manager')) ||
+                  (location.pathname === getModuleRoute(defaultModule) && !location.pathname.includes('-profile')) ||
+                  (currentModule === defaultModule && currentModule !== 'my_profile' && !location.pathname.includes('-profile'))) && (
+                  <div className="absolute left-0 top-0 bottom-0 w-0.5 bg-black dark:from-cyan-400 dark:to-teal-400 rounded-r-full" />
+                )}
+                <div className={`p-1.5 rounded-md transition-all duration-200 ${
+                  (location.pathname.includes('-dashboard') && !location.pathname.includes('manager')) ||
+                  (location.pathname === getModuleRoute(defaultModule) && !location.pathname.includes('-profile')) ||
+                  (currentModule === defaultModule && currentModule !== 'my_profile' && !location.pathname.includes('-profile'))
+                    ? 'bg-white/20 dark:bg-white/10' 
+                    : 'bg-slate-100/50 dark:bg-slate-800/50 group-hover:bg-slate-200/50 dark:group-hover:bg-slate-700/50'
+                }`}>
+                  <Grid3X3 className={`h-4 w-4 transition-colors ${
+                    ((location.pathname.includes('-dashboard') && !location.pathname.includes('manager')) ||
+                     (location.pathname === getModuleRoute(defaultModule) && !location.pathname.includes('-profile')) ||
+                     (currentModule === defaultModule && currentModule !== 'my_profile' && !location.pathname.includes('-profile')))
+                      ? 'text-white dark:text-cyan-300' 
+                      : 'text-slate-500 dark:text-slate-500 group-hover:text-cyan-600 dark:group-hover:text-cyan-400'
+                  }`} />
+                </div>
+                <span className={`text-sm font-normal ${
+                  (location.pathname.includes('-dashboard') && !location.pathname.includes('manager')) ||
+                  (location.pathname === getModuleRoute(defaultModule) && !location.pathname.includes('-profile')) ||
+                  (currentModule === defaultModule && currentModule !== 'my_profile' && !location.pathname.includes('-profile'))
+                    ? 'text-white dark:text-white'
+                    : ''
+                }`}>Home</span>
               </button>
 
             </div>
 
-            <nav className="px-4 pb-4">
-              <div className="mb-3">
-                <p className="text-xs font-semibold text-gray-500 dark:text-[var(--color-text-secondary)] uppercase tracking-wider px-3">Navigation</p>
+            <nav className="px-5 pb-4">
+              <div className="mb-3 px-3.5">
+                <p className="text-[10px] font-normal text-slate-400 dark:text-slate-500 uppercase tracking-wider">Modules</p>
               </div>
-              <ul className="space-y-2">
+              <ul className="space-y-1">
                 {/* Use DashboardContext modules in moduleOrder for sidebar - syncs with customizer */}
                 {(() => {
                   // Get modules in the order specified by moduleOrder, filtered by userModules
@@ -433,14 +357,27 @@ const Sidebar = ({ userType }: SidebarProps) => {
                       <li key={module.id}>
                         <button
                           onClick={() => handleModuleClick(module.id)}
-                          className={`w-full flex items-center space-x-3 px-3 py-2 rounded-lg text-left transition-all duration-200 ${
+                          className={`group w-full flex items-center space-x-3 px-3.5 py-2.5 rounded-lg text-left transition-all duration-200 relative overflow-hidden ${
                             active
-                              ? 'bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 border border-blue-200 dark:border-blue-800'
-                              : 'text-gray-600 dark:text-[var(--color-text-secondary)] hover:bg-gray-50 dark:hover:bg-[var(--color-background-default)] hover:text-gray-900 dark:hover:text-[var(--color-text-primary)]'
+                              ? 'bg-black dark:from-cyan-500/20 dark:to-teal-500/20 text-white dark:text-white shadow-sm'
+                              : 'text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800/50 hover:text-slate-900 dark:hover:text-slate-200'
                           }`}
                         >
-                          <IconComponent className={`h-5 w-5 ${active ? 'text-blue-600 dark:text-blue-400' : 'text-gray-500 dark:text-[var(--color-primary-teal)]'}`} />
-                          <span className="text-sm font-medium">{module.name}</span>
+                          {active && (
+                            <div className="absolute left-0 top-0 bottom-0 w-0.5 bg-black dark:from-cyan-400 dark:to-teal-400 rounded-r-full" />
+                          )}
+                          <div className={`p-1.5 rounded-md transition-all duration-200 ${
+                            active
+                              ? 'bg-white/20 dark:bg-white/10' 
+                              : 'bg-slate-100/50 dark:bg-slate-800/50 group-hover:bg-slate-200/50 dark:group-hover:bg-slate-700/50'
+                          }`}>
+                            <IconComponent className={`h-4 w-4 transition-colors ${
+                              active 
+                                ? 'text-white dark:text-cyan-300' 
+                                : 'text-slate-500 dark:text-slate-500 group-hover:text-cyan-600 dark:group-hover:text-cyan-400'
+                            }`} />
+                          </div>
+                          <span className={`text-sm font-normal ${active ? 'text-white dark:text-white' : ''}`}>{module.name}</span>
                         </button>
                       </li>
                     );
@@ -451,7 +388,7 @@ const Sidebar = ({ userType }: SidebarProps) => {
           </div>
 
           {/* Footer - fixed at bottom */}
-          <div className="flex-shrink-0 px-4 py-4 border-t border-gray-200 dark:border-[var(--color-divider-gray)] bg-white dark:bg-[var(--color-background-surface)] z-10">
+          <div className="flex-shrink-0 px-5 py-4 border-t border-slate-100 dark:border-slate-800/50 bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl z-10">
             <AdSlot placement="dashboard_sidebar" category="dashboard_personalized" />
           </div>
         </div>

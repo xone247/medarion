@@ -96,7 +96,7 @@ const ChangePasswordModal: React.FC<ChangePasswordModalProps> = ({
               <div className="p-2 rounded-lg bg-[var(--color-primary-teal)]/10">
                 <Lock className="h-5 w-5 text-[var(--color-primary-teal)]" />
               </div>
-              <h2 className="text-xl font-semibold text-[var(--color-text-primary)]">Change Password</h2>
+              <h2 className="text-xl font-medium text-[var(--color-text-primary)]">Change Password</h2>
             </div>
             <button
               onClick={onClose}

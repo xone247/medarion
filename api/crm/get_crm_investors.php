@@ -23,15 +23,28 @@ try {
     $headers = getallheaders();
     $auth = $headers['Authorization'] ?? $headers['authorization'] ?? '';
     $userId = null;
+    $isAdmin = false;
+    $requestedUserId = isset($_GET['user_id']) ? (int)$_GET['user_id'] : null;
 
     if (preg_match('/Bearer\s+(\S+)/', $auth, $m)) {
         $token = $m[1];
-        $stmt = $pdo->prepare("SELECT user_id FROM user_sessions WHERE session_token = :token AND expires_at > NOW()");
+        $stmt = $pdo->prepare("
+            SELECT us.user_id, u.is_admin, u.role, u.app_roles 
+            FROM user_sessions us 
+            JOIN users u ON us.user_id = u.id 
+            WHERE us.session_token = :token AND us.expires_at > NOW()
+        ");
         $stmt->bindValue(':token', $token);
         $stmt->execute();
         $session = $stmt->fetch(PDO::FETCH_ASSOC);
         if ($session) {
             $userId = $session['user_id'];
+            // Check if user is admin (multiple ways: is_admin flag, role, or app_roles)
+            $isAdmin = $session['is_admin'] == 1 || 
+                      $session['role'] === 'admin' || 
+                      $session['role'] === 'superadmin' ||
+                      (is_string($session['app_roles']) && (strpos($session['app_roles'], 'super_admin') !== false || strpos($session['app_roles'], 'admin') !== false)) ||
+                      (is_array($session['app_roles']) && (in_array('super_admin', $session['app_roles']) || in_array('admin', $session['app_roles'])));
         }
     }
 
@@ -46,28 +59,45 @@ try {
         exit();
     }
 
+    // Determine which user's data to fetch
+    $targetUserId = $userId; // Default to current user
+    if ($requestedUserId && $isAdmin) {
+        // Admin can view any user's data
+        $targetUserId = $requestedUserId;
+    } elseif ($requestedUserId && !$isAdmin) {
+        // Non-admin can only view their own data
+        if ($requestedUserId != $userId) {
+            http_response_code(403);
+            echo json_encode(['success' => false, 'error' => 'Access denied']);
+            exit();
+        }
+        $targetUserId = $requestedUserId;
+    }
+
     ob_start();
 
     $method = $_SERVER['REQUEST_METHOD'];
 
     if ($method === 'GET') {
         $stmt = $pdo->prepare("
-            SELECT * FROM crm_investors 
-            WHERE user_id = :user_id 
+            SELECT ci.*, u.email as user_email, u.first_name, u.last_name 
+            FROM crm_investors ci
+            LEFT JOIN users u ON ci.user_id = u.id
+            WHERE ci.user_id = :user_id 
             ORDER BY 
-                CASE pipeline_stage
-                    WHEN 'Not Contacted' THEN 1
-                    WHEN 'Contacted' THEN 2
+                CASE ci.pipeline_stage
+                    WHEN 'Lead' THEN 1
+                    WHEN 'Qualified' THEN 2
                     WHEN 'Meeting Set' THEN 3
-                    WHEN 'Proposal' THEN 4
-                    WHEN 'Negotiation' THEN 5
+                    WHEN 'Due Diligence' THEN 4
+                    WHEN 'Term Sheet' THEN 5
                     WHEN 'Closed Won' THEN 6
                     WHEN 'Closed Lost' THEN 7
                     ELSE 8
                 END,
-                created_at DESC
+                ci.created_at DESC
         ");
-        $stmt->bindValue(':user_id', $userId);
+        $stmt->bindValue(':user_id', $targetUserId);
         $stmt->execute();
         $investors = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
@@ -80,23 +110,35 @@ try {
     } elseif ($method === 'POST') {
         $input = json_decode(file_get_contents('php://input'), true);
         
+        // Allow admin to create for other users if specified
+        $createForUserId = $userId;
+        if (isset($input['user_id']) && $isAdmin) {
+            $createForUserId = (int)$input['user_id'];
+        }
+        
         $stmt = $pdo->prepare("
             INSERT INTO crm_investors 
-            (user_id, name, type, focus, email, phone, pipeline_stage, notes, deal_size, timeline)
+            (user_id, name, type, focus, email, phone, website, headquarters, pipeline_stage, notes, deal_size, timeline, probability_percent, next_action, next_action_date, last_contact)
             VALUES 
-            (:user_id, :name, :type, :focus, :email, :phone, :pipeline_stage, :notes, :deal_size, :timeline)
+            (:user_id, :name, :type, :focus, :email, :phone, :website, :headquarters, :pipeline_stage, :notes, :deal_size, :timeline, :probability_percent, :next_action, :next_action_date, :last_contact)
         ");
         $stmt->execute([
-            ':user_id' => $userId,
+            ':user_id' => $createForUserId,
             ':name' => $input['name'] ?? '',
             ':type' => $input['type'] ?? null,
             ':focus' => $input['focus'] ?? null,
             ':email' => $input['email'] ?? null,
             ':phone' => $input['phone'] ?? null,
-            ':pipeline_stage' => $input['pipeline_stage'] ?? 'Not Contacted',
+            ':website' => $input['website'] ?? null,
+            ':headquarters' => $input['headquarters'] ?? null,
+            ':pipeline_stage' => $input['pipeline_stage'] ?? 'Lead',
             ':notes' => $input['notes'] ?? null,
             ':deal_size' => $input['deal_size'] ?? null,
-            ':timeline' => $input['timeline'] ?? null
+            ':timeline' => $input['timeline'] ?? null,
+            ':probability_percent' => $input['probability_percent'] ?? 0,
+            ':next_action' => $input['next_action'] ?? null,
+            ':next_action_date' => $input['next_action_date'] ?? null,
+            ':last_contact' => $input['last_contact'] ?? null
         ]);
 
         ob_clean();
@@ -115,10 +157,28 @@ try {
             exit();
         }
 
-        $fields = [];
-        $params = [':id' => $id, ':user_id' => $userId];
+        // Check ownership or admin access
+        $checkStmt = $pdo->prepare("SELECT user_id FROM crm_investors WHERE id = :id");
+        $checkStmt->bindValue(':id', $id);
+        $checkStmt->execute();
+        $existing = $checkStmt->fetch(PDO::FETCH_ASSOC);
         
-        $allowedFields = ['name', 'type', 'focus', 'email', 'phone', 'pipeline_stage', 'notes', 'deal_size', 'timeline', 'probability_percent', 'next_action', 'next_action_date', 'last_contact'];
+        if (!$existing) {
+            http_response_code(404);
+            echo json_encode(['success' => false, 'error' => 'Investor not found']);
+            exit();
+        }
+        
+        if (!$isAdmin && $existing['user_id'] != $userId) {
+            http_response_code(403);
+            echo json_encode(['success' => false, 'error' => 'Access denied']);
+            exit();
+        }
+
+        $fields = [];
+        $params = [':id' => $id];
+        
+        $allowedFields = ['name', 'type', 'focus', 'email', 'phone', 'website', 'headquarters', 'pipeline_stage', 'notes', 'deal_size', 'timeline', 'probability_percent', 'next_action', 'next_action_date', 'last_contact'];
         foreach ($allowedFields as $field) {
             if (isset($input[$field])) {
                 $fields[] = "$field = :$field";
@@ -133,7 +193,7 @@ try {
         }
 
         $fields[] = "updated_at = NOW()";
-        $sql = "UPDATE crm_investors SET " . implode(', ', $fields) . " WHERE id = :id AND user_id = :user_id";
+        $sql = "UPDATE crm_investors SET " . implode(', ', $fields) . " WHERE id = :id";
         $stmt = $pdo->prepare($sql);
         $stmt->execute($params);
 
@@ -150,8 +210,26 @@ try {
             exit();
         }
 
-        $stmt = $pdo->prepare("DELETE FROM crm_investors WHERE id = :id AND user_id = :user_id");
-        $stmt->execute([':id' => $id, ':user_id' => $userId]);
+        // Check ownership or admin access
+        $checkStmt = $pdo->prepare("SELECT user_id FROM crm_investors WHERE id = :id");
+        $checkStmt->bindValue(':id', $id);
+        $checkStmt->execute();
+        $existing = $checkStmt->fetch(PDO::FETCH_ASSOC);
+        
+        if (!$existing) {
+            http_response_code(404);
+            echo json_encode(['success' => false, 'error' => 'Investor not found']);
+            exit();
+        }
+        
+        if (!$isAdmin && $existing['user_id'] != $userId) {
+            http_response_code(403);
+            echo json_encode(['success' => false, 'error' => 'Access denied']);
+            exit();
+        }
+
+        $stmt = $pdo->prepare("DELETE FROM crm_investors WHERE id = :id");
+        $stmt->execute([':id' => $id]);
 
         ob_clean();
         echo json_encode(['success' => true]);

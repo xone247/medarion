@@ -38,9 +38,9 @@ const KPICard: React.FC<KPICardProps> = ({ title, value, icon: Icon, trend, clas
       <div className="relative flex items-center justify-between">
         <div className="flex-1 min-w-0">
           <p className="text-slate-500 dark:text-slate-400 text-xs font-medium uppercase tracking-wide mb-1">{title}</p>
-          <p className="text-2xl font-bold text-slate-700 dark:text-slate-200 mb-1">{formatValue(value)}</p>
+          <p className="text-2xl font-medium text-slate-700 dark:text-slate-200 mb-1">{formatValue(value)}</p>
           {trend && (
-            <p className="text-cyan-600 dark:text-cyan-400 text-xs font-semibold">{trend}</p>
+            <p className="text-cyan-600 dark:text-cyan-400 text-xs font-medium">{trend}</p>
           )}
         </div>
         {Icon && (

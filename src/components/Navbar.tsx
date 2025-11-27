@@ -14,7 +14,7 @@ const Navbar: React.FC = () => {
 			<div className="page-container h-14 flex items-center justify-between">
 				<div className="flex items-center gap-2">
 					<div className="w-8 h-8 rounded-md bg-[var(--color-primary-teal)]" />
-					<span className="font-semibold text-gray-900 dark:text-white">Medarion</span>
+					<span className="font-medium text-gray-900 dark:text-white">Medarion</span>
 				</div>
 				<div className="flex items-center gap-3">
 					<button className="btn-outline btn-sm" onClick={toggleTheme}>

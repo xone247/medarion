@@ -31,7 +31,7 @@ const CompanyProfile: React.FC<{ companyName: string; onBack: () => void }> = ({
             <Building2 className="h-6 w-6 text-[var(--color-background-surface)]" />
           </div>
           <div>
-            <h1 className="text-2xl font-bold text-[var(--color-text-primary)]">{companyName}</h1>
+            <h1 className="text-2xl font-medium text-[var(--color-text-primary)]">{companyName}</h1>
             <p className="text-[var(--color-text-secondary)]">Company Profile</p>
           </div>
         </div>
@@ -44,7 +44,7 @@ const CompanyProfile: React.FC<{ companyName: string; onBack: () => void }> = ({
             <DollarSign className="h-6 w-6 text-[var(--color-primary-teal)]" />
             <div>
               <p className="text-[var(--color-text-secondary)] text-sm">Total Funding</p>
-              <p className="text-2xl font-bold text-[var(--color-text-primary)]">${(totalFunding / 1000000).toFixed(1)}M</p>
+              <p className="text-2xl font-medium text-[var(--color-text-primary)]">${(totalFunding / 1000000).toFixed(1)}M</p>
             </div>
           </div>
         </div>
@@ -53,7 +53,7 @@ const CompanyProfile: React.FC<{ companyName: string; onBack: () => void }> = ({
             <Building2 className="h-6 w-6 text-[var(--color-primary-teal)]" />
             <div>
               <p className="text-[var(--color-text-secondary)] text-sm">Funding Rounds</p>
-              <p className="text-2xl font-bold text-[var(--color-text-primary)]">{deals.length}</p>
+              <p className="text-2xl font-medium text-[var(--color-text-primary)]">{deals.length}</p>
             </div>
           </div>
         </div>
@@ -62,7 +62,7 @@ const CompanyProfile: React.FC<{ companyName: string; onBack: () => void }> = ({
             <Microscope className="h-6 w-6 text-[var(--color-primary-teal)]" />
             <div>
               <p className="text-[var(--color-text-secondary)] text-sm">Clinical Trials</p>
-              <p className="text-2xl font-bold text-[var(--color-text-primary)]">{companyData.clinical_trials.length}</p>
+              <p className="text-2xl font-medium text-[var(--color-text-primary)]">{companyData.clinical_trials.length}</p>
             </div>
           </div>
         </div>
@@ -72,7 +72,7 @@ const CompanyProfile: React.FC<{ companyName: string; onBack: () => void }> = ({
       <div className="bg-[var(--color-background-surface)] p-6 rounded-lg border border-[var(--color-divider-gray)]">
         <div className="flex items-center space-x-2 mb-4">
           <DollarSign className="h-5 w-5 text-[var(--color-primary-teal)]" />
-          <h3 className="text-lg font-semibold text-[var(--color-text-primary)]">Funding History</h3>
+          <h3 className="text-lg font-medium text-[var(--color-text-primary)]">Funding History</h3>
         </div>
         <div className="overflow-x-auto">
           <table className="w-full">
@@ -92,7 +92,7 @@ const CompanyProfile: React.FC<{ companyName: string; onBack: () => void }> = ({
                   <td className="px-4 py-3">
                     <span className={`${badgeClassesFromVar(dealStageToVar(deal.stage || deal.type))} px-2 py-1 rounded text-xs`}>{deal.stage || deal.type}</span>
                   </td>
-                  <td className="px-4 py-3 text-sm font-bold text-[var(--color-primary-teal)]">${((deal.value_usd || deal.value) / 1000000).toFixed(1)}M</td>
+                  <td className="px-4 py-3 text-sm font-medium text-[var(--color-primary-teal)]">${((deal.value_usd || deal.value) / 1000000).toFixed(1)}M</td>
                   <td className="px-4 py-3 text-sm text-[var(--color-text-primary)]">{(deal.investors || []).join(', ')}</td>
                   <td className="px-4 py-3 text-sm text-[var(--color-text-primary)]">{deal.sector}</td>
                 </tr>
@@ -107,7 +107,7 @@ const CompanyProfile: React.FC<{ companyName: string; onBack: () => void }> = ({
         <div className="bg-[var(--color-background-surface)] p-6 rounded-lg border border-[var(--color-divider-gray)]">
           <div className="flex items-center space-x-2 mb-4">
             <Microscope className="h-5 w-5 text-[var(--color-primary-teal)]" />
-            <h3 className="text-lg font-semibold text-[var(--color-text-primary)]">Clinical Trials</h3>
+            <h3 className="text-lg font-medium text-[var(--color-text-primary)]">Clinical Trials</h3>
           </div>
           <div className="overflow-x-auto">
             <table className="w-full">
@@ -149,7 +149,7 @@ const CompanyProfile: React.FC<{ companyName: string; onBack: () => void }> = ({
         <div className="bg-[var(--color-background-surface)] p-6 rounded-lg border border-[var(--color-divider-gray)]">
           <div className="flex items-center space-x-2 mb-4">
             <FileCheck className="h-5 w-5 text-[var(--color-primary-teal)]" />
-            <h3 className="text-lg font-semibold text-[var(--color-text-primary)]">Regulatory Approvals</h3>
+            <h3 className="text-lg font-medium text-[var(--color-text-primary)]">Regulatory Approvals</h3>
           </div>
           <div className="overflow-x-auto">
             <table className="w-full">

@@ -54,7 +54,7 @@ const RegionalTrendsChart = () => {
 
   return (
     <div className="bg-white dark:bg-gray-800 p-4 p-6 rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm">
-      <h3 className="text-base text-lg font-semibold text-gray-900 dark:text-white mb-4">Life Expectancy Trends (2019-2023)</h3>
+      <h3 className="text-base text-lg font-medium text-gray-900 dark:text-white mb-4">Life Expectancy Trends (2019-2023)</h3>
       <div className="h-64 h-72">
         <ResponsiveContainer width="100%" height="100%">
           <LineChart data={trendData} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>

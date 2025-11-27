@@ -95,7 +95,7 @@ const ProfileHeader: React.FC<ProfileHeaderProps> = ({
                 </div>
               )}
               <div>
-                <h1 className="text-lg text-2xl font-bold text-[var(--color-text-primary)]">{title}</h1>
+                <h1 className="text-lg text-2xl font-medium text-[var(--color-text-primary)]">{title}</h1>
                 {subtitle && (
                   <p className="text-xs text-sm text-[var(--color-text-secondary)]">{subtitle}</p>
                 )}

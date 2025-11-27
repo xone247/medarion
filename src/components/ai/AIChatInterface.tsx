@@ -147,7 +147,7 @@ const AIChatInterface: React.FC<AIChatInterfaceProps> = ({
               <Bot className="h-5 w-5 text-white dark:text-black" />
             </div>
             <div>
-              <h2 className="text-lg font-bold text-gray-900 dark:text-white">{toolName}</h2>
+              <h2 className="text-lg font-medium text-gray-900 dark:text-white">{toolName}</h2>
               <p className="text-xs text-gray-600 dark:text-gray-300">{toolDescription}</p>
             </div>
           </div>
@@ -191,7 +191,7 @@ const AIChatInterface: React.FC<AIChatInterfaceProps> = ({
               <div className="w-16 h-16 rounded-full bg-[var(--color-primary-teal)]/10 dark:bg-[var(--color-primary-teal)]/20 flex items-center justify-center mb-4">
                 <Bot className="h-8 w-8 text-[var(--color-primary-teal)]" />
               </div>
-              <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-2">
+              <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">
                 Start a conversation
               </h3>
               <p className="text-sm text-gray-600 dark:text-gray-300 max-w-md mb-4">
@@ -204,7 +204,7 @@ const AIChatInterface: React.FC<AIChatInterfaceProps> = ({
               <div className="bg-white dark:bg-gray-800 p-4 rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm">
                 <div className="flex items-center gap-2 mb-3">
                   <Lightbulb className="h-4 w-4 text-[var(--color-primary-teal)]" />
-                  <h4 className="text-sm font-bold text-gray-900 dark:text-white">Use Cases</h4>
+                  <h4 className="text-sm font-medium text-gray-900 dark:text-white">Use Cases</h4>
                 </div>
                 <div className="grid grid-cols-3 gap-2">
                   {useCases.map((useCase, idx) => (
@@ -292,7 +292,7 @@ const AIChatInterface: React.FC<AIChatInterfaceProps> = ({
               </div>
               {message.role === 'user' && (
                 <div className="w-10 h-10 rounded-full bg-[var(--color-primary-teal)]/10 dark:bg-[var(--color-primary-teal)]/20 flex items-center justify-center flex-shrink-0 border-2 border-[var(--color-primary-teal)]/30">
-                  <span className="text-sm font-bold text-[var(--color-primary-teal)]">You</span>
+                  <span className="text-sm font-medium text-[var(--color-primary-teal)]">You</span>
                 </div>
               )}
             </div>
@@ -335,7 +335,7 @@ const AIChatInterface: React.FC<AIChatInterfaceProps> = ({
           <button
             onClick={handleSend}
             disabled={!input.trim() || loading}
-            className="px-6 py-3 rounded-xl bg-black dark:bg-white text-white dark:text-black font-semibold hover:bg-black/90 dark:hover:bg-white/80 disabled:opacity-50 disabled:cursor-not-allowed transition-all flex items-center gap-2 shadow-lg hover:shadow-xl hover:scale-[1.02] active:scale-[0.98]"
+            className="px-6 py-3 rounded-xl bg-black dark:bg-white text-white dark:text-black font-medium hover:bg-black/90 dark:hover:bg-white/80 disabled:opacity-50 disabled:cursor-not-allowed transition-all flex items-center gap-2 shadow-lg hover:shadow-xl hover:scale-[1.02] active:scale-[0.98]"
           >
             {loading ? (
               <Loader2 className="h-5 w-5 animate-spin" />

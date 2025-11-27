@@ -164,3 +164,10 @@ SELECT COUNT(*) FROM africa_countries; -- Should be 54
 
 
 
+
+
+
+
+
+
+

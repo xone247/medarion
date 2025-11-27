@@ -344,7 +344,7 @@ const InteractiveMap: React.FC<InteractiveMapProps> = ({
 	return (
 		<div className="tile">
 			<div className="tile-header">
-				<h3 className="text-lg font-semibold text-[var(--color-text-primary)]">{title}</h3>
+				<h3 className="text-lg font-medium text-[var(--color-text-primary)]">{title}</h3>
 				<p className="text-sm text-[var(--color-text-secondary)] mt-1">Click on a country to view details. Metric: {dataType}</p>
 			</div>
 			
@@ -391,7 +391,7 @@ const InteractiveMap: React.FC<InteractiveMapProps> = ({
 					<div className="bg-[var(--color-background-surface)] rounded-lg max-w-2xl w-full max-h-[700px] overflow-y-auto border border-[var(--color-divider-gray)]">
 						<div className="p-6">
 							<div className="flex justify-between items-start mb-4">
-								<h3 className="text-xl font-semibold text-[var(--color-text-primary)]">{selectedCountry.name}</h3>
+								<h3 className="text-xl font-medium text-[var(--color-text-primary)]">{selectedCountry.name}</h3>
 								<button
 									onClick={() => setSelectedCountry(null)}
 									className="text-[var(--color-text-secondary)] hover:opacity-80"

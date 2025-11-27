@@ -66,7 +66,7 @@ const RegulatorDashboard = () => {
           <div className="py-6">
             <div className="flex items-center justify-between">
               <div>
-                <h1 className="text-3xl font-bold text-[var(--color-text-primary)]">Regulator Dashboard</h1>
+                <h1 className="text-3xl font-medium text-[var(--color-text-primary)]">Regulator Dashboard</h1>
                 <p className="mt-1 text-[var(--color-text-secondary)]">Regulatory oversight and compliance monitoring</p>
               </div>
               <div className="flex items-center space-x-4">
@@ -118,7 +118,7 @@ const RegulatorDashboard = () => {
           <div className="bg-white dark:bg-[var(--color-background-surface)] rounded-xl border border-gray-200 dark:border-[var(--color-divider-gray)] p-6 shadow-soft">
             <div className="flex items-center space-x-3 mb-6">
               <Shield className="h-6 w-6 text-[var(--color-primary-teal)]" />
-              <h3 className="text-lg font-semibold text-[var(--color-text-primary)]">Regulatory Initiatives</h3>
+              <h3 className="text-lg font-medium text-[var(--color-text-primary)]">Regulatory Initiatives</h3>
             </div>
             <div className="space-y-4">
               {regulatoryInitiatives.map((initiative, index) => (
@@ -157,14 +157,14 @@ const RegulatorDashboard = () => {
           <div className="bg-white dark:bg-[var(--color-background-surface)] rounded-xl border border-gray-200 dark:border-[var(--color-divider-gray)] p-6 shadow-soft">
             <div className="flex items-center space-x-3 mb-6">
               <BarChart3 className="h-6 w-6 text-[var(--color-primary-teal)]" />
-              <h3 className="text-lg font-semibold text-[var(--color-text-primary)]">Regional Compliance</h3>
+              <h3 className="text-lg font-medium text-[var(--color-text-primary)]">Regional Compliance</h3>
             </div>
             <div className="space-y-4">
               {complianceMetrics.map((metric, index) => (
                 <div key={index} className="border border-gray-200 dark:border-[var(--color-divider-gray)] rounded-lg p-4 bg-gray-50 dark:bg-[var(--color-background-default)]">
                   <div className="flex items-center justify-between mb-2">
                     <h4 className="font-medium text-[var(--color-text-primary)]">{metric.region}</h4>
-                    <span className="text-lg font-semibold text-[var(--color-primary-teal)]">{metric.complianceRate}</span>
+                    <span className="text-lg font-medium text-[var(--color-primary-teal)]">{metric.complianceRate}</span>
                   </div>
                   <div className="flex justify-between text-sm text-[var(--color-text-secondary)]">
                     <span>Inspections: {metric.inspections}</span>
@@ -180,7 +180,7 @@ const RegulatorDashboard = () => {
         <div className="card-glass p-6 mb-8">
           <div className="flex items-center space-x-3 mb-6">
             <FileText className="h-6 w-6 text-black dark:text-white" />
-            <h3 className="text-lg font-semibold text-[var(--color-text-primary)]">Recent Regulatory Updates</h3>
+            <h3 className="text-lg font-medium text-[var(--color-text-primary)]">Recent Regulatory Updates</h3>
           </div>
           <div className="space-y-4">
             {regulatoryUpdates.map((update, index) => (
@@ -220,7 +220,7 @@ const RegulatorDashboard = () => {
           <div className="card-glass p-6">
             <div className="flex items-center space-x-3 mb-6">
               <Globe className="h-6 w-6 text-black dark:text-white" />
-              <h3 className="text-lg font-semibold text-[var(--color-text-primary)]">Regulatory Coverage Map</h3>
+              <h3 className="text-lg font-medium text-[var(--color-text-primary)]">Regulatory Coverage Map</h3>
             </div>
             <div className="mb-4">
               <div className="flex space-x-4">

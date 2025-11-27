@@ -23,7 +23,7 @@ const LogoWall: React.FC<LogoWallProps> = ({ title, items, columns = 6 }) => {
     <div className="card">
       {title && (
         <div className="tile-header">
-          <h3 className="text-lg font-semibold text-[var(--color-text-primary)]">{title}</h3>
+          <h3 className="text-lg font-medium text-[var(--color-text-primary)]">{title}</h3>
         </div>
       )}
       <div className={`p-4 grid ${gridCols} gap-3 gap-4`}>

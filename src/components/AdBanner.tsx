@@ -132,7 +132,7 @@ const AdBanner: React.FC<AdBannerProps> = ({
           <div className="p-4">
             <div className="flex items-start justify-between mb-2">
               <div className="flex-1">
-                <h3 className="text-sm font-semibold text-[var(--color-text-primary)] mb-1 line-clamp-2">
+                <h3 className="text-sm font-medium text-[var(--color-text-primary)] mb-1 line-clamp-2">
                   {ad.title}
                 </h3>
                 <p className="text-xs text-[var(--color-text-secondary)] mb-2">

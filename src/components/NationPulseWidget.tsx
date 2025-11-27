@@ -64,7 +64,7 @@ const NationPulseWidget = ({ type = 'overview' }) => {
       <div className="bg-background-surface p-4 p-6 rounded-lg border border-divider shadow-sm">
         <div className="flex items-center space-x-2 mb-4">
           <Heart className="h-5 w-5 text-red-500" />
-          <h3 className="text-base text-lg font-semibold text-text-primary">Regional Health Metrics</h3>
+          <h3 className="text-base text-lg font-medium text-text-primary">Regional Health Metrics</h3>
         </div>
         <div className="h-64 h-72">
           <ResponsiveContainer width="100%" height="100%">
@@ -97,7 +97,7 @@ const NationPulseWidget = ({ type = 'overview' }) => {
       <div className="bg-background-surface p-4 p-6 rounded-lg border border-divider shadow-sm">
         <div className="flex items-center space-x-2 mb-4">
           <TrendingUp className="h-5 w-5 text-green-500" />
-          <h3 className="text-base text-lg font-semibold text-text-primary">Investment Opportunity Scores</h3>
+          <h3 className="text-base text-lg font-medium text-text-primary">Investment Opportunity Scores</h3>
         </div>
         <div className="h-64 h-72">
           <ResponsiveContainer width="100%" height="100%">
@@ -138,7 +138,7 @@ const NationPulseWidget = ({ type = 'overview' }) => {
       <div className="bg-background-surface p-4 p-6 rounded-lg border border-divider shadow-sm">
         <div className="flex items-center space-x-2 mb-4">
           <DollarSign className="h-5 w-5 text-green-500" />
-          <h3 className="text-base text-lg font-semibold text-text-primary">Economic Indicators</h3>
+          <h3 className="text-base text-lg font-medium text-text-primary">Economic Indicators</h3>
         </div>
         <div className="h-64 h-72">
           <ResponsiveContainer width="100%" height="100%">
@@ -170,7 +170,7 @@ const NationPulseWidget = ({ type = 'overview' }) => {
     <div className="bg-background-surface p-4 p-6 rounded-lg border border-divider shadow-sm">
       <div className="flex items-center space-x-2 mb-4">
         <Globe className="h-5 w-5 text-primary-400" />
-        <h3 className="text-base text-lg font-semibold text-text-primary">Nation Pulse Overview</h3>
+        <h3 className="text-base text-lg font-medium text-text-primary">Nation Pulse Overview</h3>
       </div>
       
       <div className="grid grid-cols-2 gap-3 gap-4 mb-4">
@@ -179,7 +179,7 @@ const NationPulseWidget = ({ type = 'overview' }) => {
             <Heart className="h-3 w-3 h-4 w-4 text-red-500" />
             <span className="text-xs text-sm text-text-secondary">Avg Life Expectancy</span>
           </div>
-          <p className="text-lg text-2xl font-bold text-text-primary">
+          <p className="text-lg text-2xl font-medium text-text-primary">
             {regionalAverages.life_expectancy.toFixed(1)} years
           </p>
         </div>
@@ -189,7 +189,7 @@ const NationPulseWidget = ({ type = 'overview' }) => {
             <DollarSign className="h-3 w-3 h-4 w-4 text-green-500" />
             <span className="text-xs text-sm text-text-secondary">Avg GDP per Capita</span>
           </div>
-          <p className="text-lg text-2xl font-bold text-text-primary">
+          <p className="text-lg text-2xl font-medium text-text-primary">
             ${regionalAverages.gdp_per_capita.toFixed(0)}
           </p>
         </div>
@@ -199,7 +199,7 @@ const NationPulseWidget = ({ type = 'overview' }) => {
             <Building className="h-3 w-3 h-4 w-4 text-blue-500" />
             <span className="text-xs text-sm text-text-secondary">Avg Health Spend</span>
           </div>
-          <p className="text-lg text-2xl font-bold text-text-primary">
+          <p className="text-lg text-2xl font-medium text-text-primary">
             {regionalAverages.health_expenditure.toFixed(1)}% GDP
           </p>
         </div>
@@ -209,7 +209,7 @@ const NationPulseWidget = ({ type = 'overview' }) => {
             <TrendingUp className="h-3 w-3 h-4 w-4 text-purple-500" />
             <span className="text-xs text-sm text-text-secondary">Avg Annual Growth</span>
           </div>
-          <p className="text-lg text-2xl font-bold text-text-primary">
+          <p className="text-lg text-2xl font-medium text-text-primary">
             {(countries.reduce((sum, country) => {
               const economicData = np?.economic_indicators?.[country];
               return sum + (economicData ? (economicData.gdp?.growth_rate || 0) : 0);
@@ -219,7 +219,7 @@ const NationPulseWidget = ({ type = 'overview' }) => {
       </div>
 
       <div className="border-t border-divider pt-4">
-        <h4 className="text-xs text-sm font-semibold text-text-primary mb-3">Top Investment Opportunities</h4>
+        <h4 className="text-xs text-sm font-medium text-text-primary mb-3">Top Investment Opportunities</h4>
         <div className="space-y-2">
           {investmentOpportunityData.slice(0, 3).map((opportunity: any, index: number) => (
             <div key={`${opportunity.country}-${index}`} className="flex items-center justify-between text-xs text-sm">
@@ -228,7 +228,7 @@ const NationPulseWidget = ({ type = 'overview' }) => {
                 opportunity.score >= 80 ? 'bg-green-100 text-green-800' :
                 opportunity.score >= 60 ? 'bg-yellow-100 text-yellow-800' :
                 'bg-red-100 text-red-800'
-              } px-2 py-1 rounded text-xs font-bold`}>
+              } px-2 py-1 rounded text-xs font-medium`}>
                 {opportunity.score.toFixed(0)}
               </span>
             </div>

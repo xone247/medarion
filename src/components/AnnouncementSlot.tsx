@@ -87,7 +87,7 @@ const AnnouncementSlot: React.FC<AnnouncementSlotProps> = ({ placement = 'blog_s
 							<Bell className="h-5 w-5 text-white" />
 						</div>
 						<div className="flex-1 min-w-0">
-							<h4 className="font-semibold text-gray-900 dark:text-white mb-1 text-sm">
+							<h4 className="font-medium text-gray-900 dark:text-white mb-1 text-sm">
 								{ann.title}
 							</h4>
 							<p className="text-sm text-gray-700 dark:text-gray-300 mb-2">

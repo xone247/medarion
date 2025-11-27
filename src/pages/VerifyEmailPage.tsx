@@ -130,7 +130,7 @@ const VerifyEmailPage: React.FC = () => {
               <div className="w-16 h-16 bg-red-100 dark:bg-red-900/20 rounded-full flex items-center justify-center mx-auto mb-4">
                 <XCircle className="w-8 h-8 text-red-600 dark:text-red-400" />
               </div>
-              <h1 className="text-2xl font-bold text-[var(--color-text-primary)] mb-2">
+              <h1 className="text-2xl font-medium text-[var(--color-text-primary)] mb-2">
                 Verification Failed
               </h1>
               <p className="text-[var(--color-text-secondary)] mb-4">

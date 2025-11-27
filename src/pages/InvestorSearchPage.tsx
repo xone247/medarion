@@ -178,7 +178,7 @@ const InvestorSearchPage = () => {
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-2">
             <Search className="h-6 w-6 icon-primary" />
-            <h1 className="text-xl text-2xl font-bold text-[var(--color-text-primary)]">Investor Search</h1>
+            <h1 className="text-xl text-2xl font-medium text-[var(--color-text-primary)]">Investor Search</h1>
           </div>
           {canAI && (
             <button onClick={runAIMatch} className="btn-primary flex items-center space-x-2">
@@ -191,7 +191,7 @@ const InvestorSearchPage = () => {
 
       {aiMatches && (
         <div className="card-glass p-4 shadow-soft mb-6">
-          <h3 className="font-semibold text-[var(--color-text-primary)] mb-2">Suggested investors</h3>
+          <h3 className="font-medium text-[var(--color-text-primary)] mb-2">Suggested investors</h3>
           <ul className="list-disc pl-5 text-sm text-[var(--color-text-secondary)]">
             {aiMatches.map((name, idx) => <li key={idx}>{name}</li>)}
           </ul>
@@ -202,7 +202,7 @@ const InvestorSearchPage = () => {
       <div className="card-glass p-6 shadow-soft mb-6 bg-gradient-to-r from-[var(--color-primary-teal)] to-[var(--color-accent-sky)]">
         <div className="flex items-center space-x-3 mb-2">
           <Star className="h-6 w-6 text-white" />
-          <h3 className="text-lg font-semibold text-white">AI-Powered Recommendations</h3>
+          <h3 className="text-lg font-medium text-white">AI-Powered Recommendations</h3>
         </div>
         <p className="text-white/90">
           Our AI has analyzed your profile and identified {filteredInvestors.filter((inv: any) => inv.matchScore >= 85).length} highly compatible investors based on sector focus, stage preference, and geographic activity.
@@ -213,7 +213,7 @@ const InvestorSearchPage = () => {
       <div className="card-glass p-6 shadow-soft mb-6">
         <div className="flex items-center space-x-2 mb-4">
           <Filter className="h-5 w-5 icon-primary" />
-          <h3 className="text-lg font-semibold text-[var(--color-text-primary)]">Search Filters</h3>
+          <h3 className="text-lg font-medium text-[var(--color-text-primary)]">Search Filters</h3>
         </div>
         <div className="grid grid-cols-4 gap-4">
           <div className="relative">
@@ -259,7 +259,7 @@ const InvestorSearchPage = () => {
       {/* Results Summary */}
       <div className="card-glass p-4 shadow-soft mb-6">
         <p className="text-[var(--color-text-secondary)]">
-          Found <span className="font-bold text-[var(--color-text-primary)]">{filteredInvestors.length}</span> investors matching your criteria
+          Found <span className="font-medium text-[var(--color-text-primary)]">{filteredInvestors.length}</span> investors matching your criteria
         </p>
       </div>
 
@@ -273,13 +273,13 @@ const InvestorSearchPage = () => {
                   <Users className="h-6 w-6 text-white" />
                 </div>
                 <div>
-                  <h3 className="text-lg font-semibold text-[var(--color-text-primary)]">{investor.name}</h3>
+                  <h3 className="text-lg font-medium text-[var(--color-text-primary)]">{investor.name}</h3>
                   <span className="bg-gradient-to-r from-[var(--color-primary-teal)] to-[var(--color-accent-sky)] text-white px-2 py-1 rounded text-xs font-medium border border-[color-mix(in_srgb,var(--color-primary-teal),black_10%)]">
                     {investor.type}
                   </span>
                 </div>
               </div>
-              <span className={`px-3 py-1 rounded-full text-sm font-bold ${getMatchColor(investor.matchScore)}`}>
+              <span className={`px-3 py-1 rounded-full text-sm font-medium ${getMatchColor(investor.matchScore)}`}>
                 {investor.matchScore}% Match
               </span>
             </div>
@@ -287,15 +287,15 @@ const InvestorSearchPage = () => {
             <div className="grid grid-cols-2 gap-4 mb-4">
               <div>
                 <p className="text-sm text-[var(--color-text-secondary)]">Total Invested</p>
-                <p className="text-lg font-bold text-blue-600 dark:text-blue-400">${(investor.totalInvested / 1000000).toFixed(1)}M</p>
+                <p className="text-lg font-medium text-blue-600 dark:text-blue-400">${(investor.totalInvested / 1000000).toFixed(1)}M</p>
               </div>
               <div>
                 <p className="text-sm text-[var(--color-text-secondary)]">Avg Deal Size</p>
-                <p className="text-lg font-bold text-[var(--color-text-primary)]">${(investor.avgDealSize / 1000000).toFixed(1)}M</p>
+                <p className="text-lg font-medium text-[var(--color-text-primary)]">${(investor.avgDealSize / 1000000).toFixed(1)}M</p>
               </div>
               <div>
                 <p className="text-sm text-[var(--color-text-secondary)]">Portfolio</p>
-                <p className="text-lg font-bold text-[var(--color-text-primary)]">{investor.companies.length} companies</p>
+                <p className="text-lg font-medium text-[var(--color-text-primary)]">{investor.companies.length} companies</p>
               </div>
               <div>
                 <p className="text-sm text-[var(--color-text-secondary)]">Last Investment</p>
@@ -391,9 +391,9 @@ const InvestorSearchPage = () => {
                   <Users className="h-8 w-8 text-white" />
                 </div>
                 <div>
-                  <h3 className="text-2xl font-bold text-[var(--color-text-primary)]">{showInvestorProfile.name}</h3>
+                  <h3 className="text-2xl font-medium text-[var(--color-text-primary)]">{showInvestorProfile.name}</h3>
                   <p className="text-[var(--color-text-secondary)]">{showInvestorProfile.type}</p>
-                  <span className={`px-3 py-1 rounded-full text-sm font-bold ${getMatchColor(showInvestorProfile.matchScore)}`}>
+                  <span className={`px-3 py-1 rounded-full text-sm font-medium ${getMatchColor(showInvestorProfile.matchScore)}`}>
                     {showInvestorProfile.matchScore}% Match
                   </span>
                 </div>
@@ -410,7 +410,7 @@ const InvestorSearchPage = () => {
               {/* Basic Info */}
               <div className="space-y-4">
                 <div>
-                  <h4 className="text-lg font-semibold text-[var(--color-text-primary)] mb-3">Overview</h4>
+                  <h4 className="text-lg font-medium text-[var(--color-text-primary)] mb-3">Overview</h4>
                   <p className="text-[var(--color-text-secondary)] text-sm mb-4">{showInvestorProfile.description}</p>
                   
                   <div className="space-y-2">
@@ -434,7 +434,7 @@ const InvestorSearchPage = () => {
                 </div>
 
                 <div>
-                  <h4 className="text-lg font-semibold text-[var(--color-text-primary)] mb-3">Contact Information</h4>
+                  <h4 className="text-lg font-medium text-[var(--color-text-primary)] mb-3">Contact Information</h4>
                   <div className="space-y-2">
                     <div className="flex items-center space-x-2">
                       <Globe className="h-4 w-4 text-[var(--color-text-secondary)]" />
@@ -463,23 +463,23 @@ const InvestorSearchPage = () => {
               {/* Investment Details */}
               <div className="space-y-4">
                 <div>
-                  <h4 className="text-lg font-semibold text-[var(--color-text-primary)] mb-3">Investment Profile</h4>
+                  <h4 className="text-lg font-medium text-[var(--color-text-primary)] mb-3">Investment Profile</h4>
                   <div className="grid grid-cols-2 gap-4 mb-4">
                     <div className="card-glass p-3 shadow-soft">
                       <p className="text-sm text-[var(--color-text-secondary)]">Total Invested</p>
-                      <p className="text-xl font-bold text-blue-600 dark:text-blue-400">${(showInvestorProfile.totalInvested / 1000000).toFixed(1)}M</p>
+                      <p className="text-xl font-medium text-blue-600 dark:text-blue-400">${(showInvestorProfile.totalInvested / 1000000).toFixed(1)}M</p>
                     </div>
                     <div className="card-glass p-3 shadow-soft">
                       <p className="text-sm text-[var(--color-text-secondary)]">Deal Count</p>
-                      <p className="text-xl font-bold text-[var(--color-text-primary)]">{showInvestorProfile.dealCount}</p>
+                      <p className="text-xl font-medium text-[var(--color-text-primary)]">{showInvestorProfile.dealCount}</p>
                     </div>
                     <div className="card-glass p-3 shadow-soft">
                       <p className="text-sm text-[var(--color-text-secondary)]">Avg Deal Size</p>
-                      <p className="text-xl font-bold text-[var(--color-text-primary)]">${(showInvestorProfile.avgDealSize / 1000000).toFixed(1)}M</p>
+                      <p className="text-xl font-medium text-[var(--color-text-primary)]">${(showInvestorProfile.avgDealSize / 1000000).toFixed(1)}M</p>
                     </div>
                     <div className="card-glass p-3 shadow-soft">
                       <p className="text-sm text-[var(--color-text-secondary)]">Investment Range</p>
-                      <p className="text-sm font-bold text-[var(--color-text-primary)]">
+                      <p className="text-sm font-medium text-[var(--color-text-primary)]">
                         ${'$'}{showInvestorProfile.investmentRange.min}K - ${'$'}{showInvestorProfile.investmentRange.max}M
                       </p>
                     </div>
@@ -487,7 +487,7 @@ const InvestorSearchPage = () => {
                 </div>
 
                 <div>
-                  <h4 className="text-lg font-semibold text-[var(--color-text-primary)] mb-3">Focus Areas</h4>
+                  <h4 className="text-lg font-medium text-[var(--color-text-primary)] mb-3">Focus Areas</h4>
                   <div className="space-y-3">
                     <div>
                       <p className="text-sm text-[var(--color-text-secondary)] mb-2">Sectors</p>
@@ -527,7 +527,7 @@ const InvestorSearchPage = () => {
             </div>
             
             <div className="border-t border-[var(--color-divider-gray)] pt-4">
-              <h4 className="text-lg font-semibold text-[var(--color-text-primary)] mb-3">Recent Portfolio Companies</h4>
+              <h4 className="text-lg font-medium text-[var(--color-text-primary)] mb-3">Recent Portfolio Companies</h4>
               <div className="grid grid-cols-2 gap-2">
                 {showInvestorProfile.companies.slice(0, 6).map((company: string, index: number) => (
                   <div key={index} className="flex items-center space-x-2 p-2 card-glass shadow-soft">
@@ -566,7 +566,7 @@ const InvestorSearchPage = () => {
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="card-glass p-6 max-w-2xl w-full mx-4 shadow-soft">
             <div className="flex items-center justify-between mb-4">
-              <h3 className="text-xl font-bold text-[var(--color-text-primary)]">Connect with {showConnectModal.name}</h3>
+              <h3 className="text-xl font-medium text-[var(--color-text-primary)]">Connect with {showConnectModal.name}</h3>
               <button 
                 onClick={() => setShowConnectModal(null)}
                 className="text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)]"

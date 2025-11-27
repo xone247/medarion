@@ -1,36 +1,36 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { FileCheck, Search, Filter, Calendar, MapPin, Building2, ExternalLink, Sparkles, Globe, FileText, Bot, FileDown } from 'lucide-react';
+import { FileCheck, Search, Filter, Calendar, MapPin, Building2, ExternalLink, Sparkles, Globe, FileText, Bot, FileDown, X, CheckCircle2, Clock, XCircle } from 'lucide-react';
 import { marketEntryReport } from '../services/ai';
 import { apiService } from '../services/apiService';
 import { useAuth } from '../contexts/AuthContext';
+import { exportToExcel, exportToCSV, exportToJSON } from '../utils/exportUtils';
+import AISidePanel from '../components/ai/AISidePanel';
 
 const RegulatoryPage: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedStatus, setSelectedStatus] = useState('All');
   const [selectedBody, setSelectedBody] = useState('All');
-  const [showAISummary, setShowAISummary] = useState(false);
-  const [aiSummaryLoading, setAiSummaryLoading] = useState(false);
-  const [aiSummaryText, setAiSummaryText] = useState('');
-  const [aiText, setAiText] = useState<string | null>(null);
+  const [aiOpen, setAiOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [regulatory, setRegulatory] = useState<any[]>([]);
   const { profile } = useAuth();
   const canAI = !!(profile && (profile.is_admin || ['paid','enterprise'].includes((profile as any).account_tier)));
+  const canExport = !!(profile && (profile.is_admin || (profile as any).account_tier === 'enterprise'));
 
   useEffect(() => {
     const fetchRegulatoryData = async () => {
       setLoading(true);
       try {
-        // Use same endpoint as Data Management tab
-        const response = await apiService.get('/admin/regulatory', { limit: '200' });
+        // Fetch from database API
+        const response = await apiService.get('/admin/regulatory', { limit: '500' });
         console.log('[RegulatoryPage] API Response:', response);
         
         if (response.success && response.data && Array.isArray(response.data)) {
           // Transform API data to match expected format
           const transformed = response.data.map((reg: any) => ({
             id: reg.id,
-            product: reg.product_name || reg.approval_type || 'Regulatory Approval',
-            body: reg.regulatory_body_name || reg.body_name || reg.regulatory_body_id || 'Unknown Body',
+            product: reg.product_name || reg.product || reg.approval_type || 'Regulatory Approval',
+            body: reg.regulatory_body_name || reg.regulatory_body || reg.body_name || reg.regulatory_body_id || 'Unknown Body',
             date: reg.approval_date || reg.application_date || reg.created_at,
             status: reg.status || 'pending',
             companyName: reg.company_name || 'Unknown Company',
@@ -79,6 +79,13 @@ const RegulatoryPage: React.FC = () => {
     return matchesSearch && matchesStatus && matchesBody;
   }), [regulatory, searchTerm, selectedStatus, selectedBody]);
 
+  // Calculate statistics
+  const approvedCount = useMemo(() => filteredRegulatory.filter(r => r.status === 'Approved' || r.status === '510(k) Cleared').length, [filteredRegulatory]);
+  const pendingCount = useMemo(() => filteredRegulatory.filter(r => r.status === 'Submitted' || r.status === 'Under Review').length, [filteredRegulatory]);
+  const rejectedCount = useMemo(() => filteredRegulatory.filter(r => r.status === 'Rejected').length, [filteredRegulatory]);
+  const uniqueBodies = useMemo(() => new Set(filteredRegulatory.map((r: any) => r.body)).size, [filteredRegulatory]);
+  const uniqueCountries = useMemo(() => new Set(filteredRegulatory.map((r: any) => r.country)).size, [filteredRegulatory]);
+
   // Calculate country statistics
   const countryStats = useMemo(() => filteredRegulatory.reduce((acc: any, reg: any) => {
     if (!acc[reg.country]) {
@@ -94,322 +101,348 @@ const RegulatoryPage: React.FC = () => {
   const topCountries = useMemo(() => Object.entries(countryStats)
     .map(([country, stats]: any) => ({ country, ...(stats as any) }))
     .sort((a: any, b: any) => b.count - a.count)
-    .slice(0, 6), [countryStats]);
+    .slice(0, 5), [countryStats]);
+
+  // Calculate body statistics
+  const bodyStats = useMemo(() => {
+    const map = new Map<string, number>();
+    filteredRegulatory.forEach((r: any) => map.set(r.body, (map.get(r.body) || 0) + 1));
+    return Array.from(map.entries()).sort((a, b) => b[1] - a[1]).slice(0, 5);
+  }, [filteredRegulatory]);
 
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'Approved':
-      case '510(k) Cleared': return 'bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200';
+      case '510(k) Cleared': return 'bg-emerald-100 dark:bg-emerald-500/30 text-emerald-700 dark:text-emerald-300';
       case 'Submitted':
-      case 'Under Review': return 'bg-yellow-100 dark:bg-yellow-900 text-yellow-800 dark:text-yellow-200';
-      case 'Rejected': return 'bg-red-100 dark:bg-red-900 text-red-800 dark:text-red-200';
-      default: return 'bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200';
+      case 'Under Review': return 'bg-amber-100 dark:bg-amber-500/30 text-amber-700 dark:text-amber-300';
+      case 'Rejected': return 'bg-red-100 dark:bg-red-500/30 text-red-700 dark:text-red-300';
+      default: return 'bg-teal-100 dark:bg-teal-500/30 text-teal-700 dark:text-teal-300'; // Changed from gray to teal
     }
   };
 
   const getBodyColor = (body: string) => {
-    if (body.includes('FDA')) return 'bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200';
-    if (body.includes('NAFDAC')) return 'bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200';
-    if (body.includes('SAHPRA')) return 'bg-purple-100 dark:bg-purple-900 text-purple-800 dark:text-purple-200';
-    if (body.includes('KPPB')) return 'bg-orange-100 dark:bg-orange-900 text-orange-800 dark:text-orange-200';
-    return 'bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200';
+    if (!body) return 'bg-emerald-100 dark:bg-emerald-500/30 text-emerald-700 dark:text-emerald-300';
+    const bodyStr = String(body).trim();
+    const bodyLower = bodyStr.toLowerCase();
+    
+    // Check for NAFDAC first (most common)
+    if (bodyLower === 'nafdac' || bodyLower.includes('nafdac') || bodyStr === 'NAFDAC') {
+      return 'bg-emerald-100 dark:bg-emerald-500/30 text-emerald-700 dark:text-emerald-300';
+    }
+    // Ghana Food and Drugs Authority - explicit check with vibrant color
+    if (bodyLower.includes('ghana food') || bodyLower.includes('gfda') || bodyLower.includes('ghana food and drugs')) {
+      return 'bg-cyan-100 dark:bg-cyan-500/30 text-cyan-700 dark:text-cyan-300';
+    }
+    if (bodyLower.includes('fda') || bodyLower.includes('food and drug')) {
+      return 'bg-blue-100 dark:bg-blue-500/30 text-blue-700 dark:text-blue-300';
+    }
+    if (bodyLower.includes('sahpra') || bodyLower.includes('south african health')) {
+      return 'bg-purple-100 dark:bg-purple-500/30 text-purple-700 dark:text-purple-300';
+    }
+    if (bodyLower.includes('kenya medical') || bodyLower.includes('kmpdb') || bodyLower.includes('kenya medical practitioners')) {
+      return 'bg-indigo-100 dark:bg-indigo-500/30 text-indigo-700 dark:text-indigo-300';
+    }
+    if (bodyLower.includes('kppb') || bodyLower.includes('kenya pharmacy')) {
+      return 'bg-orange-100 dark:bg-orange-500/30 text-orange-700 dark:text-orange-300';
+    }
+    // Default fallback - use emerald for unknown bodies (NO gray/ash backgrounds)
+    return 'bg-emerald-100 dark:bg-emerald-500/30 text-emerald-700 dark:text-emerald-300';
   };
 
-  const generateAISummary = () => {
-    setAiSummaryLoading(true);
-    setShowAISummary(true);
-    setTimeout(() => {
-      const approvedCount = filteredRegulatory.filter(r => r.status === 'Approved' || r.status === '510(k) Cleared').length;
-      const pendingCount = filteredRegulatory.filter(r => r.status === 'Submitted' || r.status === 'Under Review').length;
-      const sectorStats = filteredRegulatory.reduce((acc: any, reg: any) => {
-        acc[reg.sector] = (acc[reg.sector] || 0) + 1;
-        return acc;
-      }, {} as Record<string, number>);
-      const topSector = Object.entries(sectorStats).sort((a, b) => (b[1] as number) - (a[1] as number))[0];
-      const topSectorName = topSector ? (topSector[0] as string) : 'Unknown';
-      const summary = `
-        ## African Regulatory Landscape Summary
-        
-        Based on the current data, there are ${filteredRegulatory.length} regulatory submissions across ${Object.keys(countryStats).length} African countries, with ${approvedCount} approved products and ${pendingCount} pending review.
-        
-        ### Key Insights:
-        
-        - **Most Active Regulatory Bodies**: ${bodies.filter(b => b !== 'All').slice(0, 3).join(', ')}
-        - **Leading Countries**: ${topCountries.slice(0, 3).map(c => c.country).join(', ')} account for ${Math.round((topCountries.slice(0, 3).reduce((sum, c) => sum + (c as any).count, 0) / (filteredRegulatory.length || 1)) * 100)}% of all regulatory activity
-        - **Approval Rate**: ${Math.round(((approvedCount / (filteredRegulatory.length || 1)) * 100))}% of submissions have received approval
-        
-        ### Sector Analysis:
-        
-        The ${topSectorName} sector leads with the highest number of regulatory submissions, indicating strong innovation and commercialization efforts in this area.
-        
-        ### Regulatory Trends:
-        
-        - Time to approval is averaging 6-12 months across most African regulatory bodies
-        - There's an increasing focus on harmonizing regulatory frameworks across regional economic communities
-        - Digital health and medical device approvals are growing at the fastest rate
-        
-        ### Outlook:
-        
-        Expect continued growth in regulatory submissions across Africa as healthcare innovation accelerates and regulatory bodies streamline their processes. Companies should prepare for evolving requirements and increasing scrutiny of clinical evidence.
-      `;
-      setAiSummaryText(summary);
-      setAiSummaryLoading(false);
-    }, 600);
+  const exportExcel = () => {
+    try {
+      const excelData = filteredRegulatory.map((reg: any) => ({
+        Product: reg.product,
+        'Regulatory Body': reg.body,
+        Status: reg.status,
+        'Company Name': reg.companyName,
+        Country: reg.country,
+        Date: reg.date,
+        'Validity Period': reg.validity_period || '',
+        'Expiry Date': reg.expiry_date || '',
+        'Application Date': reg.application_date || ''
+      }));
+      exportToExcel(excelData, 'regulatory', 'Regulatory');
+    } catch (error) {
+      console.error('Error exporting Excel:', error);
+    }
   };
 
-  const exportJSON = () => { try { const data = { filters: { searchTerm, selectedStatus, selectedBody }, regulatory: filteredRegulatory, exportedAt: new Date().toISOString() }; const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'}); const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='regulatory.json'; a.click(); URL.revokeObjectURL(a.href);} catch {} };
-  const copyJSON = async () => { try { const data = { filters: { searchTerm, selectedStatus, selectedBody }, regulatory: filteredRegulatory, exportedAt: new Date().toISOString() }; const text = JSON.stringify(data, null, 2); if (navigator.clipboard && navigator.clipboard.writeText) { await navigator.clipboard.writeText(text); } else { const ta=document.createElement('textarea'); ta.value=text; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta);} alert('Copied regulatory JSON to clipboard'); } catch {} };
+  const exportJSON = () => {
+    try {
+      const data = { filters: { searchTerm, selectedStatus, selectedBody }, regulatory: filteredRegulatory, exportedAt: new Date().toISOString() };
+      exportToJSON(data, 'regulatory');
+    } catch (error) {
+      console.error('Error exporting JSON:', error);
+    }
+  };
+
+  const exportCSV = () => {
+    try {
+      const rows = [['Product','Regulatory Body','Status','Company Name','Country','Date']];
+      filteredRegulatory.forEach((reg: any) => rows.push([
+        reg.product,
+        reg.body,
+        reg.status,
+        reg.companyName,
+        reg.country,
+        reg.date
+      ]));
+      exportToCSV(rows, 'regulatory');
+    } catch (error) {
+      console.error('Error exporting CSV:', error);
+    }
+  };
+
+  const copyJSON = async () => {
+    try {
+      const data = { filters: { searchTerm, selectedStatus, selectedBody }, regulatory: filteredRegulatory, exportedAt: new Date().toISOString() };
+      const text = JSON.stringify(data, null, 2);
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        await navigator.clipboard.writeText(text);
+      } else {
+        const ta = document.createElement('textarea');
+        ta.value = text;
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand('copy');
+        document.body.removeChild(ta);
+      }
+      alert('Copied regulatory JSON to clipboard');
+    } catch {}
+  };
+
+  if (loading) {
+    return (
+      <div className="w-full flex items-center justify-center p-12">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-cyan-600 dark:border-cyan-400"></div>
+      </div>
+    );
+  }
 
   return (
-    <div className="page-container">
-      {/* Header with glassmorphism */}
-      <div className="card-glass p-6 shadow-soft mb-6">
-        <div className="flex flex-row items-center justify-between gap-3">
-          <div className="flex items-center space-x-2">
-            <FileText className="h-6 w-6 icon-primary" />
-            <h1 className="text-xl text-2xl font-bold text-[var(--color-text-primary)]">Regulatory</h1>
-          </div>
-          <div className="flex items-center gap-2 flex-wrap">
-            {canAI && <button onClick={generateAISummary} className="btn-primary-elevated btn-sm flex items-center gap-2"><Bot className="h-4 w-4" /><span className="text-sm">AI Summary</span></button>}
-            <button onClick={copyJSON} className="btn-outline btn-sm">Copy</button>
-            <button onClick={exportJSON} className="btn-outline btn-sm"><FileDown className="h-4 w-4 inline mr-2"/>Export JSON</button>
-          </div>
-        </div>
-      </div>
-
-      {/* AI Summary Section */}
-      {showAISummary && (
-        <div className="card-glass p-6 shadow-soft mb-6">
-          <div className="flex items-center justify-between mb-4">
-            <div className="flex items-center space-x-2">
-              <Sparkles className="h-5 w-5 icon-primary" />
-              <h3 className="text-lg font-semibold text-[var(--color-text-primary)]">AI-Generated Regulatory Summary</h3>
+    <div className="w-full space-y-3">
+      {/* Top Bar: Filters and Actions - Compact and Organized */}
+      <div className="card-glass p-3 rounded-lg">
+        <div className="flex flex-col lg:flex-row gap-3 items-start lg:items-center">
+          {/* Filters Section */}
+          <div className="flex flex-wrap items-center gap-2 flex-1 min-w-0">
+            <div className="relative flex-1 min-w-[200px]">
+              <Search className="absolute left-2.5 top-1/2 transform -translate-y-1/2 h-4 w-4 text-slate-400" />
+              <input
+                type="text"
+                placeholder="Search products, companies, or regulatory bodies..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="w-full pl-9 pr-3 py-2 text-sm bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-lg text-slate-700 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-cyan-500/30"
+              />
             </div>
-            <button
-              onClick={() => setShowAISummary(false)}
-              className="text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] text-sm"
+            <select
+              value={selectedStatus}
+              onChange={(e) => setSelectedStatus(e.target.value)}
+              className="px-3 py-2 text-sm bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-lg text-slate-700 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-cyan-500/30 min-w-[140px]"
             >
-              Hide
-            </button>
+              {statuses.map(status => (
+                <option key={status} value={status}>{status}</option>
+              ))}
+            </select>
+            <select
+              value={selectedBody}
+              onChange={(e) => setSelectedBody(e.target.value)}
+              className="px-3 py-2 text-sm bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-lg text-slate-700 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-cyan-500/30 min-w-[160px]"
+            >
+              {bodies.map(body => (
+                <option key={body} value={body}>{body}</option>
+              ))}
+            </select>
           </div>
           
-          {aiSummaryLoading ? (
-            <div className="flex items-center justify-center p-8">
-              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[var(--color-primary-teal)]"></div>
-              <span className="ml-3 text-[var(--color-text-secondary)]">Generating comprehensive regulatory analysis...</span>
-            </div>
-          ) : (
-            <div className="prose max-w-none">
-              {aiSummaryText.split('\n').map((line, index) => {
-                if (line.startsWith('##')) {
-                  return <h2 key={index} className="text-xl font-bold mt-4 mb-2 text-[var(--color-text-primary)]">{line.replace('##', '').trim()}</h2>;
-                } else if (line.startsWith('###')) {
-                  return <h3 key={index} className="text-lg font-semibold mt-3 mb-2 text-[var(--color-text-primary)]">{line.replace('###', '').trim()}</h3>;
-                } else if (line.startsWith('-')) {
-                  return <li key={index} className="ml-4 text-[var(--color-text-secondary)]">{line.replace('-', '').trim()}</li>;
-                } else if (line.trim() === '') {
-                  return <br key={index} />;
-                } else {
-                  return <p key={index} className="mb-2 text-[var(--color-text-secondary)]">{line}</p>;
-                }
-              })}
-            </div>
-          )}
-        </div>
-      )}
-
-      {/* Summary Stats */}
-      <div className="grid grid-cols-4 gap-6 mb-6">
-        <div className="card-glass p-6 shadow-soft">
-          <div className="flex items-center space-x-3">
-            <FileCheck className="h-6 w-6 icon-primary" />
-            <div>
-              <p className="text-[var(--color-text-secondary)] text-sm">Total Submissions</p>
-              <p className="text-2xl font-bold text-[var(--color-text-primary)]">{filteredRegulatory.length}</p>
-            </div>
-          </div>
-        </div>
-        <div className="card-glass p-6 shadow-soft">
-          <div className="flex items-center space-x-3">
-            <div className="w-6 h-6 bg-green-500 dark:bg-green-600 rounded-full flex items-center justify-center border border-green-600 dark:border-green-500">
-              <div className="w-2 h-2 bg-white rounded-full"></div>
-            </div>
-            <div>
-              <p className="text-[var(--color-text-secondary)] text-sm">Approved</p>
-              <p className="text-2xl font-bold text-[var(--color-text-primary)]">
-                {filteredRegulatory.filter(r => r.status === 'Approved' || r.status === '510(k) Cleared').length}
-              </p>
-            </div>
-          </div>
-        </div>
-        <div className="card-glass p-6 shadow-soft">
-          <div className="flex items-center space-x-3">
-            <div className="w-6 h-6 bg-yellow-500 dark:bg-yellow-600 rounded-full flex items-center justify-center border border-yellow-600 dark:border-yellow-500">
-              <div className="w-2 h-2 bg-white rounded-full"></div>
-            </div>
-            <div>
-              <p className="text-[var(--color-text-secondary)] text-sm">Pending</p>
-              <p className="text-2xl font-bold text-[var(--color-text-primary)]">
-                {filteredRegulatory.filter(r => r.status === 'Submitted' || r.status === 'Under Review').length}
-              </p>
-            </div>
-          </div>
-        </div>
-        <div className="card-glass p-6 shadow-soft">
-          <div className="flex items-center space-x-3">
-            <Building2 className="h-6 w-6 icon-accent" />
-            <div>
-              <p className="text-[var(--color-text-secondary)] text-sm">Regulatory Bodies</p>
-              <p className="text-2xl font-bold text-[var(--color-text-primary)]">
-                {new Set(filteredRegulatory.map((r: any) => r.body)).size}
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Most Active Regulatory Countries */}
-      <div className="card-glass p-6 shadow-soft mb-6">
-        <div className="flex items-center space-x-2 mb-6">
-          <Globe className="h-5 w-5 icon-primary" />
-          <h3 className="text-lg font-semibold text-[var(--color-text-primary)]">Most Active Regulatory Countries</h3>
-        </div>
-        <div className="grid grid-cols-2 grid-cols-3 gap-4">
-          {topCountries.map((country: any, index: number) => (
-            <div key={country.country} className="card-glass p-4 shadow-soft hover:shadow-md transition-shadow">
-              <div className="flex items-center justify-between mb-2">
-                <div className="flex items-center space-x-2">
-                  <div className="w-8 h-8 bg-black dark:bg-white rounded-full flex items-center justify-center text-white dark:text-black font-bold border border-black dark:border-white">
-                    {index + 1}
-                  </div>
-                  <h4 className="font-medium text-[var(--color-text-primary)]">{country.country}</h4>
-                </div>
-                <span className="bg-black dark:bg-white text-white dark:text-black px-2 py-1 rounded-full text-xs font-medium border border-black dark:border-white">
-                  {country.count} submissions
-                </span>
+          {/* Actions Section - Grouped */}
+          <div className="flex flex-wrap items-center gap-2 flex-shrink-0">
+            {canAI && (
+              <button onClick={() => setAiOpen(true)} className="btn-primary-elevated flex items-center gap-2 px-3 py-2 rounded-lg text-sm">
+                <Bot className="h-4 w-4" />
+                <span>AI Summary</span>
+              </button>
+            )}
+            {canExport && (
+              <div className="flex items-center gap-1.5 border-l border-slate-200 dark:border-slate-700 pl-2.5">
+                <button onClick={copyJSON} className="btn-outline px-3 py-2 rounded-lg text-sm" title="Copy JSON">Copy</button>
+                <button onClick={exportExcel} className="btn-outline px-3 py-2 rounded-lg flex items-center gap-1.5 text-sm" title="Export Excel"><FileDown className="h-3.5 w-3.5"/>Excel</button>
+                <button onClick={exportJSON} className="btn-outline px-3 py-2 rounded-lg flex items-center gap-1.5 text-sm" title="Export JSON"><FileDown className="h-3.5 w-3.5"/>JSON</button>
+                <button onClick={exportCSV} className="btn-outline px-3 py-2 rounded-lg flex items-center gap-1.5 text-sm" title="Export CSV"><FileDown className="h-3.5 w-3.5"/>CSV</button>
               </div>
-              <div className="mt-2">
-                <div className="flex justify-between text-sm mb-1">
-                  <span className="text-[var(--color-text-secondary)]">Approval Rate</span>
-                  <span className="text-[var(--color-success-green)]">{Math.round((country.approved / country.count) * 100)}%</span>
-                </div>
-                <div className="w-full bg-[var(--color-background-default)] rounded-full h-2">
-                  <div 
-                    className="bg-green-500 dark:bg-green-600 h-2 rounded-full" 
-                    style={{ width: `${(country.approved / country.count) * 100}%` }}
-                  ></div>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* Filters */}
-      <div className="card-glass p-6 shadow-soft mb-6">
-        <div className="flex items-center space-x-2 mb-4">
-          <Filter className="h-5 w-5 icon-primary" />
-          <h3 className="text-lg font-semibold text-[var(--color-text-primary)]">Filters</h3>
-        </div>
-        <div className="grid grid-cols-3 gap-4">
-          <div className="relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-[var(--color-text-secondary)]" />
-            <input
-              type="text"
-              placeholder="Search products, companies, or regulatory bodies..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="input pl-10"
-            />
+            )}
           </div>
-          <select
-            value={selectedStatus}
-            onChange={(e) => setSelectedStatus(e.target.value)}
-            className="input"
-          >
-            {statuses.map(status => (
-              <option key={status} value={status}>{status}</option>
-            ))}
-          </select>
-          <select
-            value={selectedBody}
-            onChange={(e) => setSelectedBody(e.target.value)}
-            className="input"
-          >
-            {bodies.map(body => (
-              <option key={body} value={body}>{body}</option>
-            ))}
-          </select>
         </div>
       </div>
 
-      {/* Regulatory Table */}
-      <div className="card-glass overflow-hidden shadow-soft">
-        <div className="p-6 border-b border-[var(--color-divider-gray)]">
-          <h2 className="text-xl font-semibold text-[var(--color-text-primary)]">Regulatory Submissions</h2>
+      {/* Summary Stats - Compact Modern Style (Matching Companies Page) */}
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+        <div className="card-glass p-3 rounded-lg hover:shadow-lg transition-all duration-200 group relative overflow-hidden h-full flex flex-col bg-cyan-50/50 dark:bg-cyan-950/30">
+          <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/10 to-teal-500/10 dark:from-cyan-500/15 dark:to-teal-500/15 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+          <div className="relative flex items-center justify-between flex-1">
+            <div className="min-w-0 flex-1">
+              <p className="text-xs font-medium text-slate-500 dark:text-slate-400 mb-1 uppercase tracking-wide">Total Submissions</p>
+              <p className="text-2xl font-medium text-slate-700 dark:text-slate-200 mb-1">{filteredRegulatory.length}</p>
+            </div>
+            <div className="p-2.5 rounded-lg bg-cyan-600 dark:bg-gradient-to-br dark:from-cyan-500 dark:to-teal-500 shadow-md group-hover:scale-105 transition-transform duration-200 flex-shrink-0 ml-3">
+              <FileCheck className="h-5 w-5 text-white" />
+            </div>
+          </div>
         </div>
+        <div className="card-glass p-3 rounded-lg hover:shadow-lg transition-all duration-200 group relative overflow-hidden h-full flex flex-col bg-emerald-50/50 dark:bg-emerald-950/30">
+          <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/10 to-green-500/10 dark:from-emerald-500/15 dark:to-green-500/15 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+          <div className="relative flex items-center justify-between flex-1">
+            <div className="min-w-0 flex-1">
+              <p className="text-xs font-medium text-slate-500 dark:text-slate-400 mb-1 uppercase tracking-wide">Approved</p>
+              <p className="text-2xl font-medium text-slate-700 dark:text-slate-200 mb-1">{approvedCount}</p>
+            </div>
+            <div className="p-2.5 rounded-lg bg-emerald-600 dark:bg-gradient-to-br dark:from-emerald-500 dark:to-green-500 shadow-md group-hover:scale-105 transition-transform duration-200 flex-shrink-0 ml-3">
+              <CheckCircle2 className="h-5 w-5 text-white" />
+            </div>
+          </div>
+        </div>
+        <div className="card-glass p-3 rounded-lg hover:shadow-lg transition-all duration-200 group relative overflow-hidden h-full flex flex-col bg-amber-50/50 dark:bg-amber-950/30">
+          <div className="absolute inset-0 bg-gradient-to-br from-amber-500/10 to-orange-500/10 dark:from-amber-500/15 dark:to-orange-500/15 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+          <div className="relative flex items-center justify-between flex-1">
+            <div className="min-w-0 flex-1">
+              <p className="text-xs font-medium text-slate-500 dark:text-slate-400 mb-1 uppercase tracking-wide">Pending</p>
+              <p className="text-2xl font-medium text-slate-700 dark:text-slate-200 mb-1">{pendingCount}</p>
+            </div>
+            <div className="p-2.5 rounded-lg bg-amber-600 dark:bg-gradient-to-br dark:from-amber-500 dark:to-orange-500 shadow-md group-hover:scale-105 transition-transform duration-200 flex-shrink-0 ml-3">
+              <Clock className="h-5 w-5 text-white" />
+            </div>
+          </div>
+        </div>
+        <div className="card-glass p-3 rounded-lg hover:shadow-lg transition-all duration-200 group relative overflow-hidden h-full flex flex-col bg-indigo-50/50 dark:bg-indigo-950/30">
+          <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/10 to-purple-500/10 dark:from-indigo-500/15 dark:to-purple-500/15 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+          <div className="relative flex items-center justify-between flex-1">
+            <div className="min-w-0 flex-1">
+              <p className="text-xs font-medium text-slate-500 dark:text-slate-400 mb-1 uppercase tracking-wide">Regulatory Bodies</p>
+              <p className="text-2xl font-medium text-slate-700 dark:text-slate-200 mb-1">{uniqueBodies}</p>
+            </div>
+            <div className="p-2.5 rounded-lg bg-indigo-600 dark:bg-gradient-to-br dark:from-indigo-500 dark:to-purple-500 shadow-md group-hover:scale-105 transition-transform duration-200 flex-shrink-0 ml-3">
+              <Building2 className="h-5 w-5 text-white" />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Insights - Compact Side by Side (Matching Companies Page) */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+        {/* Top Countries */}
+        <div className="card-glass p-3 rounded-lg">
+          <h3 className="text-xs font-medium text-slate-700 dark:text-slate-200 mb-2 uppercase tracking-wide">Top Countries</h3>
+          <ul className="space-y-1.5">
+            {topCountries.map((country: any) => (
+              <li key={country.country} className="flex items-center justify-between text-xs">
+                <span className="text-slate-600 dark:text-slate-300 truncate flex-1">{country.country}</span>
+                <span className="text-slate-500 dark:text-slate-400 font-medium ml-2 bg-slate-100 dark:bg-slate-800/50 px-2 py-0.5 rounded">{country.count}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+        {/* Top Regulatory Bodies */}
+        <div className="card-glass p-3 rounded-lg">
+          <h3 className="text-xs font-medium text-slate-700 dark:text-slate-200 mb-2 uppercase tracking-wide">Top Regulatory Bodies</h3>
+          <ul className="space-y-1.5">
+            {bodyStats.map(([body, count]) => (
+              <li key={body} className="flex items-center justify-between text-xs">
+                <span className="text-slate-600 dark:text-slate-300 truncate flex-1">{body}</span>
+                <span className="text-slate-500 dark:text-slate-400 font-medium ml-2 bg-slate-100 dark:bg-slate-800/50 px-2 py-0.5 rounded">{count}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+
+      {/* Regulatory Table - Modern Styling */}
+      <div className="card-glass overflow-hidden rounded-lg">
         <div className="overflow-x-auto">
           <table className="w-full">
-            <thead className="bg-[var(--color-background-default)]">
+            <thead className="bg-slate-50 dark:bg-slate-800/50 border-b border-slate-200 dark:border-slate-700">
               <tr>
-                <th className="px-6 py-4 text-left text-xs font-medium text-[var(--color-text-secondary)] uppercase tracking-wider">Company</th>
-                <th className="px-6 py-4 text-left text-xs font-medium text-[var(--color-text-secondary)] uppercase tracking-wider">Product</th>
-                <th className="px-6 py-4 text-left text-xs font-medium text-[var(--color-text-secondary)] uppercase tracking-wider">Regulatory Body</th>
-                <th className="px-6 py-4 text-left text-xs font-medium text-[var(--color-text-secondary)] uppercase tracking-wider">Status</th>
-                <th className="px-6 py-4 text-left text-xs font-medium text-[var(--color-text-secondary)] uppercase tracking-wider">Date</th>
-                <th className="px-6 py-4 text-left text-xs font-medium text-[var(--color-text-secondary)] uppercase tracking-wider">Sector</th>
-                <th className="px-6 py-4 text-left text-xs font-medium text-[var(--color-text-secondary)] uppercase tracking-wider">Country</th>
-                <th className="px-6 py-4 text-left text-xs font-medium text-[var(--color-text-secondary)] uppercase tracking-wider">Data Source</th>
+                <th className="px-4 py-3 text-left text-xs font-medium text-slate-600 dark:text-slate-400 uppercase tracking-wider">Company</th>
+                <th className="px-4 py-3 text-left text-xs font-medium text-slate-600 dark:text-slate-400 uppercase tracking-wider">Product</th>
+                <th className="px-4 py-3 text-left text-xs font-medium text-slate-600 dark:text-slate-400 uppercase tracking-wider">Regulatory Body</th>
+                <th className="px-4 py-3 text-left text-xs font-medium text-slate-600 dark:text-slate-400 uppercase tracking-wider">Status</th>
+                <th className="px-4 py-3 text-left text-xs font-medium text-slate-600 dark:text-slate-400 uppercase tracking-wider">Date</th>
+                <th className="px-4 py-3 text-left text-xs font-medium text-slate-600 dark:text-slate-400 uppercase tracking-wider">Country</th>
+                <th className="px-4 py-3 text-left text-xs font-medium text-slate-600 dark:text-slate-400 uppercase tracking-wider">Source</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-[var(--color-divider-gray)]">
-              {filteredRegulatory.slice().sort((a: any, b: any) => new Date(b.date).getTime() - new Date(a.date).getTime()).map((reg: any, index: number) => (
-                <tr key={`${reg.companyName}-${reg.product}-${index}`} className="hover:bg-[var(--color-background-default)] transition-colors">
-                  <td className="px-6 py-4">
-                    <div className="flex items-center">
-                      <div className="w-8 h-8 bg-black dark:bg-gray-700 rounded-lg flex items-center justify-center border border-black/20 dark:border-gray-600/30">
-                        <Building2 className="h-4 w-4 text-white" />
-                      </div>
-                      <div className="ml-3">
-                        <div className="text-sm font-medium text-[var(--color-text-primary)]">{reg.companyName}</div>
-                      </div>
-                    </div>
-                  </td>
-                  <td className="px-6 py-4">
-                    <div className="text-sm font-medium text-[var(--color-text-primary)]">{reg.product}</div>
-                  </td>
-                  <td className="px-6 py-4">
-                    <span className={`px-2 py-1 rounded text-xs font-medium ${getBodyColor(reg.body)}`}>
-                      {reg.body}
-                    </span>
-                  </td>
-                  <td className="px-6 py-4">
-                    <span className={`px-2 py-1 rounded text-xs font-medium ${getStatusColor(reg.status)}`}>
-                      {reg.status}
-                    </span>
-                  </td>
-                  <td className="px-6 py-4 text-sm text-[var(--color-text-secondary)]">
-                    {new Date(reg.date).toLocaleDateString()}
-                  </td>
-                  <td className="px-6 py-4 text-sm text-[var(--color-text-secondary)]">{reg.sector}</td>
-                  <td className="px-6 py-4 text-sm text-[var(--color-text-secondary)]">{reg.country}</td>
-                  <td className="px-6 py-4">
-                    <a 
-                      href={reg.dataSource}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-black dark:text-white hover:text-blue-600 dark:hover:text-blue-400 flex items-center space-x-1"
-                    >
-                      <ExternalLink className="h-3 w-3" />
-                      <span className="text-xs">View Source</span>
-                    </a>
+            <tbody className="divide-y divide-slate-200 dark:divide-slate-700">
+              {filteredRegulatory.length === 0 ? (
+                <tr>
+                  <td colSpan={7} className="px-4 py-8 text-center text-sm text-slate-500 dark:text-slate-400">
+                    No regulatory data found. {loading ? 'Loading...' : 'Try adjusting your filters.'}
                   </td>
                 </tr>
-              ))}
+              ) : (
+                filteredRegulatory.slice().sort((a: any, b: any) => new Date(b.date).getTime() - new Date(a.date).getTime()).map((reg: any, index: number) => (
+                  <tr key={`${reg.id || reg.companyName}-${reg.product}-${index}`} className="hover:bg-slate-50/50 dark:hover:bg-slate-800/30 transition-colors">
+                    <td className="px-4 py-3">
+                      <div className="flex items-center gap-2">
+                        <div className="w-8 h-8 bg-gradient-to-br from-cyan-500 to-teal-500 rounded-lg flex items-center justify-center flex-shrink-0">
+                          <Building2 className="h-4 w-4 text-white" />
+                        </div>
+                        <div className="text-sm font-medium text-slate-700 dark:text-slate-200 truncate max-w-[150px]">{reg.companyName}</div>
+                      </div>
+                    </td>
+                    <td className="px-4 py-3">
+                      <div className="text-sm font-medium text-slate-700 dark:text-slate-200 truncate max-w-[200px]">{reg.product}</div>
+                    </td>
+                    <td className="px-4 py-3">
+                      <span className={`inline-flex px-2 py-1 rounded-full text-xs font-medium ${getBodyColor(reg.body)}`}>
+                        {reg.body}
+                      </span>
+                    </td>
+                    <td className="px-4 py-3">
+                      <span className={`inline-flex px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(reg.status)}`}>
+                        {reg.status}
+                      </span>
+                    </td>
+                    <td className="px-4 py-3 text-sm text-slate-600 dark:text-slate-400">
+                      {reg.date ? new Date(reg.date).toLocaleDateString() : 'N/A'}
+                    </td>
+                    <td className="px-4 py-3 text-sm text-slate-600 dark:text-slate-400">{reg.country}</td>
+                    <td className="px-4 py-3">
+                      {reg.dataSource ? (
+                        <a 
+                          href={reg.dataSource}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-cyan-600 dark:text-cyan-400 hover:text-cyan-700 dark:hover:text-cyan-300 flex items-center gap-1"
+                        >
+                          <ExternalLink className="h-3.5 w-3.5" />
+                          <span className="text-xs">View</span>
+                        </a>
+                      ) : (
+                        <span className="text-xs text-slate-400 dark:text-slate-500">—</span>
+                      )}
+                    </td>
+                  </tr>
+                ))
+              )}
             </tbody>
           </table>
         </div>
       </div>
+
+      {/* AI Side Panel */}
+      {canAI && (
+        <AISidePanel
+          isOpen={aiOpen}
+          onClose={() => setAiOpen(false)}
+          context={{
+            type: 'regulatory',
+            data: filteredRegulatory,
+            filters: { searchTerm, selectedStatus, selectedBody }
+          }}
+        />
+      )}
     </div>
   );
 };

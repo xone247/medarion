@@ -64,7 +64,7 @@ const PromptModal: React.FC<PromptModalProps> = ({
           </div>
           <div className="flex-1">
             <div className="flex items-start justify-between mb-2">
-              <h3 className="text-lg font-semibold text-[var(--color-text-primary)]">
+              <h3 className="text-lg font-medium text-[var(--color-text-primary)]">
                 {title}
               </h3>
               <button

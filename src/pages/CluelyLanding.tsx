@@ -159,7 +159,7 @@ const CluelyLanding: React.FC<CluelyLandingProps> = ({ onGetStarted, onShowAuth,
 
 	const navClass = (name: string) => {
 		const isActive = currentPage === name;
-		return `hover:opacity-80 ${isActive ? 'text-[var(--color-primary-teal)] font-semibold' : 'text-[var(--color-text-secondary)] hover:text-[var(--color-primary-teal)]'}`;
+		return `hover:opacity-80 ${isActive ? 'text-[var(--color-primary-teal)] font-medium' : 'text-[var(--color-text-secondary)] hover:text-[var(--color-primary-teal)]'}`;
 	};
 
 	return (
@@ -652,7 +652,7 @@ const CluelyLanding: React.FC<CluelyLandingProps> = ({ onGetStarted, onShowAuth,
 									}}
 								/>
 							</div>
-							<div className="mt-1 mb-3 sm:mb-4 font-semibold text-base sm:text-lg md:text-xl text-[var(--color-text-primary)] hover:text-[var(--color-primary-teal)] transition-colors">Arion</div>
+							<div className="mt-1 mb-3 sm:mb-4 font-medium text-base sm:text-lg md:text-xl text-[var(--color-text-primary)] hover:text-[var(--color-primary-teal)] transition-colors">Arion</div>
 							<p className="text-sm sm:text-base text-[var(--color-text-secondary)] mt-1 mb-4 sm:mb-5 leading-relaxed flex-grow min-h-[3.5rem]">
 								Healthcare insights and analysis.
 							</p>
@@ -671,7 +671,7 @@ const CluelyLanding: React.FC<CluelyLandingProps> = ({ onGetStarted, onShowAuth,
 									}}
 								/>
 							</div>
-							<div className="mt-1 mb-3 sm:mb-4 font-semibold text-base sm:text-lg md:text-xl text-[var(--color-text-primary)] hover:text-[var(--color-primary-teal)] transition-colors">M-Index</div>
+							<div className="mt-1 mb-3 sm:mb-4 font-medium text-base sm:text-lg md:text-xl text-[var(--color-text-primary)] hover:text-[var(--color-primary-teal)] transition-colors">M-Index</div>
 							<p className="text-sm sm:text-base text-[var(--color-text-secondary)] mt-1 mb-4 sm:mb-5 leading-relaxed flex-grow min-h-[3.5rem]">
 								Master the Terms. Maximize the Impact.
 							</p>
@@ -690,7 +690,7 @@ const CluelyLanding: React.FC<CluelyLandingProps> = ({ onGetStarted, onShowAuth,
 									}}
 								/>
 							</div>
-							<div className="mt-1 mb-3 sm:mb-4 font-semibold text-base sm:text-lg md:text-xl text-[var(--color-text-primary)] hover:text-[var(--color-primary-teal)] transition-colors">Ergon</div>
+							<div className="mt-1 mb-3 sm:mb-4 font-medium text-base sm:text-lg md:text-xl text-[var(--color-text-primary)] hover:text-[var(--color-primary-teal)] transition-colors">Ergon</div>
 							<p className="text-sm sm:text-base text-[var(--color-text-secondary)] mt-1 mb-4 sm:mb-5 leading-relaxed flex-grow min-h-[3.5rem]">
 								AI-driven recruitment copilot to help you hire the best talent across Africa.
 							</p>
@@ -708,7 +708,7 @@ const CluelyLanding: React.FC<CluelyLandingProps> = ({ onGetStarted, onShowAuth,
 			>
                 <div className="max-w-screen-2xl mx-auto px-6 md:px-8 lg:px-12 xl:px-16">
                     <div className="flex flex-col sm:flex-row items-start sm:items-end justify-between mb-12 md:mb-16 gap-4">
-                        <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-semibold text-[var(--color-text-primary)]">From Arion</h2>
+                        <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-medium text-[var(--color-text-primary)]">From Arion</h2>
                         <a className="btn-outline btn-sm inline-flex items-center justify-center" href="/arion" onClick={(e)=>{ e.preventDefault(); window.location.replace('/arion'); }}>View all</a>
                     </div>
                     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 md:gap-10 lg:gap-12">
@@ -727,7 +727,7 @@ const CluelyLanding: React.FC<CluelyLandingProps> = ({ onGetStarted, onShowAuth,
                                 />
                             </div>
                             <div className="text-xs sm:text-sm text-[var(--color-text-secondary)] mb-2 sm:mb-2.5">{p.publishedAt ? new Date(p.publishedAt).toLocaleDateString() : ''}</div>
-                            <div className="mt-1 mb-3 sm:mb-4 font-semibold line-clamp-2 text-base sm:text-lg text-[var(--color-text-primary)] hover:text-[var(--color-primary-teal)] transition-colors">{p.title}</div>
+                            <div className="mt-1 mb-3 sm:mb-4 font-medium line-clamp-2 text-base sm:text-lg text-[var(--color-text-primary)] hover:text-[var(--color-primary-teal)] transition-colors">{p.title}</div>
                             {p.excerpt ? <p className="text-sm sm:text-base text-[var(--color-text-secondary)] mt-1 mb-4 sm:mb-5 line-clamp-3 leading-relaxed flex-grow">{p.excerpt}</p> : <div className="flex-grow"></div>}
                             <div className="mt-auto pt-3">
                                 <button 
@@ -770,7 +770,7 @@ const CluelyLanding: React.FC<CluelyLandingProps> = ({ onGetStarted, onShowAuth,
 									}}
 								/>
 							</div>
-							<h3 className="text-base sm:text-lg md:text-xl font-semibold text-[var(--color-text-primary)] leading-tight max-w-md">
+							<h3 className="text-base sm:text-lg md:text-xl font-medium text-[var(--color-text-primary)] leading-tight max-w-md">
 								Africa's Most Advanced AI Insight Platform
 							</h3>
 							<p className="text-sm sm:text-base text-[var(--color-text-secondary)] leading-relaxed max-w-md">
@@ -805,7 +805,7 @@ const CluelyLanding: React.FC<CluelyLandingProps> = ({ onGetStarted, onShowAuth,
 
 						{/* Data */}
 						<div className="space-y-4 pt-0 md:pt-1 flex flex-col h-full">
-							<h4 className="text-sm font-semibold text-[var(--color-text-primary)]">Data</h4>
+							<h4 className="text-sm font-medium text-[var(--color-text-primary)]">Data</h4>
 							<ul className="space-y-3 flex-grow">
 								<li>
 									<button 
@@ -844,7 +844,7 @@ const CluelyLanding: React.FC<CluelyLandingProps> = ({ onGetStarted, onShowAuth,
 
 						{/* Resources */}
 						<div className="space-y-4 pt-0 md:pt-1 flex flex-col h-full">
-							<h4 className="text-sm font-semibold text-[var(--color-text-primary)]">Resources</h4>
+							<h4 className="text-sm font-medium text-[var(--color-text-primary)]">Resources</h4>
 							<ul className="space-y-3 flex-grow">
 								<li>
 									<button 
@@ -891,7 +891,7 @@ const CluelyLanding: React.FC<CluelyLandingProps> = ({ onGetStarted, onShowAuth,
 
 						{/* Company */}
 						<div className="space-y-4 pt-0 md:pt-1 flex flex-col h-full">
-							<h4 className="text-sm font-semibold text-[var(--color-text-primary)]">Company</h4>
+							<h4 className="text-sm font-medium text-[var(--color-text-primary)]">Company</h4>
 							<ul className="space-y-3 flex-grow">
 								<li>
 									<button 
@@ -930,7 +930,7 @@ const CluelyLanding: React.FC<CluelyLandingProps> = ({ onGetStarted, onShowAuth,
 
 						{/* Newsletter Section - Last Column, Biggest */}
 						<div className="space-y-4 pt-0 md:pt-1 flex flex-col h-full">
-							<h4 className="text-sm font-semibold text-[var(--color-text-primary)]">Stay Updated</h4>
+							<h4 className="text-sm font-medium text-[var(--color-text-primary)]">Stay Updated</h4>
 							<p className="text-sm text-[var(--color-text-secondary)]">
 								Get weekly insights on African healthcare markets delivered to your inbox.
 							</p>

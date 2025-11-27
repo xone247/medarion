@@ -38,26 +38,26 @@ const PrivacyPage: React.FC<PrivacyPageProps> = ({ onBack }) => {
 
         {/* Quick Overview */}
         <div className="bg-gradient-to-r from-primary-50 to-blue-50 dark:from-primary-900/20 dark:to-blue-900/20 p-8 rounded-lg border border-primary-200 dark:border-primary-800">
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">Privacy at a Glance</h2>
+          <h2 className="text-2xl font-medium text-gray-900 dark:text-white mb-4">Privacy at a Glance</h2>
           <div className="grid grid-cols-3 gap-6">
             <div className="flex items-start space-x-3">
               <Shield className="h-6 w-6 text-primary-600 mt-1" />
               <div>
-                <h3 className="font-semibold text-gray-900 dark:text-white">Data Protection</h3>
+                <h3 className="font-medium text-gray-900 dark:text-white">Data Protection</h3>
                 <p className="text-gray-600 dark:text-gray-300 text-sm">We use industry-standard encryption and security measures</p>
               </div>
             </div>
             <div className="flex items-start space-x-3">
               <Eye className="h-6 w-6 text-primary-600 mt-1" />
               <div>
-                <h3 className="font-semibold text-gray-900 dark:text-white">Transparency</h3>
+                <h3 className="font-medium text-gray-900 dark:text-white">Transparency</h3>
                 <p className="text-gray-600 dark:text-gray-300 text-sm">Clear information about what data we collect and why</p>
               </div>
             </div>
             <div className="flex items-start space-x-3">
               <Users className="h-6 w-6 text-primary-600 mt-1" />
               <div>
-                <h3 className="font-semibold text-gray-900 dark:text-white">Your Control</h3>
+                <h3 className="font-medium text-gray-900 dark:text-white">Your Control</h3>
                 <p className="text-gray-600 dark:text-gray-300 text-sm">You can access, update, or delete your data anytime</p>
               </div>
             </div>
@@ -68,12 +68,12 @@ const PrivacyPage: React.FC<PrivacyPageProps> = ({ onBack }) => {
         <div className="bg-white dark:bg-gray-800 p-8 rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm">
           <div className="flex items-center space-x-3 mb-6">
             <Database className="h-6 w-6 text-primary-500" />
-            <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Information We Collect</h2>
+            <h2 className="text-2xl font-medium text-gray-900 dark:text-white">Information We Collect</h2>
           </div>
           
           <div className="space-y-6">
             <div>
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">Account Information</h3>
+              <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-3">Account Information</h3>
               <ul className="list-disc list-inside space-y-2 text-gray-600 dark:text-gray-300">
                 <li>Name, email address, and company information when you create an account</li>
                 <li>Profile information including your role, industry focus, and professional background</li>
@@ -82,7 +82,7 @@ const PrivacyPage: React.FC<PrivacyPageProps> = ({ onBack }) => {
             </div>
 
             <div>
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">Usage Data</h3>
+              <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-3">Usage Data</h3>
               <ul className="list-disc list-inside space-y-2 text-gray-600 dark:text-gray-300">
                 <li>How you interact with our platform, including pages visited and features used</li>
                 <li>Search queries and filters applied to healthcare data</li>
@@ -92,7 +92,7 @@ const PrivacyPage: React.FC<PrivacyPageProps> = ({ onBack }) => {
             </div>
 
             <div>
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">Communication Data</h3>
+              <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-3">Communication Data</h3>
               <ul className="list-disc list-inside space-y-2 text-gray-600 dark:text-gray-300">
                 <li>Messages sent through our platform's communication features</li>
                 <li>Support tickets and correspondence with our team</li>
@@ -106,12 +106,12 @@ const PrivacyPage: React.FC<PrivacyPageProps> = ({ onBack }) => {
         <div className="bg-white dark:bg-gray-800 p-8 rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm">
           <div className="flex items-center space-x-3 mb-6">
             <Lock className="h-6 w-6 text-primary-500" />
-            <h2 className="text-2xl font-bold text-gray-900 dark:text-white">How We Use Your Information</h2>
+            <h2 className="text-2xl font-medium text-gray-900 dark:text-white">How We Use Your Information</h2>
           </div>
           
           <div className="grid grid-cols-2 gap-6">
             <div>
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">Platform Services</h3>
+              <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-3">Platform Services</h3>
               <ul className="list-disc list-inside space-y-2 text-gray-600 dark:text-gray-300">
                 <li>Provide access to healthcare investment data and analytics</li>
                 <li>Personalize your experience and recommendations</li>
@@ -121,7 +121,7 @@ const PrivacyPage: React.FC<PrivacyPageProps> = ({ onBack }) => {
             </div>
 
             <div>
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">Improvement & Security</h3>
+              <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-3">Improvement & Security</h3>
               <ul className="list-disc list-inside space-y-2 text-gray-600 dark:text-gray-300">
                 <li>Improve our platform's functionality and user experience</li>
                 <li>Detect and prevent fraud, abuse, and security threats</li>
@@ -136,19 +136,19 @@ const PrivacyPage: React.FC<PrivacyPageProps> = ({ onBack }) => {
         <div className="bg-white dark:bg-gray-800 p-8 rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm">
           <div className="flex items-center space-x-3 mb-6">
             <Globe className="h-6 w-6 text-primary-500" />
-            <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Data Sharing and Disclosure</h2>
+            <h2 className="text-2xl font-medium text-gray-900 dark:text-white">Data Sharing and Disclosure</h2>
           </div>
           
           <div className="space-y-6">
             <div>
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">We Do Not Sell Your Data</h3>
+              <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-3">We Do Not Sell Your Data</h3>
               <p className="text-gray-600 dark:text-gray-300">
                 We never sell, rent, or trade your personal information to third parties for marketing purposes.
               </p>
             </div>
 
             <div>
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">Limited Sharing</h3>
+              <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-3">Limited Sharing</h3>
               <p className="text-gray-600 dark:text-gray-300 mb-3">
                 We may share your information only in these specific circumstances:
               </p>
@@ -164,11 +164,11 @@ const PrivacyPage: React.FC<PrivacyPageProps> = ({ onBack }) => {
 
         {/* Data Security */}
         <div className="bg-white dark:bg-gray-800 p-8 rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm">
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">Data Security</h2>
+          <h2 className="text-2xl font-medium text-gray-900 dark:text-white mb-6">Data Security</h2>
           
           <div className="grid grid-cols-2 gap-6">
             <div>
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">Technical Safeguards</h3>
+              <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-3">Technical Safeguards</h3>
               <ul className="list-disc list-inside space-y-2 text-gray-600 dark:text-gray-300">
                 <li>End-to-end encryption for data transmission</li>
                 <li>Encrypted storage of sensitive information</li>
@@ -178,7 +178,7 @@ const PrivacyPage: React.FC<PrivacyPageProps> = ({ onBack }) => {
             </div>
 
             <div>
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">Operational Security</h3>
+              <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-3">Operational Security</h3>
               <ul className="list-disc list-inside space-y-2 text-gray-600 dark:text-gray-300">
                 <li>Limited access to personal data on a need-to-know basis</li>
                 <li>Employee training on data protection and privacy</li>
@@ -191,45 +191,45 @@ const PrivacyPage: React.FC<PrivacyPageProps> = ({ onBack }) => {
 
         {/* Your Rights */}
         <div className="bg-white dark:bg-gray-800 p-8 rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm">
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">Your Privacy Rights</h2>
+          <h2 className="text-2xl font-medium text-gray-900 dark:text-white mb-6">Your Privacy Rights</h2>
           
           <div className="space-y-4">
             <div className="flex items-start space-x-3">
-              <div className="w-6 h-6 bg-primary-600 rounded-full flex items-center justify-center text-white text-sm font-bold mt-1">1</div>
+              <div className="w-6 h-6 bg-primary-600 rounded-full flex items-center justify-center text-white text-sm font-medium mt-1">1</div>
               <div>
-                <h3 className="font-semibold text-gray-900 dark:text-white">Access Your Data</h3>
+                <h3 className="font-medium text-gray-900 dark:text-white">Access Your Data</h3>
                 <p className="text-gray-600 dark:text-gray-300">Request a copy of all personal information we have about you</p>
               </div>
             </div>
 
             <div className="flex items-start space-x-3">
-              <div className="w-6 h-6 bg-primary-600 rounded-full flex items-center justify-center text-white text-sm font-bold mt-1">2</div>
+              <div className="w-6 h-6 bg-primary-600 rounded-full flex items-center justify-center text-white text-sm font-medium mt-1">2</div>
               <div>
-                <h3 className="font-semibold text-gray-900 dark:text-white">Correct Inaccuracies</h3>
+                <h3 className="font-medium text-gray-900 dark:text-white">Correct Inaccuracies</h3>
                 <p className="text-gray-600 dark:text-gray-300">Update or correct any inaccurate personal information</p>
               </div>
             </div>
 
             <div className="flex items-start space-x-3">
-              <div className="w-6 h-6 bg-primary-600 rounded-full flex items-center justify-center text-white text-sm font-bold mt-1">3</div>
+              <div className="w-6 h-6 bg-primary-600 rounded-full flex items-center justify-center text-white text-sm font-medium mt-1">3</div>
               <div>
-                <h3 className="font-semibold text-gray-900 dark:text-white">Delete Your Data</h3>
+                <h3 className="font-medium text-gray-900 dark:text-white">Delete Your Data</h3>
                 <p className="text-gray-600 dark:text-gray-300">Request deletion of your personal information (subject to legal requirements)</p>
               </div>
             </div>
 
             <div className="flex items-start space-x-3">
-              <div className="w-6 h-6 bg-primary-600 rounded-full flex items-center justify-center text-white text-sm font-bold mt-1">4</div>
+              <div className="w-6 h-6 bg-primary-600 rounded-full flex items-center justify-center text-white text-sm font-medium mt-1">4</div>
               <div>
-                <h3 className="font-semibold text-gray-900 dark:text-white">Data Portability</h3>
+                <h3 className="font-medium text-gray-900 dark:text-white">Data Portability</h3>
                 <p className="text-gray-600 dark:text-gray-300">Export your data in a machine-readable format</p>
               </div>
             </div>
 
             <div className="flex items-start space-x-3">
-              <div className="w-6 h-6 bg-primary-600 rounded-full flex items-center justify-center text-white text-sm font-bold mt-1">5</div>
+              <div className="w-6 h-6 bg-primary-600 rounded-full flex items-center justify-center text-white text-sm font-medium mt-1">5</div>
               <div>
-                <h3 className="font-semibold text-gray-900 dark:text-white">Opt-Out</h3>
+                <h3 className="font-medium text-gray-900 dark:text-white">Opt-Out</h3>
                 <p className="text-gray-600 dark:text-gray-300">Unsubscribe from marketing communications at any time</p>
               </div>
             </div>
@@ -245,7 +245,7 @@ const PrivacyPage: React.FC<PrivacyPageProps> = ({ onBack }) => {
 
         {/* International Transfers */}
         <div className="bg-white dark:bg-gray-800 p-8 rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm">
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">International Data Transfers</h2>
+          <h2 className="text-2xl font-medium text-gray-900 dark:text-white mb-6">International Data Transfers</h2>
           <p className="text-gray-600 dark:text-gray-300 mb-4">
             As a platform serving users across Africa and globally, we may transfer your data to countries outside your home country. 
             We ensure appropriate safeguards are in place for such transfers, including:
@@ -260,7 +260,7 @@ const PrivacyPage: React.FC<PrivacyPageProps> = ({ onBack }) => {
 
         {/* Data Retention */}
         <div className="bg-white dark:bg-gray-800 p-8 rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm">
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">Data Retention</h2>
+          <h2 className="text-2xl font-medium text-gray-900 dark:text-white mb-6">Data Retention</h2>
           <p className="text-gray-600 dark:text-gray-300 mb-4">
             We retain your personal information only as long as necessary for the purposes outlined in this policy:
           </p>
@@ -274,7 +274,7 @@ const PrivacyPage: React.FC<PrivacyPageProps> = ({ onBack }) => {
 
         {/* Children's Privacy */}
         <div className="bg-white dark:bg-gray-800 p-8 rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm">
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">Children's Privacy</h2>
+          <h2 className="text-2xl font-medium text-gray-900 dark:text-white mb-6">Children's Privacy</h2>
           <p className="text-gray-600 dark:text-gray-300">
             Our platform is designed for professional use and is not intended for children under 16 years of age. 
             We do not knowingly collect personal information from children under 16. If we become aware that we have 
@@ -284,7 +284,7 @@ const PrivacyPage: React.FC<PrivacyPageProps> = ({ onBack }) => {
 
         {/* Changes to Policy */}
         <div className="bg-white dark:bg-gray-800 p-8 rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm">
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">Changes to This Policy</h2>
+          <h2 className="text-2xl font-medium text-gray-900 dark:text-white mb-6">Changes to This Policy</h2>
           <p className="text-gray-600 dark:text-gray-300 mb-4">
             We may update this privacy policy from time to time to reflect changes in our practices or applicable laws. 
             When we make changes, we will:
@@ -299,16 +299,16 @@ const PrivacyPage: React.FC<PrivacyPageProps> = ({ onBack }) => {
 
         {/* Contact Information */}
         <div className="bg-gradient-to-r from-primary-600 to-primary-700 p-8 rounded-lg text-white">
-          <h2 className="text-2xl font-bold mb-6">Contact Us About Privacy</h2>
+          <h2 className="text-2xl font-medium mb-6">Contact Us About Privacy</h2>
           <div className="grid grid-cols-2 gap-6">
             <div>
-              <h3 className="text-lg font-semibold mb-3">Data Protection Officer</h3>
+              <h3 className="text-lg font-medium mb-3">Data Protection Officer</h3>
               <p className="text-primary-100 mb-2">Email: privacy@medarion.com</p>
               <p className="text-primary-100 mb-2">Phone: +234 800 123 4567</p>
               <p className="text-primary-100">Response time: Within 30 days</p>
             </div>
             <div>
-              <h3 className="text-lg font-semibold mb-3">Mailing Address</h3>
+              <h3 className="text-lg font-medium mb-3">Mailing Address</h3>
               <p className="text-primary-100">
                 Medarion Healthcare Data Platform<br />
                 123 Victoria Island<br />

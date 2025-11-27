@@ -31,7 +31,7 @@ const AuthNotification: React.FC<AuthNotificationProps> = ({
               <Lock className="w-5 h-5 text-[var(--color-primary-teal)]" />
             </div>
             <div>
-              <h3 className="text-lg font-semibold text-[var(--color-text-primary)]">
+              <h3 className="text-lg font-medium text-[var(--color-text-primary)]">
                 Authentication Required
               </h3>
               <p className="text-sm text-[var(--color-text-secondary)]">

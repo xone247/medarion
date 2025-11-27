@@ -182,7 +182,7 @@
 /* Custom utility classes for the new color system */
 @layer components {
   .btn-primary {
-    @apply bg-black dark:bg-gray-700 text-white dark:text-white border border-black dark:border-gray-600 hover:opacity-90 dark:hover:opacity-80 transition-opacity;
+    @apply bg-black dark:bg-gray-700 text-white dark:text-white border border-black dark:border-gray-600 hover:bg-gray-800 dark:hover:opacity-80 transition-all;
   }
   
   .btn-secondary {
@@ -192,21 +192,26 @@
   
   .btn-outline {
     /* Stronger visible outline across modes */
-    @apply border border-[var(--color-divider-gray)] text-[var(--color-text-primary)] bg-[var(--color-background-surface)] transition-colors;
-    /* Light mode hover gets a faint brand tint so white-on-white is avoided */
-    background-color: var(--color-background-surface);
+    @apply border border-slate-300 dark:border-[var(--color-divider-gray)] text-slate-700 dark:text-[var(--color-text-primary)] bg-white dark:bg-[var(--color-background-surface)] transition-colors;
+    /* Light mode: white background with gray text (not black) */
+    background-color: #FFFFFF;
+    color: #475569; /* slate-600 - not black */
   }
   .btn-outline:hover {
-    background-color: color-mix(in srgb, var(--color-primary-teal), white 92%);
+    background-color: #f1f5f9; /* slate-100 - light gray hover */
+    color: #334155; /* slate-700 - darker gray on hover */
   }
   .dark .btn-outline:hover {
     background-color: color-mix(in srgb, var(--color-primary-teal), black 85%);
+    color: #FFFFFF;
   }
   .btn-outline:active {
-    background-color: color-mix(in srgb, var(--color-primary-teal), white 86%);
+    background-color: #e2e8f0; /* slate-200 */
+    color: #1e293b; /* slate-800 */
   }
   .dark .btn-outline:active {
     background-color: color-mix(in srgb, var(--color-primary-teal), black 80%);
+    color: #FFFFFF;
   }
   .btn-outline.active, .btn-outline[aria-pressed="true"] {
     background-color: color-mix(in srgb, var(--color-primary-teal), white 85%);
@@ -218,6 +223,16 @@
     border-color: var(--color-primary-teal);
     color: #FFFFFF;
   }
+  
+  /* Ensure btn-outline icons and text are not black in light mode */
+  html:not(.dark) .btn-outline,
+  html:not(.dark) .btn-outline * {
+    color: #475569 !important; /* slate-600 - not black */
+  }
+  html:not(.dark) .btn-outline:hover,
+  html:not(.dark) .btn-outline:hover * {
+    color: #334155 !important; /* slate-700 - darker on hover */
+  }
 
   /* Ghost, size variants, and elevated primary */
   .btn-ghost { @apply bg-transparent text-[var(--color-text-primary)] border border-transparent; }
@@ -226,26 +241,28 @@
   .btn-sm { @apply px-2.5 py-1.5 rounded-md text-xs; }
   /* Flat primary (no gradients) */
   .btn-primary-elevated { 
-    @apply bg-black dark:bg-gray-700 text-white dark:text-white border border-black dark:border-gray-600 shadow-md hover:shadow-lg transition-all; 
+    @apply bg-black dark:bg-gray-700 text-white dark:text-white border border-black dark:border-gray-600 shadow-sm hover:shadow-md transition-all hover:bg-gray-800 dark:hover:opacity-80; 
   }
   .btn-primary-elevated:hover {
-    @apply opacity-90 dark:opacity-80;
+    @apply shadow-lg;
   }
   .btn-primary-elevated .lucide,
   .btn-primary-elevated svg,
   .btn-primary-elevated [class*="lucide"],
-  .btn-primary-elevated i {
+  .btn-primary-elevated i,
+  .btn-primary-elevated * {
     color: white !important; 
   }
   .dark .btn-primary-elevated .lucide,
   .dark .btn-primary-elevated svg,
   .dark .btn-primary-elevated [class*="lucide"],
-  .dark .btn-primary-elevated i {
+  .dark .btn-primary-elevated i,
+  .dark .btn-primary-elevated * {
     color: white !important; 
   }
   
   /* Compact action chips (good contrast in dark/light) */
-  .btn-chip { @apply inline-flex items-center gap-1 px-2 py-1 rounded-md text-xs font-medium transition-colors; }
+  .btn-chip { @apply inline-flex items-center gap-1 px-2 py-1 rounded-md text-xs font-normal transition-colors; }
   .btn-chip:hover { @apply opacity-90; }
   .btn-chip-primary { @apply bg-black dark:bg-white text-white dark:text-black; }
   .btn-chip-info { @apply bg-blue-500 dark:bg-blue-600 text-white; }
@@ -496,6 +513,90 @@
     padding: 0;
   }
 
+  /* Hero section text colors - ensure white text in light mode on hero backgrounds */
+  .landing-hero header,
+  .landing-hero .page-container,
+  .landing-hero nav,
+  .landing-hero button:not([class*="bg-white"]):not([class*="bg-gray"]),
+  .landing-hero a:not([class*="bg-white"]):not([class*="bg-gray"]) {
+    color: #FFFFFF !important;
+  }
+  .landing-hero header *,
+  .landing-hero .page-container *,
+  .landing-hero nav *,
+  .landing-hero button:not([class*="bg-white"]):not([class*="bg-gray"]) *,
+  .landing-hero a:not([class*="bg-white"]):not([class*="bg-gray"]) * {
+    color: #FFFFFF !important;
+  }
+  
+  /* Page hero sections - ensure white text in light mode */
+  .page-hero header,
+  .page-hero .page-container,
+  .page-hero nav,
+  .page-hero button:not([class*="bg-white"]):not([class*="bg-gray"]),
+  .page-hero a:not([class*="bg-white"]):not([class*="bg-gray"]) {
+    color: #FFFFFF !important;
+  }
+  .page-hero header *,
+  .page-hero .page-container *,
+  .page-hero nav *,
+  .page-hero button:not([class*="bg-white"]):not([class*="bg-gray"]) *,
+  .page-hero a:not([class*="bg-white"]):not([class*="bg-gray"]) * {
+    color: #FFFFFF !important;
+  }
+  
+  /* Hero section buttons - white text in light mode */
+  html:not(.dark) .landing-hero button,
+  html:not(.dark) .page-hero button,
+  body:not(.dark) .landing-hero button,
+  body:not(.dark) .page-hero button {
+    color: #FFFFFF !important;
+  }
+  html:not(.dark) .landing-hero button *,
+  html:not(.dark) .page-hero button *,
+  body:not(.dark) .landing-hero button *,
+  body:not(.dark) .page-hero button * {
+    color: #FFFFFF !important;
+  }
+  
+  /* Hero section navigation links - white text in light mode */
+  html:not(.dark) .landing-hero nav a,
+  html:not(.dark) .page-hero nav a,
+  html:not(.dark) .landing-hero nav button,
+  html:not(.dark) .page-hero nav button,
+  body:not(.dark) .landing-hero nav a,
+  body:not(.dark) .page-hero nav a,
+  body:not(.dark) .landing-hero nav button,
+  body:not(.dark) .page-hero nav button {
+    color: #FFFFFF !important;
+  }
+  
+  /* Header on hero sections - ensure white text when transparent/on hero */
+  header[style*="transparent"] nav button,
+  header[style*="transparent"] nav a,
+  header[style*="rgba(255,255,255,0"] nav button,
+  header[style*="rgba(255,255,255,0"] nav a {
+    color: #FFFFFF !important;
+  }
+  html:not(.dark) header[style*="transparent"] *,
+  html:not(.dark) header[style*="rgba(255,255,255,0"] * {
+    color: #FFFFFF !important;
+  }
+  
+  /* Buttons on hero sections in light mode - white text */
+  html:not(.dark) .landing-hero button[class*="bg-"],
+  html:not(.dark) .page-hero button[class*="bg-"],
+  body:not(.dark) .landing-hero button[class*="bg-"],
+  body:not(.dark) .page-hero button[class*="bg-"] {
+    color: #FFFFFF !important;
+  }
+  html:not(.dark) .landing-hero button[class*="bg-"] *,
+  html:not(.dark) .page-hero button[class*="bg-"] *,
+  body:not(.dark) .landing-hero button[class*="bg-"] *,
+  body:not(.dark) .page-hero button[class*="bg-"] * {
+    color: #FFFFFF !important;
+  }
+
   /* ============================================
      CENTRALIZED CONTAINER & SPACING STYLES
      ============================================ */
@@ -628,7 +729,7 @@
 
   .stats-number {
     font-size: 2.25rem;
-    font-weight: 700;
+    font-weight: 400;
     color: rgb(17, 24, 39);
     margin-bottom: 0.5rem;
   }
@@ -653,7 +754,7 @@
   /* Section heading */
   .section-heading {
     font-size: 2.25rem;
-    font-weight: 700;
+    font-weight: 400;
     color: rgb(17, 24, 39);
     margin-bottom: 1rem;
   }
@@ -800,7 +901,7 @@
 
   .dashboard-card-title {
     font-size: 1.125rem;
-    font-weight: 600;
+    font-weight: 400;
     color: var(--color-text-primary);
   }
 
@@ -828,7 +929,7 @@
 
   .profile-section-title {
     font-size: 1.25rem;
-    font-weight: 600;
+    font-weight: 400;
     color: var(--color-text-primary);
     margin-bottom: 1rem;
   }
@@ -957,7 +1058,7 @@
   .form-label {
     display: block;
     font-size: 0.875rem;
-    font-weight: 500;
+    font-weight: 400;
     color: var(--color-text-primary);
     margin-bottom: 0.5rem;
   }
@@ -1012,7 +1113,7 @@
 
   .modal-title {
     font-size: 1.5rem;
-    font-weight: 700;
+    font-weight: 400;
     color: var(--color-text-primary);
   }
 
@@ -1141,12 +1242,16 @@
   .toolbar .lucide { color: var(--color-primary-teal) !important; }
   .btn-primary .lucide,
   .btn-primary svg,
-  .btn-primary [class*="lucide"] { 
+  .btn-primary [class*="lucide"],
+  .btn-primary i,
+  .btn-primary * { 
     color: white !important; 
   }
   .dark .btn-primary .lucide,
   .dark .btn-primary svg,
-  .dark .btn-primary [class*="lucide"] { 
+  .dark .btn-primary [class*="lucide"],
+  .dark .btn-primary i,
+  .dark .btn-primary * { 
     color: white !important; 
   }
 
@@ -1187,11 +1292,11 @@
   .text-6xl { font-size: 64px !important; line-height: 70.4px !important; font-weight: 400 !important; letter-spacing: -1.92px !important; }
   .text-7xl { font-size: 64px !important; line-height: 70.4px !important; font-weight: 400 !important; letter-spacing: -1.92px !important; }
   
-  /* Override font weights to match ImagineAI (400 for headings) */
+  /* Override font weights - sleek and modern (lighter weights) */
   .font-normal { font-weight: 400 !important; }
-  .font-medium { font-weight: 500 !important; }
-  .font-semibold { font-weight: 500 !important; }
-  .font-bold { font-weight: 600 !important; }
+  .font-medium { font-weight: 400 !important; }
+  .font-semibold { font-weight: 400 !important; }
+  .font-bold { font-weight: 400 !important; }
   
   /* No responsive font size overrides - Keep sizes consistent across all screen sizes like cursor.com */
   
@@ -1305,17 +1410,128 @@
   .border-amber-200, .border-yellow-200 { border-color: var(--color-warning) !important; }
   .border-blue-200, .border-sky-200 { border-color: var(--color-info) !important; }
 
-  /* Remove gradient utilities globally (force flat backgrounds) */
-  .bg-gradient-to-r,
-  .bg-gradient-to-l,
-  .bg-gradient-to-t,
-  .bg-gradient-to-b,
-  .bg-gradient-to-tr,
-  .bg-gradient-to-tl,
-  .bg-gradient-to-br,
-  .bg-gradient-to-bl {
+  /* Remove gradient utilities globally (force flat backgrounds) - EXCEPT for buttons */
+  /* Allow gradients on buttons and interactive elements - they need gradients to work */
+  button[class*="bg-gradient-to"],
+  a[class*="bg-gradient-to"],
+  [role="button"][class*="bg-gradient-to"] {
+    background-image: var(--tw-gradient-stops) !important;
+  }
+  /* Remove gradients from non-interactive elements */
+  .bg-gradient-to-r:not(button):not(a):not([role="button"]),
+  .bg-gradient-to-l:not(button):not(a):not([role="button"]),
+  .bg-gradient-to-t:not(button):not(a):not([role="button"]),
+  .bg-gradient-to-b:not(button):not(a):not([role="button"]),
+  .bg-gradient-to-tr:not(button):not(a):not([role="button"]),
+  .bg-gradient-to-tl:not(button):not(a):not([role="button"]),
+  .bg-gradient-to-br:not(button):not(a):not([role="button"]),
+  .bg-gradient-to-bl:not(button):not(a):not([role="button"]) {
     background-image: none !important;
     background-color: transparent !important;
+  }
+  /* Primary buttons (.btn-primary, .btn-primary-elevated) - solid black background with white text (Cursor.com minimalist style) */
+  html:not(.dark) .btn-primary,
+  html:not(.dark) .btn-primary-elevated {
+    background: #000000 !important; /* Solid black like Cursor.com */
+    color: #FFFFFF !important; /* White text */
+    border-color: #000000 !important;
+    background-image: none !important; /* No gradients - minimalist */
+  }
+  html:not(.dark) .btn-primary:hover,
+  html:not(.dark) .btn-primary-elevated:hover {
+    background: #1a1a1a !important; /* Slightly lighter black on hover */
+    background-image: none !important; /* No gradients */
+  }
+  html:not(.dark) .btn-primary .lucide,
+  html:not(.dark) .btn-primary svg,
+  html:not(.dark) .btn-primary [class*="lucide"],
+  html:not(.dark) .btn-primary i,
+  html:not(.dark) .btn-primary *,
+  html:not(.dark) .btn-primary-elevated .lucide,
+  html:not(.dark) .btn-primary-elevated svg,
+  html:not(.dark) .btn-primary-elevated [class*="lucide"],
+  html:not(.dark) .btn-primary-elevated i,
+  html:not(.dark) .btn-primary-elevated * {
+    color: #FFFFFF !important;
+  }
+  
+  /* Remove all gradients from buttons in light mode - minimalist Cursor.com style */
+  html:not(.dark) button[class*="bg-black"],
+  html:not(.dark) button.bg-black,
+  html:not(.dark) button[class*="bg-gray-900"],
+  html:not(.dark) button.bg-gray-900 {
+    background: #000000 !important; /* Solid black */
+    background-image: none !important; /* No gradients */
+    color: #FFFFFF !important; /* White text */
+  }
+  
+  /* Remove all gradients from buttons in light mode - keep it minimalist */
+  html:not(.dark) button[class*="bg-gradient-to"] {
+    background-image: none !important; /* Remove all gradients */
+    background: #000000 !important; /* Replace with solid black */
+    color: #FFFFFF !important; /* White text */
+  }
+  
+  /* Ensure ALL buttons with colored backgrounds (not white) have white text and icons */
+  html:not(.dark) button[class*="bg-blue"]:not([class*="bg-white"]):not([class*="bg-blue-50"]):not([class*="bg-blue-100"]),
+  html:not(.dark) button[class*="bg-indigo"]:not([class*="bg-white"]):not([class*="bg-indigo-50"]):not([class*="bg-indigo-100"]),
+  html:not(.dark) button[class*="bg-purple"]:not([class*="bg-white"]):not([class*="bg-purple-50"]):not([class*="bg-purple-100"]),
+  html:not(.dark) button[class*="bg-pink"]:not([class*="bg-white"]):not([class*="bg-pink-50"]):not([class*="bg-pink-100"]),
+  html:not(.dark) button[class*="bg-red"]:not([class*="bg-white"]):not([class*="bg-red-50"]):not([class*="bg-red-100"]),
+  html:not(.dark) button[class*="bg-orange"]:not([class*="bg-white"]):not([class*="bg-orange-50"]):not([class*="bg-orange-100"]),
+  html:not(.dark) button[class*="bg-yellow"]:not([class*="bg-white"]):not([class*="bg-yellow-50"]):not([class*="bg-yellow-100"]),
+  html:not(.dark) button[class*="bg-green"]:not([class*="bg-white"]):not([class*="bg-green-50"]):not([class*="bg-green-100"]),
+  html:not(.dark) button[class*="bg-teal"]:not([class*="bg-white"]):not([class*="bg-teal-50"]):not([class*="bg-teal-100"]),
+  html:not(.dark) button[class*="bg-cyan"]:not([class*="bg-white"]):not([class*="bg-cyan-50"]):not([class*="bg-cyan-100"]),
+  html:not(.dark) button[class*="bg-emerald"]:not([class*="bg-white"]):not([class*="bg-emerald-50"]):not([class*="bg-emerald-100"]),
+  html:not(.dark) button[class*="bg-slate"]:not([class*="bg-white"]):not([class*="bg-slate-50"]):not([class*="bg-slate-100"]):not([class*="bg-slate-200"]),
+  html:not(.dark) button[class*="bg-gray"]:not([class*="bg-white"]):not([class*="bg-gray-50"]):not([class*="bg-gray-100"]):not([class*="bg-gray-200"]) {
+    color: #FFFFFF !important;
+  }
+  html:not(.dark) button[class*="bg-blue"]:not([class*="bg-white"]):not([class*="bg-blue-50"]):not([class*="bg-blue-100"]) *,
+  html:not(.dark) button[class*="bg-indigo"]:not([class*="bg-white"]):not([class*="bg-indigo-50"]):not([class*="bg-indigo-100"]) *,
+  html:not(.dark) button[class*="bg-purple"]:not([class*="bg-white"]):not([class*="bg-purple-50"]):not([class*="bg-purple-100"]) *,
+  html:not(.dark) button[class*="bg-pink"]:not([class*="bg-white"]):not([class*="bg-pink-50"]):not([class*="bg-pink-100"]) *,
+  html:not(.dark) button[class*="bg-red"]:not([class*="bg-white"]):not([class*="bg-red-50"]):not([class*="bg-red-100"]) *,
+  html:not(.dark) button[class*="bg-orange"]:not([class*="bg-white"]):not([class*="bg-orange-50"]):not([class*="bg-orange-100"]) *,
+  html:not(.dark) button[class*="bg-yellow"]:not([class*="bg-white"]):not([class*="bg-yellow-50"]):not([class*="bg-yellow-100"]) *,
+  html:not(.dark) button[class*="bg-green"]:not([class*="bg-white"]):not([class*="bg-green-50"]):not([class*="bg-green-100"]) *,
+  html:not(.dark) button[class*="bg-teal"]:not([class*="bg-white"]):not([class*="bg-teal-50"]):not([class*="bg-teal-100"]) *,
+  html:not(.dark) button[class*="bg-cyan"]:not([class*="bg-white"]):not([class*="bg-cyan-50"]):not([class*="bg-cyan-100"]) *,
+  html:not(.dark) button[class*="bg-emerald"]:not([class*="bg-white"]):not([class*="bg-emerald-50"]):not([class*="bg-emerald-100"]) *,
+  html:not(.dark) button[class*="bg-slate"]:not([class*="bg-white"]):not([class*="bg-slate-50"]):not([class*="bg-slate-100"]):not([class*="bg-slate-200"]) *,
+  html:not(.dark) button[class*="bg-gray"]:not([class*="bg-white"]):not([class*="bg-gray-50"]):not([class*="bg-gray-100"]):not([class*="bg-gray-200"]) * {
+    color: #FFFFFF !important;
+  }
+  
+  /* Remove all gradients from buttons - Cursor.com style (no gradients) */
+  html:not(.dark) button[class*="bg-gradient-to"]:not(.btn-primary):not(.btn-primary-elevated) {
+    background-image: none !important;
+    background-color: #FFFFFF !important; /* white background */
+    color: #000000 !important; /* black text in light mode */
+    border: 1px solid #e5e5e5 !important; /* subtle border like Cursor.com */
+  }
+  html:not(.dark) button[class*="bg-gradient-to"]:not(.btn-primary):not(.btn-primary-elevated):hover {
+    background-color: #f5f5f5 !important; /* light gray hover */
+  }
+  html:not(.dark) button[class*="bg-gradient-to"]:not(.btn-primary):not(.btn-primary-elevated) * {
+    color: #000000 !important; /* black text for all child elements */
+  }
+  /* Gradient buttons: Keep gradient in dark mode with white text */
+  html.dark button[class*="bg-gradient-to"],
+  body.dark button[class*="bg-gradient-to"],
+  .dark button[class*="bg-gradient-to"] {
+    background-image: var(--tw-gradient-stops) !important;
+    color: #FFFFFF !important;
+  }
+  html.dark button[class*="bg-gradient-to"] *,
+  body.dark button[class*="bg-gradient-to"] *,
+  .dark button[class*="bg-gradient-to"] * {
+    color: #FFFFFF !important;
+  }
+  /* For buttons without gradients in light mode, use black text */
+  button:not([class*="bg-gradient-to"]):not(.dark) {
+    color: var(--color-text-primary) !important;
   }
   /* Map common Tailwind gray/white utilities to theme variables for consistency */
   /* Backgrounds */
@@ -1367,6 +1583,31 @@
 
   /* Inputs often use gray backgrounds in dark mode */
   .dark .bg-gray-700 { background-color: var(--color-background-surface) !important; }
+  
+  /* Checkbox styling - not black in light mode */
+  html:not(.dark) input[type="checkbox"] {
+    background-color: #FFFFFF !important;
+    border-color: #cbd5e1 !important; /* slate-300 */
+    color: #475569 !important; /* slate-600 */
+    accent-color: #475569 !important;
+  }
+  html:not(.dark) input[type="checkbox"]:checked {
+    background-color: #475569 !important; /* slate-600 */
+    border-color: #475569 !important;
+    accent-color: #475569 !important;
+  }
+  html:not(.dark) input[type="checkbox"]:hover {
+    border-color: #64748b !important; /* slate-500 */
+  }
+  .dark input[type="checkbox"] {
+    background-color: var(--color-background-surface) !important;
+    border-color: var(--color-divider-gray) !important;
+    accent-color: var(--color-primary-teal) !important;
+  }
+  .dark input[type="checkbox"]:checked {
+    background-color: var(--color-primary-teal) !important;
+    border-color: var(--color-primary-teal) !important;
+  }
 
   /* Subtle hover backgrounds to theme default */
   .hover\:bg-gray-50:hover { background-color: var(--color-background-default) !important; }

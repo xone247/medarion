@@ -75,7 +75,7 @@ const ResetPasswordPage: React.FC = () => {
               <div className="w-16 h-16 bg-green-100 dark:bg-green-900/20 rounded-full flex items-center justify-center mx-auto mb-4">
                 <CheckCircle className="w-8 h-8 text-green-600 dark:text-green-400" />
               </div>
-              <h1 className="text-2xl font-bold text-[var(--color-text-primary)] mb-2">
+              <h1 className="text-2xl font-medium text-[var(--color-text-primary)] mb-2">
                 Password Reset Successful
               </h1>
               <p className="text-[var(--color-text-secondary)]">
@@ -94,7 +94,7 @@ const ResetPasswordPage: React.FC = () => {
         <div className="max-w-md w-full">
           <div className="bg-[var(--color-card-bg)] rounded-2xl shadow-xl p-8 border border-[var(--color-divider-gray)]">
             <div className="text-center">
-              <h1 className="text-2xl font-bold text-[var(--color-text-primary)] mb-2">
+              <h1 className="text-2xl font-medium text-[var(--color-text-primary)] mb-2">
                 Invalid Reset Link
               </h1>
               <p className="text-[var(--color-text-secondary)] mb-4">{error}</p>
@@ -123,7 +123,7 @@ const ResetPasswordPage: React.FC = () => {
               <ArrowLeft className="w-4 h-4 mr-2" />
               Back to Sign In
             </Link>
-            <h1 className="text-2xl font-bold text-[var(--color-text-primary)] mb-2">
+            <h1 className="text-2xl font-medium text-[var(--color-text-primary)] mb-2">
               Reset Your Password
             </h1>
             <p className="text-[var(--color-text-secondary)]">

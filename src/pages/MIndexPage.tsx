@@ -101,7 +101,7 @@ const MIndexPage: React.FC<MIndexPageProps> = ({ onBack }) => {
       {/* Interactive Africa Map */}
       <div className="max-w-7xl mx-auto px-6 py-10">
         <div className="mb-8">
-          <h2 className="text-3xl font-bold text-[var(--color-text-primary)] mb-3">Interactive Africa Map</h2>
+          <h2 className="text-3xl font-medium text-[var(--color-text-primary)] mb-3">Interactive Africa Map</h2>
           <p className="text-[var(--color-text-secondary)]">Click on any country to view detailed information</p>
         </div>
         <AfricaMap height={600} heightSm={400} />
@@ -110,7 +110,7 @@ const MIndexPage: React.FC<MIndexPageProps> = ({ onBack }) => {
       {/* Terms Section */}
       <div className="max-w-7xl mx-auto px-6 py-10">
         <div className="mb-8 text-center">
-          <h2 className="text-4xl font-bold text-[var(--color-text-primary)] mb-3">Terms</h2>
+          <h2 className="text-4xl font-medium text-[var(--color-text-primary)] mb-3">Terms</h2>
         </div>
 
         {/* Filter Bar */}
@@ -147,11 +147,11 @@ const MIndexPage: React.FC<MIndexPageProps> = ({ onBack }) => {
                   className="bg-[var(--color-background-surface)] border border-[var(--color-divider-gray)] rounded-xl p-6 shadow-sm hover:shadow-lg transition-all duration-300 hover:border-[var(--color-primary-teal)]/50 group"
                 >
                   <div className="flex items-start justify-between mb-3">
-                    <div className="text-xs font-semibold text-[var(--color-primary-teal)] uppercase tracking-wide px-2 py-1 bg-[var(--color-primary-teal)]/10 rounded">
+                    <div className="text-xs font-medium text-[var(--color-primary-teal)] uppercase tracking-wide px-2 py-1 bg-[var(--color-primary-teal)]/10 rounded">
                       {i.category}
                     </div>
                   </div>
-                  <h3 className="text-xl font-bold text-[var(--color-text-primary)] mb-3 group-hover:text-[var(--color-primary-teal)] transition-colors">
+                  <h3 className="text-xl font-medium text-[var(--color-text-primary)] mb-3 group-hover:text-[var(--color-primary-teal)] transition-colors">
                     {i.term}
                   </h3>
                   <p className="text-sm text-[var(--color-text-secondary)] leading-relaxed line-clamp-4">
@@ -175,7 +175,7 @@ const MIndexPage: React.FC<MIndexPageProps> = ({ onBack }) => {
         ) : (
           <div className="text-center py-20">
             <div className="text-4xl mb-4">🔍</div>
-            <h3 className="text-xl font-semibold text-[var(--color-text-primary)] mb-2">
+            <h3 className="text-xl font-medium text-[var(--color-text-primary)] mb-2">
               No key terms found
             </h3>
             <p className="text-[var(--color-text-secondary)] mb-4">

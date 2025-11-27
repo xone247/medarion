@@ -47,7 +47,7 @@ const StartupDashboard = () => {
 
       {/* Page Header - Compact */}
       <div className="mb-2">
-        <h1 className="text-2xl font-bold text-slate-700 dark:text-slate-200 mb-1">Startup Dashboard</h1>
+        <h1 className="text-2xl font-medium text-slate-700 dark:text-slate-200 mb-1">Startup Dashboard</h1>
         <p className="text-sm text-slate-500 dark:text-slate-400">Track your fundraising and investor connections</p>
       </div>
 
@@ -69,7 +69,7 @@ const StartupDashboard = () => {
       <div className="card-glass rounded-lg overflow-hidden">
         <div className="p-3 border-b border-slate-200 dark:border-slate-700 flex items-center justify-between">
           <div>
-            <h3 className="text-base font-semibold text-slate-700 dark:text-slate-200">African Healthcare Investment Landscape</h3>
+            <h3 className="text-base font-medium text-slate-700 dark:text-slate-200">African Healthcare Investment Landscape</h3>
             <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
               Explore investment opportunities across Africa
             </p>
@@ -118,8 +118,8 @@ const StartupDashboard = () => {
           <div className="p-1.5 bg-cyan-100 dark:bg-cyan-500/30 rounded-lg">
             <TrendingUp className="h-4 w-4 text-cyan-600 dark:text-cyan-400" />
           </div>
-          <h3 className="text-base font-semibold text-slate-700 dark:text-slate-200">AI Investor Matches</h3>
-          <span className="bg-gradient-to-br from-cyan-500 to-teal-600 dark:from-cyan-500 dark:to-teal-600 text-white text-xs px-1.5 py-0.5 rounded-full font-bold">NEW</span>
+          <h3 className="text-base font-medium text-slate-700 dark:text-slate-200">AI Investor Matches</h3>
+          <span className="bg-gradient-to-br from-cyan-500 to-teal-600 dark:from-cyan-500 dark:to-teal-600 text-white text-xs px-1.5 py-0.5 rounded-full font-medium">NEW</span>
         </div>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-2">
           {matchedInvestors.map((investor, index) => (
@@ -150,7 +150,7 @@ const StartupDashboard = () => {
           <div className="p-1.5 bg-indigo-100 dark:bg-indigo-500/30 rounded-lg">
             <MessageSquare className="h-4 w-4 text-indigo-600 dark:text-indigo-400" />
           </div>
-          <h3 className="text-base font-semibold text-slate-700 dark:text-slate-200">Fundraising CRM</h3>
+          <h3 className="text-base font-medium text-slate-700 dark:text-slate-200">Fundraising CRM</h3>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
           {Object.entries(crmData).map(([stage, investors]) => (
@@ -177,7 +177,7 @@ const StartupDashboard = () => {
           <div className="p-1.5 bg-amber-100 dark:bg-amber-500/30 rounded-lg">
             <Clock className="h-4 w-4 text-amber-600 dark:text-amber-400" />
           </div>
-          <h3 className="text-base font-semibold text-slate-700 dark:text-slate-200">Recent Activity</h3>
+          <h3 className="text-base font-medium text-slate-700 dark:text-slate-200">Recent Activity</h3>
         </div>
         <div className="space-y-2">
           {activity.map((notification, index) => (

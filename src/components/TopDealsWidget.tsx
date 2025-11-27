@@ -34,7 +34,7 @@ const TopDealsWidget: React.FC = () => {
     <div className="bg-white dark:bg-gray-800 p-4 p-6 rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm">
       <div className="flex items-center space-x-2 mb-4">
         <TrendingUp className="h-5 w-5 text-primary-400" />
-        <h3 className="text-base text-lg font-semibold text-gray-900 dark:text-white">Top Deals</h3>
+        <h3 className="text-base text-lg font-medium text-gray-900 dark:text-white">Top Deals</h3>
       </div>
       <div className="space-y-3">
         {topDeals.map((deal) => (
@@ -44,7 +44,7 @@ const TopDealsWidget: React.FC = () => {
               <p className="text-xs text-gray-600 dark:text-gray-400 truncate">{deal.sector} • {deal.country}</p>
             </div>
             <div className="text-right flex-shrink-0">
-              <p className="text-sm text-base font-bold text-accent-600 dark:text-accent-500">${(deal.value_usd / 1000000).toFixed(1)}M</p>
+              <p className="text-sm text-base font-medium text-accent-600 dark:text-accent-500">${(deal.value_usd / 1000000).toFixed(1)}M</p>
               <p className="text-xs text-gray-600 dark:text-gray-400">{deal.stage}</p>
             </div>
           </div>

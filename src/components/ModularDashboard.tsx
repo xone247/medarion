@@ -635,7 +635,7 @@ const ModularDashboard: React.FC<ModularDashboardProps> = ({ onViewCompany }) =>
         <div className="h-8 w-8 flex items-center justify-center">
           <Grid3X3 className="h-5 w-5 text-[var(--color-primary-teal)]" />
         </div>
-        <h2 className="text-2xl font-bold text-[var(--color-text-primary)]">Dashboard</h2>
+        <h2 className="text-2xl font-medium text-[var(--color-text-primary)]">Dashboard</h2>
       </div>
 
       <div className="flex items-center justify-center">
@@ -684,7 +684,7 @@ const ModularDashboard: React.FC<ModularDashboardProps> = ({ onViewCompany }) =>
       <div className="grid grid-cols-2 gap-6">
         <div className="tile">
           <div className="tile-header">
-            <h3 className="text-[var(--color-text-primary)] font-semibold">African Healthcare Investment Map</h3>
+            <h3 className="text-[var(--color-text-primary)] font-medium">African Healthcare Investment Map</h3>
             <p className="text-sm text-[var(--color-text-secondary)]">Investment activity across Africa</p>
           </div>
           <div className="tile-body">
@@ -693,7 +693,7 @@ const ModularDashboard: React.FC<ModularDashboardProps> = ({ onViewCompany }) =>
         </div>
         <div className="tile">
           <div className="tile-header">
-            <h3 className="text-[var(--color-text-primary)] font-semibold">Monthly Dealflow</h3>
+            <h3 className="text-[var(--color-text-primary)] font-medium">Monthly Dealflow</h3>
           </div>
           <div className="tile-body">
             <MonthlyDealflowChart />
@@ -703,7 +703,7 @@ const ModularDashboard: React.FC<ModularDashboardProps> = ({ onViewCompany }) =>
 
       {/* Available Modules */}
       <div className="p-6">
-        <h3 className="text-lg font-semibold text-[var(--color-text-primary)] mb-4">Available Modules</h3>
+        <h3 className="text-lg font-medium text-[var(--color-text-primary)] mb-4">Available Modules</h3>
         <div className="grid grid-cols-2 grid-cols-3 gap-4">
           {dashboardAvailableModules.map((module: any) => {
             const IconComponent = getModuleIcon(module.icon);
@@ -738,7 +738,7 @@ const ModularDashboard: React.FC<ModularDashboardProps> = ({ onViewCompany }) =>
         <div className="fixed inset-0 z-50 flex items-center justify-center">
           <div className="absolute inset-0 bg-black/40" onClick={()=>setIsCustomizeOpen(false)} />
           <div className="relative bg-[var(--color-background-surface)] border border-[var(--color-divider-gray)] rounded-lg p-5 w-full max-w-md">
-            <h3 className="text-lg font-semibold text-[var(--color-text-primary)] mb-3">Customize Summary Cards</h3>
+            <h3 className="text-lg font-medium text-[var(--color-text-primary)] mb-3">Customize Summary Cards</h3>
             <div className="grid grid-cols-2 gap-3 text-sm">
               {[
                 {id:'grants', label:'Grants'},

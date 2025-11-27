@@ -1,8 +1,9 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { Microscope, Search, Filter, Calendar, MapPin, Building2, Sparkles, Globe, Bot, FileDown, FileText } from 'lucide-react';
+import { Microscope, Search, Filter, Calendar, MapPin, Building2, Sparkles, Globe, Bot, FileDown, FileText, X } from 'lucide-react';
 import { askMedarion } from '../services/ai';
 import { apiService } from '../services/apiService';
 import { useAuth } from '../contexts/AuthContext';
+import { exportToExcel, exportToCSV, exportToJSON } from '../utils/exportUtils';
 
 const ClinicalTrialsPage: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -18,8 +19,56 @@ const ClinicalTrialsPage: React.FC = () => {
   const [trials, setTrials] = useState<any[]>([]);
   const { profile } = useAuth();
   const canAI = !!(profile && (profile.is_admin || ['paid','enterprise'].includes((profile as any).account_tier)));
+  const exportExcel = () => {
+    try {
+      const excelData = filteredTrials.map((trial: any) => ({
+        Title: trial.title,
+        Phase: trial.phase,
+        Status: trial.status,
+        Indication: trial.indication || trial.medical_condition,
+        Intervention: trial.intervention,
+        Sponsor: trial.sponsor || trial.companyName,
+        Location: trial.location,
+        Country: trial.country,
+        'Start Date': trial.start_date,
+        'End Date': trial.end_date,
+        'NCT Number': trial.nct_number || trial.trial_id
+      }));
+      exportToExcel(excelData, 'clinical_trials', 'Clinical Trials');
+    } catch (error) {
+      console.error('Error exporting Excel:', error);
+    }
+  };
+
   const exportJSON = () => {
-    try { const data = { filters: { searchTerm, selectedPhase, selectedStatus }, trials: filteredTrials, exportedAt: new Date().toISOString() }; const blob = new Blob([JSON.stringify(data,null,2)], { type:'application/json' }); const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='clinical_trials.json'; a.click(); URL.revokeObjectURL(a.href);} catch {}
+    try {
+      const data = { filters: { searchTerm, selectedPhase, selectedStatus }, trials: filteredTrials, exportedAt: new Date().toISOString() };
+      exportToJSON(data, 'clinical_trials');
+    } catch (error) {
+      console.error('Error exporting JSON:', error);
+    }
+  };
+
+  const exportCSV = () => {
+    try {
+      const rows = [['Title','Phase','Status','Indication','Intervention','Sponsor','Location','Country','Start Date','End Date','NCT Number']];
+      filteredTrials.forEach((trial: any) => rows.push([
+        trial.title,
+        trial.phase,
+        trial.status,
+        trial.indication || trial.medical_condition || '',
+        trial.intervention || '',
+        trial.sponsor || trial.companyName || '',
+        trial.location || '',
+        trial.country || '',
+        trial.start_date || '',
+        trial.end_date || '',
+        trial.nct_number || trial.trial_id || ''
+      ]));
+      exportToCSV(rows, 'clinical_trials');
+    } catch (error) {
+      console.error('Error exporting CSV:', error);
+    }
   };
   const copyJSON = async () => {
     try {
@@ -190,119 +239,144 @@ const ClinicalTrialsPage: React.FC = () => {
   };
 
   return (
-    <div className="w-full space-y-4 sm:space-y-6">
-      {/* Header with glassmorphism */}
-      <div className="card-glass p-6 shadow-soft">
-        <div className="flex flex-row items-center justify-between gap-4">
-          <div className="flex items-center space-x-3">
-            <Microscope className="h-8 w-8 icon-primary" />
-            <div>
-              <h1 className="text-xl text-2xl font-bold text-[var(--color-text-primary)]">Clinical Trials</h1>
-              <p className="text-sm text-[var(--color-text-secondary)]">Track ongoing clinical trials and research studies across Africa</p>
+    <div className="w-full space-y-3">
+      {/* Top Bar: Filters and Actions - Compact and Organized */}
+      <div className="card-glass p-3 rounded-lg">
+        <div className="flex flex-col lg:flex-row gap-3 items-start lg:items-center">
+          {/* Filters Section */}
+          <div className="flex flex-wrap items-center gap-2 flex-1 min-w-0">
+            <div className="relative flex-1 min-w-[200px]">
+              <Search className="absolute left-2.5 top-1/2 transform -translate-y-1/2 h-4 w-4 text-slate-400" />
+              <input
+                type="text"
+                placeholder="Search trials..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="w-full pl-9 pr-3 py-2 text-sm bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-lg text-slate-700 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-cyan-500/30"
+              />
             </div>
+            <select
+              value={selectedPhase}
+              onChange={(e) => setSelectedPhase(e.target.value)}
+              className="px-3 py-2 text-sm bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-lg text-slate-700 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-cyan-500/30 min-w-[120px]"
+            >
+              {phases.map(phase => (
+                <option key={phase} value={phase}>{phase}</option>
+              ))}
+            </select>
+            <select
+              value={selectedStatus}
+              onChange={(e) => setSelectedStatus(e.target.value)}
+              className="px-3 py-2 text-sm bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-lg text-slate-700 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-cyan-500/30 min-w-[140px]"
+            >
+              {statuses.map(status => (
+                <option key={status} value={status}>{status}</option>
+              ))}
+            </select>
           </div>
-          <div className="flex items-center gap-2 flex-wrap">
+          
+          {/* Actions Section */}
+          <div className="flex flex-wrap items-center gap-2 flex-shrink-0">
             {canAI && (
-              <button onClick={runAI} className="btn-primary-elevated btn-sm flex items-center gap-2 w-auto">
+              <button onClick={runAI} className="btn-primary flex items-center gap-2 px-4 py-2 rounded-lg text-sm">
                 <Bot className="h-4 w-4" />
-                <span className="text-sm">AI Summary</span>
+                <span>AI Summary</span>
               </button>
             )}
-            <button onClick={copyJSON} className="btn-outline btn-sm w-auto">Copy</button>
-            <button onClick={exportJSON} className="btn-outline btn-sm w-auto"><FileDown className="h-4 w-4 inline mr-2"/>Export JSON</button>
+            <button onClick={exportExcel} className="btn-outline flex items-center gap-2 px-4 py-2 rounded-lg text-sm">
+              <FileDown className="h-4 w-4"/>
+              <span>Excel</span>
+            </button>
+            <button onClick={exportJSON} className="btn-outline flex items-center gap-2 px-4 py-2 rounded-lg text-sm">
+              <FileDown className="h-4 w-4"/>
+              <span>JSON</span>
+            </button>
+            <button onClick={exportCSV} className="btn-outline flex items-center gap-2 px-4 py-2 rounded-lg text-sm">
+              <FileDown className="h-4 w-4"/>
+              <span>CSV</span>
+            </button>
           </div>
         </div>
       </div>
 
       {aiText && (
-        <div className="card-glass p-4 shadow-soft">
-          <h3 className="font-semibold text-[var(--color-text-primary)]">AI Trial Landscape</h3>
-          <pre className="mt-2 text-sm whitespace-pre-wrap text-[var(--color-text-primary)]">{aiText}</pre>
-          {loading && <p className="text-xs text-[var(--color-text-secondary)]">Updating…</p>}
+        <div className="card-glass p-4 rounded-lg">
+          <div className="flex items-center justify-between mb-3">
+            <h3 className="text-base font-medium text-slate-700 dark:text-slate-200">AI Trial Landscape</h3>
+            <button onClick={() => setAiText(null)} className="text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200">
+              <X className="h-4 w-4" />
+            </button>
+          </div>
+          <pre className="mt-2 text-sm whitespace-pre-wrap text-slate-600 dark:text-slate-400">{aiText}</pre>
+          {loading && <p className="text-xs text-slate-500 dark:text-slate-400 mt-2">Updating…</p>}
         </div>
       )}
 
-      {/* Summary Stats with glassmorphism */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6">
-        <div className="card-glass p-6 shadow-soft">
-          <div className="flex items-center space-x-3">
-            <Microscope className="h-6 w-6 icon-primary" />
-            <div>
-              <p className="text-[var(--color-text-secondary)] text-sm">Total Trials</p>
-              <p className="text-2xl font-bold text-[var(--color-text-primary)]">{filteredTrials.length}</p>
+      {/* Summary Stats - Compact Modern Style */}
+      <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-3">
+        <div className="card-glass p-3 rounded-lg hover:shadow-lg transition-all duration-200 group relative overflow-hidden h-full flex flex-col bg-cyan-50/50 dark:bg-cyan-950/30">
+          <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/10 to-teal-500/10 dark:from-cyan-500/15 dark:to-teal-500/15 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+          <div className="relative flex items-center justify-between flex-1">
+            <div className="min-w-0 flex-1">
+              <p className="text-xs font-medium text-slate-500 dark:text-slate-400 mb-1 uppercase tracking-wide">Total Trials</p>
+              <p className="text-2xl font-medium text-slate-700 dark:text-slate-200 mb-1">{filteredTrials.length}</p>
+            </div>
+            <div className="p-2.5 rounded-lg bg-cyan-600 dark:bg-gradient-to-br dark:from-cyan-500 dark:to-teal-500 shadow-md group-hover:scale-105 transition-transform duration-200 flex-shrink-0 ml-3">
+              <Microscope className="h-5 w-5 text-white" />
             </div>
           </div>
         </div>
-        <div className="card-glass p-6 shadow-soft">
-          <div className="flex items-center space-x-3">
-            <Building2 className="h-6 w-6 icon-primary" />
-            <div>
-              <p className="text-[var(--color-text-secondary)] text-sm">Active Trials</p>
-              <p className="text-2xl font-bold text-[var(--color-text-primary)]">
+        <div className="card-glass p-3 rounded-lg hover:shadow-lg transition-all duration-200 group relative overflow-hidden h-full flex flex-col bg-emerald-50/50 dark:bg-emerald-950/30">
+          <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/10 to-green-500/10 dark:from-emerald-500/15 dark:to-green-500/15 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+          <div className="relative flex items-center justify-between flex-1">
+            <div className="min-w-0 flex-1">
+              <p className="text-xs font-medium text-slate-500 dark:text-slate-400 mb-1 uppercase tracking-wide">Active Trials</p>
+              <p className="text-2xl font-medium text-slate-700 dark:text-slate-200 mb-1">
                 {filteredTrials.filter((t: any) => t.status === 'Active' || t.status === 'Recruiting').length}
               </p>
             </div>
+            <div className="p-2.5 rounded-lg bg-emerald-600 dark:bg-gradient-to-br dark:from-emerald-500 dark:to-green-500 shadow-md group-hover:scale-105 transition-transform duration-200 flex-shrink-0 ml-3">
+              <Building2 className="h-5 w-5 text-white" />
+            </div>
           </div>
         </div>
-        <div className="card-glass p-6 shadow-soft">
-          <div className="flex items-center space-x-3">
-            <Calendar className="h-6 w-6 icon-primary" />
-            <div>
-              <p className="text-[var(--color-text-secondary)] text-sm">Completed</p>
-              <p className="text-2xl font-bold text-[var(--color-text-primary)]">
+        <div className="card-glass p-3 rounded-lg hover:shadow-lg transition-all duration-200 group relative overflow-hidden h-full flex flex-col bg-indigo-50/50 dark:bg-indigo-950/30">
+          <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/10 to-purple-500/10 dark:from-indigo-500/15 dark:to-purple-500/15 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+          <div className="relative flex items-center justify-between flex-1">
+            <div className="min-w-0 flex-1">
+              <p className="text-xs font-medium text-slate-500 dark:text-slate-400 mb-1 uppercase tracking-wide">Completed</p>
+              <p className="text-2xl font-medium text-slate-700 dark:text-slate-200 mb-1">
                 {filteredTrials.filter((t: any) => t.status === 'Completed').length}
               </p>
             </div>
+            <div className="p-2.5 rounded-lg bg-indigo-600 dark:bg-gradient-to-br dark:from-indigo-500 dark:to-purple-500 shadow-md group-hover:scale-105 transition-transform duration-200 flex-shrink-0 ml-3">
+              <Calendar className="h-5 w-5 text-white" />
+            </div>
           </div>
         </div>
-        <div className="card-glass p-6 shadow-soft">
-          <div className="flex items-center space-x-3">
-            <MapPin className="h-6 w-6 icon-primary" />
-            <div>
-              <p className="text-[var(--color-text-secondary)] text-sm">Countries</p>
-              <p className="text-2xl font-bold text-[var(--color-text-primary)]">
+        <div className="card-glass p-3 rounded-lg hover:shadow-lg transition-all duration-200 group relative overflow-hidden h-full flex flex-col bg-amber-50/50 dark:bg-amber-950/30">
+          <div className="absolute inset-0 bg-gradient-to-br from-amber-500/10 to-orange-500/10 dark:from-amber-500/15 dark:to-orange-500/15 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+          <div className="relative flex items-center justify-between flex-1">
+            <div className="min-w-0 flex-1">
+              <p className="text-xs font-medium text-slate-500 dark:text-slate-400 mb-1 uppercase tracking-wide">Countries</p>
+              <p className="text-2xl font-medium text-slate-700 dark:text-slate-200 mb-1">
                 {new Set(filteredTrials.map((t: any) => t.country)).size}
               </p>
+            </div>
+            <div className="p-2.5 rounded-lg bg-amber-600 dark:bg-gradient-to-br dark:from-amber-500 dark:to-orange-500 shadow-md group-hover:scale-105 transition-transform duration-200 flex-shrink-0 ml-3">
+              <MapPin className="h-5 w-5 text-white" />
             </div>
           </div>
         </div>
       </div>
 
-      {/* Data Sources */}
-      <div className="card-glass p-6 shadow-soft">
-        <div className="flex items-center space-x-2 mb-4">
-          <FileText className="h-5 w-5 icon-primary" />
-          <h3 className="text-lg font-semibold text-[var(--color-text-primary)]">Data Sources</h3>
+      {/* Clinical Trials Statistics - Compact */}
+      <div className="card-glass p-4 rounded-lg">
+        <div className="flex items-center gap-2 mb-4">
+          <Globe className="h-4 w-4 text-cyan-600 dark:text-cyan-400" />
+          <h3 className="text-base font-medium text-slate-700 dark:text-slate-200">Clinical Trials Statistics</h3>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-[var(--color-text-secondary)]">
-          <div>
-            <p className="font-medium text-[var(--color-text-primary)] mb-2">Primary Sources:</p>
-            <ul className="list-disc list-inside space-y-1 ml-2">
-              <li>ClinicalTrials.gov</li>
-              <li>WHO International Clinical Trials Registry Platform</li>
-              <li>Pan African Clinical Trials Registry</li>
-              <li>National regulatory authorities</li>
-            </ul>
-          </div>
-          <div>
-            <p className="font-medium text-[var(--color-text-primary)] mb-2">Additional Sources:</p>
-            <ul className="list-disc list-inside space-y-1 ml-2">
-              <li>Pharmaceutical company announcements</li>
-              <li>Medical research institutions</li>
-              <li>Academic publications</li>
-              <li>Industry reports and databases</li>
-            </ul>
-          </div>
-        </div>
-      </div>
-
-      {/* Clinical Trials Statistics with glassmorphism */}
-      <div className="card-glass p-6 shadow-soft">
-        <div className="flex items-center space-x-2 mb-6">
-          <Globe className="h-5 w-5 icon-primary" />
-          <h3 className="text-lg font-semibold text-[var(--color-text-primary)]">Clinical Trials Statistics</h3>
-        </div>
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
           {/* Highest completed trials by country */}
           <div className="card-glass p-4 shadow-soft">
             <h4 className="font-medium text-[var(--color-text-primary)] mb-4">Highest completed trials</h4>
@@ -356,131 +430,63 @@ const ClinicalTrialsPage: React.FC = () => {
         </div>
       </div>
 
-      {/* Filters with glassmorphism */}
-      <div className="card-glass p-6 shadow-soft">
-        <div className="flex items-center space-x-2 mb-4">
-          <Filter className="h-5 w-5 icon-primary" />
-          <h3 className="text-lg font-semibold text-[var(--color-text-primary)]">Filters</h3>
-        </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
-          <div className="relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-[var(--color-text-secondary)]" />
-            <input
-              type="text"
-              placeholder="Search trials, companies, or indications..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="input pl-10"
-            />
-          </div>
-          <select
-            value={selectedPhase}
-            onChange={(e) => setSelectedPhase(e.target.value)}
-            className="input"
-          >
-            {phases.map(phase => (
-              <option key={phase} value={phase}>Phase {phase}</option>
-            ))}
-          </select>
-          <select
-            value={selectedStatus}
-            onChange={(e) => setSelectedStatus(e.target.value)}
-            className="input"
-          >
-            {statuses.map(status => (
-              <option key={status} value={status}>{status}</option>
-            ))}
-          </select>
-          <select
-            value={selectedDateRange}
-            onChange={(e) => setSelectedDateRange(e.target.value)}
-            className="input"
-          >
-            <option value="All">All Dates</option>
-            <option value="last7days">Last 7 Days</option>
-            <option value="last30days">Last 30 Days</option>
-            <option value="last90days">Last 90 Days</option>
-            <option value="lastyear">Last Year</option>
-          </select>
-        </div>
-      </div>
-
-      {/* Trials Table with glassmorphism */}
-      <div className="card-glass overflow-hidden shadow-soft">
-        <div className="p-6 border-b border-[var(--color-divider-gray)]">
-          <h2 className="text-xl font-semibold text-[var(--color-text-primary)]">Clinical Trials</h2>
-        </div>
+      {/* Trials Table */}
+      <div className="card-glass overflow-hidden rounded-lg">
         <div className="overflow-x-auto">
           <table className="w-full">
-            <thead className="bg-[var(--color-background-default)]">
+            <thead className="bg-slate-50 dark:bg-slate-800/50 border-b border-slate-200 dark:border-slate-700">
               <tr>
-                <th className="px-6 py-4 text-left text-xs font-medium text-[var(--color-text-secondary)] uppercase tracking-wider">Trial ID</th>
-                <th className="px-6 py-4 text-left text-xs font-medium text-[var(--color-text-secondary)] uppercase tracking-wider">Company</th>
-                <th className="px-6 py-4 text-left text-xs font-medium text-[var(--color-text-secondary)] uppercase tracking-wider">Indication</th>
-                <th className="px-6 py-4 text-left text-xs font-medium text-[var(--color-text-secondary)] uppercase tracking-wider">Phase</th>
-                <th className="px-6 py-4 text-left text-xs font-medium text-[var(--color-text-secondary)] uppercase tracking-wider">Status</th>
-                <th className="px-6 py-4 text-left text-xs font-medium text-[var(--color-text-secondary)] uppercase tracking-wider">Sector</th>
-                <th className="px-6 py-4 text-left text-xs font-medium text-[var(--color-text-secondary)] uppercase tracking-wider">Country</th>
-                <th className="px-6 py-4 text-left text-xs font-medium text-[var(--color-text-secondary)] uppercase tracking-wider">Actions</th>
+                <th className="px-4 py-3 text-left text-xs font-medium text-slate-600 dark:text-slate-400 uppercase tracking-wider">Trial ID</th>
+                <th className="px-4 py-3 text-left text-xs font-medium text-slate-600 dark:text-slate-400 uppercase tracking-wider">Company</th>
+                <th className="px-4 py-3 text-left text-xs font-medium text-slate-600 dark:text-slate-400 uppercase tracking-wider">Indication</th>
+                <th className="px-4 py-3 text-left text-xs font-medium text-slate-600 dark:text-slate-400 uppercase tracking-wider">Phase</th>
+                <th className="px-4 py-3 text-left text-xs font-medium text-slate-600 dark:text-slate-400 uppercase tracking-wider">Status</th>
+                <th className="px-4 py-3 text-left text-xs font-medium text-slate-600 dark:text-slate-400 uppercase tracking-wider">Country</th>
+                <th className="px-4 py-3 text-left text-xs font-medium text-slate-600 dark:text-slate-400 uppercase tracking-wider">Actions</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-[var(--color-divider-gray)]">
+            <tbody className="divide-y divide-slate-200 dark:divide-slate-700">
               {filteredTrials.map((trial: any, index: number) => (
                 <tr 
                   key={`${trial.companyName}-${trial.trial_id}-${index}`} 
-                  className="hover:bg-[var(--color-background-default)] transition-colors cursor-pointer"
+                  className="hover:bg-slate-50/50 dark:hover:bg-slate-800/30 transition-colors cursor-pointer"
                   onClick={() => handleRowClick(trial)}
                 >
-                  <td className="px-6 py-4">
-                    <span className="font-mono text-sm text-[var(--color-primary-teal)]">{trial.trial_id}</span>
+                  <td className="px-4 py-3">
+                    <span className="font-mono text-xs text-cyan-600 dark:text-cyan-400">{trial.trial_id}</span>
                   </td>
-                  <td className="px-6 py-4">
-                    <div className="flex items-center">
-                      <div className="w-8 h-8 bg-black dark:bg-gray-700 rounded-lg flex items-center justify-center border border-black/20 dark:border-gray-600/30">
+                  <td className="px-4 py-3">
+                    <div className="flex items-center gap-2">
+                      <div className="w-8 h-8 bg-gradient-to-br from-cyan-500 to-teal-500 rounded-lg flex items-center justify-center flex-shrink-0">
                         <Building2 className="h-4 w-4 text-white" />
                       </div>
-                      <div className="ml-3">
-                        <div className="text-sm font-medium text-[var(--color-text-primary)]">{trial.companyName}</div>
-                      </div>
+                      <div className="text-sm font-medium text-slate-700 dark:text-slate-200 truncate max-w-[150px]">{trial.companyName}</div>
                     </div>
                   </td>
-                  <td className="px-6 py-4">
-                    <div className="text-sm text-[var(--color-text-primary)] font-medium">{trial.indication}</div>
+                  <td className="px-4 py-3">
+                    <div className="text-sm text-slate-700 dark:text-slate-200 font-medium truncate max-w-[200px]">{trial.indication}</div>
                   </td>
-                  <td className="px-6 py-4">
-                    <span className={`px-2 py-1 rounded text-xs font-medium ${getPhaseColor(trial.phase)}`}>
+                  <td className="px-4 py-3">
+                    <span className={`inline-flex px-2 py-1 rounded-full text-xs font-medium ${getPhaseColor(trial.phase)}`}>
                       Phase {trial.phase}
                     </span>
                   </td>
-                  <td className="px-6 py-4">
-                    <span className={`px-2 py-1 rounded text-xs font-medium ${getStatusColor(trial.status)}`}>
+                  <td className="px-4 py-3">
+                    <span className={`inline-flex px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(trial.status)}`}>
                       {trial.status}
                     </span>
                   </td>
-                  <td className="px-6 py-4 text-sm text-[var(--color-text-primary)]">{trial.sector}</td>
-                  <td className="px-6 py-4 text-sm text-[var(--color-text-primary)]">{trial.country}</td>
-                  <td className="px-6 py-4">
-                    <div className="flex items-center gap-2">
-                      <button
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          handleRowClick(trial);
-                        }}
-                        className="text-xs text-[var(--color-primary-teal)] hover:underline"
-                      >
-                        More details
-                      </button>
-                      <button
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          // TODO: Implement save functionality
-                          alert('Save functionality to be implemented');
-                        }}
-                        className="text-xs text-[var(--color-primary-teal)] hover:underline"
-                      >
-                        Save
-                      </button>
-                    </div>
+                  <td className="px-4 py-3 text-sm text-slate-600 dark:text-slate-400">{trial.country}</td>
+                  <td className="px-4 py-3">
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleRowClick(trial);
+                      }}
+                      className="text-xs text-cyan-600 dark:text-cyan-400 hover:underline"
+                    >
+                      Details
+                    </button>
                   </td>
                 </tr>
               ))}
@@ -489,119 +495,82 @@ const ClinicalTrialsPage: React.FC = () => {
         </div>
       </div>
 
-      {/* Trial Details Modal with glassmorphism */}
+      {/* Trial Details Modal */}
       {showTrialDetails && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-          <div className="card-glass p-6 max-w-4xl w-full mx-auto max-h-[600px] overflow-y-auto shadow-elevated">
+        <div className="fixed inset-0 bg-black/50 dark:bg-black/70 flex items-center justify-center z-50 p-4" onClick={() => { setShowTrialDetails(null); setShowAISummary(false); setAiSummaryText(''); }}>
+          <div className="card-glass p-6 max-w-4xl w-full mx-auto max-h-[90vh] overflow-y-auto shadow-xl bg-white dark:bg-slate-800 rounded-lg" onClick={(e) => e.stopPropagation()}>
             <div className="flex items-center justify-between mb-6">
               <div>
-                <h3 className="text-xl font-bold text-[var(--color-text-primary)]">{showTrialDetails.trial_id}</h3>
-                <p className="text-[var(--color-text-secondary)]">{showTrialDetails.companyName}</p>
+                <h3 className="text-xl font-medium text-slate-700 dark:text-slate-200">{showTrialDetails.trial_id || 'Trial Details'}</h3>
+                <p className="text-slate-600 dark:text-slate-400 mt-1">{showTrialDetails.companyName || 'Unknown Company'}</p>
               </div>
               <button 
                 onClick={() => { setShowTrialDetails(null); setShowAISummary(false); setAiSummaryText(''); }}
-                className="text-[var(--color-text-secondary)] hover:opacity-80"
+                className="text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 text-2xl leading-none"
               >
-                ✕
+                ×
               </button>
             </div>
             
-            <div className="grid grid-cols-3 gap-6 mb-6">
-              <div className="card-glass p-4 shadow-soft">
-                <p className="text-sm text-[var(--color-text-secondary)]">Indication</p>
-                <p className="text-lg font-bold text-[var(--color-text-primary)]">{showTrialDetails.indication}</p>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
+              <div className="card-glass p-4 rounded-lg bg-slate-50 dark:bg-slate-700/50">
+                <p className="text-sm text-slate-500 dark:text-slate-400 mb-1">Indication</p>
+                <p className="text-lg font-medium text-slate-700 dark:text-slate-200">{showTrialDetails.indication || showTrialDetails.medical_condition || 'Not specified'}</p>
               </div>
-              <div className="card-glass p-4 shadow-soft">
-                <p className="text-sm text-[var(--color-text-secondary)]">Phase</p>
-                <p className="text-lg font-bold text-[var(--color-text-primary)]">Phase {showTrialDetails.phase}</p>
+              <div className="card-glass p-4 rounded-lg bg-slate-50 dark:bg-slate-700/50">
+                <p className="text-sm text-slate-500 dark:text-slate-400 mb-1">Phase</p>
+                <p className="text-lg font-medium text-slate-700 dark:text-slate-200">Phase {showTrialDetails.phase || 'Unknown'}</p>
               </div>
-              <div className="card-glass p-4 shadow-soft">
-                <p className="text-sm text-[var(--color-text-secondary)]">Status</p>
-                <p className="text-lg font-bold text-[var(--color-text-primary)]">{showTrialDetails.status}</p>
+              <div className="card-glass p-4 rounded-lg bg-slate-50 dark:bg-slate-700/50">
+                <p className="text-sm text-slate-500 dark:text-slate-400 mb-1">Status</p>
+                <p className="text-lg font-medium text-slate-700 dark:text-slate-200">{showTrialDetails.status || 'Unknown'}</p>
               </div>
             </div>
 
             <div className="mb-6">
-              <h4 className="text-lg font-semibold text-[var(--color-text-primary)] mb-3">Trial Details</h4>
-              <div className="grid grid-cols-2 gap-4">
-                <div className="card-glass p-4 shadow-soft">
-                  <p className="text-sm text-[var(--color-text-secondary)] mb-1">Number of Trial Sites</p>
-                  <p className="text-base font-medium text-[var(--color-text-primary)]">{showTrialDetails.sites}</p>
+              <h4 className="text-lg font-medium text-slate-700 dark:text-slate-200 mb-3">Trial Information</h4>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="card-glass p-4 rounded-lg bg-slate-50 dark:bg-slate-700/50">
+                  <p className="text-sm text-slate-500 dark:text-slate-400 mb-1">Intervention</p>
+                  <p className="text-base font-medium text-slate-700 dark:text-slate-200">{showTrialDetails.intervention || 'Not specified'}</p>
                 </div>
-                <div className="card-glass p-4 shadow-soft">
-                  <p className="text-sm text-[var(--color-text-secondary)] mb-1">Principal Investigator</p>
-                  <p className="text-base font-medium text-[var(--color-text-primary)]">{showTrialDetails.principalInvestigator}</p>
+                <div className="card-glass p-4 rounded-lg bg-slate-50 dark:bg-slate-700/50">
+                  <p className="text-sm text-slate-500 dark:text-slate-400 mb-1">Country</p>
+                  <p className="text-base font-medium text-slate-700 dark:text-slate-200">{showTrialDetails.country || 'Unknown'}</p>
                 </div>
-                <div className="col-span-2 card-glass p-4 shadow-soft">
-                  <p className="text-sm text-[var(--color-text-secondary)] mb-1">Site Locations</p>
-                  <div className="flex flex-wrap gap-2 mt-1">
-                    {showTrialDetails.locations.map((location: string, idx: number) => (
-                      <span 
-                        key={idx} 
-                        className="chip bg-[var(--color-neutral-taupe)] text-[var(--color-text-primary)] px-2 py-1 rounded text-xs border border-[var(--color-divider-gray)]"
-                      >
-                        {location}
-                      </span>
-                    ))}
+                <div className="card-glass p-4 rounded-lg bg-slate-50 dark:bg-slate-700/50">
+                  <p className="text-sm text-slate-500 dark:text-slate-400 mb-1">Location</p>
+                  <p className="text-base font-medium text-slate-700 dark:text-slate-200">{showTrialDetails.location || 'Not specified'}</p>
+                </div>
+                <div className="card-glass p-4 rounded-lg bg-slate-50 dark:bg-slate-700/50">
+                  <p className="text-sm text-slate-500 dark:text-slate-400 mb-1">Sponsor</p>
+                  <p className="text-base font-medium text-slate-700 dark:text-slate-200">{showTrialDetails.sponsor || showTrialDetails.companyName || 'Unknown'}</p>
+                </div>
+                {showTrialDetails.start_date && (
+                  <div className="card-glass p-4 rounded-lg bg-slate-50 dark:bg-slate-700/50">
+                    <p className="text-sm text-slate-500 dark:text-slate-400 mb-1">Start Date</p>
+                    <p className="text-base font-medium text-slate-700 dark:text-slate-200">{new Date(showTrialDetails.start_date).toLocaleDateString()}</p>
                   </div>
-                </div>
-              </div>
-            </div>
-
-            {!showAISummary ? (
-              <button
-                onClick={generateAISummary}
-                className="btn-primary-elevated btn-sm flex items-center gap-2 mb-6"
-              >
-                <Sparkles className="h-4 w-4" />
-                <span>Generate AI Summary</span>
-              </button>
-            ) : (
-              <div className="mb-6">
-                <div className="flex items-center justify-between mb-3">
-                  <h4 className="text-lg font-semibold text-[var(--color-text-primary)] flex items-center">
-                    <Sparkles className="h-4 w-4 mr-2 icon-primary" />
-                    AI-Generated Summary
-                  </h4>
-                  <button
-                    onClick={() => setShowAISummary(false)}
-                    className="text-[var(--color-text-secondary)] hover:opacity-80 text-sm"
-                  >
-                    Hide
-                  </button>
-                </div>
-                
-                {aiSummaryLoading ? (
-                  <div className="card-glass p-4 shadow-soft flex items-center justify-center">
-                    <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-[var(--color-primary-teal)]"></div>
-                    <span className="ml-3 text-[var(--color-text-secondary)]">Generating summary...</span>
+                )}
+                {showTrialDetails.end_date && (
+                  <div className="card-glass p-4 rounded-lg bg-slate-50 dark:bg-slate-700/50">
+                    <p className="text-sm text-slate-500 dark:text-slate-400 mb-1">End Date</p>
+                    <p className="text-base font-medium text-slate-700 dark:text-slate-200">{new Date(showTrialDetails.end_date).toLocaleDateString()}</p>
                   </div>
-                ) : (
-                  <div className="card-glass p-4 shadow-soft">
-                    <div className="prose max-w-none">
-                      {aiSummaryText.split('\n').map((line: string, index: number) => {
-                        if (line.startsWith('##')) {
-                          return <h2 key={index} className="text-xl font-bold mt-4 mb-2 text-[var(--color-text-primary)]">{line.replace('##', '').trim()}</h2>;
-                        } else if (line.startsWith('###')) {
-                          return <h3 key={index} className="text-lg font-semibold mt-3 mb-2 text-[var(--color-text-primary)]">{line.replace('###', '').trim()}</h3>;
-                        } else if (line.startsWith('-')) {
-                          return <li key={index} className="ml-4 text-[var(--color-text-primary)]">{line.replace('-', '').trim()}</li>;
-                        } else if (line.trim() === '') {
-                          return <br key={index} />;
-                        } else {
-                          return <p key={index} className="mb-2 text-[var(--color-text-primary)]">{line}</p>;
-                        }
-                      })}
-                    </div>
+                )}
+                {showTrialDetails.nct_number && (
+                  <div className="card-glass p-4 rounded-lg bg-slate-50 dark:bg-slate-700/50">
+                    <p className="text-sm text-slate-500 dark:text-slate-400 mb-1">NCT Number</p>
+                    <p className="text-base font-medium text-slate-700 dark:text-slate-200 font-mono">{showTrialDetails.nct_number}</p>
                   </div>
                 )}
               </div>
-            )}
+            </div>
             
             <div className="flex space-x-3">
               <button
-                onClick={() => setShowTrialDetails(null)}
-                className="bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-900 dark:text-white px-6 py-2 rounded-lg transition-colors"
+                onClick={() => { setShowTrialDetails(null); setShowAISummary(false); setAiSummaryText(''); }}
+                className="bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 text-slate-900 dark:text-white px-6 py-2 rounded-lg transition-colors"
               >
                 Close
               </button>

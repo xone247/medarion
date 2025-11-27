@@ -105,7 +105,7 @@ const InvestorOverview = () => {
       {/* Header */}
       <div className="flex items-center justify-between border-b border-[var(--color-divider-gray)] pb-4">
         <div>
-          <h1 className="text-xl text-2xl font-bold text-[var(--color-text-primary)] mb-1">Investment Overview</h1>
+          <h1 className="text-xl text-2xl font-medium text-[var(--color-text-primary)] mb-1">Investment Overview</h1>
           <p className="text-[var(--color-text-secondary)]">Comprehensive view of African healthcare investments and market intelligence</p>
         </div>
         {canAI && (
@@ -122,7 +122,7 @@ const InvestorOverview = () => {
           <div className="flex items-center justify-between">
             <div>
               <p className="text-[var(--color-text-secondary)] text-sm font-medium">Deals & Grants</p>
-              <p className="text-xl text-2xl font-bold text-[var(--color-text-primary)] mt-1">{kpis.deals_and_grants || 0}</p>
+              <p className="text-xl text-2xl font-medium text-[var(--color-text-primary)] mt-1">{kpis.deals_and_grants || 0}</p>
               <p className="text-[var(--color-primary-teal)] text-sm mt-1">+12% vs last quarter</p>
             </div>
             <div className="bg-black dark:bg-gray-700 p-2 p-3 rounded-lg shadow-sm border border-black/20 dark:border-gray-600/30">
@@ -135,7 +135,7 @@ const InvestorOverview = () => {
           <div className="flex items-center justify-between">
             <div>
               <p className="text-[var(--color-text-secondary)] text-sm font-medium">Companies</p>
-              <p className="text-xl text-2xl font-bold text-[var(--color-text-primary)] mt-1">{kpis.companies || 0}</p>
+              <p className="text-xl text-2xl font-medium text-[var(--color-text-primary)] mt-1">{kpis.companies || 0}</p>
               <p className="text-[var(--color-primary-teal)] text-sm mt-1">+8% vs last quarter</p>
             </div>
             <div className="bg-black dark:bg-gray-700 p-2 p-3 rounded-lg shadow-sm border border-black/20 dark:border-gray-600/30">
@@ -148,7 +148,7 @@ const InvestorOverview = () => {
           <div className="flex items-center justify-between">
             <div>
               <p className="text-[var(--color-text-secondary)] text-sm font-medium">Investors</p>
-              <p className="text-xl text-2xl font-bold text-[var(--color-text-primary)] mt-1">{kpis.investors || 0}</p>
+              <p className="text-xl text-2xl font-medium text-[var(--color-text-primary)] mt-1">{kpis.investors || 0}</p>
               <p className="text-[var(--color-primary-teal)] text-sm mt-1">+5% vs last quarter</p>
             </div>
             <div className="bg-black dark:bg-gray-700 p-2 p-3 rounded-lg shadow-sm border border-black/20 dark:border-gray-600/30">
@@ -161,7 +161,7 @@ const InvestorOverview = () => {
           <div className="flex items-center justify-between">
             <div>
               <p className="text-[var(--color-text-secondary)] text-sm font-medium">Total Value (USD)</p>
-              <p className="text-xl text-2xl font-bold text-[var(--color-text-primary)] mt-1">
+              <p className="text-xl text-2xl font-medium text-[var(--color-text-primary)] mt-1">
                 {kpis.total_value_usd ? `$${(kpis.total_value_usd / 1000000).toFixed(1)}M` : '$0M'}
               </p>
               <p className="text-[var(--color-primary-teal)] text-sm mt-1">+18% vs last quarter</p>
@@ -184,7 +184,7 @@ const InvestorOverview = () => {
           <div className="bg-[var(--color-background-surface)] rounded-lg border border-[var(--color-divider-gray)] overflow-hidden shadow-sm">
             <div className="p-4 border-b border-[var(--color-divider-gray)] flex items-center justify-between">
               <div>
-                <h3 className="text-base text-lg font-semibold text-[var(--color-text-primary)]">African Investment Map</h3>
+                <h3 className="text-base text-lg font-medium text-[var(--color-text-primary)]">African Investment Map</h3>
                 <p className="text-xs text-sm text-[var(--color-text-secondary)] mt-1">
                   Interactive visualization of deal activity across Africa
                 </p>

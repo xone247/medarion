@@ -49,7 +49,7 @@ const DocumentationPage: React.FC<DocumentationPageProps> = ({ onBack }) => {
         return (
           <div className="space-y-8">
             <div>
-              <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">Getting Started</h2>
+              <h2 className="text-3xl font-medium text-gray-900 dark:text-white mb-4">Getting Started</h2>
               <p className="text-gray-600 dark:text-gray-300 mb-6">
                 Welcome to the Medarion API documentation. Our API provides comprehensive access to African healthcare 
                 investment data, company information, and market intelligence.
@@ -57,14 +57,14 @@ const DocumentationPage: React.FC<DocumentationPageProps> = ({ onBack }) => {
             </div>
 
             <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-6">
-              <h3 className="text-lg font-semibold text-blue-900 dark:text-blue-100 mb-2">Base URL</h3>
+              <h3 className="text-lg font-medium text-blue-900 dark:text-blue-100 mb-2">Base URL</h3>
               <code className="text-blue-800 dark:text-blue-200 bg-blue-100 dark:bg-blue-900 px-2 py-1 rounded">
                 https://api.medarion.com/v1
               </code>
             </div>
 
             <div>
-              <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">Quick Start</h3>
+              <h3 className="text-xl font-medium text-gray-900 dark:text-white mb-4">Quick Start</h3>
               <ol className="list-decimal list-inside space-y-3 text-gray-600 dark:text-gray-300">
                 <li>Sign up for a Medarion account and obtain your API key</li>
                 <li>Make your first API request to test connectivity</li>
@@ -74,7 +74,7 @@ const DocumentationPage: React.FC<DocumentationPageProps> = ({ onBack }) => {
             </div>
 
             <div>
-              <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">First API Call</h3>
+              <h3 className="text-xl font-medium text-gray-900 dark:text-white mb-4">First API Call</h3>
               <CodeBlock
                 id="first-call"
                 code={`curl -H "Authorization: Bearer YOUR_API_KEY" \\
@@ -85,7 +85,7 @@ const DocumentationPage: React.FC<DocumentationPageProps> = ({ onBack }) => {
             </div>
 
             <div className="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg p-6">
-              <h4 className="text-lg font-semibold text-yellow-900 dark:text-yellow-100 mb-2">Rate Limits</h4>
+              <h4 className="text-lg font-medium text-yellow-900 dark:text-yellow-100 mb-2">Rate Limits</h4>
               <div className="space-y-2 text-yellow-800 dark:text-yellow-200">
                 <p><strong>Free account:</strong> 5 requests per hour or less. Upgrade to paid for more access.</p>
                 <p><strong>Paid account:</strong> 20 exports per day.</p>
@@ -99,7 +99,7 @@ const DocumentationPage: React.FC<DocumentationPageProps> = ({ onBack }) => {
         return (
           <div className="space-y-8">
             <div>
-              <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">Authentication</h2>
+              <h2 className="text-3xl font-medium text-gray-900 dark:text-white mb-4">Authentication</h2>
               <p className="text-gray-600 dark:text-gray-300 mb-6">
                 The Medarion API uses API keys for authentication. Include your API key in the Authorization header 
                 of all requests.
@@ -107,7 +107,7 @@ const DocumentationPage: React.FC<DocumentationPageProps> = ({ onBack }) => {
             </div>
 
             <div>
-              <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">API Key Authentication</h3>
+              <h3 className="text-xl font-medium text-gray-900 dark:text-white mb-4">API Key Authentication</h3>
               <CodeBlock
                 id="auth-header"
                 code={`Authorization: Bearer YOUR_API_KEY`}
@@ -116,7 +116,7 @@ const DocumentationPage: React.FC<DocumentationPageProps> = ({ onBack }) => {
             </div>
 
             <div>
-              <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">JavaScript Example</h3>
+              <h3 className="text-xl font-medium text-gray-900 dark:text-white mb-4">JavaScript Example</h3>
               <CodeBlock
                 id="js-auth"
                 code={`const apiKey = 'your_api_key_here';
@@ -134,7 +134,7 @@ console.log(data);`}
             </div>
 
             <div>
-              <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">Python Example</h3>
+              <h3 className="text-xl font-medium text-gray-900 dark:text-white mb-4">Python Example</h3>
               <CodeBlock
                 id="python-auth"
                 code={`import requests
@@ -153,7 +153,7 @@ print(data)`}
             </div>
 
             <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-6">
-              <h4 className="text-lg font-semibold text-red-900 dark:text-red-100 mb-2">Security Best Practices</h4>
+              <h4 className="text-lg font-medium text-red-900 dark:text-red-100 mb-2">Security Best Practices</h4>
               <ul className="list-disc list-inside space-y-1 text-red-800 dark:text-red-200">
                 <li>Never expose your API key in client-side code</li>
                 <li>Store API keys securely using environment variables</li>
@@ -168,7 +168,7 @@ print(data)`}
         return (
           <div className="space-y-8">
             <div>
-              <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">API Reference</h2>
+              <h2 className="text-3xl font-medium text-gray-900 dark:text-white mb-4">API Reference</h2>
               <p className="text-gray-600 dark:text-gray-300 mb-6">
                 Complete reference for all available endpoints in the Medarion API.
               </p>
@@ -176,7 +176,7 @@ print(data)`}
 
             <div className="space-y-6">
               <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-6">
-                <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">Deals Endpoint</h3>
+                <h3 className="text-xl font-medium text-gray-900 dark:text-white mb-4">Deals Endpoint</h3>
                 <div className="mb-4">
                   <span className="bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 px-2 py-1 rounded text-sm font-mono">
                     GET
@@ -187,7 +187,7 @@ print(data)`}
                   Retrieve investment deals and grants data across African healthcare companies.
                 </p>
                 
-                <h4 className="font-semibold text-gray-900 dark:text-white mb-2">Query Parameters</h4>
+                <h4 className="font-medium text-gray-900 dark:text-white mb-2">Query Parameters</h4>
                 <div className="overflow-x-auto">
                   <table className="w-full text-sm">
                     <thead className="bg-gray-50 dark:bg-gray-700">
@@ -217,7 +217,7 @@ print(data)`}
                   </table>
                 </div>
 
-                <h4 className="font-semibold text-gray-900 dark:text-white mb-2 mt-4">Example Response</h4>
+                <h4 className="font-medium text-gray-900 dark:text-white mb-2 mt-4">Example Response</h4>
                 <CodeBlock
                   id="deals-response"
                   code={`{
@@ -244,7 +244,7 @@ print(data)`}
               </div>
 
               <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-6">
-                <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">Companies Endpoint</h3>
+                <h3 className="text-xl font-medium text-gray-900 dark:text-white mb-4">Companies Endpoint</h3>
                 <div className="mb-4">
                   <span className="bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 px-2 py-1 rounded text-sm font-mono">
                     GET
@@ -282,7 +282,7 @@ print(data)`}
         return (
           <div className="space-y-8">
             <div>
-              <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">Data Models</h2>
+              <h2 className="text-3xl font-medium text-gray-900 dark:text-white mb-4">Data Models</h2>
               <p className="text-gray-600 dark:text-gray-300 mb-6">
                 Detailed schemas for all data objects returned by the Medarion API.
               </p>
@@ -290,7 +290,7 @@ print(data)`}
 
             <div className="space-y-6">
               <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-6">
-                <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">Deal Object</h3>
+                <h3 className="text-xl font-medium text-gray-900 dark:text-white mb-4">Deal Object</h3>
                 <CodeBlock
                   id="deal-schema"
                   code={`{
@@ -311,7 +311,7 @@ print(data)`}
               </div>
 
               <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-6">
-                <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">Company Object</h3>
+                <h3 className="text-xl font-medium text-gray-900 dark:text-white mb-4">Company Object</h3>
                 <CodeBlock
                   id="company-schema"
                   code={`{
@@ -333,7 +333,7 @@ print(data)`}
               </div>
 
               <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-6">
-                <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">Clinical Trial Object</h3>
+                <h3 className="text-xl font-medium text-gray-900 dark:text-white mb-4">Clinical Trial Object</h3>
                 <CodeBlock
                   id="trial-schema"
                   code={`{
@@ -358,7 +358,7 @@ print(data)`}
         return (
           <div className="space-y-8">
             <div>
-              <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">Code Examples</h2>
+              <h2 className="text-3xl font-medium text-gray-900 dark:text-white mb-4">Code Examples</h2>
               <p className="text-gray-600 dark:text-gray-300 mb-6">
                 Practical examples showing how to integrate Medarion API into your applications.
               </p>
@@ -366,7 +366,7 @@ print(data)`}
 
             <div className="space-y-6">
               <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-6">
-                <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">React Integration</h3>
+                <h3 className="text-xl font-medium text-gray-900 dark:text-white mb-4">React Integration</h3>
                 <CodeBlock
                   id="react-example"
                   code={`import React, { useState, useEffect } from 'react';
@@ -420,7 +420,7 @@ export default MedarionDeals;`}
               </div>
 
               <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-6">
-                <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">Node.js Backend</h3>
+                <h3 className="text-xl font-medium text-gray-900 dark:text-white mb-4">Node.js Backend</h3>
                 <CodeBlock
                   id="nodejs-example"
                   code={`const express = require('express');
@@ -467,7 +467,7 @@ app.listen(3000, () => {
               </div>
 
               <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-6">
-                <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">Python Data Analysis</h3>
+                <h3 className="text-xl font-medium text-gray-900 dark:text-white mb-4">Python Data Analysis</h3>
                 <CodeBlock
                   id="python-analysis"
                   code={`import requests
@@ -535,14 +535,14 @@ print(trends)`}
         return (
           <div className="space-y-8">
             <div>
-              <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">Webhooks</h2>
+              <h2 className="text-3xl font-medium text-gray-900 dark:text-white mb-4">Webhooks</h2>
               <p className="text-gray-600 dark:text-gray-300 mb-6">
                 Set up webhooks to receive real-time notifications when new data is added to the Medarion platform.
               </p>
             </div>
 
             <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-6">
-              <h3 className="text-lg font-semibold text-blue-900 dark:text-blue-100 mb-2">Webhook Events</h3>
+              <h3 className="text-lg font-medium text-blue-900 dark:text-blue-100 mb-2">Webhook Events</h3>
               <ul className="list-disc list-inside space-y-1 text-blue-800 dark:text-blue-200">
                 <li><code>deal.created</code> - New investment deal added</li>
                 <li><code>company.created</code> - New company profile added</li>
@@ -553,7 +553,7 @@ print(trends)`}
 
             <div className="space-y-6">
               <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-6">
-                <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">Webhook Payload Example</h3>
+                <h3 className="text-xl font-medium text-gray-900 dark:text-white mb-4">Webhook Payload Example</h3>
                 <CodeBlock
                   id="webhook-payload"
                   code={`{
@@ -576,7 +576,7 @@ print(trends)`}
               </div>
 
               <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-6">
-                <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">Webhook Handler Example</h3>
+                <h3 className="text-xl font-medium text-gray-900 dark:text-white mb-4">Webhook Handler Example</h3>
                 <CodeBlock
                   id="webhook-handler"
                   code={`const express = require('express');
@@ -627,7 +627,7 @@ app.listen(3000);`}
             </div>
 
             <div className="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg p-6">
-              <h4 className="text-lg font-semibold text-yellow-900 dark:text-yellow-100 mb-2">Webhook Security</h4>
+              <h4 className="text-lg font-medium text-yellow-900 dark:text-yellow-100 mb-2">Webhook Security</h4>
               <p className="text-yellow-800 dark:text-yellow-200 mb-2">
                 All webhook payloads are signed with HMAC SHA256. Always verify the signature before processing webhook data.
               </p>

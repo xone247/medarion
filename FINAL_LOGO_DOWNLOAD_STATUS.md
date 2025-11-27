@@ -106,3 +106,10 @@ Successfully used browser tool to find and download:
 28 logos are ready to be used in the database seed script. The remaining logos can be added manually or through additional browser scraping sessions.
 
 
+
+
+
+
+
+
+

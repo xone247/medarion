@@ -82,7 +82,7 @@ const InvestorDashboard = () => {
 
       {/* Page Header - Compact */}
       <div className="mb-2">
-        <h1 className="text-2xl font-bold text-slate-700 dark:text-slate-200 mb-1">Investor Dashboard</h1>
+        <h1 className="text-2xl font-medium text-slate-700 dark:text-slate-200 mb-1">Investor Dashboard</h1>
         <p className="text-sm text-slate-500 dark:text-slate-400">Portfolio overview and investment opportunities</p>
       </div>
 
@@ -107,7 +107,7 @@ const InvestorDashboard = () => {
             <div className="p-1.5 bg-cyan-100 dark:bg-cyan-500/30 rounded-lg">
               <Building2 className="h-4 w-4 text-cyan-600 dark:text-cyan-400" />
             </div>
-            <h3 className="text-base font-semibold text-slate-700 dark:text-slate-200">Portfolio Companies</h3>
+            <h3 className="text-base font-medium text-slate-700 dark:text-slate-200">Portfolio Companies</h3>
           </div>
           <div className="space-y-2">
             {portfolioCompanies.map((company, index) => (
@@ -117,7 +117,7 @@ const InvestorDashboard = () => {
                   <p className="text-slate-500 dark:text-slate-400 text-xs truncate">{company.stage} • {company.investment}</p>
                 </div>
                 <div className="text-right flex-shrink-0 ml-2">
-                  <span className="text-cyan-600 dark:text-cyan-400 font-semibold text-sm">{company.growth}</span>
+                  <span className="text-cyan-600 dark:text-cyan-400 font-medium text-sm">{company.growth}</span>
                   <p className="text-slate-500 dark:text-slate-400 text-xs">{company.status}</p>
                 </div>
               </div>
@@ -130,7 +130,7 @@ const InvestorDashboard = () => {
             <div className="p-1.5 bg-indigo-100 dark:bg-indigo-500/30 rounded-lg">
               <Search className="h-4 w-4 text-indigo-600 dark:text-indigo-400" />
             </div>
-            <h3 className="text-base font-semibold text-slate-700 dark:text-slate-200">Deal Flow</h3>
+            <h3 className="text-base font-medium text-slate-700 dark:text-slate-200">Deal Flow</h3>
           </div>
           <div className="space-y-2">
             {dealFlow.map((deal, index) => (
@@ -140,7 +140,7 @@ const InvestorDashboard = () => {
                   <p className="text-slate-500 dark:text-slate-400 text-xs truncate">{deal.stage} • {deal.sector}</p>
                 </div>
                 <div className="text-right flex-shrink-0 ml-2">
-                  <span className="text-indigo-600 dark:text-indigo-400 font-semibold text-sm">{deal.amount}</span>
+                  <span className="text-indigo-600 dark:text-indigo-400 font-medium text-sm">{deal.amount}</span>
                   <p className="text-slate-500 dark:text-slate-400 text-xs">{deal.status}</p>
                 </div>
               </div>
@@ -153,7 +153,7 @@ const InvestorDashboard = () => {
       <div className="card-glass rounded-lg overflow-hidden">
         <div className="p-3 border-b border-slate-200 dark:border-slate-700 flex items-center justify-between">
           <div>
-            <h3 className="text-base font-semibold text-slate-700 dark:text-slate-200">Investment Opportunities Map</h3>
+            <h3 className="text-base font-medium text-slate-700 dark:text-slate-200">Investment Opportunities Map</h3>
             <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
               Explore investment opportunities across Africa
             </p>
@@ -204,8 +204,8 @@ const InvestorDashboard = () => {
                 )}
               </div>
               <p className="text-xs text-slate-500 dark:text-slate-400 mb-1">{insight.metric}</p>
-              <p className="text-xl font-bold text-slate-700 dark:text-slate-200">{insight.value}</p>
-              <p className="text-xs text-emerald-600 dark:text-emerald-400 mt-0.5 font-semibold">{insight.change}</p>
+              <p className="text-xl font-medium text-slate-700 dark:text-slate-200">{insight.value}</p>
+              <p className="text-xs text-emerald-600 dark:text-emerald-400 mt-0.5 font-medium">{insight.change}</p>
             </div>
           </div>
         ))}

@@ -329,7 +329,7 @@ try {
         notes TEXT,
         deal_size VARCHAR(50),
         timeline VARCHAR(50),
-        pipeline_stage ENUM('Lead', 'Qualified', 'Proposal', 'Negotiation', 'Closed Won', 'Closed Lost') DEFAULT 'Lead',
+        pipeline_stage ENUM('Lead', 'Qualified', 'Meeting Set', 'Due Diligence', 'Term Sheet', 'Closed Won', 'Closed Lost') DEFAULT 'Lead',
         probability_percent INT DEFAULT 0,
         next_action VARCHAR(255),
         next_action_date DATE,

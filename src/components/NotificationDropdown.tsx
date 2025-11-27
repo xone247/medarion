@@ -153,7 +153,7 @@ const NotificationDropdown: React.FC = () => {
       
       {/* Notification Counter - Positioned outside the button */}
       {unreadCount > 0 && (
-        <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs text-xs text-sm rounded-full min-w-[1.5rem] min-w-[1.75rem] h-6 h-7 px-1.5 px-2 flex items-center justify-center font-bold border-2 border-[var(--color-background-surface)] shadow-lg z-20 whitespace-nowrap">
+        <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs text-xs text-sm rounded-full min-w-[1.5rem] min-w-[1.75rem] h-6 h-7 px-1.5 px-2 flex items-center justify-center font-medium border-2 border-[var(--color-background-surface)] shadow-lg z-20 whitespace-nowrap">
           {unreadCount > 99 ? '99+' : unreadCount}
         </span>
       )}
@@ -165,7 +165,7 @@ const NotificationDropdown: React.FC = () => {
           <div className="p-4 border-b border-[var(--color-divider-gray)] bg-[var(--color-background-surface)]">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <h3 className="text-lg font-semibold text-[var(--color-text-primary)]">
+                <h3 className="text-lg font-medium text-[var(--color-text-primary)]">
                   Notifications
                 </h3>
                 {unreadCount > 0 && (

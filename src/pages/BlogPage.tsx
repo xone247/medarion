@@ -285,7 +285,7 @@ const BlogPage: React.FC<BlogPageProps> = ({ onBack }) => {
               {/* Categories Section */}
               <div className="bg-[var(--color-background-surface)] rounded-xl shadow-sm p-5 border border-[var(--color-divider-gray)] mb-6">
                 <div className="flex items-center justify-between mb-4">
-                  <h3 className="text-base font-semibold text-[var(--color-text-primary)] flex items-center gap-2">
+                  <h3 className="text-base font-medium text-[var(--color-text-primary)] flex items-center gap-2">
                     <Tag className="h-4 w-4 text-[var(--color-primary-teal)]" />
                     Categories
                   </h3>
@@ -335,7 +335,7 @@ const BlogPage: React.FC<BlogPageProps> = ({ onBack }) => {
                 {hasActiveFilters && (
                   <div className="mt-3 pt-3 border-t border-[var(--color-divider-gray)]">
                     <p className="text-xs text-[var(--color-text-secondary)]">
-                      Showing <span className="font-semibold text-[var(--color-primary-teal)]">{displayPosts.length}</span> {displayPosts.length === 1 ? 'article' : 'articles'}
+                      Showing <span className="font-medium text-[var(--color-primary-teal)]">{displayPosts.length}</span> {displayPosts.length === 1 ? 'article' : 'articles'}
                     </p>
                   </div>
                 )}
@@ -344,7 +344,7 @@ const BlogPage: React.FC<BlogPageProps> = ({ onBack }) => {
               {/* Blog Posts Section - Featured Large + Smaller Posts */}
               <section>
                 <div className="flex items-center justify-between mb-6">
-                  <h3 className="text-2xl font-bold text-[var(--color-text-primary)] flex items-center gap-3">
+                  <h3 className="text-2xl font-medium text-[var(--color-text-primary)] flex items-center gap-3">
                     <span className="w-1 h-8 bg-[var(--color-primary-teal)] rounded-full"></span>
                     {hasActiveFilters ? 'Search Results' : 'Latest Articles'}
                   </h3>
@@ -395,14 +395,14 @@ const BlogPage: React.FC<BlogPageProps> = ({ onBack }) => {
                                   onError={(e) => handleImageError(e, mainPost.id, mainPost.category)}
                                 />
                                 <div className="absolute top-4 left-4 z-10">
-                                  <span className="inline-flex items-center gap-2 px-3 py-1.5 bg-white/95 backdrop-blur-sm text-gray-800 rounded-full text-xs font-semibold shadow-lg">
+                                  <span className="inline-flex items-center gap-2 px-3 py-1.5 bg-white/95 backdrop-blur-sm text-gray-800 rounded-full text-xs font-medium shadow-lg">
                                     <Tag className="h-3 w-3" />
                                     {mainPost.category}
                                   </span>
                                 </div>
                                 {mainPost.featured && (
                                   <div className="absolute top-4 right-4 z-10">
-                                    <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-[var(--color-secondary-gold)] text-white rounded-full text-xs font-semibold shadow-lg">
+                                    <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-[var(--color-secondary-gold)] text-white rounded-full text-xs font-medium shadow-lg">
                                       <Star className="h-3 w-3 fill-current" />
                                       Featured
                                     </div>
@@ -411,7 +411,7 @@ const BlogPage: React.FC<BlogPageProps> = ({ onBack }) => {
                               </div>
                               {/* Content moved to white section below */}
                               <div className="p-6 bg-white dark:bg-[var(--color-background-surface)] flex-1 flex flex-col">
-                                <h2 className="text-2xl text-3xl font-bold text-[var(--color-text-primary)] mb-3 leading-tight line-clamp-2">
+                                <h2 className="text-2xl text-3xl font-medium text-[var(--color-text-primary)] mb-3 leading-tight line-clamp-2">
                                   {mainPost.title}
                                 </h2>
                                 <p className="text-sm text-[var(--color-text-secondary)] mb-4 leading-relaxed line-clamp-2 flex-1">
@@ -454,7 +454,7 @@ const BlogPage: React.FC<BlogPageProps> = ({ onBack }) => {
                               />
                             </div>
                             <div className="flex-1 min-w-0 flex flex-col justify-center">
-                              <h4 className="font-semibold text-[var(--color-text-primary)] text-sm leading-tight group-hover:text-[var(--color-primary-teal)] transition-colors mb-1 line-clamp-2">
+                              <h4 className="font-medium text-[var(--color-text-primary)] text-sm leading-tight group-hover:text-[var(--color-primary-teal)] transition-colors mb-1 line-clamp-2">
                                 {post.title}
                               </h4>
                               <div className="flex items-center gap-2 text-xs text-[var(--color-text-secondary)]">
@@ -483,13 +483,13 @@ const BlogPage: React.FC<BlogPageProps> = ({ onBack }) => {
                               onError={(e) => handleImageError(e, post.id, post.category)}
                             />
                             <div className="absolute top-2 left-2">
-                              <span className="px-2 py-1 bg-white/95 backdrop-blur-sm text-xs font-semibold rounded-lg text-gray-800 border border-white/40">
+                              <span className="px-2 py-1 bg-white/95 backdrop-blur-sm text-xs font-medium rounded-lg text-gray-800 border border-white/40">
                                 {post.category}
                               </span>
                             </div>
                           </div>
                           <div className="p-4 flex flex-col flex-1">
-                            <h4 className="font-semibold text-[var(--color-text-primary)] text-sm leading-snug group-hover:text-[var(--color-primary-teal)] transition-colors mb-2 line-clamp-2">
+                            <h4 className="font-medium text-[var(--color-text-primary)] text-sm leading-snug group-hover:text-[var(--color-primary-teal)] transition-colors mb-2 line-clamp-2">
                               {post.title}
                             </h4>
                             <div className="flex items-center gap-2 text-xs text-[var(--color-text-secondary)] mt-auto">
@@ -545,7 +545,7 @@ const BlogPage: React.FC<BlogPageProps> = ({ onBack }) => {
               {/* Videos Section - Featured Large + Smaller Videos */}
               <section className="mt-8">
                 <div className="flex items-center justify-between mb-6">
-                  <h3 className="text-2xl font-bold text-[var(--color-text-primary)] flex items-center gap-3">
+                  <h3 className="text-2xl font-medium text-[var(--color-text-primary)] flex items-center gap-3">
                     <span className="w-1 h-8 bg-[var(--color-primary-teal)] rounded-full"></span>
                     <Video className="h-6 w-6 text-[var(--color-primary-teal)]" />
                     Videos
@@ -625,7 +625,7 @@ const BlogPage: React.FC<BlogPageProps> = ({ onBack }) => {
                                 );
                               })()}
                               <div className="absolute top-4 left-4 z-10">
-                                <span className="inline-flex items-center gap-2 px-3 py-1.5 bg-white/95 backdrop-blur-sm text-gray-800 rounded-full text-xs font-semibold shadow-lg">
+                                <span className="inline-flex items-center gap-2 px-3 py-1.5 bg-white/95 backdrop-blur-sm text-gray-800 rounded-full text-xs font-medium shadow-lg">
                                   <Video className="h-3 w-3" />
                                   Video
                                 </span>
@@ -633,7 +633,7 @@ const BlogPage: React.FC<BlogPageProps> = ({ onBack }) => {
                             </div>
                             {/* Content moved to white section below */}
                             <div className="p-6 bg-white dark:bg-[var(--color-background-surface)] flex-1 flex flex-col">
-                              <h2 className="text-2xl text-3xl font-bold text-[var(--color-text-primary)] mb-3 leading-tight line-clamp-2">
+                              <h2 className="text-2xl text-3xl font-medium text-[var(--color-text-primary)] mb-3 leading-tight line-clamp-2">
                                 {mainVideo.title}
                               </h2>
                               {mainVideo.description && (
@@ -712,7 +712,7 @@ const BlogPage: React.FC<BlogPageProps> = ({ onBack }) => {
                                 })()}
                               </div>
                               <div className="flex-1 min-w-0 flex flex-col justify-center">
-                                <h4 className="font-semibold text-[var(--color-text-primary)] text-sm leading-tight group-hover:text-[var(--color-primary-teal)] transition-colors mb-1 line-clamp-2">
+                                <h4 className="font-medium text-[var(--color-text-primary)] text-sm leading-tight group-hover:text-[var(--color-primary-teal)] transition-colors mb-1 line-clamp-2">
                                   {video.title}
                                 </h4>
                                 <div className="flex items-center gap-2 text-xs text-[var(--color-text-secondary)]">
@@ -777,7 +777,7 @@ const BlogPage: React.FC<BlogPageProps> = ({ onBack }) => {
                               })()}
                             </div>
                             <div className="p-4 flex flex-col flex-1">
-                              <h4 className="font-semibold text-[var(--color-text-primary)] text-sm leading-snug group-hover:text-[var(--color-primary-teal)] transition-colors mb-2 line-clamp-2">
+                              <h4 className="font-medium text-[var(--color-text-primary)] text-sm leading-snug group-hover:text-[var(--color-primary-teal)] transition-colors mb-2 line-clamp-2">
                                 {video.title}
                               </h4>
                               <div className="flex items-center gap-2 text-xs text-[var(--color-text-secondary)] mt-auto">

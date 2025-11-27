@@ -51,7 +51,7 @@ const AboutPage: React.FC<AboutPageProps> = ({ onBack }) => {
                 <div className="p-3 rounded-xl bg-black/10 dark:bg-white/10">
                   <Target className="h-6 w-6 text-black dark:text-white" />
                 </div>
-                <h2 className="text-xl sm:text-2xl md:text-3xl font-semibold text-[var(--color-text-primary)]">Our Mission</h2>
+                <h2 className="text-xl sm:text-2xl md:text-3xl font-medium text-[var(--color-text-primary)]">Our Mission</h2>
               </div>
               <p className="text-base sm:text-lg text-[var(--color-text-secondary)] leading-relaxed">
                 To democratize access to AI and insights empowering startups, investors, healthcare professionals, and policymakers to make informed decisions that improve outcomes across Africa. We believe that better AI and better data lead to better solutions for the continent.
@@ -64,7 +64,7 @@ const AboutPage: React.FC<AboutPageProps> = ({ onBack }) => {
                 <div className="p-3 rounded-xl bg-black/10 dark:bg-white/10">
                   <Globe className="h-6 w-6 text-black dark:text-white" />
                 </div>
-                <h2 className="text-xl sm:text-2xl md:text-3xl font-semibold text-[var(--color-text-primary)]">Our Vision</h2>
+                <h2 className="text-xl sm:text-2xl md:text-3xl font-medium text-[var(--color-text-primary)]">Our Vision</h2>
               </div>
               <p className="text-base sm:text-lg text-[var(--color-text-secondary)] leading-relaxed">
                 A future where every African can achieve meaningful transformation, supported by a thriving ecosystem of innovative companies, strategic investments, and data-driven policies. We envision Africa as a global leader in innovation.
@@ -82,7 +82,7 @@ const AboutPage: React.FC<AboutPageProps> = ({ onBack }) => {
         >
           <div className="max-w-screen-2xl mx-auto px-6 md:px-8 lg:px-12 xl:px-16">
             <div className="text-center mb-12 md:mb-16">
-              <h2 className="text-xl sm:text-2xl md:text-3xl font-semibold text-[var(--color-text-primary)] mb-4">
+              <h2 className="text-xl sm:text-2xl md:text-3xl font-medium text-[var(--color-text-primary)] mb-4">
                 Medarion by the Numbers
               </h2>
               <p className="text-base sm:text-lg text-[var(--color-text-secondary)] max-w-2xl mx-auto">
@@ -94,28 +94,28 @@ const AboutPage: React.FC<AboutPageProps> = ({ onBack }) => {
               <div className="inline-flex items-center justify-center p-4 rounded-xl bg-black/10 dark:bg-white/10 mb-4">
                 <Globe className="h-8 w-8 text-black dark:text-white" />
               </div>
-              <div className="text-3xl sm:text-4xl md:text-5xl font-bold text-[var(--color-text-primary)] mb-2">35+</div>
+              <div className="text-3xl sm:text-4xl md:text-5xl font-medium text-[var(--color-text-primary)] mb-2">35+</div>
               <div className="text-sm sm:text-base text-[var(--color-text-secondary)] font-medium">African Countries</div>
             </div>
             <div className="text-center p-8 md:p-10 rounded-xl bg-white dark:bg-[var(--color-background-default)] border border-[var(--color-divider-gray)]/20 shadow-sm hover:shadow-md transition-shadow duration-300">
               <div className="inline-flex items-center justify-center p-4 rounded-xl bg-black/10 dark:bg-white/10 mb-4">
                 <TrendingUp className="h-8 w-8 text-black dark:text-white" />
               </div>
-              <div className="text-3xl sm:text-4xl md:text-5xl font-bold text-[var(--color-text-primary)] mb-2">500+</div>
+              <div className="text-3xl sm:text-4xl md:text-5xl font-medium text-[var(--color-text-primary)] mb-2">500+</div>
               <div className="text-sm sm:text-base text-[var(--color-text-secondary)] font-medium">Healthcare Companies</div>
             </div>
             <div className="text-center p-8 md:p-10 rounded-xl bg-white dark:bg-[var(--color-background-default)] border border-[var(--color-divider-gray)]/20 shadow-sm hover:shadow-md transition-shadow duration-300">
               <div className="inline-flex items-center justify-center p-4 rounded-xl bg-black/10 dark:bg-white/10 mb-4">
                 <Award className="h-8 w-8 text-black dark:text-white" />
               </div>
-              <div className="text-3xl sm:text-4xl md:text-5xl font-bold text-[var(--color-text-primary)] mb-2">$2.5B+</div>
+              <div className="text-3xl sm:text-4xl md:text-5xl font-medium text-[var(--color-text-primary)] mb-2">$2.5B+</div>
               <div className="text-sm sm:text-base text-[var(--color-text-secondary)] font-medium">Investment Data Tracked</div>
             </div>
             <div className="text-center p-8 md:p-10 rounded-xl bg-white dark:bg-[var(--color-background-default)] border border-[var(--color-divider-gray)]/20 shadow-sm hover:shadow-md transition-shadow duration-300">
               <div className="inline-flex items-center justify-center p-4 rounded-xl bg-black/10 dark:bg-white/10 mb-4">
                 <Users className="h-8 w-8 text-black dark:text-white" />
               </div>
-              <div className="text-3xl sm:text-4xl md:text-5xl font-bold text-[var(--color-text-primary)] mb-2">1000+</div>
+              <div className="text-3xl sm:text-4xl md:text-5xl font-medium text-[var(--color-text-primary)] mb-2">1000+</div>
               <div className="text-sm sm:text-base text-[var(--color-text-secondary)] font-medium">Platform Users</div>
             </div>
           </div>
@@ -131,7 +131,7 @@ const AboutPage: React.FC<AboutPageProps> = ({ onBack }) => {
         >
           <div className="max-w-screen-2xl mx-auto px-6 md:px-8 lg:px-12 xl:px-16">
             <div className="text-center mb-12 md:mb-16">
-              <h2 className="text-xl sm:text-2xl md:text-3xl font-semibold text-[var(--color-text-primary)] mb-4">
+              <h2 className="text-xl sm:text-2xl md:text-3xl font-medium text-[var(--color-text-primary)] mb-4">
                 Our Values
               </h2>
               <p className="text-base sm:text-lg text-[var(--color-text-secondary)] max-w-2xl mx-auto">
@@ -143,7 +143,7 @@ const AboutPage: React.FC<AboutPageProps> = ({ onBack }) => {
               <div className="inline-flex items-center justify-center p-4 rounded-xl bg-black/10 dark:bg-white/10 mb-6">
                 <Award className="h-10 w-10 text-black dark:text-white" />
               </div>
-              <h3 className="text-lg sm:text-xl font-semibold text-[var(--color-text-primary)] mb-4">Data Integrity</h3>
+              <h3 className="text-lg sm:text-xl font-medium text-[var(--color-text-primary)] mb-4">Data Integrity</h3>
               <p className="text-sm sm:text-base text-[var(--color-text-secondary)] leading-relaxed">
                 We maintain the highest standards of data accuracy and reliability, ensuring our users can make informed decisions.
               </p>
@@ -152,7 +152,7 @@ const AboutPage: React.FC<AboutPageProps> = ({ onBack }) => {
               <div className="inline-flex items-center justify-center p-4 rounded-xl bg-black/10 dark:bg-white/10 mb-6">
                 <Zap className="h-10 w-10 text-black dark:text-white" />
               </div>
-              <h3 className="text-lg sm:text-xl font-semibold text-[var(--color-text-primary)] mb-4">Innovation</h3>
+              <h3 className="text-lg sm:text-xl font-medium text-[var(--color-text-primary)] mb-4">Innovation</h3>
               <p className="text-sm sm:text-base text-[var(--color-text-secondary)] leading-relaxed">
                 We leverage cutting-edge technology to solve complex challenges and drive meaningful change.
               </p>
@@ -161,7 +161,7 @@ const AboutPage: React.FC<AboutPageProps> = ({ onBack }) => {
               <div className="inline-flex items-center justify-center p-4 rounded-xl bg-black/10 dark:bg-white/10 mb-6">
                 <Users className="h-10 w-10 text-black dark:text-white" />
               </div>
-              <h3 className="text-lg sm:text-xl font-semibold text-[var(--color-text-primary)] mb-4">Collaboration</h3>
+              <h3 className="text-lg sm:text-xl font-medium text-[var(--color-text-primary)] mb-4">Collaboration</h3>
               <p className="text-sm sm:text-base text-[var(--color-text-secondary)] leading-relaxed">
                 We believe in the power of partnerships and community to accelerate innovation across Africa.
               </p>
@@ -179,7 +179,7 @@ const AboutPage: React.FC<AboutPageProps> = ({ onBack }) => {
         >
           <div className="max-w-screen-2xl mx-auto px-6 md:px-8 lg:px-12 xl:px-16">
             <div className="max-w-3xl mx-auto space-y-6">
-            <h2 className="text-xl sm:text-2xl md:text-3xl font-semibold text-[var(--color-text-primary)]">
+            <h2 className="text-xl sm:text-2xl md:text-3xl font-medium text-[var(--color-text-primary)]">
               Ready to transform Africa's ecosystem?
             </h2>
             <p className="text-base sm:text-lg text-[var(--color-text-secondary)] leading-relaxed">
@@ -188,7 +188,7 @@ const AboutPage: React.FC<AboutPageProps> = ({ onBack }) => {
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-4">
               <a 
                 href="https://medarion.africa" 
-                className="inline-flex items-center gap-2 py-3 px-8 rounded-lg font-semibold hover:opacity-90 transition-all duration-200 text-base sm:text-lg shadow-md hover:shadow-lg"
+                className="inline-flex items-center gap-2 py-3 px-8 rounded-lg font-medium hover:opacity-90 transition-all duration-200 text-base sm:text-lg shadow-md hover:shadow-lg"
                 style={{
                   backgroundColor: 'var(--color-primary-teal)',
                   color: theme === 'dark' ? '#000000' : '#FFFFFF'
@@ -201,7 +201,7 @@ const AboutPage: React.FC<AboutPageProps> = ({ onBack }) => {
               </a>
               <a 
                 href="/contact" 
-                className="inline-flex items-center gap-2 bg-transparent text-black dark:text-white py-3 px-8 rounded-lg font-semibold hover:bg-black/10 dark:hover:bg-white/10 transition-all duration-200 text-base sm:text-lg border-2 border-black dark:border-white"
+                className="inline-flex items-center gap-2 bg-transparent text-black dark:text-white py-3 px-8 rounded-lg font-medium hover:bg-black/10 dark:hover:bg-white/10 transition-all duration-200 text-base sm:text-lg border-2 border-black dark:border-white"
               >
                 Contact Us
                 <Star className="h-5 w-5" />

@@ -57,7 +57,7 @@ const AlertModal: React.FC<AlertModalProps> = ({
           </div>
           <div className="flex-1">
             <div className="flex items-start justify-between mb-2">
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+              <h3 className="text-lg font-medium text-gray-900 dark:text-white">
                 {title}
               </h3>
               <button

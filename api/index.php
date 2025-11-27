@@ -106,11 +106,12 @@ switch ($path) {
             include 'countries/get_country_investment.php';
         }
         break;
-    case 'crm/investors':
-        if ($method === 'GET' || $method === 'POST' || $method === 'PUT' || $method === 'PATCH' || $method === 'DELETE') {
-            include 'crm/get_crm_investors.php';
-        }
-        break;
+    // CRM endpoints are handled by Node.js backend at /api/admin/crm-investors
+    // case 'crm/investors':
+    //     if ($method === 'GET' || $method === 'POST' || $method === 'PUT' || $method === 'PATCH' || $method === 'DELETE') {
+    //         include 'crm/get_crm_investors.php';
+    //     }
+    //     break;
     case 'companies':
         if ($method === 'GET') {
             include 'companies/get_companies.php';

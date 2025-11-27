@@ -7,7 +7,7 @@ const DemoAccountBanner = () => {
       <div className="flex items-start space-x-3">
         <Info className="h-5 w-5 text-[var(--color-primary-teal)] mt-0.5 flex-shrink-0" />
         <div className="flex-1">
-          <h3 className="text-lg font-semibold text-[var(--color-text-primary)] mb-2">
+          <h3 className="text-lg font-medium text-[var(--color-text-primary)] mb-2">
             Demo Platform Access
           </h3>
           <p className="text-[var(--color-text-secondary)] text-sm mb-3">

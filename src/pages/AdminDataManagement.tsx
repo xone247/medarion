@@ -72,7 +72,7 @@ const AdminDataManagement: React.FC = () => {
       <div className="page-container">
         <div className="card-glass shadow-soft p-8 text-center">
           <Shield className="w-16 h-16 mx-auto mb-4 text-[var(--color-error)]" />
-          <h2 className="text-2xl font-bold text-[var(--color-text-primary)] mb-2">Access Denied</h2>
+          <h2 className="text-2xl font-medium text-[var(--color-text-primary)] mb-2">Access Denied</h2>
           <p className="text-[var(--color-text-secondary)]">You need admin permissions to access this page.</p>
         </div>
       </div>
@@ -413,7 +413,7 @@ const AdminDataManagement: React.FC = () => {
           <div className="flex items-center gap-3">
             <Database className="w-8 h-8 text-[var(--color-primary-teal)]" />
             <div>
-              <h1 className="text-2xl font-bold text-[var(--color-text-primary)]">Admin Data Management</h1>
+              <h1 className="text-2xl font-medium text-[var(--color-text-primary)]">Admin Data Management</h1>
               <p className="text-[var(--color-text-secondary)]">Manage all platform data and AI integrations</p>
             </div>
           </div>
@@ -433,7 +433,7 @@ const AdminDataManagement: React.FC = () => {
       <div className="grid grid-cols-4 gap-6">
         {/* Table Selection Sidebar */}
         <div className="card-glass shadow-soft p-4">
-          <h3 className="text-lg font-semibold text-[var(--color-text-primary)] mb-4">Data Tables</h3>
+          <h3 className="text-lg font-medium text-[var(--color-text-primary)] mb-4">Data Tables</h3>
           <div className="space-y-2">
             {adminTables.map((table) => (
               <button
@@ -461,7 +461,7 @@ const AdminDataManagement: React.FC = () => {
                 <div className="flex items-center justify-between mb-4">
                   <div className="flex items-center gap-3">
                     {currentTable?.icon}
-                    <h2 className="text-xl font-semibold text-[var(--color-text-primary)]">
+                    <h2 className="text-xl font-medium text-[var(--color-text-primary)]">
                       {currentTable?.displayName}
                     </h2>
                     <span className="px-2 py-1 bg-[var(--color-background-default)] rounded text-sm text-[var(--color-text-secondary)]">
@@ -581,7 +581,7 @@ const AdminDataManagement: React.FC = () => {
           ) : (
             <div className="card-glass shadow-soft p-8 text-center">
               <Database className="w-16 h-16 mx-auto mb-4 text-[var(--color-text-secondary)]" />
-              <h3 className="text-xl font-semibold text-[var(--color-text-primary)] mb-2">Select a Data Table</h3>
+              <h3 className="text-xl font-medium text-[var(--color-text-primary)] mb-2">Select a Data Table</h3>
               <p className="text-[var(--color-text-secondary)]">Choose a table from the sidebar to start managing data.</p>
             </div>
           )}
@@ -593,7 +593,7 @@ const AdminDataManagement: React.FC = () => {
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="card-glass shadow-elevated p-6 w-full max-w-2xl max-h-[700px] overflow-y-auto">
             <div className="flex items-center justify-between mb-6">
-              <h3 className="text-xl font-semibold text-[var(--color-text-primary)]">
+              <h3 className="text-xl font-medium text-[var(--color-text-primary)]">
                 {editingRecord ? 'Edit Record' : 'Create New Record'}
               </h3>
               <button
@@ -694,7 +694,7 @@ const AdminDataManagement: React.FC = () => {
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="card-glass shadow-elevated p-6 w-full max-w-md">
             <div className="flex items-center justify-between mb-6">
-              <h3 className="text-xl font-semibold text-[var(--color-text-primary)]">Import Data</h3>
+              <h3 className="text-xl font-medium text-[var(--color-text-primary)]">Import Data</h3>
               <button
                 onClick={() => setShowImportModal(false)}
                 className="p-1 text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)]"

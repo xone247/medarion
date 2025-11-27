@@ -34,13 +34,13 @@ const MostActiveInvestorsWidget: React.FC = () => {
     <div className="bg-white dark:bg-gray-800 p-4 p-6 rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm">
       <div className="flex items-center space-x-2 mb-4">
         <Users className="h-5 w-5 text-primary-400" />
-        <h3 className="text-base text-lg font-semibold text-gray-900 dark:text-white">Most Active Investors</h3>
+        <h3 className="text-base text-lg font-medium text-gray-900 dark:text-white">Most Active Investors</h3>
       </div>
       <div className="space-y-3">
         {topInvestors.map((investor, index) => (
           <div key={investor.name} className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors cursor-pointer shadow-sm border border-gray-200 dark:border-gray-600">
             <div className="flex items-center space-x-3">
-              <div className="w-8 h-8 bg-primary-600 rounded-full flex items-center justify-center text-white font-bold text-sm border border-primary-700 flex-shrink-0">
+              <div className="w-8 h-8 bg-primary-600 rounded-full flex items-center justify-center text-white font-medium text-sm border border-primary-700 flex-shrink-0">
                 {index + 1}
               </div>
               <div>
@@ -49,7 +49,7 @@ const MostActiveInvestorsWidget: React.FC = () => {
               </div>
             </div>
             <div className="text-right">
-              <p className="text-sm text-base font-bold text-accent-600 dark:text-accent-500">${(investor.totalInvested / 1000000).toFixed(1)}M</p>
+              <p className="text-sm text-base font-medium text-accent-600 dark:text-accent-500">${(investor.totalInvested / 1000000).toFixed(1)}M</p>
               <p className="text-xs text-gray-600 dark:text-gray-400">Total Value</p>
             </div>
           </div>

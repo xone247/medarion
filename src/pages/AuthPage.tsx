@@ -233,7 +233,7 @@ const AuthPage: React.FC<AuthPageProps> = ({ onBack }) => {
         {/* Left showcase panel (hidden on small screens) */}
         <div className="hidden lg:flex flex-col justify-between rounded-2xl p-8 md:p-10 border border-[var(--color-divider-gray)]/20 bg-[var(--color-background-surface)] shadow-lg hover:shadow-xl transition-shadow duration-300">
           <div>
-            <h2 className="text-3xl md:text-4xl font-semibold text-[var(--color-text-primary)] leading-tight">Sign in to continue</h2>
+            <h2 className="text-3xl md:text-4xl font-medium text-[var(--color-text-primary)] leading-tight">Sign in to continue</h2>
             <p className="mt-4 text-base md:text-lg text-[var(--color-text-secondary)] leading-relaxed">Market intelligence, clinical trials, investors, and grants at your fingertips.</p>
             <ul className="mt-8 space-y-4">
               <li className="flex items-start gap-4">
@@ -265,7 +265,7 @@ const AuthPage: React.FC<AuthPageProps> = ({ onBack }) => {
             <div className="mb-6">
               <button
                 onClick={() => setShowSignup(true)}
-                className="w-full py-3 px-6 rounded-lg border-2 border-black dark:border-white text-black dark:text-white hover:bg-black/10 dark:hover:bg-white/10 transition-all duration-200 flex items-center justify-center gap-2 font-semibold"
+                className="w-full py-3 px-6 rounded-lg border-2 border-black dark:border-white text-black dark:text-white hover:bg-black/10 dark:hover:bg-white/10 transition-all duration-200 flex items-center justify-center gap-2 font-medium"
               >
                 <UserPlus size={18} />
                 <span>Create New Account</span>
@@ -315,7 +315,7 @@ const AuthPage: React.FC<AuthPageProps> = ({ onBack }) => {
                         <Icon className="h-5 w-5 text-[var(--color-primary-teal)]" />
                       </div>
                       <div className="flex-1">
-                        <div className="font-semibold text-[var(--color-text-primary)] mb-1">{option.label}</div>
+                        <div className="font-medium text-[var(--color-text-primary)] mb-1">{option.label}</div>
                         <div className="text-xs text-[var(--color-text-secondary)] leading-relaxed">{option.description}</div>
                       </div>
                     </button>
@@ -443,7 +443,7 @@ const AuthPage: React.FC<AuthPageProps> = ({ onBack }) => {
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full bg-black dark:bg-white hover:opacity-90 dark:hover:opacity-80 disabled:opacity-50 text-white dark:text-black py-3 px-6 rounded-lg transition-all duration-200 flex items-center justify-center gap-2 font-semibold shadow-md hover:shadow-lg disabled:cursor-not-allowed"
+                className="w-full bg-black dark:bg-white hover:opacity-90 dark:hover:opacity-80 disabled:opacity-50 text-white dark:text-black py-3 px-6 rounded-lg transition-all duration-200 flex items-center justify-center gap-2 font-medium shadow-md hover:shadow-lg disabled:cursor-not-allowed"
               >
                 {loading ? (
                   <>

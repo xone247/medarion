@@ -78,7 +78,7 @@ const MonthlyDealflowChart: React.FC = () => {
   return (
     <div className="tile">
       <div className="tile-header">
-        <h3 className="text-base text-lg font-semibold text-[var(--color-text-primary)]">Monthly Dealflow</h3>
+        <h3 className="text-base text-lg font-medium text-[var(--color-text-primary)]">Monthly Dealflow</h3>
       </div>
       <div className="h-56 h-80">
         <ResponsiveContainer width="100%" height="100%">

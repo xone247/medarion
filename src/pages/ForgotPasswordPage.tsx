@@ -54,7 +54,7 @@ const ForgotPasswordPage: React.FC = () => {
               <div className="w-16 h-16 bg-green-100 dark:bg-green-900/20 rounded-full flex items-center justify-center mx-auto mb-4">
                 <Mail className="w-8 h-8 text-green-600 dark:text-green-400" />
               </div>
-              <h1 className="text-2xl font-bold text-[var(--color-text-primary)] mb-2">
+              <h1 className="text-2xl font-medium text-[var(--color-text-primary)] mb-2">
                 Check Your Email
               </h1>
               <p className="text-[var(--color-text-secondary)]">
@@ -93,7 +93,7 @@ const ForgotPasswordPage: React.FC = () => {
               <ArrowLeft className="w-4 h-4 mr-2" />
               Back to Sign In
             </Link>
-            <h1 className="text-2xl font-bold text-[var(--color-text-primary)] mb-2">
+            <h1 className="text-2xl font-medium text-[var(--color-text-primary)] mb-2">
               Forgot Password?
             </h1>
             <p className="text-[var(--color-text-secondary)]">

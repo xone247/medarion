@@ -110,7 +110,7 @@ const SignupPage: React.FC<SignupPageProps> = ({ onBack, onSignup }) => {
   const renderStep1 = () => (
     <div className="space-y-8">
       <div className="text-center">
-        <h2 className="text-2xl md:text-3xl font-semibold text-[var(--color-text-primary)] mb-3">Choose Your Account Type</h2>
+        <h2 className="text-2xl md:text-3xl font-medium text-[var(--color-text-primary)] mb-3">Choose Your Account Type</h2>
         <p className="text-base text-[var(--color-text-secondary)]">Select the type of account that best describes your role</p>
       </div>
       
@@ -126,7 +126,7 @@ const SignupPage: React.FC<SignupPageProps> = ({ onBack, onSignup }) => {
                 {accountType.icon}
               </div>
               <div className="flex-1">
-                <h3 className="font-semibold text-lg text-[var(--color-text-primary)] mb-1">{accountType.name}</h3>
+                <h3 className="font-medium text-lg text-[var(--color-text-primary)] mb-1">{accountType.name}</h3>
                 <p className="text-sm text-[var(--color-text-secondary)] leading-relaxed">{accountType.description}</p>
               </div>
             </div>
@@ -139,7 +139,7 @@ const SignupPage: React.FC<SignupPageProps> = ({ onBack, onSignup }) => {
   const renderStep2 = () => (
     <div className="space-y-8">
       <div className="text-center">
-        <h2 className="text-2xl md:text-3xl font-semibold text-[var(--color-text-primary)] mb-3">Choose Your Plan</h2>
+        <h2 className="text-2xl md:text-3xl font-medium text-[var(--color-text-primary)] mb-3">Choose Your Plan</h2>
         <p className="text-base text-[var(--color-text-secondary)]">Select the plan that best fits your needs</p>
       </div>
       
@@ -156,7 +156,7 @@ const SignupPage: React.FC<SignupPageProps> = ({ onBack, onSignup }) => {
           >
             <div className="flex items-center justify-between">
               <div className="flex-1">
-                <h3 className="font-semibold text-lg text-[var(--color-text-primary)] capitalize mb-1">{tier} Plan</h3>
+                <h3 className="font-medium text-lg text-[var(--color-text-primary)] capitalize mb-1">{tier} Plan</h3>
                 <p className="text-sm text-[var(--color-text-secondary)] leading-relaxed">
                   {tier === 'free' && 'Basic features and limited access'}
                   {tier === 'paid' && 'Full access to all features'}
@@ -184,7 +184,7 @@ const SignupPage: React.FC<SignupPageProps> = ({ onBack, onSignup }) => {
         </button>
         <button
           onClick={() => setStep(3)}
-          className="bg-black dark:bg-white hover:opacity-90 dark:hover:opacity-80 text-white dark:text-black px-6 py-3 rounded-lg transition-all duration-200 flex items-center gap-2 font-semibold shadow-md hover:shadow-lg"
+          className="bg-black dark:bg-white hover:opacity-90 dark:hover:opacity-80 text-white dark:text-black px-6 py-3 rounded-lg transition-all duration-200 flex items-center gap-2 font-medium shadow-md hover:shadow-lg"
         >
           <span>Continue</span>
           <ArrowRight size={18} />
@@ -196,7 +196,7 @@ const SignupPage: React.FC<SignupPageProps> = ({ onBack, onSignup }) => {
   const renderStep3 = () => (
     <div className="space-y-8">
       <div className="text-center">
-        <h2 className="text-2xl md:text-3xl font-semibold text-[var(--color-text-primary)] mb-3">Create Your Account</h2>
+        <h2 className="text-2xl md:text-3xl font-medium text-[var(--color-text-primary)] mb-3">Create Your Account</h2>
         <p className="text-base text-[var(--color-text-secondary)]">Fill in your details to complete registration</p>
       </div>
       
@@ -311,7 +311,7 @@ const SignupPage: React.FC<SignupPageProps> = ({ onBack, onSignup }) => {
         </button>
         <button
           onClick={handleSubmit}
-          className="bg-black dark:bg-white hover:opacity-90 dark:hover:opacity-80 text-white dark:text-black px-6 py-3 rounded-lg transition-all duration-200 flex items-center gap-2 font-semibold shadow-md hover:shadow-lg"
+          className="bg-black dark:bg-white hover:opacity-90 dark:hover:opacity-80 text-white dark:text-black px-6 py-3 rounded-lg transition-all duration-200 flex items-center gap-2 font-medium shadow-md hover:shadow-lg"
         >
           <span>Create Account</span>
           <CheckCircle size={18} />

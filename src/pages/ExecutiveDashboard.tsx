@@ -45,7 +45,7 @@ const ExecutiveDashboard = () => {
 
       {/* Page Header - Compact */}
       <div className="mb-2">
-        <h1 className="text-2xl font-bold text-slate-700 dark:text-slate-200 mb-1">Executive Dashboard</h1>
+        <h1 className="text-2xl font-medium text-slate-700 dark:text-slate-200 mb-1">Executive Dashboard</h1>
         <p className="text-sm text-slate-500 dark:text-slate-400">Strategic overview and market insights</p>
       </div>
 
@@ -63,7 +63,7 @@ const ExecutiveDashboard = () => {
           <div className="p-1.5 bg-amber-100 dark:bg-amber-500/30 rounded-lg">
             <Target className="h-4 w-4 text-amber-600 dark:text-amber-400" />
           </div>
-          <h3 className="text-base font-semibold text-slate-700 dark:text-slate-200">Strategic Initiatives</h3>
+          <h3 className="text-base font-medium text-slate-700 dark:text-slate-200">Strategic Initiatives</h3>
         </div>
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-2">
           {strategicInitiatives.map((initiative, index) => (
@@ -107,7 +107,7 @@ const ExecutiveDashboard = () => {
             <div className="p-1.5 bg-indigo-100 dark:bg-indigo-500/30 rounded-lg">
               <BarChart3 className="h-4 w-4 text-indigo-600 dark:text-indigo-400" />
             </div>
-            <h3 className="text-base font-semibold text-slate-700 dark:text-slate-200">Regional Market Analysis</h3>
+            <h3 className="text-base font-medium text-slate-700 dark:text-slate-200">Regional Market Analysis</h3>
           </div>
           <div className="space-y-2">
             {marketAnalysis.map((region, index) => (
@@ -117,7 +117,7 @@ const ExecutiveDashboard = () => {
                   <p className="text-slate-500 dark:text-slate-400 text-xs">{region.opportunities} opportunities</p>
                 </div>
                 <div className="text-right flex-shrink-0 ml-2">
-                  <span className="text-indigo-600 dark:text-indigo-400 font-semibold text-sm">{region.marketSize}</span>
+                  <span className="text-indigo-600 dark:text-indigo-400 font-medium text-sm">{region.marketSize}</span>
                   <p className="text-slate-500 dark:text-slate-400 text-xs">{region.growth}</p>
                 </div>
               </div>
@@ -130,7 +130,7 @@ const ExecutiveDashboard = () => {
             <div className="p-1.5 bg-emerald-100 dark:bg-emerald-500/30 rounded-lg">
               <Users className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
             </div>
-            <h3 className="text-base font-semibold text-slate-700 dark:text-slate-200">Strategic Partnerships</h3>
+            <h3 className="text-base font-medium text-slate-700 dark:text-slate-200">Strategic Partnerships</h3>
           </div>
           <div className="space-y-2">
             {partnerships.map((partnership, index) => (
@@ -164,7 +164,7 @@ const ExecutiveDashboard = () => {
       <div className="card-glass rounded-lg overflow-hidden">
         <div className="p-3 border-b border-slate-200 dark:border-slate-700 flex items-center justify-between">
           <div>
-            <h3 className="text-base font-semibold text-slate-700 dark:text-slate-200">Strategic Market Map</h3>
+            <h3 className="text-base font-medium text-slate-700 dark:text-slate-200">Strategic Market Map</h3>
             <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
               Explore market opportunities across Africa
             </p>
@@ -210,8 +210,8 @@ const ExecutiveDashboard = () => {
               <Building2 className="h-4 w-4 text-cyan-600 dark:text-cyan-400" />
             </div>
             <p className="text-xs text-slate-500 dark:text-slate-400 mb-1">Market Share</p>
-            <p className="text-xl font-bold text-slate-700 dark:text-slate-200">12.5%</p>
-            <p className="text-xs text-emerald-600 dark:text-emerald-400 mt-0.5 font-semibold">+1.2% this quarter</p>
+            <p className="text-xl font-medium text-slate-700 dark:text-slate-200">12.5%</p>
+            <p className="text-xs text-emerald-600 dark:text-emerald-400 mt-0.5 font-medium">+1.2% this quarter</p>
           </div>
         </div>
         <div className="card-glass p-3 rounded-lg text-center group relative overflow-hidden">
@@ -221,8 +221,8 @@ const ExecutiveDashboard = () => {
               <TrendingUp className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
             </div>
             <p className="text-xs text-slate-500 dark:text-slate-400 mb-1">Revenue Growth</p>
-            <p className="text-xl font-bold text-slate-700 dark:text-slate-200">18.3%</p>
-            <p className="text-xs text-emerald-600 dark:text-emerald-400 mt-0.5 font-semibold">+3.1% this quarter</p>
+            <p className="text-xl font-medium text-slate-700 dark:text-slate-200">18.3%</p>
+            <p className="text-xs text-emerald-600 dark:text-emerald-400 mt-0.5 font-medium">+3.1% this quarter</p>
           </div>
         </div>
         <div className="card-glass p-3 rounded-lg text-center group relative overflow-hidden">
@@ -232,8 +232,8 @@ const ExecutiveDashboard = () => {
               <Globe className="h-4 w-4 text-indigo-600 dark:text-indigo-400" />
             </div>
             <p className="text-xs text-slate-500 dark:text-slate-400 mb-1">Countries</p>
-            <p className="text-xl font-bold text-slate-700 dark:text-slate-200">8</p>
-            <p className="text-xs text-emerald-600 dark:text-emerald-400 mt-0.5 font-semibold">+1 this year</p>
+            <p className="text-xl font-medium text-slate-700 dark:text-slate-200">8</p>
+            <p className="text-xs text-emerald-600 dark:text-emerald-400 mt-0.5 font-medium">+1 this year</p>
           </div>
         </div>
         <div className="card-glass p-3 rounded-lg text-center group relative overflow-hidden">
@@ -243,8 +243,8 @@ const ExecutiveDashboard = () => {
               <Briefcase className="h-4 w-4 text-amber-600 dark:text-amber-400" />
             </div>
             <p className="text-xs text-slate-500 dark:text-slate-400 mb-1">Strategic Deals</p>
-            <p className="text-xl font-bold text-slate-700 dark:text-slate-200">5</p>
-            <p className="text-xs text-emerald-600 dark:text-emerald-400 mt-0.5 font-semibold">+2 this quarter</p>
+            <p className="text-xl font-medium text-slate-700 dark:text-slate-200">5</p>
+            <p className="text-xs text-emerald-600 dark:text-emerald-400 mt-0.5 font-medium">+2 this quarter</p>
           </div>
         </div>
       </div>
