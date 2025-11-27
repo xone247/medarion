@@ -85,7 +85,7 @@ const StartupAnalyticsPage = () => {
   const saveSections = (arr: string[]) => { setVisibleSections(arr); try{ localStorage.setItem(sectionsKey, JSON.stringify(arr)); }catch{} };
 
   useEffect(() => {
-    dataService.getDeals({ limit: 200 }).then((response: any) => {
+    dataService.getDeals({ limit: 1000 }).then((response: any) => {
       if (!response.success || !response.data || !Array.isArray(response.data)) return;
       const d = response.data.map((deal: any) => ({
         id: deal.id,

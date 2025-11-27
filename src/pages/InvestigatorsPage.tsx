@@ -20,7 +20,7 @@ const InvestigatorsPage: React.FC = () => {
       setLoading(true);
       try {
         // Use same endpoint as Data Management tab
-        const response = await apiService.get('/admin/investigators', { limit: '200' });
+        const response = await apiService.get('/admin/investigators', { limit: '1000' });
         if (response.success && response.data) {
           // Process investigators: parse JSON fields and normalize field names
           const processedInvestigators = response.data.map((investigator: any) => {

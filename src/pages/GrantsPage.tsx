@@ -41,7 +41,7 @@ const GrantsPage = () => {
       try {
         console.log('[GrantsPage] Fetching grants data...');
         // Use same endpoint as Data Management tab
-        const response = await apiService.get('/admin/grants', { limit: '200' });
+        const response = await apiService.get('/admin/grants', { limit: '1000' });
         console.log('[GrantsPage] Response:', response);
         if (response && response.success && response.data && Array.isArray(response.data)) {
           console.log('[GrantsPage] Processing', response.data.length, 'grants');

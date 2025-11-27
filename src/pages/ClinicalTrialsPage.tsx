@@ -89,7 +89,7 @@ const ClinicalTrialsPage: React.FC = () => {
       try {
         console.log('[ClinicalTrialsPage] Fetching trials data...');
         // Use same endpoint as Data Management tab
-        const response = await apiService.get('/admin/clinical-trials', { limit: '200' });
+        const response = await apiService.get('/admin/clinical-trials', { limit: '1000' });
         console.log('[ClinicalTrialsPage] Response:', response);
         if (response && response.success && response.data && Array.isArray(response.data)) {
           console.log('[ClinicalTrialsPage] Processing', response.data.length, 'trials');

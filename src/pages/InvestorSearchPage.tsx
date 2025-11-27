@@ -23,8 +23,8 @@ const InvestorSearchPage = () => {
     const fetchData = async () => {
       try {
         const [dealsResponse, investorsResponse] = await Promise.all([
-          dataService.getDeals({ limit: 200 }).catch(() => ({ success: false, data: [] })),
-          dataService.getInvestors({ limit: 200 }).catch(() => ({ success: false, data: [] })),
+          dataService.getDeals({ limit: 1000 }).catch(() => ({ success: false, data: [] })),
+          dataService.getInvestors({ limit: 1000 }).catch(() => ({ success: false, data: [] })),
         ]);
         
         if (dealsResponse.success) {
