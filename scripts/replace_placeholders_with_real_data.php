@@ -72,7 +72,7 @@ try {
     $updateStmt = $pdo->prepare("
         UPDATE deals 
         SET company_name = ?, amount = ?, deal_date = ?, deal_type = ?, 
-            lead_investor = ?, description = ?, website = ?, sector = ?
+            lead_investor = ?, description = ?, sector = ?
         WHERE id = ?
     ");
     
