@@ -19,7 +19,7 @@ const ClinicalCentersPage: React.FC = () => {
       setLoading(true);
       try {
         // Use same endpoint as Data Management tab
-        const response = await apiService.get('/admin/clinical-centers', { limit: '1000' });
+        const response = await apiService.get('/admin/clinical-centers', { all: 'true' });
         if (response.success && response.data) {
           // Process centers: parse JSON fields and normalize field names
           const processedCenters = response.data.map((center: any) => {

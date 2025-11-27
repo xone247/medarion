@@ -42,7 +42,7 @@ const PublicMarkets = () => {
     const fetchStocksData = async () => {
       try {
         // Use same endpoint as Data Management tab
-        const response = await apiService.get('/admin/public-markets', { limit: '1000' });
+        const response = await apiService.get('/admin/public-markets', { all: 'true' });
         if (response.success && response.data && Array.isArray(response.data)) {
           // Transform API data to match expected format
           const transformed = response.data.map((stock: any) => ({

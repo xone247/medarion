@@ -32,7 +32,7 @@ const CompaniesPage: React.FC<{ onViewCompany: (name: string) => void }> = ({ on
     const fetchCompaniesData = async () => {
       try {
         // Use same endpoint as Data Management tab
-        const response = await apiService.get('/admin/companies', { limit: '1000' });
+        const response = await apiService.get('/admin/companies', { all: 'true' });
         if (response.success && response.data && Array.isArray(response.data)) {
           // Transform API data to match expected format
           // Note: Companies data structure may need aggregation from deals

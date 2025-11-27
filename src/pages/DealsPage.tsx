@@ -56,8 +56,8 @@ const DealsPage = () => {
       try {
         // Fetch deals and companies in parallel - use same endpoints as Data Management tab
         const [dealsResponse, companiesResponse] = await Promise.all([
-          apiService.get('/admin/deals', { limit: '1000' }),
-          apiService.get('/admin/companies', { limit: '1000' })
+          apiService.get('/admin/deals', { all: 'true' }),
+          apiService.get('/admin/companies', { all: 'true' })
         ]);
 
         if (dealsResponse.success && dealsResponse.data && Array.isArray(dealsResponse.data)) {

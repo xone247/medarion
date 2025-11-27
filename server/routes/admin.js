@@ -1858,8 +1858,8 @@ router.get('/companies', authenticateToken, async (req, res) => {
     // Ensure database structure exists
     await ensureImageColumns();
     // Support 'all' parameter to get all records, default limit is 1000
-    const { page = 1, limit = 1000, search, all } = req.query;
-    const actualLimit = (all === 'true' || all === true) ? 10000 : Math.min(parseInt(limit) || 1000, 1000);
+    const { page = 1, limit = 1000000, search, all } = req.query;
+    const actualLimit = (all === 'true' || all === true) ? 100000 : Math.min(parseInt(limit) || 1000, 1000);
     const offset = (parseInt(page) - 1) * actualLimit;
     
     let query = 'SELECT * FROM companies WHERE 1=1';
@@ -1980,8 +1980,8 @@ router.delete('/companies/:id', authenticateToken, async (req, res) => {
 
 router.get('/deals', authenticateToken, async (req, res) => {
   try {
-    const { page = 1, limit = 1000, search, all } = req.query;
-    const actualLimit = (all === 'true' || all === true) ? 10000 : Math.min(parseInt(limit) || 1000, 1000);
+    const { page = 1, limit = 1000000, search, all } = req.query;
+    const actualLimit = (all === 'true' || all === true) ? 100000 : Math.min(parseInt(limit) || 1000, 1000);
     const offset = (parseInt(page) - 1) * actualLimit;
     
     let query = 'SELECT * FROM deals WHERE 1=1';
@@ -2078,8 +2078,8 @@ router.delete('/deals/:id', authenticateToken, async (req, res) => {
 
 router.get('/grants', authenticateToken, async (req, res) => {
   try {
-    const { page = 1, limit = 1000, search, all } = req.query;
-    const actualLimit = (all === 'true' || all === true) ? 10000 : Math.min(parseInt(limit) || 1000, 1000);
+    const { page = 1, limit = 1000000, search, all } = req.query;
+    const actualLimit = (all === 'true' || all === true) ? 100000 : Math.min(parseInt(limit) || 1000, 1000);
     const offset = (parseInt(page) - 1) * actualLimit;
     
     let query = 'SELECT * FROM grants WHERE 1=1';
@@ -2176,8 +2176,8 @@ router.delete('/grants/:id', authenticateToken, async (req, res) => {
 
 router.get('/investors', authenticateToken, async (req, res) => {
   try {
-    const { page = 1, limit = 1000, search, all } = req.query;
-    const actualLimit = (all === 'true' || all === true) ? 10000 : Math.min(parseInt(limit) || 1000, 1000);
+    const { page = 1, limit = 1000000, search, all } = req.query;
+    const actualLimit = (all === 'true' || all === true) ? 100000 : Math.min(parseInt(limit) || 1000, 1000);
     const offset = (parseInt(page) - 1) * actualLimit;
     
     let query = 'SELECT * FROM investors WHERE 1=1';
@@ -2302,8 +2302,8 @@ router.delete('/investors/:id', authenticateToken, async (req, res) => {
 
 router.get('/clinical-trials', authenticateToken, async (req, res) => {
   try {
-    const { page = 1, limit = 1000, search, all } = req.query;
-    const actualLimit = (all === 'true' || all === true) ? 10000 : Math.min(parseInt(limit) || 1000, 1000);
+    const { page = 1, limit = 1000000, search, all } = req.query;
+    const actualLimit = (all === 'true' || all === true) ? 100000 : Math.min(parseInt(limit) || 1000, 1000);
     const offset = (parseInt(page) - 1) * actualLimit;
     
     let query = 'SELECT * FROM clinical_trials WHERE 1=1';
@@ -2541,8 +2541,8 @@ router.delete('/regulatory/:id', authenticateToken, async (req, res) => {
 
 router.get('/regulatory-bodies', authenticateToken, async (req, res) => {
   try {
-    const { page = 1, limit = 1000, search, all } = req.query;
-    const actualLimit = (all === 'true' || all === true) ? 10000 : Math.min(parseInt(limit) || 1000, 1000);
+    const { page = 1, limit = 1000000, search, all } = req.query;
+    const actualLimit = (all === 'true' || all === true) ? 100000 : Math.min(parseInt(limit) || 1000, 1000);
     const offset = (parseInt(page) - 1) * actualLimit;
     
     let query = 'SELECT * FROM regulatory_bodies WHERE 1=1';
@@ -2639,8 +2639,8 @@ router.delete('/regulatory-bodies/:id', authenticateToken, async (req, res) => {
 
 router.get('/public-markets', authenticateToken, async (req, res) => {
   try {
-    const { page = 1, limit = 1000, search, all } = req.query;
-    const actualLimit = (all === 'true' || all === true) ? 10000 : Math.min(parseInt(limit) || 1000, 1000);
+    const { page = 1, limit = 1000000, search, all } = req.query;
+    const actualLimit = (all === 'true' || all === true) ? 100000 : Math.min(parseInt(limit) || 1000, 1000);
     const offset = (parseInt(page) - 1) * actualLimit;
     
     let query = 'SELECT * FROM public_stocks WHERE 1=1';
@@ -2736,8 +2736,8 @@ router.delete('/public-markets/:id', authenticateToken, async (req, res) => {
 
 router.get('/clinical-centers', authenticateToken, async (req, res) => {
   try {
-    const { page = 1, limit = 1000, search, all } = req.query;
-    const actualLimit = (all === 'true' || all === true) ? 10000 : Math.min(parseInt(limit) || 1000, 1000);
+    const { page = 1, limit = 1000000, search, all } = req.query;
+    const actualLimit = (all === 'true' || all === true) ? 100000 : Math.min(parseInt(limit) || 1000, 1000);
     const offset = (parseInt(page) - 1) * actualLimit;
     
     let query = 'SELECT * FROM clinical_centers WHERE 1=1';
@@ -2834,8 +2834,8 @@ router.delete('/clinical-centers/:id', authenticateToken, async (req, res) => {
 
 router.get('/investigators', authenticateToken, async (req, res) => {
   try {
-    const { page = 1, limit = 1000, search, all } = req.query;
-    const actualLimit = (all === 'true' || all === true) ? 10000 : Math.min(parseInt(limit) || 1000, 1000);
+    const { page = 1, limit = 1000000, search, all } = req.query;
+    const actualLimit = (all === 'true' || all === true) ? 100000 : Math.min(parseInt(limit) || 1000, 1000);
     const offset = (parseInt(page) - 1) * actualLimit;
     
     let query = 'SELECT * FROM investigators WHERE 1=1';
