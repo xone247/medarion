@@ -196,6 +196,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           user: applied, 
           profile: applied
         }))
+        // Store token in all possible localStorage keys for compatibility
+        if (response.data.token) {
+          localStorage.setItem('auth_token', response.data.token)
+          localStorage.setItem('medarionAuthToken', response.data.token)
+          localStorage.setItem('medarionSessionToken', response.data.token)
+        }
         // Post-login redirect by role using path routing
         const slug = getProfileSlugFromRole(applied.role)
         const page = legacyPageForProfile(slug)
@@ -226,9 +232,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           user: applied, 
           profile: applied
         }))
-        // Also store token in localStorage for persistence
+        // Store token in all possible localStorage keys for compatibility
         if (response.data.token) {
           localStorage.setItem('auth_token', response.data.token)
+          localStorage.setItem('medarionAuthToken', response.data.token)
+          localStorage.setItem('medarionSessionToken', response.data.token)
         }
         // Redirect after sign-in - use window.location.replace for immediate redirect
         // Check is_admin first, then use user_type for redirect mapping
@@ -268,7 +276,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       console.error('Logout error:', error)
     } finally {
       apiClient.setToken(null)
+      // Remove all authentication tokens
       localStorage.removeItem('medarionSession')
+      localStorage.removeItem('medarionAuthToken')
+      localStorage.removeItem('medarionSessionToken')
+      localStorage.removeItem('auth_token')
       setUser(null)
       setProfile(null)
       // Send user to auth page explicitly

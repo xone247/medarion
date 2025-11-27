@@ -55,19 +55,27 @@ async function apiRequest<T>(endpoint: string, options: RequestInit = {}): Promi
 
 export const signIn = async (email: string, password: string) => {
   try {
-    const result = await apiRequest<{ success: boolean; user: UserProfile; session_token: string }>('/auth/signin', {
+    const result = await apiRequest<{ success: boolean; user: UserProfile; session_token: string; token?: string }>('/auth/signin', {
       method: 'POST',
       body: JSON.stringify({ email, password }),
     });
     
     if (result.success) {
-      // Store session token
-      localStorage.setItem('medarionSessionToken', result.session_token);
+      // Store session token in all possible keys for compatibility
+      const token = result.token || result.session_token;
+      localStorage.setItem('medarionSessionToken', token);
+      localStorage.setItem('medarionAuthToken', token);
+      localStorage.setItem('auth_token', token);
+      // Also store full user session data
+      if (result.user) {
+        localStorage.setItem('medarionSession', JSON.stringify(result.user));
+      }
       return { user: result.user, error: null };
     } else {
       return { user: null, error: { message: 'Sign in failed' } };
     }
   } catch (error) {
+    console.error('[apiAuth] Sign in error:', error);
     return { 
       user: null, 
       error: { 
@@ -79,7 +87,7 @@ export const signIn = async (email: string, password: string) => {
 
 export const signUp = async (email: string, password: string, userType: UserRole, fullName: string, companyName?: string) => {
   try {
-    const result = await apiRequest<{ success: boolean; user: UserProfile; session_token: string }>('/auth/signup', {
+    const result = await apiRequest<{ success: boolean; user: UserProfile; session_token: string; token?: string }>('/auth/signup', {
       method: 'POST',
       body: JSON.stringify({ 
         email, 
@@ -91,13 +99,21 @@ export const signUp = async (email: string, password: string, userType: UserRole
     });
     
     if (result.success) {
-      // Store session token
-      localStorage.setItem('medarionSessionToken', result.session_token);
+      // Store session token in all possible keys for compatibility
+      const token = result.token || result.session_token;
+      localStorage.setItem('medarionSessionToken', token);
+      localStorage.setItem('medarionAuthToken', token);
+      localStorage.setItem('auth_token', token);
+      // Also store full user session data
+      if (result.user) {
+        localStorage.setItem('medarionSession', JSON.stringify(result.user));
+      }
       return { user: result.user, error: null };
     } else {
       return { user: null, error: { message: 'Sign up failed' } };
     }
   } catch (error) {
+    console.error('[apiAuth] Sign up error:', error);
     return { 
       user: null, 
       error: { 
@@ -108,7 +124,11 @@ export const signUp = async (email: string, password: string, userType: UserRole
 };
 
 export const signOut = async () => {
+  // Remove all authentication tokens
   localStorage.removeItem('medarionSessionToken');
+  localStorage.removeItem('medarionAuthToken');
+  localStorage.removeItem('auth_token');
+  localStorage.removeItem('medarionSession');
   return { error: null };
 };
 
