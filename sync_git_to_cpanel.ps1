@@ -120,7 +120,7 @@ if (Test-Path "medarion-dist") {
         }
     }
     Write-Progress -Activity "Syncing frontend" -Completed
-    Write-Host "   ✅ Frontend files synced ($totalFiles files)" -ForegroundColor Green
+    Write-Host "   ✅ Frontend files synced: $totalFiles files" -ForegroundColor Green
 } else {
     Write-Host "   ⚠️  medarion-dist not found, skipping frontend sync" -ForegroundColor Yellow
 }
@@ -148,7 +148,7 @@ if (Test-Path "server") {
         }
     }
     Write-Progress -Activity "Syncing backend" -Completed
-    Write-Host "   ✅ Backend files synced ($totalFiles files)" -ForegroundColor Green
+    Write-Host "   ✅ Backend files synced: $totalFiles files" -ForegroundColor Green
 } else {
     Write-Host "   ⚠️  server directory not found, skipping backend sync" -ForegroundColor Yellow
 }
@@ -173,7 +173,7 @@ if (Test-Path "public") {
         }
     }
     Write-Progress -Activity "Syncing public files" -Completed
-    Write-Host "   ✅ Public files synced ($totalFiles files)" -ForegroundColor Green
+    Write-Host "   ✅ Public files synced: $totalFiles files" -ForegroundColor Green
 } else {
     Write-Host "   ⚠️  public directory not found, skipping" -ForegroundColor Yellow
 }
@@ -198,7 +198,7 @@ if (Test-Path "api") {
         }
     }
     Write-Progress -Activity "Syncing API files" -Completed
-    Write-Host "   ✅ API files synced ($totalFiles files)" -ForegroundColor Green
+    Write-Host "   ✅ API files synced: $totalFiles files" -ForegroundColor Green
 } else {
     Write-Host "   ⚠️  api directory not found, skipping" -ForegroundColor Yellow
 }
@@ -221,14 +221,14 @@ Write-Host ""
 
 # Step 7: Install backend dependencies
 Write-Host "7️⃣  Installing Backend Dependencies..." -ForegroundColor Cyan
-$installCmd = "cd $backendPath && npm install --production"
+$installCmd = "cd $backendPath; npm install --production"
 $installResult = Invoke-SSHCommand $installCmd -ShowOutput
 Write-Host "   ✅ Dependencies installed" -ForegroundColor Green
 Write-Host ""
 
 # Step 8: Restart backend server
 Write-Host "8️⃣  Restarting Backend Server..." -ForegroundColor Cyan
-$restartCmd = "cd $backendPath && $pm2Path restart medarion-backend || ($pm2Path stop medarion-backend 2>/dev/null; $pm2Path start server.js --name medarion-backend --log server.log)"
+$restartCmd = 'cd ' + $backendPath + '; ' + $pm2Path + ' restart medarion-backend 2>/dev/null || ' + $pm2Path + ' start server.js --name medarion-backend --log server.log'
 $restartResult = Invoke-SSHCommand $restartCmd -ShowOutput
 Write-Host "   ✅ Backend server restarted" -ForegroundColor Green
 Write-Host ""
@@ -241,7 +241,7 @@ $statusCmd = "$pm2Path list"
 $statusResult = Invoke-SSHCommand $statusCmd -ShowOutput
 Write-Host $statusResult
 
-$healthCmd = "curl -s http://localhost:3001/health || echo 'Health check failed'"
+$healthCmd = 'curl -s http://localhost:3001/health 2>/dev/null || echo "Health check failed"'
 $healthResult = Invoke-SSHCommand $healthCmd -ShowOutput
 Write-Host "   Health check: $healthResult" -ForegroundColor $(if ($healthResult -like "*OK*" -or $healthResult -like "*status*") { "Green" } else { "Yellow" })
 Write-Host ""
