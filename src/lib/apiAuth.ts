@@ -15,7 +15,21 @@ export interface UserProfile {
 
 import { getApiBaseUrl } from '../config/api';
 
-const API_BASE_URL = getApiBaseUrl() || '/api';
+// Get base URL and ensure /api prefix is included
+function getApiBaseUrlWithPrefix(): string {
+  const base = getApiBaseUrl();
+  if (!base) {
+    return '/api'; // Local dev: relative path
+  }
+  // Production: base is 'https://api.medarion.africa', need to add /api
+  // Check if already ends with /api to avoid double /api/api/
+  if (base.endsWith('/api')) {
+    return base;
+  }
+  return `${base}/api`;
+}
+
+const API_BASE_URL = getApiBaseUrlWithPrefix();
 
 class ApiError extends Error {
   constructor(public message: string, public status?: number) {
