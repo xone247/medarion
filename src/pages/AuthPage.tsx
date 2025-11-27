@@ -26,7 +26,7 @@ const AuthPage: React.FC<AuthPageProps> = ({ onBack }) => {
     if (!authLoading && user && profile) {
       const isAdmin = (profile as any)?.is_admin || (profile as any)?.app_roles?.includes('super_admin')
       if (isAdmin) {
-        navigate('/admin-dashboard', { replace: true })
+        navigate('/admin', { replace: true })
         return
       }
       
@@ -40,7 +40,8 @@ const AuthPage: React.FC<AuthPageProps> = ({ onBack }) => {
         'health_science_experts': '/researcher-dashboard',
         'researcher': '/researcher-dashboard',
         'regulators': '/regulator-dashboard',
-        'regulator': '/regulator-dashboard'
+        'regulator': '/regulator-dashboard',
+        'admin': '/admin'
       }
       const targetPath = redirectMap[userType] || '/startup-dashboard'
       navigate(targetPath, { replace: true })

@@ -945,8 +945,16 @@ const AdminDashboard: React.FC = () => {
         throw new Error(data.error || 'Failed to fetch overview data');
       }
     } catch (err: any) {
-      setError(`Failed to load overview data: ${err?.message || 'Unknown error'}`);
-      console.error('Error fetching overview data:', err);
+      // Don't show error for 401 (unauthorized) - this is expected if not logged in
+      // Only show errors for actual failures when user is authenticated
+      if (err?.message?.includes('401') || err?.message?.includes('Unauthorized') || err?.message?.includes('Access token')) {
+        // Silently handle auth errors - user will be redirected
+        console.debug('Auth error (expected if not logged in):', err?.message);
+      } else {
+        // Only show error for non-auth failures
+        setError(`Failed to load overview data: ${err?.message || 'Unknown error'}`);
+        console.error('Error fetching overview data:', err);
+      }
       setOverviewData({
         metrics: { system_ok: false },
         userStats: { totalUsers: 0, activeUsers: 0, newUsersThisMonth: 0 },
@@ -980,8 +988,15 @@ const AdminDashboard: React.FC = () => {
         throw new Error(data.error || 'Failed to fetch users');
       }
     } catch (err: any) {
-      setError(`Failed to load users: ${err?.message || 'Unknown error'}`);
-      console.error('Error fetching users data:', err);
+      // Don't show error for 401 (unauthorized) - this is expected if not logged in
+      if (err?.message?.includes('401') || err?.message?.includes('Unauthorized') || err?.message?.includes('Access token')) {
+        // Silently handle auth errors - user will be redirected
+        console.debug('Auth error (expected if not logged in):', err?.message);
+      } else {
+        // Only show error for non-auth failures
+        setError(`Failed to load users: ${err?.message || 'Unknown error'}`);
+        console.error('Error fetching users data:', err);
+      }
       setUsersData({ users: [], pagination: { page: 1, limit: 20, total: 0, pages: 0 } });
     } finally {
       setLoading(false);
@@ -2004,15 +2019,33 @@ const AdminDashboard: React.FC = () => {
   // Parse app_roles from JSON string if it exists
   const appRoles = profile && (profile as any).app_roles 
     ? (typeof (profile as any).app_roles === 'string' 
-        ? JSON.parse((profile as any).app_roles) 
-        : (profile as any).app_roles)
+        ? (() => {
+            try {
+              const parsed = JSON.parse((profile as any).app_roles);
+              return Array.isArray(parsed) ? parsed : [parsed];
+            } catch {
+              // If not JSON, treat as comma-separated string or single value
+              const str = (profile as any).app_roles;
+              if (str.includes(',')) {
+                return str.split(',').map((r: string) => r.trim());
+              }
+              return [str];
+            }
+          })()
+        : (Array.isArray((profile as any).app_roles) 
+            ? (profile as any).app_roles 
+            : [(profile as any).app_roles]))
     : [];
 
   const canSuper = !!(profile && (
-    (profile as any).is_admin || 
+    (profile as any).is_admin === true || 
+    (profile as any).is_admin === 1 ||
     (profile as any).role === 'admin' ||
-    appRoles.includes('Super Admin') ||
-    appRoles.includes('super_admin')
+    (Array.isArray(appRoles) && (
+      appRoles.includes('Super Admin') ||
+      appRoles.includes('super_admin') ||
+      appRoles.includes('Super Administrator')
+    ))
   ));
   const canBlog = canSuper || !!appRoles.some((r: AppRole) => ['blog_admin','content_editor'].includes(r)) || (profile as any)?.role === 'admin';
   const canAds = canSuper || !!appRoles.includes('ads_admin') || appRoles.includes('Ads Manager');
@@ -3595,12 +3628,46 @@ const AdminDashboard: React.FC = () => {
     { id: 'ads', label: 'Ads', icon: Megaphone },
   ].filter(t => canSee(t.id as any)), [canSuper, canBlog, canAds]);
 
-  if (!canSuper && !canBlog && !canAds) {
+  // Wait for profile to load before showing unauthorized
+  const { loading: authLoading } = useAuth();
+  
+  if (authLoading) {
     return (
       <div className="p-6">
-        <div className="p-6 bg-background-surface rounded-lg border border-divider">
-          <h2 className="text-xl font-medium text-text-primary mb-2">Unauthorized</h2>
-          <p className="text-text-secondary">You do not have permission to access the Admin area.</p>
+        <div className="flex items-center justify-center min-h-[400px]">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+        </div>
+      </div>
+    );
+  }
+
+  if (!canSuper && !canBlog && !canAds) {
+    // Redirect to appropriate dashboard based on user type
+    useEffect(() => {
+      if (profile) {
+        const userType = (profile as any)?.user_type || (profile as any)?.role || 'startup';
+        const redirectMap: Record<string, string> = {
+          'startup': '/startup-dashboard',
+          'investors_finance': '/investor-dashboard',
+          'investor': '/investor-dashboard',
+          'industry_executives': '/executive-dashboard',
+          'executive': '/executive-dashboard',
+          'health_science_experts': '/researcher-dashboard',
+          'researcher': '/researcher-dashboard',
+          'regulators': '/regulator-dashboard',
+          'regulator': '/regulator-dashboard'
+        };
+        const targetPath = redirectMap[userType] || '/startup-dashboard';
+        window.location.replace(targetPath);
+      } else {
+        window.location.replace('/auth');
+      }
+    }, [profile]);
+    
+    return (
+      <div className="p-6">
+        <div className="flex items-center justify-center min-h-[400px]">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
         </div>
       </div>
     );

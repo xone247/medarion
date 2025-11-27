@@ -242,7 +242,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         // Check is_admin first, then use user_type for redirect mapping
         const isAdmin = (applied as any).is_admin || (applied as any).app_roles?.includes('super_admin')
         if (isAdmin) {
-          window.location.replace('/admin-dashboard')
+          window.location.replace('/admin')
           return
         }
         

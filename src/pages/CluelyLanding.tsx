@@ -54,7 +54,7 @@ const CluelyLanding: React.FC<CluelyLandingProps> = ({ onGetStarted, onShowAuth,
 		if (user && profile) {
 			const isAdmin = (profile as any)?.is_admin || (profile as any)?.app_roles?.includes('super_admin')
 			if (isAdmin) {
-				window.location.href = '/admin-dashboard'
+				window.location.href = '/admin'
 				return
 			}
 			
