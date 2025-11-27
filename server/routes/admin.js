@@ -1857,11 +1857,12 @@ router.get('/companies', authenticateToken, async (req, res) => {
   try {
     // Ensure database structure exists
     await ensureImageColumns();
-    // Remove all limits - return all records by default
+    // Remove ALL limits - return ALL records when all=true or no limit
     const { page = 1, limit, search, all } = req.query;
-    const useLimit = limit && all !== 'true' && all !== true;
-    const actualLimit = useLimit ? parseInt(limit) || 1000000 : 1000000;
-    const offset = (parseInt(page) - 1) * actualLimit;
+    // Only use limit if explicitly set AND all is not true
+    const useLimit = limit && parseInt(limit) > 0 && all !== 'true' && all !== true && limit !== 'all';
+    const actualLimit = useLimit ? parseInt(limit) : 1000000;
+    const offset = useLimit ? (parseInt(page) - 1) * actualLimit : 0;
     
     let query = 'SELECT * FROM companies WHERE 1=1';
     let countQuery = 'SELECT COUNT(*) as total FROM companies WHERE 1=1';
@@ -1893,7 +1894,7 @@ router.get('/companies', authenticateToken, async (req, res) => {
         total,
         page: parseInt(page),
         limit: useLimit ? actualLimit : total,
-        has_more: offset + companies.length < total
+        has_more: useLimit ? (offset + companies.length < total) : false
       }
     });
   } catch (error) {

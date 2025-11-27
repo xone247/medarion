@@ -355,7 +355,7 @@ const CompaniesPage: React.FC<{ onViewCompany: (name: string) => void }> = ({ on
             <div className="space-y-2 mb-3 flex-grow">
               <div className="flex justify-between items-center p-2 bg-cyan-50/50 dark:bg-cyan-950/30 rounded-lg">
                 <span className="text-xs font-medium text-slate-600 dark:text-slate-400">Total Funding</span>
-                <span className="text-base font-medium text-cyan-600 dark:text-cyan-400">${(company.totalFunding / 1000000).toFixed(1)}M</span>
+                <span className="text-base font-medium text-cyan-600 dark:text-cyan-400">{company.totalFunding > 0 ? `${(company.totalFunding / 1000000).toFixed(1)}M` : "N/A"}</span>
               </div>
               
               <div className="grid grid-cols-2 gap-2">
