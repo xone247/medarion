@@ -1,0 +1,19 @@
+﻿{
+    "account_tiers":  {
+
+                      },
+    "total_users":  null,
+    "user_types":  {
+
+                   },
+    "roles":  {
+
+              },
+    "super_admin":  {
+                        "email":  "superadmin@medarion.com",
+                        "is_admin":  true,
+                        "account_tier":  "enterprise",
+                        "user_type":  "investors_finance",
+                        "role":  "admin"
+                    }
+}
