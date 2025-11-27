@@ -1,0 +1,1054 @@
+[
+  {
+    "name": "mPharma",
+    "description": "mPharma is a pharmacy management platform that operates across Africa, providing inventory management, financing, and supply chain solutions to pharmacies. The company helps pharmacies manage their inventory, access financing, and improve patient care through technology.",
+    "website": "https://mpharma.com",
+    "industry": "Healthcare Technology",
+    "sector": "Pharmacy Technology",
+    "stage": "growth",
+    "founded_year": 2013,
+    "employees_count": 500,
+    "headquarters": "Accra, Ghana",
+    "country": "Ghana",
+    "funding_rounds": [
+      {
+        "type": "Series C",
+        "amount": 35000000,
+        "date": "2022-01-01",
+        "investor": "JAM Fund"
+      },
+      {
+        "type": "Series B",
+        "amount": 17000000,
+        "date": "2019-06-01",
+        "investor": "Goldman Sachs"
+      },
+      {
+        "type": "Series A",
+        "amount": 6500000,
+        "date": "2017-03-01",
+        "investor": "Social Capital"
+      }
+    ],
+    "products": [
+      "Mutual Health",
+      "Inventory Management",
+      "Pharmacy Financing",
+      "Supply Chain Solutions"
+    ],
+    "markets": [
+      "Ghana",
+      "Nigeria",
+      "Kenya",
+      "Zambia",
+      "Rwanda",
+      "Malawi",
+      "Ethiopia"
+    ],
+    "achievements": [
+      "Serves over 1,000 pharmacies across Africa",
+      "Processed over $100M in pharmaceutical transactions",
+      "Winner of TechCrunch Disrupt Battlefield Africa 2017",
+      "Featured in Forbes Africa 30 Under 30"
+    ],
+    "partnerships": [
+      "Partnership with Novartis",
+      "Collaboration with Ghana Health Service",
+      "Integration with major pharmaceutical distributors"
+    ],
+    "awards": [
+      "TechCrunch Disrupt Battlefield Winner",
+      "Forbes Africa 30 Under 30",
+      "World Economic Forum Technology Pioneer"
+    ]
+  },
+  {
+    "name": "54gene",
+    "description": "54gene is an African genomics research and biobanking company focused on advancing precision medicine for African populations. The company builds biobanks, conducts genomic research, and develops diagnostic tools tailored for African genetic diversity.",
+    "website": "https://54gene.com",
+    "industry": "Healthcare Technology",
+    "sector": "Genomics",
+    "stage": "growth",
+    "founded_year": 2019,
+    "employees_count": 150,
+    "headquarters": "Lagos, Nigeria",
+    "country": "Nigeria",
+    "funding_rounds": [
+      {
+        "type": "Series B",
+        "amount": 25000000,
+        "date": "2021-09-01",
+        "investor": "Adjuvant Capital"
+      },
+      {
+        "type": "Series A",
+        "amount": 15000000,
+        "date": "2020-07-01",
+        "investor": "Adjuvant Capital"
+      },
+      {
+        "type": "Seed",
+        "amount": 4500000,
+        "date": "2019-04-01",
+        "investor": "Y Combinator"
+      }
+    ],
+    "products": [
+      "African Biobank",
+      "Genomic Testing",
+      "Research Services",
+      "Diagnostic Tools"
+    ],
+    "markets": [
+      "Nigeria",
+      "Ghana",
+      "Kenya",
+      "South Africa",
+      "Pan-Africa"
+    ],
+    "achievements": [
+      "Largest African genomics biobank",
+      "Published research in Nature Genetics",
+      "Partnership with Illumina for sequencing",
+      "Over 100,000 samples collected"
+    ],
+    "partnerships": [
+      "Partnership with Illumina",
+      "Collaboration with African research institutions",
+      "Alliance with global pharmaceutical companies"
+    ],
+    "awards": [
+      "Fast Company Most Innovative Companies",
+      "MIT Technology Review Innovators Under 35"
+    ]
+  },
+  {
+    "name": "LifeBank",
+    "description": "LifeBank is a medical logistics company that delivers blood and medical supplies to hospitals in Nigeria. The company uses technology to connect blood banks with hospitals, ensuring timely delivery of life-saving supplies.",
+    "website": "https://lifebank.ng",
+    "industry": "Healthcare Technology",
+    "sector": "Blood Supply",
+    "stage": "growth",
+    "founded_year": 2016,
+    "employees_count": 80,
+    "headquarters": "Lagos, Nigeria",
+    "country": "Nigeria",
+    "funding_rounds": [
+      {
+        "type": "Series A",
+        "amount": 2500000,
+        "date": "2020-01-01",
+        "investor": "Village Capital"
+      },
+      {
+        "type": "Seed",
+        "amount": 500000,
+        "date": "2018-06-01",
+        "investor": "Co-Creation Hub"
+      }
+    ],
+    "products": [
+      "Blood Delivery Service",
+      "Medical Supply Logistics",
+      "Blood Bank Management System"
+    ],
+    "markets": [
+      "Nigeria",
+      "Kenya"
+    ],
+    "achievements": [
+      "Delivered over 50,000 units of blood",
+      "Serves over 500 hospitals",
+      "Reduced blood delivery time by 70%",
+      "Winner of MIT Solve Challenge"
+    ],
+    "partnerships": [
+      "Partnership with National Blood Service",
+      "Collaboration with major hospitals",
+      "Alliance with medical equipment suppliers"
+    ],
+    "awards": [
+      "MIT Solve Challenge Winner",
+      "Cartier Women's Initiative Award",
+      "Forbes Africa 30 Under 30"
+    ]
+  },
+  {
+    "name": "Helium Health",
+    "description": "Helium Health provides electronic medical records (EMR) and hospital management software for healthcare facilities across Africa. The platform helps hospitals digitize patient records, manage appointments, and streamline operations.",
+    "website": "https://heliumhealth.com",
+    "industry": "Healthcare Technology",
+    "sector": "Hospital Management",
+    "stage": "growth",
+    "founded_year": 2016,
+    "employees_count": 200,
+    "headquarters": "Lagos, Nigeria",
+    "country": "Nigeria",
+    "funding_rounds": [
+      {
+        "type": "Series A",
+        "amount": 10000000,
+        "date": "2020-06-01",
+        "investor": "Global Ventures"
+      },
+      {
+        "type": "Seed",
+        "amount": 2000000,
+        "date": "2018-03-01",
+        "investor": "Y Combinator"
+      }
+    ],
+    "products": [
+      "Electronic Medical Records",
+      "Hospital Management System",
+      "Telemedicine Platform",
+      "Billing Software"
+    ],
+    "markets": [
+      "Nigeria",
+      "Ghana",
+      "Liberia",
+      "Sierra Leone"
+    ],
+    "achievements": [
+      "Serves over 5,000 healthcare providers",
+      "Manages records for over 1 million patients",
+      "Winner of TechCrunch Startup Battlefield",
+      "Featured in TechCrunch, Forbes"
+    ],
+    "partnerships": [
+      "Partnership with major hospital networks",
+      "Integration with insurance providers",
+      "Collaboration with government health agencies"
+    ],
+    "awards": [
+      "TechCrunch Startup Battlefield Winner",
+      "Forbes Africa 30 Under 30"
+    ]
+  },
+  {
+    "name": "Vezeeta",
+    "description": "Vezeeta is a healthcare booking platform that connects patients with doctors and healthcare providers across the Middle East and North Africa. The platform allows users to book appointments, consult with doctors online, and access healthcare services.",
+    "website": "https://vezeeta.com",
+    "industry": "Healthcare Technology",
+    "sector": "Healthcare Booking",
+    "stage": "mature",
+    "founded_year": 2012,
+    "employees_count": 800,
+    "headquarters": "Cairo, Egypt",
+    "country": "Egypt",
+    "funding_rounds": [
+      {
+        "type": "Series D",
+        "amount": 40000000,
+        "date": "2020-12-01",
+        "investor": "Gulf Capital"
+      },
+      {
+        "type": "Series C",
+        "amount": 12000000,
+        "date": "2018-05-01",
+        "investor": "STV"
+      },
+      {
+        "type": "Series B",
+        "amount": 10000000,
+        "date": "2017-02-01",
+        "investor": "BECO Capital"
+      }
+    ],
+    "products": [
+      "Doctor Booking Platform",
+      "Telemedicine",
+      "Pharmacy Services",
+      "Health Insurance"
+    ],
+    "markets": [
+      "Egypt",
+      "Saudi Arabia",
+      "UAE",
+      "Jordan",
+      "Lebanon"
+    ],
+    "achievements": [
+      "Over 10 million registered users",
+      "Network of 50,000+ healthcare providers",
+      "Processed over 5 million appointments",
+      "Expanded to 5 countries"
+    ],
+    "partnerships": [
+      "Partnership with major insurance companies",
+      "Collaboration with hospital networks",
+      "Integration with pharmaceutical companies"
+    ],
+    "awards": [
+      "Forbes Middle East Top 50 Startups",
+      "ArabNet Digital Excellence Award"
+    ]
+  },
+  {
+    "name": "Zipline",
+    "description": "Zipline operates the world's largest drone delivery service for medical supplies, delivering blood, vaccines, and essential medicines to remote healthcare facilities. The company has revolutionized healthcare logistics in Rwanda and Ghana.",
+    "website": "https://flyzipline.com",
+    "industry": "Healthcare Technology",
+    "sector": "Medical Delivery",
+    "stage": "mature",
+    "founded_year": 2014,
+    "employees_count": 2000,
+    "headquarters": "South San Francisco, USA (Operations in Rwanda & Ghana)",
+    "country": "Rwanda",
+    "funding_rounds": [
+      {
+        "type": "Series C",
+        "amount": 250000000,
+        "date": "2021-04-01",
+        "investor": "Fidelity Management"
+      },
+      {
+        "type": "Series B",
+        "amount": 190000000,
+        "date": "2019-04-01",
+        "investor": "Temasek"
+      },
+      {
+        "type": "Series A",
+        "amount": 25000000,
+        "date": "2016-08-01",
+        "investor": "Sequoia Capital"
+      }
+    ],
+    "products": [
+      "Drone Delivery Service",
+      "Medical Supply Logistics",
+      "Emergency Response System"
+    ],
+    "markets": [
+      "Rwanda",
+      "Ghana",
+      "Nigeria",
+      "Kenya",
+      "C\u00f4te d'Ivoire"
+    ],
+    "achievements": [
+      "Delivered over 500,000 medical products",
+      "Reduced delivery time from hours to minutes",
+      "Serves over 2,500 healthcare facilities",
+      "Featured in TIME, Wired, BBC"
+    ],
+    "partnerships": [
+      "Partnership with Rwanda Ministry of Health",
+      "Collaboration with Ghana Health Service",
+      "Alliance with Gavi, the Vaccine Alliance"
+    ],
+    "awards": [
+      "TIME Best Inventions",
+      "Fast Company Most Innovative Companies",
+      "World Economic Forum Technology Pioneer"
+    ]
+  },
+  {
+    "name": "WellaHealth",
+    "description": "WellaHealth is a micro-insurance platform that provides affordable health insurance to low-income Nigerians. The company offers flexible payment plans and covers essential healthcare services including consultations, tests, and medications.",
+    "website": "https://wellahealth.com",
+    "industry": "Healthcare Technology",
+    "sector": "Health Insurance",
+    "stage": "early",
+    "founded_year": 2019,
+    "employees_count": 50,
+    "headquarters": "Lagos, Nigeria",
+    "country": "Nigeria",
+    "funding_rounds": [
+      {
+        "type": "Seed",
+        "amount": 1000000,
+        "date": "2021-02-01",
+        "investor": "Microtraction"
+      },
+      {
+        "type": "Pre-Seed",
+        "amount": 200000,
+        "date": "2020-01-01",
+        "investor": "Future Africa"
+      }
+    ],
+    "products": [
+      "Micro-Health Insurance",
+      "Telemedicine",
+      "Pharmacy Benefits"
+    ],
+    "markets": [
+      "Nigeria"
+    ],
+    "achievements": [
+      "Insured over 10,000 Nigerians",
+      "Processed over 50,000 claims",
+      "Winner of Techstars Startup Weekend",
+      "Featured in TechCrunch"
+    ],
+    "partnerships": [
+      "Partnership with pharmacies",
+      "Collaboration with hospitals",
+      "Integration with payment providers"
+    ],
+    "awards": [
+      "Techstars Startup Weekend Winner"
+    ]
+  },
+  {
+    "name": "Ilara Health",
+    "description": "Ilara Health provides diagnostic equipment financing and management solutions to healthcare facilities in Kenya. The company helps clinics access modern diagnostic equipment through flexible financing and provides maintenance services.",
+    "website": "https://ilarahealth.com",
+    "industry": "Healthcare Technology",
+    "sector": "Medical Equipment",
+    "stage": "growth",
+    "founded_year": 2019,
+    "employees_count": 60,
+    "headquarters": "Nairobi, Kenya",
+    "country": "Kenya",
+    "funding_rounds": [
+      {
+        "type": "Series A",
+        "amount": 3750000,
+        "date": "2021-05-01",
+        "investor": "TLcom Capital"
+      },
+      {
+        "type": "Seed",
+        "amount": 1000000,
+        "date": "2020-03-01",
+        "investor": "Novastar Ventures"
+      }
+    ],
+    "products": [
+      "Equipment Financing",
+      "Diagnostic Equipment",
+      "Maintenance Services",
+      "Training Programs"
+    ],
+    "markets": [
+      "Kenya",
+      "Uganda",
+      "Tanzania"
+    ],
+    "achievements": [
+      "Equipped over 500 healthcare facilities",
+      "Improved diagnostic capacity by 300%",
+      "Winner of MIT Solve Challenge",
+      "Featured in TechCrunch"
+    ],
+    "partnerships": [
+      "Partnership with equipment manufacturers",
+      "Collaboration with healthcare networks",
+      "Alliance with financial institutions"
+    ],
+    "awards": [
+      "MIT Solve Challenge Winner",
+      "Forbes Africa 30 Under 30"
+    ]
+  },
+  {
+    "name": "Medsaf",
+    "description": "Medsaf is a pharmaceutical supply chain platform that connects pharmacies with verified pharmaceutical suppliers. The platform ensures authenticity of medicines, provides inventory management, and offers financing solutions.",
+    "website": "https://medsaf.com",
+    "industry": "Healthcare Technology",
+    "sector": "Pharmaceutical Supply",
+    "stage": "early",
+    "founded_year": 2017,
+    "employees_count": 40,
+    "headquarters": "Lagos, Nigeria",
+    "country": "Nigeria",
+    "funding_rounds": [
+      {
+        "type": "Seed",
+        "amount": 1500000,
+        "date": "2020-03-01",
+        "investor": "Y Combinator"
+      },
+      {
+        "type": "Pre-Seed",
+        "amount": 300000,
+        "date": "2019-01-01",
+        "investor": "Techstars"
+      }
+    ],
+    "products": [
+      "Supply Chain Platform",
+      "Medicine Verification",
+      "Inventory Management",
+      "Financing"
+    ],
+    "markets": [
+      "Nigeria",
+      "Ghana"
+    ],
+    "achievements": [
+      "Verified over 1 million medicine units",
+      "Serves over 1,000 pharmacies",
+      "Reduced counterfeit medicines by 80%",
+      "Y Combinator S20 batch"
+    ],
+    "partnerships": [
+      "Partnership with pharmaceutical manufacturers",
+      "Collaboration with regulatory bodies",
+      "Integration with payment providers"
+    ],
+    "awards": [
+      "Y Combinator S20",
+      "Techstars Startup Weekend Winner"
+    ]
+  },
+  {
+    "name": "DrugStoc",
+    "description": "DrugStoc is a pharmaceutical e-commerce platform that connects healthcare providers with pharmaceutical suppliers. The platform offers competitive pricing, quality assurance, and efficient delivery of pharmaceutical products.",
+    "website": "https://drugstoc.com",
+    "industry": "Healthcare Technology",
+    "sector": "Pharmaceutical E-commerce",
+    "stage": "growth",
+    "founded_year": 2015,
+    "employees_count": 120,
+    "headquarters": "Lagos, Nigeria",
+    "country": "Nigeria",
+    "funding_rounds": [
+      {
+        "type": "Series A",
+        "amount": 4400000,
+        "date": "2021-07-01",
+        "investor": "VestedWorld"
+      },
+      {
+        "type": "Seed",
+        "amount": 1000000,
+        "date": "2018-05-01",
+        "investor": "Village Capital"
+      }
+    ],
+    "products": [
+      "Pharmaceutical E-commerce",
+      "Supply Chain Management",
+      "Quality Assurance",
+      "Delivery Services"
+    ],
+    "markets": [
+      "Nigeria",
+      "Ghana"
+    ],
+    "achievements": [
+      "Serves over 5,000 healthcare providers",
+      "Processed over $50M in orders",
+      "Reduced procurement costs by 30%",
+      "Featured in TechCrunch, Forbes"
+    ],
+    "partnerships": [
+      "Partnership with major pharmaceutical companies",
+      "Collaboration with healthcare networks",
+      "Integration with logistics providers"
+    ],
+    "awards": [
+      "Forbes Africa 30 Under 30",
+      "TechCrunch Startup Battlefield"
+    ]
+  },
+  {
+    "name": "MyDawa",
+    "description": "MyDawa is an online pharmacy platform that provides prescription medications, health products, and telemedicine services in Kenya. The platform offers convenient home delivery and access to licensed pharmacists.",
+    "website": "https://mydawa.com",
+    "industry": "Healthcare Technology",
+    "sector": "Online Pharmacy",
+    "stage": "growth",
+    "founded_year": 2016,
+    "employees_count": 100,
+    "headquarters": "Nairobi, Kenya",
+    "country": "Kenya",
+    "funding_rounds": [
+      {
+        "type": "Series A",
+        "amount": 3000000,
+        "date": "2021-03-01",
+        "investor": "Novastar Ventures"
+      },
+      {
+        "type": "Seed",
+        "amount": 800000,
+        "date": "2019-08-01",
+        "investor": "Village Capital"
+      }
+    ],
+    "products": [
+      "Online Pharmacy",
+      "Prescription Delivery",
+      "Telemedicine",
+      "Health Products"
+    ],
+    "markets": [
+      "Kenya"
+    ],
+    "achievements": [
+      "Serves over 100,000 customers",
+      "Delivered over 500,000 orders",
+      "Winner of Seedstars World Kenya",
+      "Featured in TechCrunch"
+    ],
+    "partnerships": [
+      "Partnership with pharmaceutical suppliers",
+      "Collaboration with insurance providers",
+      "Integration with healthcare facilities"
+    ],
+    "awards": [
+      "Seedstars World Kenya Winner",
+      "Forbes Africa 30 Under 30"
+    ]
+  },
+  {
+    "name": "Yodawy",
+    "description": "Yodawy is a prescription delivery platform in Egypt that connects patients with pharmacies for medication delivery. The platform offers prescription management, medication reminders, and home delivery services.",
+    "website": "https://yodawy.com",
+    "industry": "Healthcare Technology",
+    "sector": "Prescription Delivery",
+    "stage": "growth",
+    "founded_year": 2018,
+    "employees_count": 150,
+    "headquarters": "Cairo, Egypt",
+    "country": "Egypt",
+    "funding_rounds": [
+      {
+        "type": "Series A",
+        "amount": 7500000,
+        "date": "2021-06-01",
+        "investor": "Algebra Ventures"
+      },
+      {
+        "type": "Seed",
+        "amount": 2000000,
+        "date": "2019-11-01",
+        "investor": "Flat6Labs"
+      }
+    ],
+    "products": [
+      "Prescription Delivery",
+      "Medication Reminders",
+      "Pharmacy Network",
+      "Health Management"
+    ],
+    "markets": [
+      "Egypt"
+    ],
+    "achievements": [
+      "Serves over 200,000 users",
+      "Network of 1,000+ pharmacies",
+      "Processed over 1 million prescriptions",
+      "Featured in TechCrunch, Wamda"
+    ],
+    "partnerships": [
+      "Partnership with major pharmacy chains",
+      "Collaboration with insurance companies",
+      "Integration with healthcare providers"
+    ],
+    "awards": [
+      "Forbes Middle East Top 50 Startups",
+      "ArabNet Digital Excellence Award"
+    ]
+  },
+  {
+    "name": "Aerobotics",
+    "description": "Aerobotics provides agricultural and health monitoring solutions using drone technology and AI. The company uses aerial imagery and machine learning to monitor crop health, detect diseases, and optimize agricultural operations.",
+    "website": "https://aerobotics.com",
+    "industry": "Healthcare Technology",
+    "sector": "Health Monitoring",
+    "stage": "growth",
+    "founded_year": 2014,
+    "employees_count": 180,
+    "headquarters": "Cape Town, South Africa",
+    "country": "South Africa",
+    "funding_rounds": [
+      {
+        "type": "Series B",
+        "amount": 17000000,
+        "date": "2021-10-01",
+        "investor": "Naspers Foundry"
+      },
+      {
+        "type": "Series A",
+        "amount": 5000000,
+        "date": "2019-03-01",
+        "investor": "4Di Capital"
+      }
+    ],
+    "products": [
+      "Drone Monitoring",
+      "AI Analytics",
+      "Crop Health Monitoring",
+      "Disease Detection"
+    ],
+    "markets": [
+      "South Africa",
+      "Kenya",
+      "Zambia",
+      "Mozambique"
+    ],
+    "achievements": [
+      "Monitored over 1 million hectares",
+      "Reduced crop losses by 30%",
+      "Winner of Seedstars World",
+      "Featured in TechCrunch, Forbes"
+    ],
+    "partnerships": [
+      "Partnership with agricultural companies",
+      "Collaboration with research institutions",
+      "Alliance with insurance providers"
+    ],
+    "awards": [
+      "Seedstars World Winner",
+      "Fast Company Most Innovative Companies",
+      "Forbes Africa 30 Under 30"
+    ]
+  },
+  {
+    "name": "Vula Mobile",
+    "description": "Vula Mobile is a medical referral platform that connects healthcare workers with specialists for remote consultations. The app enables healthcare providers to seek expert advice, share medical images, and manage patient referrals.",
+    "website": "https://vulamobile.com",
+    "industry": "Healthcare Technology",
+    "sector": "Medical Referrals",
+    "stage": "growth",
+    "founded_year": 2014,
+    "employees_count": 50,
+    "headquarters": "Cape Town, South Africa",
+    "country": "South Africa",
+    "funding_rounds": [
+      {
+        "type": "Series A",
+        "amount": 5000000,
+        "date": "2021-04-01",
+        "investor": "Knife Capital"
+      },
+      {
+        "type": "Seed",
+        "amount": 1000000,
+        "date": "2018-06-01",
+        "investor": "Village Capital"
+      }
+    ],
+    "products": [
+      "Medical Referral App",
+      "Telemedicine",
+      "Specialist Consultations",
+      "Medical Image Sharing"
+    ],
+    "markets": [
+      "South Africa",
+      "Zambia",
+      "Malawi",
+      "Mozambique"
+    ],
+    "achievements": [
+      "Used by over 50,000 healthcare workers",
+      "Facilitated over 1 million consultations",
+      "Winner of MIT Solve Challenge",
+      "Featured in BBC, TechCrunch"
+    ],
+    "partnerships": [
+      "Partnership with medical schools",
+      "Collaboration with healthcare networks",
+      "Alliance with government health departments"
+    ],
+    "awards": [
+      "MIT Solve Challenge Winner",
+      "Fast Company Most Innovative Companies",
+      "Forbes Africa 30 Under 30"
+    ]
+  },
+  {
+    "name": "Shezlong",
+    "description": "Shezlong is an online mental health platform that connects users with licensed therapists and psychologists for online counseling sessions. The platform provides accessible and affordable mental health services across the Middle East and North Africa.",
+    "website": "https://shezlong.com",
+    "industry": "Healthcare Technology",
+    "sector": "Mental Health",
+    "stage": "early",
+    "founded_year": 2015,
+    "employees_count": 40,
+    "headquarters": "Cairo, Egypt",
+    "country": "Egypt",
+    "funding_rounds": [
+      {
+        "type": "Seed",
+        "amount": 1000000,
+        "date": "2020-09-01",
+        "investor": "Flat6Labs"
+      },
+      {
+        "type": "Pre-Seed",
+        "amount": 200000,
+        "date": "2018-03-01",
+        "investor": "AUC Angels"
+      }
+    ],
+    "products": [
+      "Online Therapy",
+      "Mental Health Counseling",
+      "Wellness Programs",
+      "Support Groups"
+    ],
+    "markets": [
+      "Egypt",
+      "Saudi Arabia",
+      "UAE"
+    ],
+    "achievements": [
+      "Serves over 50,000 users",
+      "Network of 500+ licensed therapists",
+      "Conducted over 100,000 therapy sessions",
+      "Featured in TechCrunch, Wamda"
+    ],
+    "partnerships": [
+      "Partnership with mental health organizations",
+      "Collaboration with universities",
+      "Integration with insurance providers"
+    ],
+    "awards": [
+      "Forbes Middle East Top 50 Startups",
+      "ArabNet Digital Excellence Award"
+    ]
+  },
+  {
+    "name": "Babyl",
+    "description": "Babyl is a digital health platform in Rwanda that provides telemedicine services, health information, and medication delivery. The platform enables users to consult with doctors, access health records, and order medications online.",
+    "website": "https://babyl.rw",
+    "industry": "Healthcare Technology",
+    "sector": "Digital Health",
+    "stage": "growth",
+    "founded_year": 2016,
+    "employees_count": 80,
+    "headquarters": "Kigali, Rwanda",
+    "country": "Rwanda",
+    "funding_rounds": [
+      {
+        "type": "Series A",
+        "amount": 4000000,
+        "date": "2020-11-01",
+        "investor": "MMC Ventures"
+      },
+      {
+        "type": "Seed",
+        "amount": 1000000,
+        "date": "2018-05-01",
+        "investor": "Novastar Ventures"
+      }
+    ],
+    "products": [
+      "Telemedicine",
+      "Health Records",
+      "Medication Delivery",
+      "Health Information"
+    ],
+    "markets": [
+      "Rwanda"
+    ],
+    "achievements": [
+      "Serves over 2 million users",
+      "Conducted over 5 million consultations",
+      "Partnership with Rwanda Ministry of Health",
+      "Featured in BBC, TechCrunch"
+    ],
+    "partnerships": [
+      "Partnership with Rwanda Ministry of Health",
+      "Collaboration with healthcare facilities",
+      "Integration with insurance providers"
+    ],
+    "awards": [
+      "Fast Company Most Innovative Companies",
+      "Forbes Africa 30 Under 30"
+    ]
+  },
+  {
+    "name": "Kasha",
+    "description": "Kasha is an e-commerce platform focused on women's health and personal care products in Rwanda and Kenya. The platform offers discreet delivery, flexible payment options, and access to essential health products.",
+    "website": "https://kasha.co.rw",
+    "industry": "Healthcare Technology",
+    "sector": "E-commerce",
+    "stage": "growth",
+    "founded_year": 2016,
+    "employees_count": 120,
+    "headquarters": "Kigali, Rwanda",
+    "country": "Rwanda",
+    "funding_rounds": [
+      {
+        "type": "Series A",
+        "amount": 10000000,
+        "date": "2021-08-01",
+        "investor": "TLcom Capital"
+      },
+      {
+        "type": "Seed",
+        "amount": 2000000,
+        "date": "2019-04-01",
+        "investor": "Novastar Ventures"
+      }
+    ],
+    "products": [
+      "E-commerce Platform",
+      "Women's Health Products",
+      "Personal Care",
+      "Discreet Delivery"
+    ],
+    "markets": [
+      "Rwanda",
+      "Kenya"
+    ],
+    "achievements": [
+      "Serves over 500,000 customers",
+      "Delivered over 2 million orders",
+      "Winner of Seedstars World",
+      "Featured in TechCrunch, Forbes"
+    ],
+    "partnerships": [
+      "Partnership with product manufacturers",
+      "Collaboration with logistics providers",
+      "Integration with payment providers"
+    ],
+    "awards": [
+      "Seedstars World Winner",
+      "Forbes Africa 30 Under 30",
+      "Fast Company Most Innovative Companies"
+    ]
+  },
+  {
+    "name": "Discovery Health",
+    "description": "Discovery Health is South Africa's largest private health insurance administrator, providing comprehensive health insurance, wellness programs, and digital health solutions to millions of South Africans.",
+    "website": "https://discovery.co.za",
+    "industry": "Healthcare",
+    "sector": "Health Insurance",
+    "stage": "mature",
+    "founded_year": 1992,
+    "employees_count": 12000,
+    "headquarters": "Sandton, South Africa",
+    "country": "South Africa",
+    "funding_rounds": [
+      {
+        "type": "Corporate",
+        "amount": 50000000,
+        "date": "2021-12-01",
+        "investor": "Discovery Limited"
+      }
+    ],
+    "products": [
+      "Health Insurance",
+      "Wellness Programs",
+      "Digital Health",
+      "Vitality Rewards"
+    ],
+    "markets": [
+      "South Africa",
+      "UK",
+      "China",
+      "Singapore"
+    ],
+    "achievements": [
+      "Over 3 million members",
+      "Largest health insurance administrator in South Africa",
+      "Pioneer of behavioral insurance",
+      "Listed on Johannesburg Stock Exchange"
+    ],
+    "partnerships": [
+      "Partnership with major hospital networks",
+      "Collaboration with fitness centers",
+      "Alliance with retailers for Vitality rewards"
+    ],
+    "awards": [
+      "Best Health Insurance Provider",
+      "Most Innovative Insurance Company",
+      "Digital Health Excellence Award"
+    ]
+  },
+  {
+    "name": "Netcare",
+    "description": "Netcare is one of South Africa's largest private hospital networks, operating over 50 hospitals and providing comprehensive healthcare services including emergency care, surgery, and specialized treatments.",
+    "website": "https://netcare.co.za",
+    "industry": "Healthcare",
+    "sector": "Hospital Network",
+    "stage": "mature",
+    "founded_year": 1996,
+    "employees_count": 30000,
+    "headquarters": "Johannesburg, South Africa",
+    "country": "South Africa",
+    "funding_rounds": [
+      {
+        "type": "Corporate",
+        "amount": 30000000,
+        "date": "2021-06-01",
+        "investor": "Netcare Group"
+      }
+    ],
+    "products": [
+      "Hospital Services",
+      "Emergency Care",
+      "Surgical Services",
+      "Specialized Treatments"
+    ],
+    "markets": [
+      "South Africa",
+      "UK"
+    ],
+    "achievements": [
+      "Over 50 hospitals",
+      "Serves over 10 million patients annually",
+      "Largest private hospital network in South Africa",
+      "Listed on Johannesburg Stock Exchange"
+    ],
+    "partnerships": [
+      "Partnership with medical device companies",
+      "Collaboration with pharmaceutical companies",
+      "Alliance with insurance providers"
+    ],
+    "awards": [
+      "Best Hospital Network",
+      "Healthcare Excellence Award",
+      "Patient Safety Award"
+    ]
+  },
+  {
+    "name": "Aspen Pharmacare",
+    "description": "Aspen Pharmacare is Africa's largest pharmaceutical manufacturer, producing generic medicines, APIs, and specialty pharmaceuticals. The company operates manufacturing facilities across Africa and supplies medicines globally.",
+    "website": "https://aspenpharma.com",
+    "industry": "Healthcare",
+    "sector": "Pharmaceutical Manufacturing",
+    "stage": "mature",
+    "founded_year": 1997,
+    "employees_count": 10000,
+    "headquarters": "Durban, South Africa",
+    "country": "South Africa",
+    "funding_rounds": [
+      {
+        "type": "Corporate",
+        "amount": 100000000,
+        "date": "2021-01-01",
+        "investor": "Aspen Pharmacare Holdings"
+      }
+    ],
+    "products": [
+      "Generic Medicines",
+      "APIs",
+      "Specialty Pharmaceuticals",
+      "Vaccines"
+    ],
+    "markets": [
+      "South Africa",
+      "Sub-Saharan Africa",
+      "Global"
+    ],
+    "achievements": [
+      "Largest pharmaceutical manufacturer in Africa",
+      "Produces over 1 billion units annually",
+      "Listed on Johannesburg Stock Exchange",
+      "Global supplier of essential medicines"
+    ],
+    "partnerships": [
+      "Partnership with global pharmaceutical companies",
+      "Collaboration with research institutions",
+      "Alliance with government health departments"
+    ],
+    "awards": [
+      "Best Pharmaceutical Company",
+      "Manufacturing Excellence Award",
+      "Global Health Impact Award"
+    ]
+  }
+]
