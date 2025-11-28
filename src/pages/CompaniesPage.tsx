@@ -19,7 +19,7 @@ const CompaniesPage: React.FC<{ onViewCompany: (name: string) => void }> = ({ on
   const [selectedSector, setSelectedSector] = useState('All');
   const [selectedCountry, setSelectedCountry] = useState('All');
   const [showExportModal, setShowExportModal] = useState(false);
-  const [showCompanyDetails, setShowCompanyDetails] = useState<null | { name: string; totalFunding: number; dealCount: number; sector: string; deals: Array<{ type: string; date: string; value: number }>; investors: string[]; country: string; lastFunding: string; website?: string; logo?: string; description?: string; stage?: string; hasProfile?: boolean }>(null);
+  const [showCompanyDetails, setShowCompanyDetails] = useState<null | { name: string; totalFunding: number; dealCount: number; sector: string; deals: Array<{ type: string; date: string; value: number }>; investors: string[]; country: string; lastFunding: string; website?: string; logo?: string; description?: string; stage?: string; hasAccount?: boolean }>(null);
   const [aiOpen, setAiOpen] = useState(false);
   const { profile } = useAuth();
   const canExport = !!(profile && (profile.is_admin || (profile as any).account_tier === 'enterprise'));
@@ -57,6 +57,22 @@ const CompaniesPage: React.FC<{ onViewCompany: (name: string) => void }> = ({ on
           console.log('[CompaniesPage] Fetched deals:', dealsData.length);
         } catch (error) {
           console.error('[CompaniesPage] Error fetching deals:', error);
+        }
+        
+        // Fetch users to check which companies have accounts
+        let companiesWithAccounts: Set<string> = new Set();
+        try {
+          const usersResponse = await apiService.get('/admin/users', { all: 'true' });
+          if (usersResponse.success && usersResponse.data && Array.isArray(usersResponse.data)) {
+            usersResponse.data.forEach((user: any) => {
+              if (user.company_name && user.company_name.trim()) {
+                companiesWithAccounts.add(user.company_name.trim());
+              }
+            });
+            console.log('[CompaniesPage] Companies with accounts:', companiesWithAccounts.size);
+          }
+        } catch (error) {
+          console.error('[CompaniesPage] Error fetching users:', error);
         }
         
         if (companiesResponse.success && companiesResponse.data && Array.isArray(companiesResponse.data)) {
@@ -123,8 +139,8 @@ const CompaniesPage: React.FC<{ onViewCompany: (name: string) => void }> = ({ on
               website: company.website || company.website_url || null,
               description: company.description || company.bio || company.about || null,
               stage: company.stage || company.funding_stage || 'Unknown',
-              // Check if company has sufficient data for profile
-              hasProfile: !!(company.description || company.total_funding > 0 || company.founded_year || company.website || company.logo_url)
+              // Check if company has an account on the platform (user with matching company_name)
+              hasAccount: companiesWithAccounts.has(company.name.trim())
             };
           });
           console.log(`[CompaniesPage] Transformed companies: ${transformed.length}`);
@@ -674,7 +690,7 @@ const CompaniesPage: React.FC<{ onViewCompany: (name: string) => void }> = ({ on
 
             {/* Actions */}
             <div className="flex gap-2 pt-4 border-t border-slate-200 dark:border-slate-700">
-              {showCompanyDetails.hasProfile !== false && (
+              {showCompanyDetails.hasAccount && (
                 <button onClick={() => onViewCompany(showCompanyDetails.name)} className="flex-1 btn-primary-elevated px-4 py-2.5 rounded-lg flex items-center justify-center gap-2">
                   <Eye className="h-4 w-4" />
                   <span>View Full Profile</span>
