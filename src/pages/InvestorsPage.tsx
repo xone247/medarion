@@ -510,7 +510,7 @@ const InvestorsPage = () => {
       {/* Investor Details Modal - Modern & Beautiful */}
       {showInvestorDetails && (
         <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4" onClick={() => setShowInvestorDetails(null)}>
-          <div className="card-glass p-6 max-w-4xl w-full max-h-[90vh] overflow-y-auto shadow-2xl rounded-2xl border border-slate-200/50 dark:border-slate-700/50" onClick={(e) => e.stopPropagation()}>
+          <div className="card-glass p-6 max-w-4xl w-full max-h-[90vh] overflow-y-auto shadow-2xl rounded-2xl border border-slate-200/50 dark:border-slate-700/50" style={{ maxHeight: '90vh', overflowY: 'auto' }} onClick={(e) => e.stopPropagation()}>
             {/* Header with Logo */}
             <div className="flex items-start justify-between mb-6 pb-4 border-b border-slate-200 dark:border-slate-700">
               <div className="flex items-start gap-4 flex-1 min-w-0">
