@@ -19,7 +19,7 @@ const CompaniesPage: React.FC<{ onViewCompany: (name: string) => void }> = ({ on
   const [selectedSector, setSelectedSector] = useState('All');
   const [selectedCountry, setSelectedCountry] = useState('All');
   const [showExportModal, setShowExportModal] = useState(false);
-  const [showCompanyDetails, setShowCompanyDetails] = useState<null | { name: string; totalFunding: number; dealCount: number; sector: string; deals: Array<{ type: string; date: string; value: number }>; investors: string[]; country: string; lastFunding: string; website?: string; logo?: string; description?: string; stage?: string }>(null);
+  const [showCompanyDetails, setShowCompanyDetails] = useState<null | { name: string; totalFunding: number; dealCount: number; sector: string; deals: Array<{ type: string; date: string; value: number }>; investors: string[]; country: string; lastFunding: string; website?: string; logo?: string; description?: string; stage?: string; hasProfile?: boolean }>(null);
   const [aiOpen, setAiOpen] = useState(false);
   const { profile } = useAuth();
   const canExport = !!(profile && (profile.is_admin || (profile as any).account_tier === 'enterprise'));
@@ -31,28 +31,106 @@ const CompaniesPage: React.FC<{ onViewCompany: (name: string) => void }> = ({ on
   useEffect(() => {
     const fetchCompaniesData = async () => {
       try {
-        // Use same endpoint as Data Management tab
-        const response = await apiService.get('/admin/companies', { all: 'true' });
-        if (response.success && response.data && Array.isArray(response.data)) {
+        // Fetch companies
+        const companiesResponse = await apiService.get('/admin/companies', { all: 'true' });
+        console.log('[CompaniesPage] Companies API response:', {
+          success: companiesResponse.success,
+          hasData: !!companiesResponse.data,
+          isArray: Array.isArray(companiesResponse.data),
+          length: companiesResponse.data?.length || 0,
+          dataType: typeof companiesResponse.data
+        });
+        
+        // Fetch deals to aggregate data
+        let dealsData: any[] = [];
+        try {
+          const dealsResponse = await apiService.get('/admin/deals', { all: 'true', limit: '1000' });
+          if (dealsResponse.success && dealsResponse.data) {
+            if (Array.isArray(dealsResponse.data)) {
+              dealsData = dealsResponse.data;
+            } else if (dealsResponse.data.deals && Array.isArray(dealsResponse.data.deals)) {
+              dealsData = dealsResponse.data.deals;
+            } else if (dealsResponse.data.data && Array.isArray(dealsResponse.data.data)) {
+              dealsData = dealsResponse.data.data;
+            }
+          }
+          console.log('[CompaniesPage] Fetched deals:', dealsData.length);
+        } catch (error) {
+          console.error('[CompaniesPage] Error fetching deals:', error);
+        }
+        
+        if (companiesResponse.success && companiesResponse.data && Array.isArray(companiesResponse.data)) {
+          console.log(`[CompaniesPage] Total companies from API: ${companiesResponse.data.length}`);
           // Transform API data to match expected format
-          // Note: Companies data structure may need aggregation from deals
-          const transformed = response.data.map((company: any) => ({
-            id: company.id,
-            name: company.name,
-            sector: company.industry || company.sector || 'Unknown',
-            country: company.headquarters?.split(',')[1]?.trim() || company.country || 'Unknown',
-            totalFunding: parseFloat(company.total_funding || 0),
-            dealCount: 0, // Will need to aggregate from deals
-            lastFunding: company.last_funding_date || company.updated_at,
-            investors: [], // Will need to aggregate from deals
-            deals: [],
-            logo: company.logo_url || company.logo || company.logo_image || null, // Support multiple logo field names
-            website: company.website || company.website_url || null,
-            description: company.description || company.bio || company.about || null,
-            stage: company.stage || company.funding_stage || 'Unknown',
-          }));
+          const transformed = companiesResponse.data.map((company: any) => {
+            // Get deals for this company
+            const companyDeals = dealsData.filter((d: any) => 
+              d.company_id === company.id || d.company_name === company.name
+            );
+            
+            // Parse investors from JSON or extract from deals
+            let investors: string[] = [];
+            try {
+              if (company.investors) {
+                if (typeof company.investors === 'string') {
+                  investors = JSON.parse(company.investors);
+                } else if (Array.isArray(company.investors)) {
+                  investors = company.investors;
+                }
+              }
+            } catch (e) {
+              // If parsing fails, try to extract from deals
+            }
+            
+            // Always extract investors from deals as well (in case company.investors is empty)
+            const dealInvestors = Array.from(new Set(
+              companyDeals
+                .map((d: any) => d.lead_investor || d.investor_name || d.investor)
+                .filter((inv: any) => inv && inv !== '' && inv !== null)
+            ));
+            
+            // Merge investors, removing duplicates
+            investors = Array.from(new Set([...investors, ...dealInvestors]));
+            
+            // Format deals for display
+            const formattedDeals = companyDeals
+              .filter((d: any) => d.amount && d.amount > 0)
+              .map((d: any) => ({
+                type: d.deal_type || d.type || 'Funding Round',
+                date: d.deal_date || d.date || d.created_at || d.updated_at,
+                value: parseFloat(d.amount || d.value || 0),
+                investor: d.lead_investor || d.investor_name || d.investor || null
+              }))
+              .sort((a: any, b: any) => {
+                const dateA = new Date(a.date).getTime();
+                const dateB = new Date(b.date).getTime();
+                return dateB - dateA; // Sort descending (newest first)
+              });
+            
+            console.log(`[CompaniesPage] Company ${company.name}: ${formattedDeals.length} deals, ${investors.length} investors`);
+            
+            return {
+              id: company.id,
+              name: company.name,
+              sector: company.industry || company.sector || 'Unknown',
+              country: company.headquarters?.split(',')[1]?.trim() || company.country || 'Unknown',
+              totalFunding: parseFloat(company.total_funding || 0),
+              dealCount: companyDeals.length,
+              lastFunding: company.last_funding_date || (formattedDeals.length > 0 ? formattedDeals[0].date : company.updated_at),
+              investors: investors,
+              deals: formattedDeals,
+              logo: company.logo_url || company.logo || company.logo_image || null,
+              website: company.website || company.website_url || null,
+              description: company.description || company.bio || company.about || null,
+              stage: company.stage || company.funding_stage || 'Unknown',
+              // Check if company has sufficient data for profile
+              hasProfile: !!(company.description || company.total_funding > 0 || company.founded_year || company.website || company.logo_url)
+            };
+          });
+          console.log(`[CompaniesPage] Transformed companies: ${transformed.length}`);
           setCompanies(transformed);
         } else {
+          console.error('[CompaniesPage] Invalid API response:', companiesResponse);
           setCompanies([]);
         }
       } catch (error) {
@@ -317,10 +395,14 @@ const CompaniesPage: React.FC<{ onViewCompany: (name: string) => void }> = ({ on
                   className="w-14 h-14 rounded-xl object-cover border border-slate-200 dark:border-slate-700 flex-shrink-0 shadow-md"
                   onError={(e) => {
                     // Fallback to initial if logo fails to load
+                    console.warn(`[CompaniesPage] Logo failed to load for ${company.name}:`, company.logo);
                     const target = e.target as HTMLImageElement;
                     target.style.display = 'none';
                     const fallback = target.nextElementSibling as HTMLElement;
                     if (fallback) fallback.style.display = 'flex';
+                  }}
+                  onLoad={() => {
+                    console.log(`[CompaniesPage] Logo loaded successfully for ${company.name}:`, company.logo);
                   }}
                 />
               ) : null}
@@ -403,7 +485,7 @@ const CompaniesPage: React.FC<{ onViewCompany: (name: string) => void }> = ({ on
             <div className="flex gap-2 pt-3 border-t border-slate-200 dark:border-slate-700 mt-auto">
               <button onClick={() => handleViewCompanyDetails(company)} className="flex-1 btn-primary-elevated flex items-center justify-center gap-1.5 px-3 py-2 rounded-lg text-sm">
                 <Eye className="h-3.5 w-3.5" />
-                <span>View</span>
+                <span>View More</span>
               </button>
               {company.website && (
                 <a 
@@ -592,10 +674,12 @@ const CompaniesPage: React.FC<{ onViewCompany: (name: string) => void }> = ({ on
 
             {/* Actions */}
             <div className="flex gap-2 pt-4 border-t border-slate-200 dark:border-slate-700">
-              <button onClick={() => onViewCompany(showCompanyDetails.name)} className="flex-1 btn-primary-elevated px-4 py-2.5 rounded-lg flex items-center justify-center gap-2">
-                <Eye className="h-4 w-4" />
-                <span>View Full Profile</span>
-              </button>
+              {showCompanyDetails.hasProfile !== false && (
+                <button onClick={() => onViewCompany(showCompanyDetails.name)} className="flex-1 btn-primary-elevated px-4 py-2.5 rounded-lg flex items-center justify-center gap-2">
+                  <Eye className="h-4 w-4" />
+                  <span>View Full Profile</span>
+                </button>
+              )}
               {showCompanyDetails.website && (
                 <a 
                   href={showCompanyDetails.website} 
