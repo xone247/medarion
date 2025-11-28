@@ -223,14 +223,30 @@ const uploadsPath = '/home/medasnnc/api.medarion.africa/uploads';
 console.log('[Server] Static uploads path:', uploadsPath);
 console.log('[Server] __dirname:', __dirname);
 
-// Add middleware to log uploads requests for debugging
+// Add middleware to log uploads requests and handle CORS for static files
 app.use('/uploads', (req, res, next) => {
   console.log('[Static] Serving uploads request:', req.path, 'from', uploadsPath);
+  
+  // Handle OPTIONS requests for static files
+  if (req.method === 'OPTIONS') {
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Methods', 'GET, OPTIONS');
+    res.header('Access-Control-Allow-Headers', 'Content-Type');
+    return res.status(200).end();
+  }
+  
+  // Set CORS headers for all static file requests
+  res.header('Access-Control-Allow-Origin', '*');
   next();
 });
 
 app.use('/uploads', express.static(uploadsPath, {
   setHeaders: (res, path) => {
+    // Set CORS headers for images
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+    
     // Set proper headers for images
     if (path.endsWith('.jpg') || path.endsWith('.jpeg')) {
       res.setHeader('Content-Type', 'image/jpeg');
@@ -240,6 +256,8 @@ app.use('/uploads', express.static(uploadsPath, {
       res.setHeader('Content-Type', 'image/gif');
     } else if (path.endsWith('.webp')) {
       res.setHeader('Content-Type', 'image/webp');
+    } else if (path.endsWith('.svg')) {
+      res.setHeader('Content-Type', 'image/svg+xml');
     }
   },
   // Don't serve index files

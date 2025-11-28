@@ -24,40 +24,70 @@ const InvestorsPage = () => {
         
         if (response.success && response.data && Array.isArray(response.data)) {
           const transformed = response.data.map((inv: any) => {
-            let totalInvested = 0;
-            if (Array.isArray(inv.recent_investments) && inv.recent_investments.length > 0) {
-              totalInvested = inv.recent_investments.reduce((sum: number, investment: any) => {
-                return sum + (parseFloat(investment.amount) || 0);
-              }, 0);
-            } else if (inv.assets_under_management) {
-              const match = String(inv.assets_under_management).match(/[\d.]+/);
-              if (match) {
-                totalInvested = parseFloat(match[0]) * 1000000;
+            // Use enriched data from database first, fallback to calculated values
+            let totalInvested = parseFloat(inv.total_invested || 0);
+            if (totalInvested === 0) {
+              // Fallback: calculate from recent_investments if available
+              if (Array.isArray(inv.recent_investments) && inv.recent_investments.length > 0) {
+                totalInvested = inv.recent_investments.reduce((sum: number, investment: any) => {
+                  return sum + (parseFloat(investment.amount) || 0);
+                }, 0);
+              } else if (inv.assets_under_management) {
+                const match = String(inv.assets_under_management).match(/[\d.]+/);
+                if (match) {
+                  totalInvested = parseFloat(match[0]) * 1000000;
+                }
               }
             }
             
+            // Use enriched deal_count from database
+            let dealCount = parseInt(inv.deal_count || 0);
+            if (dealCount === 0 && Array.isArray(inv.recent_investments)) {
+              dealCount = inv.recent_investments.length;
+            } else if (dealCount === 0) {
+              dealCount = parseInt(inv.total_investments || 0);
+            }
+            
+            // Use portfolio_companies from database
             let portfolioCompanies = [];
             if (Array.isArray(inv.portfolio_companies)) {
               portfolioCompanies = inv.portfolio_companies;
             }
             
+            // Use focus_sectors from database (sectors or focus_sectors)
+            let focusSectors = [];
+            if (Array.isArray(inv.focus_sectors)) {
+              focusSectors = inv.focus_sectors;
+            } else if (Array.isArray(inv.sectors)) {
+              focusSectors = inv.sectors;
+            }
+            
+            // Use geographic_focus from database (geographic_focus or countries)
+            let countries = [];
+            if (Array.isArray(inv.countries)) {
+              countries = inv.countries;
+            } else if (Array.isArray(inv.geographic_focus)) {
+              countries = inv.geographic_focus;
+            }
+            
             return {
               id: inv.id,
               name: inv.name,
-              logo: inv.logo || inv.logo_url || null,
+              logo: inv.logo_url || inv.logo || null,
               description: inv.description || inv.bio || inv.about || null,
               type: inv.type || 'VC',
               headquarters: inv.headquarters,
               website: inv.website || inv.website_url || null,
               totalInvested: totalInvested,
-              dealCount: Array.isArray(inv.recent_investments) ? inv.recent_investments.length : (inv.total_investments || 0),
+              dealCount: dealCount,
               portfolioCompanies: portfolioCompanies,
-              focusSectors: Array.isArray(inv.focus_sectors) ? inv.focus_sectors : [],
-              countries: Array.isArray(inv.countries) ? inv.countries : [],
+              focusSectors: focusSectors,
+              countries: countries,
               contact_email: inv.contact_email || null,
               social_media: inv.social_media || {},
               assets_under_management: inv.assets_under_management || null,
               investment_stages: Array.isArray(inv.investment_stages) ? inv.investment_stages : [],
+              avgDealSize: parseFloat(inv.avg_deal_size || 0),
             };
           });
           

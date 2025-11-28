@@ -291,8 +291,11 @@ router.get('/blog-posts', authenticateToken, async (req, res) => {
       countParams.push(status);
     }
     
-    query += ' ORDER BY created_at DESC'; if (useLimit) { query += ' LIMIT ? OFFSET ?'; params.push(actualLimit, offset); } params.push(actualLimit, offset); }
-    params.push(actualLimit, offset);
+    query += ' ORDER BY created_at DESC';
+    if (useLimit) {
+      query += ' LIMIT ? OFFSET ?';
+      params.push(actualLimit, offset);
+    }
     
     const [posts] = await db.execute(query, params);
     const [countResult] = await db.execute(countQuery, countParams);
@@ -557,8 +560,11 @@ router.get('/videos', authenticateToken, async (req, res) => {
       countParams.push(searchParam, searchParam);
     }
     
-    query += ' ORDER BY created_at DESC'; if (useLimit) { query += ' LIMIT ? OFFSET ?'; params.push(actualLimit, offset); } params.push(actualLimit, offset); }
-    params.push(actualLimit, offset);
+    query += ' ORDER BY created_at DESC';
+    if (useLimit) {
+      query += ' LIMIT ? OFFSET ?';
+      params.push(actualLimit, offset);
+    }
     
     const [videos] = await db.execute(query, params);
     const [countResult] = await db.execute(countQuery, countParams);
@@ -751,8 +757,11 @@ router.get('/advertisements', authenticateToken, async (req, res) => {
       countParams.push(category);
     }
     
-    query += ' ORDER BY created_at DESC'; if (useLimit) { query += ' LIMIT ? OFFSET ?'; params.push(actualLimit, offset); } params.push(actualLimit, offset); }
-    params.push(actualLimit, offset);
+    query += ' ORDER BY created_at DESC';
+    if (useLimit) {
+      query += ' LIMIT ? OFFSET ?';
+      params.push(actualLimit, offset);
+    }
     
     const [ads] = await db.execute(query, params);
     const [countResult] = await db.execute(countQuery, countParams);
@@ -901,8 +910,11 @@ router.get('/announcements', authenticateToken, async (req, res) => {
       countParams.push(placement);
     }
     
-    query += ' ORDER BY created_at DESC'; if (useLimit) { query += ' LIMIT ? OFFSET ?'; params.push(actualLimit, offset); } params.push(actualLimit, offset); }
-    params.push(actualLimit, offset);
+    query += ' ORDER BY created_at DESC';
+    if (useLimit) {
+      query += ' LIMIT ? OFFSET ?';
+      params.push(actualLimit, offset);
+    }
     
     const [announcements] = await db.execute(query, params);
     const [countResult] = await db.execute(countQuery, countParams);
@@ -1262,7 +1274,8 @@ router.get('/modules', async (req, res) => {
   });
   try {
     const { page = 1, limit = 100, search, category, enabled } = req.query;
-    const offset = (parseInt(page) - 1) * parseInt(limit);
+    const actualLimit = parseInt(limit) || 100;
+    const offset = (parseInt(page) - 1) * actualLimit;
     
     // Build query with filters
     let query = 'SELECT * FROM modules WHERE 1=1';
@@ -1292,7 +1305,8 @@ router.get('/modules', async (req, res) => {
       countParams.push(enabled === 'true' ? 1 : 0);
     }
     
-    query += ' ORDER BY created_at DESC'; if (useLimit) { query += ' LIMIT ? OFFSET ?'; params.push(actualLimit, offset); } params.push(actualLimit, offset); }
+    query += ' ORDER BY created_at DESC';
+    query += ' LIMIT ? OFFSET ?';
     params.push(actualLimit, offset);
     
     // Get total count
@@ -1316,9 +1330,9 @@ router.get('/modules', async (req, res) => {
       data: parsedModules, // Return 'data' not 'modules' to match frontend expectation
       pagination: {
         page: parseInt(page),
-        limit: useLimit ? actualLimit : total,
+        limit: actualLimit,
         total: total,
-        pages: Math.ceil(total / parseInt(limit))
+        pages: Math.ceil(total / actualLimit)
       }
     });
   } catch (error) {
@@ -1578,8 +1592,11 @@ router.get('/users', authenticateToken, async (req, res) => {
       countParams.push(role);
     }
     
-    query += ' ORDER BY created_at DESC'; if (useLimit) { query += ' LIMIT ? OFFSET ?'; params.push(actualLimit, offset); } params.push(actualLimit, offset); }
-    params.push(actualLimit, offset);
+    query += ' ORDER BY created_at DESC';
+    if (useLimit) {
+      query += ' LIMIT ? OFFSET ?';
+      params.push(actualLimit, offset);
+    }
     
     const [users] = await db.execute(query, params);
     const [countResult] = await db.execute(countQuery, countParams);
@@ -1887,6 +1904,9 @@ router.get('/companies', authenticateToken, async (req, res) => {
     const [countResult] = await db.execute(countQuery, countParams);
     const total = countResult[0].total;
     
+    console.log(`[Companies API] Query params: all=${all}, limit=${limit}, useLimit=${useLimit}, actualLimit=${actualLimit}`);
+    console.log(`[Companies API] Returning ${companies.length} companies out of ${total} total`);
+    
     res.json({
       success: true,
       data: companies,
@@ -1985,8 +2005,9 @@ router.delete('/companies/:id', authenticateToken, async (req, res) => {
 
 router.get('/deals', authenticateToken, async (req, res) => {
   try {
-    const { page = 1, limit, search, all } = req.query; const useLimit = limit && all !== 'true' && all !== true; const actualLimit = useLimit ? parseInt(limit) || 1000000 : 1000000;
-    const actualLimit = (all === 'true' || all === true) ? 100000 : Math.min(parseInt(limit) || 1000, 1000);
+    const { page = 1, limit, search, all } = req.query;
+    const useLimit = limit && all !== 'true' && all !== true;
+    const actualLimit = useLimit ? parseInt(limit) || 1000000 : 1000000;
     const offset = (parseInt(page) - 1) * actualLimit;
     
     let query = 'SELECT * FROM deals WHERE 1=1';
@@ -2002,8 +2023,11 @@ router.get('/deals', authenticateToken, async (req, res) => {
       countParams.push(searchTerm, searchTerm, searchTerm);
     }
     
-    query += ' ORDER BY created_at DESC'; if (useLimit) { query += ' LIMIT ? OFFSET ?'; params.push(actualLimit, offset); } params.push(actualLimit, offset); }
-    params.push(actualLimit, offset);
+    query += ' ORDER BY created_at DESC';
+    if (useLimit) {
+      query += ' LIMIT ? OFFSET ?';
+      params.push(actualLimit, offset);
+    }
     
     const [deals] = await db.execute(query, params);
     const [countResult] = await db.execute(countQuery, countParams);
@@ -2083,8 +2107,9 @@ router.delete('/deals/:id', authenticateToken, async (req, res) => {
 
 router.get('/grants', authenticateToken, async (req, res) => {
   try {
-    const { page = 1, limit, search, all } = req.query; const useLimit = limit && all !== 'true' && all !== true; const actualLimit = useLimit ? parseInt(limit) || 1000000 : 1000000;
-    const actualLimit = (all === 'true' || all === true) ? 100000 : Math.min(parseInt(limit) || 1000, 1000);
+    const { page = 1, limit, search, all } = req.query;
+    const useLimit = limit && all !== 'true' && all !== true;
+    const actualLimit = useLimit ? parseInt(limit) || 1000000 : 1000000;
     const offset = (parseInt(page) - 1) * actualLimit;
     
     let query = 'SELECT * FROM grants WHERE 1=1';
@@ -2100,8 +2125,11 @@ router.get('/grants', authenticateToken, async (req, res) => {
       countParams.push(searchTerm, searchTerm, searchTerm);
     }
     
-    query += ' ORDER BY created_at DESC'; if (useLimit) { query += ' LIMIT ? OFFSET ?'; params.push(actualLimit, offset); } params.push(actualLimit, offset); }
-    params.push(actualLimit, offset);
+    query += ' ORDER BY created_at DESC';
+    if (useLimit) {
+      query += ' LIMIT ? OFFSET ?';
+      params.push(actualLimit, offset);
+    }
     
     const [grants] = await db.execute(query, params);
     const [countResult] = await db.execute(countQuery, countParams);
@@ -2181,8 +2209,9 @@ router.delete('/grants/:id', authenticateToken, async (req, res) => {
 
 router.get('/investors', authenticateToken, async (req, res) => {
   try {
-    const { page = 1, limit, search, all } = req.query; const useLimit = limit && all !== 'true' && all !== true; const actualLimit = useLimit ? parseInt(limit) || 1000000 : 1000000;
-    const actualLimit = (all === 'true' || all === true) ? 100000 : Math.min(parseInt(limit) || 1000, 1000);
+    const { page = 1, limit, search, all } = req.query;
+    const useLimit = limit && all !== 'true' && all !== true;
+    const actualLimit = useLimit ? parseInt(limit) || 1000000 : 1000000;
     const offset = (parseInt(page) - 1) * actualLimit;
     
     let query = 'SELECT * FROM investors WHERE 1=1';
@@ -2198,23 +2227,52 @@ router.get('/investors', authenticateToken, async (req, res) => {
       countParams.push(searchTerm, searchTerm, searchTerm);
     }
     
-    query += ' ORDER BY created_at DESC'; if (useLimit) { query += ' LIMIT ? OFFSET ?'; params.push(actualLimit, offset); } params.push(actualLimit, offset); }
-    params.push(actualLimit, offset);
+    query += ' ORDER BY created_at DESC';
+    if (useLimit) {
+      query += ' LIMIT ? OFFSET ?';
+      params.push(actualLimit, offset);
+    }
     
     const [investors] = await db.execute(query, params);
     const [countResult] = await db.execute(countQuery, countParams);
     const total = countResult[0].total;
     
     // Parse JSON fields
-    const parsedInvestors = investors.map(inv => ({
-      ...inv,
-      focus_sectors: inv.focus_sectors ? JSON.parse(inv.focus_sectors) : [],
-      investment_stages: inv.investment_stages ? JSON.parse(inv.investment_stages) : [],
-      countries: inv.countries ? JSON.parse(inv.countries) : [],
-      social_media: inv.social_media ? JSON.parse(inv.social_media) : {},
-      recent_investments: inv.recent_investments ? JSON.parse(inv.recent_investments) : [],
-      investment_criteria: inv.investment_criteria ? JSON.parse(inv.investment_criteria) : []
-    }));
+    const parsedInvestors = investors.map(inv => {
+      const parsed = {
+        ...inv,
+        focus_sectors: inv.focus_sectors ? (typeof inv.focus_sectors === 'string' ? JSON.parse(inv.focus_sectors) : inv.focus_sectors) : [],
+        investment_stages: inv.investment_stages ? (typeof inv.investment_stages === 'string' ? JSON.parse(inv.investment_stages) : inv.investment_stages) : [],
+        countries: inv.countries ? (typeof inv.countries === 'string' ? JSON.parse(inv.countries) : inv.countries) : [],
+        social_media: inv.social_media ? (typeof inv.social_media === 'string' ? JSON.parse(inv.social_media) : inv.social_media) : {},
+        recent_investments: inv.recent_investments ? (typeof inv.recent_investments === 'string' ? JSON.parse(inv.recent_investments) : inv.recent_investments) : [],
+        investment_criteria: inv.investment_criteria ? (typeof inv.investment_criteria === 'string' ? JSON.parse(inv.investment_criteria) : inv.investment_criteria) : []
+      };
+      
+      // Parse new enrichment fields
+      if (inv.sectors) {
+        parsed.sectors = typeof inv.sectors === 'string' ? JSON.parse(inv.sectors) : inv.sectors;
+      }
+      if (inv.geographic_focus) {
+        parsed.geographic_focus = typeof inv.geographic_focus === 'string' ? JSON.parse(inv.geographic_focus) : inv.geographic_focus;
+      }
+      if (inv.portfolio_companies) {
+        parsed.portfolio_companies = typeof inv.portfolio_companies === 'string' ? JSON.parse(inv.portfolio_companies) : inv.portfolio_companies;
+      }
+      
+      // Map enrichment fields to expected names
+      parsed.total_invested = inv.total_invested || 0;
+      parsed.deal_count = inv.deal_count || 0;
+      parsed.avg_deal_size = inv.avg_deal_size || 0;
+      parsed.focus_sectors = parsed.sectors || parsed.focus_sectors || [];
+      parsed.countries = parsed.geographic_focus || parsed.countries || [];
+      
+      // Ensure logo_url is set
+      parsed.logo = parsed.logo || parsed.logo_url || null;
+      parsed.logo_url = parsed.logo_url || parsed.logo || null;
+      
+      return parsed;
+    });
     
     res.json({
       success: true,
@@ -2307,8 +2365,9 @@ router.delete('/investors/:id', authenticateToken, async (req, res) => {
 
 router.get('/clinical-trials', authenticateToken, async (req, res) => {
   try {
-    const { page = 1, limit, search, all } = req.query; const useLimit = limit && all !== 'true' && all !== true; const actualLimit = useLimit ? parseInt(limit) || 1000000 : 1000000;
-    const actualLimit = (all === 'true' || all === true) ? 100000 : Math.min(parseInt(limit) || 1000, 1000);
+    const { page = 1, limit, search, all } = req.query;
+    const useLimit = limit && all !== 'true' && all !== true;
+    const actualLimit = useLimit ? parseInt(limit) || 1000000 : 1000000;
     const offset = (parseInt(page) - 1) * actualLimit;
     
     let query = 'SELECT * FROM clinical_trials WHERE 1=1';
@@ -2324,8 +2383,11 @@ router.get('/clinical-trials', authenticateToken, async (req, res) => {
       countParams.push(searchTerm, searchTerm, searchTerm);
     }
     
-    query += ' ORDER BY created_at DESC'; if (useLimit) { query += ' LIMIT ? OFFSET ?'; params.push(actualLimit, offset); } params.push(actualLimit, offset); }
-    params.push(actualLimit, offset);
+    query += ' ORDER BY created_at DESC';
+    if (useLimit) {
+      query += ' LIMIT ? OFFSET ?';
+      params.push(actualLimit, offset);
+    }
     
     const [trials] = await db.execute(query, params);
     const [countResult] = await db.execute(countQuery, countParams);
@@ -2450,8 +2512,11 @@ router.get('/regulatory', authenticateToken, async (req, res) => {
       countParams.push(searchTerm, searchTerm, searchTerm);
     }
     
-    query += ' ORDER BY created_at DESC'; if (useLimit) { query += ' LIMIT ? OFFSET ?'; params.push(actualLimit, offset); } params.push(actualLimit, offset); }
-    params.push(actualLimit, offset);
+    query += ' ORDER BY created_at DESC';
+    if (useLimit) {
+      query += ' LIMIT ? OFFSET ?';
+      params.push(actualLimit, offset);
+    }
     
     const [regulatory] = await db.execute(query, params);
     const [countResult] = await db.execute(countQuery, countParams);
@@ -2546,8 +2611,9 @@ router.delete('/regulatory/:id', authenticateToken, async (req, res) => {
 
 router.get('/regulatory-bodies', authenticateToken, async (req, res) => {
   try {
-    const { page = 1, limit, search, all } = req.query; const useLimit = limit && all !== 'true' && all !== true; const actualLimit = useLimit ? parseInt(limit) || 1000000 : 1000000;
-    const actualLimit = (all === 'true' || all === true) ? 100000 : Math.min(parseInt(limit) || 1000, 1000);
+    const { page = 1, limit, search, all } = req.query;
+    const useLimit = limit && all !== 'true' && all !== true;
+    const actualLimit = useLimit ? parseInt(limit) || 1000000 : 1000000;
     const offset = (parseInt(page) - 1) * actualLimit;
     
     let query = 'SELECT * FROM regulatory_bodies WHERE 1=1';
@@ -2563,8 +2629,11 @@ router.get('/regulatory-bodies', authenticateToken, async (req, res) => {
       countParams.push(searchTerm, searchTerm, searchTerm);
     }
     
-    query += ' ORDER BY created_at DESC'; if (useLimit) { query += ' LIMIT ? OFFSET ?'; params.push(actualLimit, offset); } params.push(actualLimit, offset); }
-    params.push(actualLimit, offset);
+    query += ' ORDER BY created_at DESC';
+    if (useLimit) {
+      query += ' LIMIT ? OFFSET ?';
+      params.push(actualLimit, offset);
+    }
     
     const [bodies] = await db.execute(query, params);
     const [countResult] = await db.execute(countQuery, countParams);
@@ -2644,8 +2713,9 @@ router.delete('/regulatory-bodies/:id', authenticateToken, async (req, res) => {
 
 router.get('/public-markets', authenticateToken, async (req, res) => {
   try {
-    const { page = 1, limit, search, all } = req.query; const useLimit = limit && all !== 'true' && all !== true; const actualLimit = useLimit ? parseInt(limit) || 1000000 : 1000000;
-    const actualLimit = (all === 'true' || all === true) ? 100000 : Math.min(parseInt(limit) || 1000, 1000);
+    const { page = 1, limit, search, all } = req.query;
+    const useLimit = limit && all !== 'true' && all !== true;
+    const actualLimit = useLimit ? parseInt(limit) || 1000000 : 1000000;
     const offset = (parseInt(page) - 1) * actualLimit;
     
     let query = 'SELECT * FROM public_stocks WHERE 1=1';
@@ -2661,8 +2731,11 @@ router.get('/public-markets', authenticateToken, async (req, res) => {
       countParams.push(searchTerm, searchTerm, searchTerm);
     }
     
-    query += ' ORDER BY created_at DESC'; if (useLimit) { query += ' LIMIT ? OFFSET ?'; params.push(actualLimit, offset); } params.push(actualLimit, offset); }
-    params.push(actualLimit, offset);
+    query += ' ORDER BY created_at DESC';
+    if (useLimit) {
+      query += ' LIMIT ? OFFSET ?';
+      params.push(actualLimit, offset);
+    }
     
     const [stocks] = await db.execute(query, params);
     const [countResult] = await db.execute(countQuery, countParams);
@@ -2741,8 +2814,9 @@ router.delete('/public-markets/:id', authenticateToken, async (req, res) => {
 
 router.get('/clinical-centers', authenticateToken, async (req, res) => {
   try {
-    const { page = 1, limit, search, all } = req.query; const useLimit = limit && all !== 'true' && all !== true; const actualLimit = useLimit ? parseInt(limit) || 1000000 : 1000000;
-    const actualLimit = (all === 'true' || all === true) ? 100000 : Math.min(parseInt(limit) || 1000, 1000);
+    const { page = 1, limit, search, all } = req.query;
+    const useLimit = limit && all !== 'true' && all !== true;
+    const actualLimit = useLimit ? parseInt(limit) || 1000000 : 1000000;
     const offset = (parseInt(page) - 1) * actualLimit;
     
     let query = 'SELECT * FROM clinical_centers WHERE 1=1';
@@ -2758,8 +2832,11 @@ router.get('/clinical-centers', authenticateToken, async (req, res) => {
       countParams.push(searchTerm, searchTerm, searchTerm);
     }
     
-    query += ' ORDER BY created_at DESC'; if (useLimit) { query += ' LIMIT ? OFFSET ?'; params.push(actualLimit, offset); } params.push(actualLimit, offset); }
-    params.push(actualLimit, offset);
+    query += ' ORDER BY created_at DESC';
+    if (useLimit) {
+      query += ' LIMIT ? OFFSET ?';
+      params.push(actualLimit, offset);
+    }
     
     const [centers] = await db.execute(query, params);
     const [countResult] = await db.execute(countQuery, countParams);
@@ -2839,8 +2916,9 @@ router.delete('/clinical-centers/:id', authenticateToken, async (req, res) => {
 
 router.get('/investigators', authenticateToken, async (req, res) => {
   try {
-    const { page = 1, limit, search, all } = req.query; const useLimit = limit && all !== 'true' && all !== true; const actualLimit = useLimit ? parseInt(limit) || 1000000 : 1000000;
-    const actualLimit = (all === 'true' || all === true) ? 100000 : Math.min(parseInt(limit) || 1000, 1000);
+    const { page = 1, limit, search, all } = req.query;
+    const useLimit = limit && all !== 'true' && all !== true;
+    const actualLimit = useLimit ? parseInt(limit) || 1000000 : 1000000;
     const offset = (parseInt(page) - 1) * actualLimit;
     
     let query = 'SELECT * FROM investigators WHERE 1=1';
@@ -2856,8 +2934,11 @@ router.get('/investigators', authenticateToken, async (req, res) => {
       countParams.push(searchTerm, searchTerm, searchTerm);
     }
     
-    query += ' ORDER BY created_at DESC'; if (useLimit) { query += ' LIMIT ? OFFSET ?'; params.push(actualLimit, offset); } params.push(actualLimit, offset); }
-    params.push(actualLimit, offset);
+    query += ' ORDER BY created_at DESC';
+    if (useLimit) {
+      query += ' LIMIT ? OFFSET ?';
+      params.push(actualLimit, offset);
+    }
     
     const [investigators] = await db.execute(query, params);
     const [countResult] = await db.execute(countQuery, countParams);
@@ -2938,7 +3019,8 @@ router.delete('/investigators/:id', authenticateToken, async (req, res) => {
 router.get('/nation-pulse', authenticateToken, async (req, res) => {
   try {
     const { page = 1, limit = 50, search, country, data_type, year } = req.query;
-    const offset = (parseInt(page) - 1) * parseInt(limit);
+    const actualLimit = parseInt(limit) || 50;
+    const offset = (parseInt(page) - 1) * actualLimit;
     
     // Check which columns exist in the table
     let hasDataType = false;
@@ -2983,11 +3065,12 @@ router.get('/nation-pulse', authenticateToken, async (req, res) => {
       if (orderBy.length === 0) orderBy.push('id DESC'); // Fallback
       
       query += ` ORDER BY ${orderBy.join(', ')} LIMIT ? OFFSET ?`;
+      params.push(actualLimit, offset);
     } catch (colError) {
       // Fallback to simple ordering
-      query += ' ORDER BY created_at DESC'; if (useLimit) { query += ' LIMIT ? OFFSET ?'; params.push(actualLimit, offset); } params.push(actualLimit, offset); }
+      query += ' ORDER BY created_at DESC LIMIT ? OFFSET ?';
+      params.push(actualLimit, offset);
     }
-    params.push(actualLimit, offset);
     
     const [data] = await db.execute(query, params);
     
@@ -3142,8 +3225,11 @@ router.get('/crm-investors', authenticateToken, async (req, res) => {
       params.push(pipeline_stage);
     }
     
-    query += ' ORDER BY created_at DESC'; if (useLimit) { query += ' LIMIT ? OFFSET ?'; params.push(actualLimit, offset); } params.push(actualLimit, offset); }
-    params.push(actualLimit, offset);
+    query += ' ORDER BY created_at DESC';
+    if (useLimit) {
+      query += ' LIMIT ? OFFSET ?';
+      params.push(actualLimit, offset);
+    }
     
     const [data] = await db.execute(query, params);
     
@@ -3337,8 +3423,11 @@ router.get('/crm-meetings', authenticateToken, async (req, res) => {
       params.push(targetUserId);
     }
     
-    query += ' ORDER BY created_at DESC'; if (useLimit) { query += ' LIMIT ? OFFSET ?'; params.push(actualLimit, offset); } params.push(actualLimit, offset); }
-    params.push(actualLimit, offset);
+    query += ' ORDER BY created_at DESC';
+    if (useLimit) {
+      query += ' LIMIT ? OFFSET ?';
+      params.push(actualLimit, offset);
+    }
     
     const [data] = await db.execute(query, params);
     
@@ -3515,8 +3604,11 @@ router.get('/glossary', authenticateToken, async (req, res) => {
       params.push(category);
     }
     
-    query += ' ORDER BY created_at DESC'; if (useLimit) { query += ' LIMIT ? OFFSET ?'; params.push(actualLimit, offset); } params.push(actualLimit, offset); }
-    params.push(actualLimit, offset);
+    query += ' ORDER BY created_at DESC';
+    if (useLimit) {
+      query += ' LIMIT ? OFFSET ?';
+      params.push(actualLimit, offset);
+    }
     
     const [data] = await db.execute(query, params);
     

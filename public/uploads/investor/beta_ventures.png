@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/png" href="/logo-ventureos.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>VentureOS — The Operating System for URLs | AI Agent Orchestration Platform</title>
+    <meta name="description" content="Turn premium URLs into autonomous smart ventures with AI agents, playbooks, and tokenized incentives. The operating system for domains." />
+    <meta name="keywords" content="VentureOS, AI agents, domain portfolio, venture playbooks, URL monetization, autonomous ventures" />
+    <meta name="author" content="VentureOS" />
+    
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-5KHSKF0207"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-5KHSKF0207');
+    </script>
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://ventureos.com/" />
+    <meta property="og:title" content="VentureOS — The Operating System for URLs" />
+    <meta property="og:description" content="Turn premium URLs into autonomous smart ventures with AI agents, playbooks, and tokenized incentives." />
+    <meta property="og:image" content="/logo-ventureos.png" />
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content="https://ventureos.com/" />
+    <meta property="twitter:title" content="VentureOS — The Operating System for URLs" />
+    <meta property="twitter:description" content="Turn premium URLs into autonomous smart ventures with AI agents, playbooks, and tokenized incentives." />
+    <meta property="twitter:image" content="/logo-ventureos.png" />
+    <script type="module" crossorigin src="/assets/index-BmRXbqSj.js"></script>
+    <link rel="modulepreload" crossorigin href="/assets/react-vendor-F8_01GdM.js">
+    <link rel="modulepreload" crossorigin href="/assets/utils-vendor-C8ECdbgL.js">
+    <link rel="modulepreload" crossorigin href="/assets/ui-vendor-DKX9k31h.js">
+    <link rel="stylesheet" crossorigin href="/assets/index-C_DYfqe9.css">
+  </head>
+  <body>
+    <div id="root"></div>
+  </body>
+</html>
