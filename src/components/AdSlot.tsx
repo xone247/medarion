@@ -35,8 +35,8 @@ function useAdsFromDb(category: AdCategory, placement: AdPlacement): UiAd[] {
                 params.append('placement', placement);
                 params.append('category', category);
                 params.append('limit', '1');
-                // Use relative path - the .htaccess will handle routing
-                const res = await fetch(`/api/ads/public.php?${params.toString()}`, {
+                // Use Node.js API endpoint
+                const res = await fetch(`/api/ads/public?${params.toString()}`, {
                     method: 'GET'
                 });
                 if (!res.ok) throw new Error('Failed to fetch ads');
@@ -113,7 +113,7 @@ const AdSlot: React.FC<AdSlotProps> = ({ placement, category, hidden }) => {
                 className="block bg-background-surface border border-divider rounded-lg overflow-hidden"
                 onClick={() => {
                     try {
-                        fetch('/api/ads/track.php', {
+                        fetch('/api/ads/track', {
                             method: 'POST',
                             headers: { 'Content-Type': 'application/json' },
                             body: JSON.stringify({ ad_id: ad.id, event_type: 'click', placement, category })
@@ -128,7 +128,7 @@ const AdSlot: React.FC<AdSlotProps> = ({ placement, category, hidden }) => {
                         className="w-full h-28 object-cover"
                         onLoad={() => {
                             try {
-                                fetch('/api/ads/track.php', {
+                                fetch('/api/ads/track', {
                                     method: 'POST',
                                     headers: { 'Content-Type': 'application/json' },
                                     body: JSON.stringify({ ad_id: ad.id, event_type: 'view', placement, category })

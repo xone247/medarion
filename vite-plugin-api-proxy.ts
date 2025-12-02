@@ -39,14 +39,17 @@ export function apiProxyPlugin(): Plugin {
         }
 
         // Determine target based on endpoint
-        // AI endpoints, admin endpoints (including modules), blog endpoints, countries endpoints, auth endpoints, and notifications go to Node.js server (port 3001)
+        // AI endpoints, admin endpoints (including modules), blog endpoints, countries endpoints, auth endpoints, notifications, and ads go to Node.js server (port 3001)
         // Only specific PHP endpoints go to PHP server
         const isNodeJSEndpoint = url.startsWith('/api/ai') || 
                                  url.startsWith('/api/admin') ||
                                  url.startsWith('/api/blog') ||
                                  url.startsWith('/api/countries') ||
                                  url.startsWith('/api/auth') ||
-                                 url.startsWith('/api/notifications');
+                                 url.startsWith('/api/notifications') ||
+                                 url.startsWith('/api/ads') ||
+                                 url.startsWith('/api/upload') ||
+                                 url.startsWith('/api/newsletter');
         const target = isNodeJSEndpoint ? 'http://localhost:3001' : 'http://localhost/medarion';
 
         // Forward Authorization header

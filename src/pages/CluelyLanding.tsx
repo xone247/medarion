@@ -185,7 +185,6 @@ const CluelyLanding: React.FC<CluelyLandingProps> = ({ onGetStarted, onShowAuth,
 					
 					{/* Navigation - Center */}
 					<nav className="flex items-center gap-4 md:gap-6 lg:gap-8 text-sm text-white flex-shrink-0 mx-auto" style={{ fontSize: '14px', flex: '0 0 auto' }}>
-                        <a className="hover:opacity-80 transition-opacity whitespace-nowrap px-3 py-1.5" href="/about">About</a>
                         <a className="hover:opacity-80 transition-opacity whitespace-nowrap px-3 py-1.5" href="/arion">Arion</a>
                         <a className="hover:opacity-80 transition-opacity whitespace-nowrap px-3 py-1.5" href="/m-index">M-Index</a>
                         <a className="hover:opacity-80 transition-opacity whitespace-nowrap px-3 py-1.5" href="#">Ergon</a>
@@ -392,7 +391,7 @@ const CluelyLanding: React.FC<CluelyLandingProps> = ({ onGetStarted, onShowAuth,
 						
 						{/* CTA Buttons - Giga.ai style */}
 						<div className="mt-10 md:mt-12 lg:mt-14 flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-5">
-							<button className="w-full sm:w-auto px-10 sm:px-12 py-3.5 sm:py-4 bg-black text-white rounded-full font-medium hover:bg-black/90 transition-all shadow-lg hover:shadow-xl flex items-center justify-center gap-2.5 text-base sm:text-lg" style={{ fontFamily: 'Inter, system-ui, sans-serif' }} onClick={onGetStarted}>
+							<button className="w-full sm:w-auto px-10 sm:px-12 py-3.5 sm:py-4 btn-primary-elevated rounded-full font-medium transition-all shadow-lg hover:shadow-xl flex items-center justify-center gap-2.5 text-base sm:text-lg" style={{ fontFamily: 'Inter, system-ui, sans-serif' }} onClick={onGetStarted}>
 								Get started <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5" />
 							</button>
 							<a className="w-full sm:w-auto px-10 sm:px-12 py-3.5 sm:py-4 border-2 border-white/40 text-white rounded-full font-medium hover:bg-white/10 hover:border-white/60 transition-all backdrop-blur-sm inline-flex items-center justify-center text-base sm:text-lg" style={{ fontFamily: 'Inter, system-ui, sans-serif' }} href="/pricing" onClick={(e)=>{ e.preventDefault(); window.location.replace('/pricing'); }}>See pricing</a>

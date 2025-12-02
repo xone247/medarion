@@ -199,7 +199,7 @@ const ChangePasswordModal: React.FC<ChangePasswordModalProps> = ({
               <button
                 type="submit"
                 disabled={loading}
-                className="px-4 py-2 rounded-lg bg-black dark:bg-white text-white dark:text-black hover:opacity-90 dark:hover:opacity-80 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center space-x-2"
+                className="px-4 py-2 rounded-lg btn-primary-elevated transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center space-x-2"
               >
                 <Lock className="h-4 w-4" />
                 <span>{loading ? 'Changing...' : 'Change Password'}</span>

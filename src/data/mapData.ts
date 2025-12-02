@@ -334,9 +334,10 @@ export const mapColorScheme = {
 };
 
 export const mapLegend = [
-  { level: 'high', label: 'High Investment (>$50M)', color: '#00665C' },
-  { level: 'medium', label: 'Medium Investment ($10M-$50M)', color: '#F59E0B' },
-  { level: 'low', label: 'Low Investment (<$10M)', color: '#EF4444' }
+  { level: 'high', label: 'High Investment ($50M+)', color: '#10b981' }, // Emerald-500
+  { level: 'medium', label: 'Medium Investment ($10M-$50M)', color: '#34d399' }, // Emerald-400
+  { level: 'low', label: 'Low Investment (<$10M)', color: '#6ee7b7' }, // Emerald-300
+  { level: 'none', label: 'No Data', color: '#d1d5db' }, // Gray-300
 ];
 
 export const getCountryColor = (investmentLevel: string) => {

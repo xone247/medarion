@@ -252,23 +252,23 @@ const BlogPage: React.FC<BlogPageProps> = ({ onBack }) => {
             </p>
             
             {/* Search Bar */}
-            <div className="max-w-2xl mx-auto">
+            <div className="max-w-2xl mx-auto px-4">
               <div className="relative">
-                <Search className="absolute left-5 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
+                <Search className="absolute left-3 md:left-5 top-1/2 -translate-y-1/2 h-4 w-4 md:h-5 md:w-5 text-gray-400" />
                 <input 
                   type="text" 
                   placeholder="Search articles, topics, or authors..." 
                   value={searchTerm} 
                   onChange={(e) => setSearchTerm(e.target.value)} 
-                  className="w-full pl-14 pr-12 py-4 rounded-2xl border-2 border-white/50 bg-white/95 backdrop-blur-sm text-gray-900 placeholder-gray-500 focus:ring-2 focus:ring-[var(--color-primary-teal)] focus:border-transparent shadow-lg text-lg"
+                  className="w-full pl-10 md:pl-14 pr-10 md:pr-12 py-3 md:py-4 rounded-xl md:rounded-2xl border-2 border-white/50 bg-white/95 backdrop-blur-sm text-gray-900 placeholder-gray-500 focus:ring-2 focus:ring-[var(--color-primary-teal)] focus:border-transparent shadow-lg text-sm md:text-lg"
                 />
                 {searchTerm && (
                   <button
                     onClick={() => setSearchTerm('')}
-                    className="absolute right-4 top-1/2 -translate-y-1/2 p-1 rounded-full hover:bg-gray-100 transition-colors"
+                    className="absolute right-3 md:right-4 top-1/2 -translate-y-1/2 p-1 rounded-full hover:bg-gray-100 transition-colors"
                     aria-label="Clear search"
                   >
-                    <X className="h-5 w-5 text-gray-500" />
+                    <X className="h-4 w-4 md:h-5 md:w-5 text-gray-500" />
                   </button>
                 )}
               </div>
@@ -278,15 +278,15 @@ const BlogPage: React.FC<BlogPageProps> = ({ onBack }) => {
       </div>
 
       {/* Main Content */}
-      <div className="container mx-auto px-4 py-8">
+      <div className="container mx-auto px-3 md:px-4 py-4 md:py-8">
         <div className="max-w-7xl mx-auto">
           {/* Main Content - Full Width */}
-          <main className="space-y-8">
+          <main className="space-y-6 md:space-y-8">
               {/* Categories Section */}
-              <div className="bg-[var(--color-background-surface)] rounded-xl shadow-sm p-5 border border-[var(--color-divider-gray)] mb-6">
-                <div className="flex items-center justify-between mb-4">
-                  <h3 className="text-base font-medium text-[var(--color-text-primary)] flex items-center gap-2">
-                    <Tag className="h-4 w-4 text-[var(--color-primary-teal)]" />
+              <div className="bg-[var(--color-background-surface)] rounded-xl shadow-sm p-4 md:p-5 border border-[var(--color-divider-gray)] mb-4 md:mb-6">
+                <div className="flex items-center justify-between mb-3 md:mb-4">
+                  <h3 className="text-sm md:text-base font-medium text-[var(--color-text-primary)] flex items-center gap-2">
+                    <Tag className="h-3 w-3 md:h-4 md:w-4 text-[var(--color-primary-teal)]" />
                     Categories
                   </h3>
                   {hasActiveFilters && (
@@ -303,7 +303,7 @@ const BlogPage: React.FC<BlogPageProps> = ({ onBack }) => {
                   )}
                 </div>
                 {/* Mobile Dropdown */}
-                <div className="hidden mb-3">
+                <div className="block md:hidden mb-3">
                   <select
                     value={selectedCategory}
                     onChange={(e) => setSelectedCategory(e.target.value)}
@@ -316,8 +316,8 @@ const BlogPage: React.FC<BlogPageProps> = ({ onBack }) => {
                     ))}
                   </select>
                 </div>
-                {/* Desktop Category Buttons - Split into 2 rows */}
-                <div className="hidden grid grid-cols-2 gap-2">
+                {/* Desktop Category Buttons */}
+                <div className="hidden md:grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-2">
                   {categories.map((category) => (
                     <button
                       key={category}
@@ -343,9 +343,9 @@ const BlogPage: React.FC<BlogPageProps> = ({ onBack }) => {
 
               {/* Blog Posts Section - Featured Large + Smaller Posts */}
               <section>
-                <div className="flex items-center justify-between mb-6">
-                  <h3 className="text-2xl font-medium text-[var(--color-text-primary)] flex items-center gap-3">
-                    <span className="w-1 h-8 bg-[var(--color-primary-teal)] rounded-full"></span>
+                <div className="flex items-center justify-between mb-4 md:mb-6">
+                  <h3 className="text-xl md:text-2xl font-medium text-[var(--color-text-primary)] flex items-center gap-2 md:gap-3">
+                    <span className="w-1 h-6 md:h-8 bg-[var(--color-primary-teal)] rounded-full"></span>
                     {hasActiveFilters ? 'Search Results' : 'Latest Articles'}
                   </h3>
                 </div>
@@ -376,10 +376,10 @@ const BlogPage: React.FC<BlogPageProps> = ({ onBack }) => {
                 ) : (
                   <>
                     {/* Featured Large Post + 3 Equal-Sized Posts Row */}
-                    <div className="grid grid-cols-4 gap-6 mb-6 items-start">
+                    <div className="grid grid-cols-1 md:grid-cols-4 gap-4 md:gap-6 mb-4 md:mb-6 items-start">
                       {/* Large Featured Post - Left Side (2 columns) */}
                       <article 
-                        className="col-span-2 bg-[var(--color-background-surface)] rounded-2xl shadow-lg overflow-hidden border border-[var(--color-divider-gray)] group cursor-pointer flex flex-col h-full"
+                        className="md:col-span-2 bg-[var(--color-background-surface)] rounded-xl md:rounded-2xl shadow-lg overflow-hidden border border-[var(--color-divider-gray)] group cursor-pointer flex flex-col h-full"
                         onClick={() => handleReadPost(paginatedPosts[0]?.id || featuredPost?.id || 0)}
                       >
                         {(() => {
@@ -410,11 +410,11 @@ const BlogPage: React.FC<BlogPageProps> = ({ onBack }) => {
                                 )}
                               </div>
                               {/* Content moved to white section below */}
-                              <div className="p-6 bg-white dark:bg-[var(--color-background-surface)] flex-1 flex flex-col">
-                                <h2 className="text-2xl text-3xl font-medium text-[var(--color-text-primary)] mb-3 leading-tight line-clamp-2">
+                              <div className="p-4 md:p-6 bg-white dark:bg-[var(--color-background-surface)] flex-1 flex flex-col">
+                                <h2 className="text-xl md:text-2xl lg:text-3xl font-medium text-[var(--color-text-primary)] mb-2 md:mb-3 leading-tight line-clamp-2">
                                   {mainPost.title}
                                 </h2>
-                                <p className="text-sm text-[var(--color-text-secondary)] mb-4 leading-relaxed line-clamp-2 flex-1">
+                                <p className="text-xs md:text-sm text-[var(--color-text-secondary)] mb-3 md:mb-4 leading-relaxed line-clamp-2 flex-1">
                                   {mainPost.excerpt}
                                 </p>
                                 <div className="flex flex-wrap items-center gap-4 text-xs text-[var(--color-text-secondary)] mt-auto">
@@ -438,14 +438,14 @@ const BlogPage: React.FC<BlogPageProps> = ({ onBack }) => {
                       </article>
 
                       {/* Small Compact Posts - Right Side (Stacked Vertically to Match Height) */}
-                      <div className="col-span-2 flex flex-col gap-3 h-full">
+                      <div className="md:col-span-2 flex flex-col gap-3 h-full">
                         {paginatedPosts.slice(1, 6).map((post) => (
                           <article 
                             key={post.id} 
-                            className="group bg-[var(--color-background-surface)] rounded-lg shadow-sm overflow-hidden hover:shadow-md transition-all duration-200 cursor-pointer border border-[var(--color-divider-gray)] flex gap-3 p-3 flex-1"
+                            className="group bg-[var(--color-background-surface)] rounded-lg shadow-sm overflow-hidden hover:shadow-md transition-all duration-200 cursor-pointer border border-[var(--color-divider-gray)] flex gap-2 md:gap-3 p-2 md:p-3 flex-1"
                             onClick={() => handleReadPost(post.id)}
                           >
-                            <div className="relative w-20 h-20 flex-shrink-0 rounded-md overflow-hidden">
+                            <div className="relative w-16 h-16 md:w-20 md:h-20 flex-shrink-0 rounded-md overflow-hidden">
                               <img 
                                 src={getBlogPostImage(post.image, post.id, post.category)} 
                                 alt={post.title} 
@@ -468,7 +468,7 @@ const BlogPage: React.FC<BlogPageProps> = ({ onBack }) => {
                     </div>
 
                     {/* Two Rows of Blog Posts Below */}
-                    <div className="grid grid-cols-2 grid-cols-3 grid-cols-4 gap-6">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6">
                       {paginatedPosts.slice(6, 14).map((post, idx) => (
                         <article 
                           key={post.id} 
@@ -488,8 +488,8 @@ const BlogPage: React.FC<BlogPageProps> = ({ onBack }) => {
                               </span>
                             </div>
                           </div>
-                          <div className="p-4 flex flex-col flex-1">
-                            <h4 className="font-medium text-[var(--color-text-primary)] text-sm leading-snug group-hover:text-[var(--color-primary-teal)] transition-colors mb-2 line-clamp-2">
+                          <div className="p-3 md:p-4 flex flex-col flex-1">
+                            <h4 className="font-medium text-[var(--color-text-primary)] text-xs md:text-sm leading-snug group-hover:text-[var(--color-primary-teal)] transition-colors mb-2 line-clamp-2">
                               {post.title}
                             </h4>
                             <div className="flex items-center gap-2 text-xs text-[var(--color-text-secondary)] mt-auto">
@@ -505,9 +505,9 @@ const BlogPage: React.FC<BlogPageProps> = ({ onBack }) => {
 
                 {/* Pagination */}
                 {totalPages > 1 && (
-                  <div className="flex items-center justify-center gap-2 mt-8">
+                  <div className="flex items-center justify-center gap-1 md:gap-2 mt-6 md:mt-8 flex-wrap">
                     <button 
-                      className="px-4 py-2 rounded-lg border border-[var(--color-divider-gray)] hover:bg-[var(--color-background-surface)] disabled:opacity-50 disabled:cursor-not-allowed transition-colors" 
+                      className="px-3 md:px-4 py-2 rounded-lg border border-[var(--color-divider-gray)] hover:bg-[var(--color-background-surface)] disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-sm" 
                       disabled={safePage <= 1} 
                       onClick={() => setPage(p => Math.max(1, p - 1))}
                     >
@@ -517,7 +517,7 @@ const BlogPage: React.FC<BlogPageProps> = ({ onBack }) => {
                       <button 
                         key={i} 
                         onClick={() => setPage(i + 1)} 
-                        className={`px-4 py-2 rounded-lg border transition-colors ${
+                        className={`px-3 md:px-4 py-2 rounded-lg border transition-colors text-sm ${
                           safePage === i + 1
                             ? 'bg-[var(--color-primary-teal)] text-white border-[var(--color-primary-teal)]'
                             : 'border-[var(--color-divider-gray)] hover:bg-[var(--color-background-surface)]'
@@ -527,7 +527,7 @@ const BlogPage: React.FC<BlogPageProps> = ({ onBack }) => {
                       </button>
                     ))}
                     <button 
-                      className="px-4 py-2 rounded-lg border border-[var(--color-divider-gray)] hover:bg-[var(--color-background-surface)] disabled:opacity-50 disabled:cursor-not-allowed transition-colors" 
+                      className="px-3 md:px-4 py-2 rounded-lg border border-[var(--color-divider-gray)] hover:bg-[var(--color-background-surface)] disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-sm" 
                       disabled={safePage >= totalPages} 
                       onClick={() => setPage(p => Math.min(totalPages, p + 1))}
                     >
@@ -538,16 +538,16 @@ const BlogPage: React.FC<BlogPageProps> = ({ onBack }) => {
               </section>
 
               {/* Ad Section Between Blog and Videos */}
-              <div className="mt-8 bg-[var(--color-background-surface)] rounded-2xl p-6 border border-[var(--color-divider-gray)]">
+              <div className="mt-6 md:mt-8 bg-[var(--color-background-surface)] rounded-xl md:rounded-2xl p-4 md:p-6 border border-[var(--color-divider-gray)]">
                 <AdSlot placement="blog_sidebar" category="blog_general" />
               </div>
 
               {/* Videos Section - Featured Large + Smaller Videos */}
-              <section className="mt-8">
-                <div className="flex items-center justify-between mb-6">
-                  <h3 className="text-2xl font-medium text-[var(--color-text-primary)] flex items-center gap-3">
-                    <span className="w-1 h-8 bg-[var(--color-primary-teal)] rounded-full"></span>
-                    <Video className="h-6 w-6 text-[var(--color-primary-teal)]" />
+              <section className="mt-6 md:mt-8">
+                <div className="flex items-center justify-between mb-4 md:mb-6">
+                  <h3 className="text-xl md:text-2xl font-medium text-[var(--color-text-primary)] flex items-center gap-2 md:gap-3">
+                    <span className="w-1 h-6 md:h-8 bg-[var(--color-primary-teal)] rounded-full"></span>
+                    <Video className="h-5 w-5 md:h-6 md:w-6 text-[var(--color-primary-teal)]" />
                     Videos
                   </h3>
                 </div>
@@ -566,7 +566,7 @@ const BlogPage: React.FC<BlogPageProps> = ({ onBack }) => {
                 ) : (
                   <>
                     {/* Featured Large Video + 3 Equal-Sized Videos Row */}
-                    <div className="grid grid-cols-4 gap-6 mb-6 items-start">
+                    <div className="grid grid-cols-1 md:grid-cols-4 gap-4 md:gap-6 mb-4 md:mb-6 items-start">
                       {/* Large Featured Video - Left Side (2 columns) */}
                       {videos[0] && (() => {
                         const mainVideo = videos[0];
@@ -580,7 +580,7 @@ const BlogPage: React.FC<BlogPageProps> = ({ onBack }) => {
                         
                         return (
                           <article 
-                            className="col-span-2 bg-[var(--color-background-surface)] rounded-2xl shadow-lg overflow-hidden border border-[var(--color-divider-gray)] group cursor-pointer flex flex-col h-full"
+                            className="md:col-span-2 bg-[var(--color-background-surface)] rounded-xl md:rounded-2xl shadow-lg overflow-hidden border border-[var(--color-divider-gray)] group cursor-pointer flex flex-col h-full"
                           >
                             <div className="relative aspect-[4/3] overflow-hidden bg-black">
                               {embedUrl ? (
@@ -632,12 +632,12 @@ const BlogPage: React.FC<BlogPageProps> = ({ onBack }) => {
                               </div>
                             </div>
                             {/* Content moved to white section below */}
-                            <div className="p-6 bg-white dark:bg-[var(--color-background-surface)] flex-1 flex flex-col">
-                              <h2 className="text-2xl text-3xl font-medium text-[var(--color-text-primary)] mb-3 leading-tight line-clamp-2">
+                            <div className="p-4 md:p-6 bg-white dark:bg-[var(--color-background-surface)] flex-1 flex flex-col">
+                              <h2 className="text-xl md:text-2xl lg:text-3xl font-medium text-[var(--color-text-primary)] mb-2 md:mb-3 leading-tight line-clamp-2">
                                 {mainVideo.title}
                               </h2>
                               {mainVideo.description && (
-                                <p className="text-sm text-[var(--color-text-secondary)] mb-4 leading-relaxed line-clamp-2 flex-1">
+                                <p className="text-xs md:text-sm text-[var(--color-text-secondary)] mb-3 md:mb-4 leading-relaxed line-clamp-2 flex-1">
                                   {mainVideo.description}
                                 </p>
                               )}
@@ -662,7 +662,7 @@ const BlogPage: React.FC<BlogPageProps> = ({ onBack }) => {
                       })()}
 
                       {/* Small Compact Videos - Right Side (Stacked Vertically to Match Height) */}
-                      <div className="col-span-2 flex flex-col gap-3 h-full">
+                      <div className="md:col-span-2 flex flex-col gap-3 h-full">
                         {videos.slice(1, 6).map((video) => {
                           const videoId = extractYouTubeId(video.video_url);
                           const embedUrl = videoId ? getYouTubeEmbedUrl(video.video_url, {
@@ -675,9 +675,9 @@ const BlogPage: React.FC<BlogPageProps> = ({ onBack }) => {
                           return (
                             <article 
                               key={video.id} 
-                              className="group bg-[var(--color-background-surface)] rounded-lg shadow-sm overflow-hidden hover:shadow-md transition-all duration-200 border border-[var(--color-divider-gray)] flex gap-3 p-3 flex-1"
+                              className="group bg-[var(--color-background-surface)] rounded-lg shadow-sm overflow-hidden hover:shadow-md transition-all duration-200 border border-[var(--color-divider-gray)] flex gap-2 md:gap-3 p-2 md:p-3 flex-1"
                             >
-                              <div className="relative w-20 h-20 flex-shrink-0 rounded-md overflow-hidden bg-black">
+                              <div className="relative w-16 h-16 md:w-20 md:h-20 flex-shrink-0 rounded-md overflow-hidden bg-black">
                                 {(() => {
                                   const thumbnailUrl = video.thumbnail_url || (videoId ? getYouTubeThumbnailUrl(video.video_url, 'hqdefault') : null);
                                   return thumbnailUrl ? (
@@ -727,7 +727,7 @@ const BlogPage: React.FC<BlogPageProps> = ({ onBack }) => {
                     </div>
 
                     {/* Two Rows of Videos Below */}
-                    <div className="grid grid-cols-2 grid-cols-3 grid-cols-4 gap-6">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6">
                       {videos.slice(6, 14).map((video) => {
                         const videoId = extractYouTubeId(video.video_url);
                         const embedUrl = videoId ? getYouTubeEmbedUrl(video.video_url, {
@@ -776,8 +776,8 @@ const BlogPage: React.FC<BlogPageProps> = ({ onBack }) => {
                                 );
                               })()}
                             </div>
-                            <div className="p-4 flex flex-col flex-1">
-                              <h4 className="font-medium text-[var(--color-text-primary)] text-sm leading-snug group-hover:text-[var(--color-primary-teal)] transition-colors mb-2 line-clamp-2">
+                            <div className="p-3 md:p-4 flex flex-col flex-1">
+                              <h4 className="font-medium text-[var(--color-text-primary)] text-xs md:text-sm leading-snug group-hover:text-[var(--color-primary-teal)] transition-colors mb-2 line-clamp-2">
                                 {video.title}
                               </h4>
                               <div className="flex items-center gap-2 text-xs text-[var(--color-text-secondary)] mt-auto">
@@ -793,7 +793,7 @@ const BlogPage: React.FC<BlogPageProps> = ({ onBack }) => {
                 )}
 
                 {/* Ad Section Below Videos */}
-                <div className="mt-8 bg-[var(--color-background-surface)] rounded-2xl p-6 border border-[var(--color-divider-gray)]">
+                <div className="mt-6 md:mt-8 bg-[var(--color-background-surface)] rounded-xl md:rounded-2xl p-4 md:p-6 border border-[var(--color-divider-gray)]">
                   <AdSlot placement="blog_bottom" category="blog_general" />
                 </div>
               </section>

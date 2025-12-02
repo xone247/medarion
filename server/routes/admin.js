@@ -60,9 +60,11 @@ function timeAgo(datetime) {
 // Admin Dashboard Overview
 router.get('/overview', authenticateToken, async (req, res) => {
   try {
+    console.log('[Admin] GET /overview - Fetching overview data...');
     // Get user statistics
     const [userCount] = await db.execute('SELECT COUNT(*) as total FROM users');
     const totalUsers = userCount[0]?.total || 0;
+    console.log('[Admin] Total users:', totalUsers);
     
     const [activeCount] = await db.execute('SELECT COUNT(*) as total FROM users WHERE is_active = 1');
     const activeUsers = activeCount[0]?.total || 0;
@@ -124,7 +126,7 @@ router.get('/overview', authenticateToken, async (req, res) => {
       LIMIT 5
     `);
     
-    res.json({
+    const responseData = {
       success: true,
       data: {
         metrics: { system_ok: true },
@@ -161,7 +163,15 @@ router.get('/overview', authenticateToken, async (req, res) => {
           users: parseInt(growth.users)
         }))
       }
+    };
+    console.log('[Admin] Overview data prepared:', {
+      totalUsers: responseData.data.userStats.totalUsers,
+      activeUsers: responseData.data.userStats.activeUsers,
+      blogPosts: responseData.data.blogStats.blogPosts,
+      userRolesCount: responseData.data.userRoles.length,
+      recentActivityCount: responseData.data.recentActivity.length
     });
+    res.json(responseData);
   } catch (error) {
     console.error('Error fetching admin overview:', error);
     res.status(500).json({ success: false, message: 'Failed to fetch admin overview', error: error.message });
@@ -269,6 +279,28 @@ async function ensureImageColumns() {
 // Get all blog posts
 router.get('/blog-posts', authenticateToken, async (req, res) => {
   try {
+    // Check if blog_posts table exists
+    try {
+      await db.execute('SELECT 1 FROM blog_posts LIMIT 1');
+    } catch (tableError) {
+      // Table doesn't exist, return empty result
+      if (tableError.code === 'ER_NO_SUCH_TABLE') {
+        return res.json({ 
+          success: true, 
+          data: {
+            posts: [],
+            pagination: {
+              page: parseInt(req.query.page) || 1,
+              limit: parseInt(req.query.limit) || 20,
+              total: 0,
+              pages: 0
+            }
+          }
+        });
+      }
+      throw tableError;
+    }
+    
     // Ensure database structure exists
     await ensureBlogPostColumns();
     
@@ -291,15 +323,12 @@ router.get('/blog-posts', authenticateToken, async (req, res) => {
       countParams.push(status);
     }
     
-    query += ' ORDER BY created_at DESC';
-    if (useLimit) {
-      query += ' LIMIT ? OFFSET ?';
-      params.push(actualLimit, offset);
-    }
+    query += ' ORDER BY created_at DESC LIMIT ? OFFSET ?';
+    params.push(parseInt(limit), offset);
     
     const [posts] = await db.execute(query, params);
     const [countResult] = await db.execute(countQuery, countParams);
-    const total = countResult[0].total;
+    const total = countResult[0]?.total || 0;
     
     res.json({ 
       success: true, 
@@ -307,7 +336,7 @@ router.get('/blog-posts', authenticateToken, async (req, res) => {
         posts: posts || [],
         pagination: {
           page: parseInt(page),
-          limit: useLimit ? actualLimit : total,
+          limit: parseInt(limit),
           total: total,
           pages: Math.ceil(total / parseInt(limit))
         }
@@ -315,7 +344,7 @@ router.get('/blog-posts', authenticateToken, async (req, res) => {
     });
   } catch (error) {
     console.error('Error fetching blog posts:', error);
-    res.status(500).json({ success: false, message: 'Failed to fetch blog posts' });
+    res.status(500).json({ success: false, message: 'Failed to fetch blog posts', error: error.message });
   }
 });
 
@@ -882,6 +911,304 @@ router.delete('/advertisements/:id', authenticateToken, async (req, res) => {
   } catch (error) {
     console.error('Error deleting advertisement:', error);
     res.status(500).json({ success: false, message: 'Failed to delete advertisement' });
+  }
+});
+
+// Get active advertisements only
+router.get('/advertisements/active', authenticateToken, async (req, res) => {
+  try {
+    const { placement, category } = req.query;
+    
+    let query = `
+      SELECT * FROM advertisements 
+      WHERE is_active = 1
+    `;
+    const params = [];
+    
+    if (placement) {
+      query += ' AND JSON_SEARCH(placements, "one", ?) IS NOT NULL';
+      params.push(placement);
+    }
+    
+    if (category) {
+      query += ' AND category = ?';
+      params.push(category);
+    }
+    
+    query += ' ORDER BY priority DESC, created_at DESC';
+    
+    const [ads] = await db.execute(query, params);
+    
+    const formattedAds = ads.map(ad => ({
+      id: ad.id,
+      title: ad.title,
+      advertiser: ad.advertiser,
+      image_url: ad.image_url,
+      cta_text: ad.cta_text,
+      target_url: ad.target_url,
+      category: ad.category,
+      placements: ad.placements ? (typeof ad.placements === 'string' ? JSON.parse(ad.placements) : ad.placements) : [],
+      is_active: Boolean(ad.is_active),
+      priority: ad.priority || 0,
+      click_count: ad.click_count || 0,
+      impression_count: ad.impression_count || 0,
+      start_date: ad.start_date || null,
+      end_date: ad.end_date || null,
+      created_at: ad.created_at,
+      updated_at: ad.updated_at
+    }));
+    
+    res.json({ success: true, ads: formattedAds });
+  } catch (error) {
+    console.error('Error fetching active advertisements:', error);
+    res.status(500).json({ success: false, message: 'Failed to fetch active advertisements' });
+  }
+});
+
+// Ensure ad_campaigns and ad_events tables exist
+async function ensureAdsTables() {
+  try {
+    // Create ad_campaigns table if it doesn't exist
+    await db.execute(`
+      CREATE TABLE IF NOT EXISTS ad_campaigns (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        name VARCHAR(255) NOT NULL,
+        advertiser_name VARCHAR(255) DEFAULT NULL,
+        budget DECIMAL(10,2) DEFAULT 0,
+        status VARCHAR(50) DEFAULT 'draft',
+        start_date DATETIME DEFAULT NULL,
+        end_date DATETIME DEFAULT NULL,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+      )
+    `);
+    
+    // Create ad_events table if it doesn't exist (for tracking)
+    await db.execute(`
+      CREATE TABLE IF NOT EXISTS ad_events (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        ad_id INT NOT NULL,
+        event_type VARCHAR(50) NOT NULL,
+        placement VARCHAR(100) DEFAULT NULL,
+        category VARCHAR(100) DEFAULT NULL,
+        user_agent TEXT,
+        ip_address VARCHAR(45),
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        INDEX idx_ad_id (ad_id),
+        INDEX idx_event_type (event_type),
+        INDEX idx_created_at (created_at)
+      )
+    `);
+  } catch (error) {
+    console.error('Error ensuring ads tables:', error);
+  }
+}
+
+// Get ads overview/analytics
+router.get('/ads/overview', authenticateToken, async (req, res) => {
+  try {
+    await ensureAdsTables();
+    
+    const overview = {};
+    
+    // Active campaigns count
+    const [campaignsResult] = await db.execute(
+      "SELECT COUNT(*) as count FROM ad_campaigns WHERE status = 'active'"
+    );
+    overview.activeCampaigns = campaignsResult[0].count || 0;
+    
+    // Total impressions (last 30 days) - using ad_events table
+    const [impressionsResult] = await db.execute(
+      "SELECT COUNT(*) as count FROM ad_events WHERE event_type = 'view' AND created_at >= DATE_SUB(NOW(), INTERVAL 30 DAY)"
+    );
+    overview.totalImpressions = impressionsResult[0].count || 0;
+    
+    // Click-through rate (last 30 days)
+    const [ctrResult] = await db.execute(`
+      SELECT 
+        COUNT(*) as total_impressions,
+        SUM(CASE WHEN event_type = 'click' THEN 1 ELSE 0 END) as total_clicks
+      FROM ad_events 
+      WHERE created_at >= DATE_SUB(NOW(), INTERVAL 30 DAY)
+    `);
+    const ctrData = ctrResult[0];
+    overview.clickThroughRate = ctrData.total_impressions > 0 
+      ? Math.round((ctrData.total_clicks / ctrData.total_impressions) * 100 * 100) / 100
+      : 0;
+    
+    // Revenue generated (last 30 days) - from campaigns
+    const [revenueResult] = await db.execute(`
+      SELECT SUM(budget) as total_revenue 
+      FROM ad_campaigns 
+      WHERE status = 'active' AND start_date <= NOW()
+    `);
+    overview.revenueGenerated = revenueResult[0].total_revenue || 0;
+    
+    // Campaign performance (last 7 days)
+    const [performanceResult] = await db.execute(`
+      SELECT 
+        DATE(created_at) as date,
+        COUNT(*) as impressions,
+        SUM(CASE WHEN event_type = 'click' THEN 1 ELSE 0 END) as clicks
+      FROM ad_events 
+      WHERE created_at >= DATE_SUB(NOW(), INTERVAL 7 DAY)
+      GROUP BY DATE(created_at)
+      ORDER BY date DESC
+    `);
+    overview.campaignPerformance = performanceResult;
+    
+    // Top performing campaigns
+    const [topCampaignsResult] = await db.execute(`
+      SELECT 
+        a.title,
+        COUNT(CASE WHEN e.event_type = 'view' THEN 1 END) as impressions,
+        COUNT(CASE WHEN e.event_type = 'click' THEN 1 END) as clicks,
+        CASE 
+          WHEN COUNT(CASE WHEN e.event_type = 'view' THEN 1 END) > 0 
+          THEN ROUND((COUNT(CASE WHEN e.event_type = 'click' THEN 1 END) / COUNT(CASE WHEN e.event_type = 'view' THEN 1 END)) * 100, 2)
+          ELSE 0 
+        END as ctr,
+        ac.status
+      FROM advertisements a
+      LEFT JOIN ad_campaigns ac ON a.campaign_id = ac.id
+      LEFT JOIN ad_events e ON a.id = e.ad_id
+      WHERE a.is_active = 1
+      GROUP BY a.id, a.title, ac.status
+      ORDER BY impressions DESC
+      LIMIT 4
+    `);
+    overview.topCampaigns = topCampaignsResult;
+    
+    // Ad placement performance
+    const [placementResult] = await db.execute(`
+      SELECT 
+        placement,
+        COUNT(CASE WHEN event_type = 'view' THEN 1 END) as impressions,
+        COUNT(CASE WHEN event_type = 'click' THEN 1 END) as clicks,
+        CASE 
+          WHEN COUNT(CASE WHEN event_type = 'view' THEN 1 END) > 0 
+          THEN ROUND((COUNT(CASE WHEN event_type = 'click' THEN 1 END) / COUNT(CASE WHEN event_type = 'view' THEN 1 END)) * 100, 2)
+          ELSE 0 
+        END as ctr
+      FROM ad_events 
+      WHERE created_at >= DATE_SUB(NOW(), INTERVAL 30 DAY) AND placement IS NOT NULL
+      GROUP BY placement
+      ORDER BY ctr DESC
+    `);
+    overview.placementPerformance = placementResult;
+    
+    res.json({ success: true, data: overview });
+  } catch (error) {
+    console.error('Error fetching ads overview:', error);
+    res.status(500).json({ success: false, message: 'Failed to fetch ads overview' });
+  }
+});
+
+// Get all campaigns
+router.get('/ads/campaigns', authenticateToken, async (req, res) => {
+  try {
+    await ensureAdsTables();
+    
+    const [campaigns] = await db.execute(`
+      SELECT 
+        ac.*,
+        COUNT(DISTINCT a.id) as ad_count,
+        COUNT(CASE WHEN e.event_type = 'view' THEN 1 END) as total_impressions,
+        COUNT(CASE WHEN e.event_type = 'click' THEN 1 END) as total_clicks
+      FROM ad_campaigns ac
+      LEFT JOIN advertisements a ON ac.id = a.campaign_id
+      LEFT JOIN ad_events e ON a.id = e.ad_id
+      GROUP BY ac.id
+      ORDER BY ac.created_at DESC
+    `);
+    
+    res.json({ success: true, campaigns });
+  } catch (error) {
+    console.error('Error fetching campaigns:', error);
+    res.status(500).json({ success: false, message: 'Failed to fetch campaigns' });
+  }
+});
+
+// Create campaign
+router.post('/ads/campaigns', authenticateToken, async (req, res) => {
+  try {
+    await ensureAdsTables();
+    
+    const { name, advertiser_name, budget, status, start_date, end_date } = req.body;
+    
+    const [result] = await db.execute(`
+      INSERT INTO ad_campaigns (name, advertiser_name, budget, status, start_date, end_date) 
+      VALUES (?, ?, ?, ?, ?, ?)
+    `, [name, advertiser_name || null, budget || 0, status || 'draft', start_date || null, end_date || null]);
+    
+    res.json({ success: true, campaign_id: result.insertId });
+  } catch (error) {
+    console.error('Error creating campaign:', error);
+    res.status(500).json({ success: false, message: 'Failed to create campaign' });
+  }
+});
+
+// Update campaign
+router.put('/ads/campaigns/:id', authenticateToken, async (req, res) => {
+  try {
+    await ensureAdsTables();
+    
+    const { id } = req.params;
+    const { name, advertiser_name, budget, status, start_date, end_date } = req.body;
+    
+    await db.execute(`
+      UPDATE ad_campaigns 
+      SET name = ?, advertiser_name = ?, budget = ?, status = ?, start_date = ?, end_date = ?
+      WHERE id = ?
+    `, [name, advertiser_name || null, budget || 0, status || 'draft', start_date || null, end_date || null, id]);
+    
+    res.json({ success: true, message: 'Campaign updated' });
+  } catch (error) {
+    console.error('Error updating campaign:', error);
+    res.status(500).json({ success: false, message: 'Failed to update campaign' });
+  }
+});
+
+// Delete campaign
+router.delete('/ads/campaigns/:id', authenticateToken, async (req, res) => {
+  try {
+    await ensureAdsTables();
+    
+    const { id } = req.params;
+    
+    await db.execute('DELETE FROM ad_campaigns WHERE id = ?', [id]);
+    
+    res.json({ success: true, message: 'Campaign deleted' });
+  } catch (error) {
+    console.error('Error deleting campaign:', error);
+    res.status(500).json({ success: false, message: 'Failed to delete campaign' });
+  }
+});
+
+// Get all ads (alternative endpoint for compatibility)
+router.get('/ads', authenticateToken, async (req, res) => {
+  try {
+    const [ads] = await db.execute(`
+      SELECT 
+        a.*,
+        ac.name as campaign_name,
+        ac.status as campaign_status
+      FROM advertisements a
+      LEFT JOIN ad_campaigns ac ON a.campaign_id = ac.id
+      ORDER BY a.created_at DESC
+    `);
+    
+    // Parse JSON fields
+    const parsedAds = ads.map(ad => ({
+      ...ad,
+      placements: ad.placements ? (typeof ad.placements === 'string' ? JSON.parse(ad.placements) : ad.placements) : [],
+      is_active: Boolean(ad.is_active)
+    }));
+    
+    res.json({ success: true, ads: parsedAds });
+  } catch (error) {
+    console.error('Error fetching ads:', error);
+    res.status(500).json({ success: false, message: 'Failed to fetch ads' });
   }
 });
 
@@ -1592,11 +1919,8 @@ router.get('/users', authenticateToken, async (req, res) => {
       countParams.push(role);
     }
     
-    query += ' ORDER BY created_at DESC';
-    if (useLimit) {
-      query += ' LIMIT ? OFFSET ?';
-      params.push(actualLimit, offset);
-    }
+    query += ' ORDER BY created_at DESC LIMIT ? OFFSET ?';
+    params.push(parseInt(limit), offset);
     
     const [users] = await db.execute(query, params);
     const [countResult] = await db.execute(countQuery, countParams);
@@ -1623,7 +1947,7 @@ router.get('/users', authenticateToken, async (req, res) => {
         users: parsedUsers,
         pagination: {
           page: parseInt(page),
-          limit: useLimit ? actualLimit : total,
+          limit: parseInt(limit),
           total: total,
           pages: Math.ceil(total / parseInt(limit))
         }
@@ -2467,19 +2791,24 @@ router.delete('/clinical-trials/:id', authenticateToken, async (req, res) => {
 
 router.get('/regulatory', authenticateToken, async (req, res) => {
   try {
-    const { page = 1, limit = 20, search } = req.query;
-    const offset = (parseInt(page) - 1) * parseInt(limit);
+    console.log('[Admin] GET /regulatory - Fetching regulatory data...');
+    const { page = 1, limit, search, all } = req.query;
+    console.log('[Admin] Query params:', { page, limit, search, all });
+    const useLimit = limit && all !== 'true' && all !== true;
+    const actualLimit = useLimit ? parseInt(limit) || 20 : 1000000;
+    const offset = (parseInt(page) - 1) * actualLimit;
     
     // First check if table exists
     try {
       await db.execute('SELECT 1 FROM company_regulatory LIMIT 1');
+      console.log('[Admin] company_regulatory table exists');
     } catch (tableError) {
       // Table doesn't exist, return empty result
-      console.warn('company_regulatory table does not exist:', tableError.message);
+      console.warn('[Admin] company_regulatory table does not exist:', tableError.message);
       return res.json({
         success: true,
         data: [],
-        pagination: { total: 0, page: parseInt(page), limit: useLimit ? actualLimit : total, has_more: false }
+        pagination: { total: 0, page: parseInt(page), limit: actualLimit, has_more: false }
       });
     }
     
@@ -2505,11 +2834,11 @@ router.get('/regulatory', authenticateToken, async (req, res) => {
     
     if (search) {
       // Try both column name variations
-      query += ' AND (product_name LIKE ? OR product LIKE ? OR notes LIKE ?)';
-      countQuery += ' AND (product_name LIKE ? OR product LIKE ? OR notes LIKE ?)';
+      query += ' AND (product_name LIKE ? OR product LIKE ? OR notes LIKE ? OR company_name LIKE ?)';
+      countQuery += ' AND (product_name LIKE ? OR product LIKE ? OR notes LIKE ? OR company_name LIKE ?)';
       const searchTerm = `%${search}%`;
-      params.push(searchTerm, searchTerm, searchTerm);
-      countParams.push(searchTerm, searchTerm, searchTerm);
+      params.push(searchTerm, searchTerm, searchTerm, searchTerm);
+      countParams.push(searchTerm, searchTerm, searchTerm, searchTerm);
     }
     
     query += ' ORDER BY created_at DESC';
@@ -2520,7 +2849,8 @@ router.get('/regulatory', authenticateToken, async (req, res) => {
     
     const [regulatory] = await db.execute(query, params);
     const [countResult] = await db.execute(countQuery, countParams);
-    const total = countResult[0].total;
+    const total = countResult[0]?.total || 0;
+    console.log('[Admin] Fetched regulatory records:', regulatory.length, 'Total:', total);
     
     // Normalize the data to ensure consistent field names
     const normalizedData = regulatory.map(reg => ({
@@ -2530,10 +2860,11 @@ router.get('/regulatory', authenticateToken, async (req, res) => {
       company_name: reg.company_name || 'Unknown Company'
     }));
     
+    console.log('[Admin] Returning normalized data:', normalizedData.length, 'records');
     res.json({
       success: true,
       data: normalizedData,
-      pagination: { total, page: parseInt(page), limit: useLimit ? actualLimit : total, has_more: offset + regulatory.length < total }
+      pagination: { total, page: parseInt(page), limit: actualLimit, has_more: offset + regulatory.length < total }
     });
   } catch (error) {
     console.error('Error fetching regulatory records:', error);
@@ -2542,7 +2873,7 @@ router.get('/regulatory', authenticateToken, async (req, res) => {
     res.json({
       success: true,
       data: [],
-      pagination: { total: 0, page: parseInt(page), limit: useLimit ? actualLimit : total, has_more: false },
+      pagination: { total: 0, page: parseInt(req.query.page) || 1, limit: parseInt(req.query.limit) || 20, has_more: false },
       error: process.env.NODE_ENV === 'development' ? error.message : undefined
     });
   }
@@ -3018,8 +3349,10 @@ router.delete('/investigators/:id', authenticateToken, async (req, res) => {
 
 router.get('/nation-pulse', authenticateToken, async (req, res) => {
   try {
-    const { page = 1, limit = 50, search, country, data_type, year } = req.query;
-    const actualLimit = parseInt(limit) || 50;
+    console.log('[Admin] GET /nation-pulse - Fetching nation pulse data...');
+    const { page = 1, limit, search, country, data_type, year, all } = req.query;
+    const useLimit = limit && all !== 'true' && all !== true;
+    const actualLimit = useLimit ? parseInt(limit) || 50 : 1000000;
     const offset = (parseInt(page) - 1) * actualLimit;
     
     // Check which columns exist in the table
@@ -3064,12 +3397,18 @@ router.get('/nation-pulse', authenticateToken, async (req, res) => {
       if (columnNames.includes('metric_name')) orderBy.push('metric_name');
       if (orderBy.length === 0) orderBy.push('id DESC'); // Fallback
       
-      query += ` ORDER BY ${orderBy.join(', ')} LIMIT ? OFFSET ?`;
-      params.push(actualLimit, offset);
+      query += ` ORDER BY ${orderBy.join(', ')}`;
+      if (useLimit) {
+        query += ' LIMIT ? OFFSET ?';
+        params.push(actualLimit, offset);
+      }
     } catch (colError) {
       // Fallback to simple ordering
-      query += ' ORDER BY created_at DESC LIMIT ? OFFSET ?';
-      params.push(actualLimit, offset);
+      query += ' ORDER BY created_at DESC';
+      if (useLimit) {
+        query += ' LIMIT ? OFFSET ?';
+        params.push(actualLimit, offset);
+      }
     }
     
     const [data] = await db.execute(query, params);
@@ -3097,6 +3436,8 @@ router.get('/nation-pulse', authenticateToken, async (req, res) => {
     const [countResult] = await db.execute(countQuery, countParams);
     const total = countResult[0].total;
     
+    console.log('[Admin] Fetched nation pulse records:', data.length, 'Total:', total);
+    
     res.json({
       success: true,
       data,
@@ -3104,7 +3445,7 @@ router.get('/nation-pulse', authenticateToken, async (req, res) => {
         page: parseInt(page),
         limit: useLimit ? actualLimit : total,
         total,
-        pages: Math.ceil(total / parseInt(limit))
+        pages: useLimit ? Math.ceil(total / actualLimit) : 1
       }
     });
   } catch (error) {

@@ -30,10 +30,10 @@ const RevenueByTierChart: React.FC<{
   // Handle empty or invalid data
   if (!data || data.length === 0) {
     return (
-      <div className="card-glass p-3 rounded-lg">
-        <h3 className="text-base font-medium text-slate-700 dark:text-slate-200 mb-3">{title}</h3>
-        <div className="text-center text-slate-500 dark:text-slate-400 py-6">
-          <p className="text-xs">No data available</p>
+      <div className="bg-[var(--color-background-surface)] border border-[var(--color-divider-gray)]/20 p-4 sm:p-5 rounded-xl sm:rounded-2xl shadow-sm">
+        <h3 className="text-base sm:text-lg font-medium text-[var(--color-text-primary)] mb-3 sm:mb-4">{title}</h3>
+        <div className="text-center text-[var(--color-text-secondary)] py-6 sm:py-8">
+          <p className="text-xs sm:text-sm">No data available</p>
         </div>
       </div>
     );
@@ -43,10 +43,10 @@ const RevenueByTierChart: React.FC<{
   const validData = data.filter(item => item && typeof item.value === 'number' && !isNaN(item.value));
   if (validData.length === 0) {
     return (
-      <div className="card-glass p-3 rounded-lg">
-        <h3 className="text-base font-medium text-slate-700 dark:text-slate-200 mb-3">{title}</h3>
-        <div className="text-center text-slate-500 dark:text-slate-400 py-6">
-          <p className="text-xs">No valid data available</p>
+      <div className="bg-[var(--color-background-surface)] border border-[var(--color-divider-gray)]/20 p-4 sm:p-5 rounded-xl sm:rounded-2xl shadow-sm">
+        <h3 className="text-base sm:text-lg font-medium text-[var(--color-text-primary)] mb-3 sm:mb-4">{title}</h3>
+        <div className="text-center text-[var(--color-text-secondary)] py-6 sm:py-8">
+          <p className="text-xs sm:text-sm">No valid data available</p>
         </div>
       </div>
     );
@@ -70,37 +70,37 @@ const RevenueByTierChart: React.FC<{
   };
   
   return (
-    <div className="card-glass p-3 rounded-lg h-full flex flex-col">
-      <div className="flex items-center justify-between mb-3">
-        <h3 className="text-base font-medium text-slate-700 dark:text-slate-200">{title}</h3>
+    <div className="bg-[var(--color-background-surface)] border border-[var(--color-divider-gray)]/20 p-4 sm:p-5 rounded-xl sm:rounded-2xl h-full flex flex-col shadow-sm">
+      <div className="flex items-center justify-between mb-3 sm:mb-4">
+        <h3 className="text-base sm:text-lg font-medium text-[var(--color-text-primary)]">{title}</h3>
         <div className="text-right">
-          <div className="text-xl font-medium text-slate-700 dark:text-slate-200">${totalRevenue.toLocaleString()}</div>
-          <div className="text-xs text-slate-500 dark:text-slate-400">Total Revenue</div>
+          <div className="text-lg sm:text-xl font-medium text-[var(--color-text-primary)]">${totalRevenue.toLocaleString()}</div>
+          <div className="text-xs sm:text-sm text-[var(--color-text-secondary)]">Total Revenue</div>
         </div>
       </div>
       
       <div className="flex-1 flex flex-col">
-        <div className="space-y-2">
+        <div className="space-y-2.5 sm:space-y-3">
         {validData.map((item, index) => {
           const percentage = (item.value / maxValue) * 100;
           const revenuePercentage = totalRevenue > 0 ? (item.value / totalRevenue) * 100 : 0;
           
           return (
-            <div key={index} className="space-y-1.5">
+            <div key={index} className="space-y-1.5 sm:space-y-2">
               <div className="flex items-center justify-between">
-                <div className="flex items-center gap-1.5">
-                  <span className="text-base">{tierIcons[item.label as keyof typeof tierIcons] || '💼'}</span>
-                  <span className="text-sm font-medium text-slate-700 dark:text-slate-200">{item.label}</span>
+                <div className="flex items-center gap-1.5 sm:gap-2">
+                  <span className="text-base sm:text-lg">{tierIcons[item.label as keyof typeof tierIcons] || '💼'}</span>
+                  <span className="text-sm sm:text-base font-medium text-[var(--color-text-primary)]">{item.label}</span>
                 </div>
                 <div className="text-right">
-                  <div className="text-sm font-medium text-slate-700 dark:text-slate-200">${item.value.toLocaleString()}</div>
-                  <div className="text-xs text-slate-500 dark:text-slate-400">{revenuePercentage.toFixed(1)}%</div>
+                  <div className="text-sm sm:text-base font-medium text-[var(--color-text-primary)]">${item.value.toLocaleString()}</div>
+                  <div className="text-xs sm:text-sm text-[var(--color-text-secondary)]">{revenuePercentage.toFixed(1)}%</div>
                 </div>
               </div>
               
-              <div className="w-full bg-slate-100 dark:bg-slate-700/30 rounded-full h-1.5">
+              <div className="w-full bg-[var(--color-background-default)] border border-[var(--color-divider-gray)]/20 rounded-full h-1.5 sm:h-2">
                 <div 
-                  className={`h-1.5 rounded-full transition-all duration-500 ${tierColors[item.label as keyof typeof tierColors] || 'bg-slate-400'}`}
+                  className={`h-1.5 sm:h-2 rounded-full transition-all duration-500 ${tierColors[item.label as keyof typeof tierColors] || 'bg-slate-400'}`}
                   style={{ width: `${Math.max(percentage, 2)}%` }}
                 />
               </div>
@@ -170,27 +170,27 @@ const StatCard: React.FC<{
   const classes = colorClasses[color];
 
   return (
-    <div className={`card-glass p-3 rounded-lg hover:shadow-lg transition-all duration-200 group relative overflow-hidden h-full flex flex-col ${classes.bg}`}>
+    <div className={`bg-[var(--color-background-surface)] border border-[var(--color-divider-gray)]/20 p-3 sm:p-4 md:p-5 rounded-lg sm:rounded-xl md:rounded-2xl hover:shadow-lg transition-all duration-200 group relative overflow-hidden h-full flex flex-col ${classes.bg}`}>
       {/* Subtle gradient background on hover */}
       <div className={`absolute inset-0 bg-gradient-to-br opacity-0 group-hover:opacity-100 transition-opacity duration-200 ${classes.hoverBg}`}></div>
       
       <div className="relative flex items-center justify-between flex-1">
         <div className="flex-1 min-w-0">
-          <p className="text-xs font-medium text-slate-500 dark:text-slate-400 mb-1 uppercase tracking-wide">{title}</p>
-          <p className={`text-2xl font-medium mb-1.5 ${classes.text}`}>{value}</p>
+          <p className="text-xs sm:text-sm font-medium text-[var(--color-text-secondary)] mb-1.5 sm:mb-2 uppercase tracking-wide">{title}</p>
+          <p className={`text-xl sm:text-2xl md:text-3xl font-medium mb-2 sm:mb-3 ${classes.text}`}>{value}</p>
           {change !== undefined && (
-            <div className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${
+            <div className={`inline-flex items-center px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-full text-xs font-medium ${
               change >= 0 
                 ? 'bg-emerald-100 dark:bg-emerald-500/20 text-emerald-700 dark:text-emerald-300' 
                 : 'bg-rose-100 dark:bg-rose-500/20 text-rose-700 dark:text-rose-300'
             }`}>
-              {change >= 0 ? <TrendingUp className="h-3 w-3 mr-0.5" /> : <TrendingDown className="h-3 w-3 mr-0.5" />}
+              {change >= 0 ? <TrendingUp className="h-3 w-3 mr-0.5 sm:mr-1" /> : <TrendingDown className="h-3 w-3 mr-0.5 sm:mr-1" />}
               {Math.abs(change)}%
             </div>
           )}
         </div>
-        <div className={`p-2.5 rounded-lg ${classes.iconBg} flex-shrink-0 ml-3 shadow-md group-hover:scale-105 transition-transform duration-200`}>
-          <Icon className="h-5 w-5 text-white !text-white" />
+        <div className={`p-2 sm:p-2.5 rounded-lg sm:rounded-xl ${classes.iconBg} flex-shrink-0 ml-3 sm:ml-4 shadow-md group-hover:scale-105 transition-transform duration-200`}>
+          <Icon className="h-4 w-4 sm:h-5 sm:w-5 text-white !text-white" />
         </div>
       </div>
     </div>
@@ -220,9 +220,9 @@ const SimpleBarChart: React.FC<{
   };
   
   return (
-    <div className="card-glass p-3 rounded-lg">
-      <h3 className="text-base font-medium text-slate-700 dark:text-slate-200 mb-3">{title}</h3>
-      <div className="space-y-2">
+    <div className="card-glass p-3 sm:p-4 rounded-lg">
+      <h3 className="text-sm sm:text-base font-medium text-slate-700 dark:text-slate-200 mb-3 sm:mb-4">{title}</h3>
+      <div className="space-y-2 sm:space-y-2.5">
         {data.map((item, index) => {
           const percentage = (item.value / maxValue) * 100;
           const barColor = colorMap[color];
@@ -257,10 +257,10 @@ const UserGrowthChart: React.FC<{
   // Handle empty or invalid data
   if (!data || data.length === 0) {
     return (
-      <div className="card-glass p-4 rounded-lg">
-        <h3 className="text-base font-medium text-slate-700 dark:text-slate-200 mb-3">{title}</h3>
-        <div className="text-center text-slate-500 dark:text-slate-400 py-6">
-          <p className="text-sm">No data available</p>
+      <div className="bg-[var(--color-background-surface)] border border-[var(--color-divider-gray)]/20 p-4 sm:p-5 rounded-xl sm:rounded-2xl shadow-sm">
+        <h3 className="text-base sm:text-lg font-medium text-[var(--color-text-primary)] mb-3 sm:mb-4">{title}</h3>
+        <div className="text-center text-[var(--color-text-secondary)] py-6 sm:py-8">
+          <p className="text-sm sm:text-base">No data available</p>
         </div>
       </div>
     );
@@ -272,29 +272,29 @@ const UserGrowthChart: React.FC<{
   const avgGrowth = Math.floor(totalUsers / data.length);
   
   return (
-    <div className="card-glass p-3 rounded-lg overflow-hidden relative h-full flex flex-col">
+    <div className="bg-[var(--color-background-surface)] border border-[var(--color-divider-gray)]/20 p-4 sm:p-5 rounded-xl sm:rounded-2xl overflow-hidden relative h-full flex flex-col shadow-sm">
       {/* Subtle Background Pattern */}
       <div className="absolute inset-0 opacity-[0.03] dark:opacity-[0.05]">
         <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/20 via-transparent to-teal-500/20"></div>
       </div>
       
       {/* Header */}
-      <div className="relative z-10 flex items-center justify-between mb-3">
+      <div className="relative z-10 flex items-center justify-between mb-3 sm:mb-4">
         <div>
-          <h3 className="text-base font-medium text-slate-700 dark:text-slate-200 mb-0.5">{title}</h3>
-          <p className="text-xs text-slate-500 dark:text-slate-400">User acquisition over time</p>
+          <h3 className="text-base sm:text-lg font-medium text-[var(--color-text-primary)] mb-0.5 sm:mb-1">{title}</h3>
+          <p className="text-xs sm:text-sm text-[var(--color-text-secondary)]">User acquisition over time</p>
         </div>
         <div className="text-right">
-          <div className="text-xl font-medium text-slate-700 dark:text-slate-200">
+          <div className="text-lg sm:text-xl font-medium text-[var(--color-text-primary)]">
             {totalUsers}
           </div>
-          <div className="text-xs text-slate-500 dark:text-slate-400">Total Users</div>
+          <div className="text-xs sm:text-sm text-[var(--color-text-secondary)]">Total Users</div>
         </div>
       </div>
       
       {/* Modern Chart Area */}
-      <div className="relative z-10 mb-3 flex-1">
-        <div className="flex items-end justify-between h-24 space-x-1.5">
+      <div className="relative z-10 mb-3 sm:mb-4 flex-1">
+        <div className="flex items-end justify-between h-20 sm:h-24 space-x-1 sm:space-x-1.5">
           {data.map((item, index) => {
             const height = (item.value / maxValue) * 100;
             const isHighest = item.value === maxValue;
@@ -338,10 +338,10 @@ const UserGrowthChart: React.FC<{
                 
                 {/* Month label */}
                 <div className="text-center">
-                  <div className="text-xs font-medium text-slate-700 dark:text-slate-200 group-hover:text-cyan-600 dark:group-hover:text-cyan-400 transition-colors">
+                  <div className="text-[10px] sm:text-xs font-medium text-slate-700 dark:text-slate-200 group-hover:text-cyan-600 dark:group-hover:text-cyan-400 transition-colors truncate w-full">
                     {item.label}
                   </div>
-                  <div className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+                  <div className="text-[10px] sm:text-xs text-slate-500 dark:text-slate-400 mt-0.5">
                     {item.value}
                   </div>
                 </div>
@@ -407,10 +407,10 @@ const CustomPieChart: React.FC<{
   // Handle empty or invalid data
   if (!data || data.length === 0) {
     return (
-      <div className="card-glass p-3 rounded-lg">
-        <h3 className="text-base font-medium text-slate-700 dark:text-slate-200 mb-3">{title}</h3>
-        <div className="text-center text-slate-500 dark:text-slate-400 py-6">
-          <p className="text-xs">No data available</p>
+      <div className="bg-[var(--color-background-surface)] border border-[var(--color-divider-gray)]/20 p-4 sm:p-5 rounded-xl sm:rounded-2xl shadow-sm">
+        <h3 className="text-base sm:text-lg font-medium text-[var(--color-text-primary)] mb-3 sm:mb-4">{title}</h3>
+        <div className="text-center text-[var(--color-text-secondary)] py-6 sm:py-8">
+          <p className="text-xs sm:text-sm">No data available</p>
         </div>
       </div>
     );
@@ -420,10 +420,10 @@ const CustomPieChart: React.FC<{
   
   if (total === 0) {
     return (
-      <div className="card-glass p-3 rounded-lg">
-        <h3 className="text-base font-medium text-slate-700 dark:text-slate-200 mb-3">{title}</h3>
-        <div className="text-center text-slate-500 dark:text-slate-400 py-6">
-          <p className="text-xs">No data to display</p>
+      <div className="bg-[var(--color-background-surface)] border border-[var(--color-divider-gray)]/20 p-4 sm:p-5 rounded-xl sm:rounded-2xl shadow-sm">
+        <h3 className="text-base sm:text-lg font-medium text-[var(--color-text-primary)] mb-3 sm:mb-4">{title}</h3>
+        <div className="text-center text-[var(--color-text-secondary)] py-6 sm:py-8">
+          <p className="text-xs sm:text-sm">No data to display</p>
         </div>
       </div>
     );
@@ -455,8 +455,8 @@ const CustomPieChart: React.FC<{
   }));
   
   return (
-    <div className="card-glass p-3 rounded-lg h-full flex flex-col">
-      <h3 className="text-base font-medium text-slate-700 dark:text-slate-200 mb-3">{title}</h3>
+    <div className="bg-[var(--color-background-surface)] border border-[var(--color-divider-gray)]/20 p-4 sm:p-5 rounded-xl sm:rounded-2xl h-full flex flex-col shadow-sm">
+      <h3 className="text-base sm:text-lg font-medium text-[var(--color-text-primary)] mb-3 sm:mb-4">{title}</h3>
       <div className="flex items-center justify-center mb-3 flex-1">
         <div className="relative w-32 h-32">
           <svg className="w-full h-full transform -rotate-90" viewBox="0 0 100 100">
@@ -572,32 +572,32 @@ const ActivityFeed: React.FC<{
   };
 
   return (
-    <div className="card-glass p-3 rounded-lg h-full flex flex-col">
-      <div className="flex items-center justify-between mb-3">
-        <h3 className="text-base font-medium text-slate-700 dark:text-slate-200">Recent Activity</h3>
-        <button className="text-xs text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 transition-colors">
+    <div className="card-glass p-3 sm:p-4 rounded-lg h-full flex flex-col">
+      <div className="flex items-center justify-between mb-3 sm:mb-4">
+        <h3 className="text-sm sm:text-base font-medium text-slate-700 dark:text-slate-200">Recent Activity</h3>
+        <button className="text-xs text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 transition-colors flex-shrink-0 ml-2">
           View All →
         </button>
       </div>
       <div className="flex-1 flex flex-col">
-        <div className="space-y-2">
+        <div className="space-y-2 sm:space-y-2.5">
         {activities.length === 0 ? (
-          <div className="text-center py-6 text-slate-500 dark:text-slate-400">
-            <Activity className="h-6 w-6 mx-auto mb-2 opacity-50" />
-            <p className="text-xs">No recent activity</p>
+          <div className="text-center py-4 sm:py-6 text-slate-500 dark:text-slate-400">
+            <Activity className="h-5 w-5 sm:h-6 sm:w-6 mx-auto mb-2 opacity-50" />
+            <p className="text-xs sm:text-sm">No recent activity</p>
           </div>
         ) : (
           activities.map((activity, index) => {
             const IconComponent = getActivityIcon(activity.icon);
             const iconColor = getIconColor(activity.icon);
             return (
-              <div key={index} className="flex items-start space-x-2 p-2 card-glass rounded-lg hover:shadow-md transition-all duration-200 group">
-                <div className={`p-1.5 ${iconColor} rounded-lg transition-colors flex-shrink-0`}>
-                  <IconComponent className="h-3.5 w-3.5" />
+              <div key={index} className="flex items-start space-x-2 sm:space-x-3 p-2 sm:p-2.5 card-glass rounded-lg hover:shadow-md transition-all duration-200 group">
+                <div className={`p-1.5 sm:p-2 ${iconColor} rounded-lg transition-colors flex-shrink-0`}>
+                  <IconComponent className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
                 </div>
                 <div className="flex-1 min-w-0">
-                  <p className="text-xs text-slate-700 dark:text-slate-200 font-medium">{activity.message}</p>
-                  <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">{activity.time}</p>
+                  <p className="text-xs sm:text-sm text-slate-700 dark:text-slate-200 font-medium line-clamp-2">{activity.message}</p>
+                  <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5 sm:mt-1">{activity.time}</p>
                 </div>
               </div>
             );
@@ -1509,23 +1509,28 @@ const AdminDashboard: React.FC = () => {
       setLoading(true);
       setError(null);
       const params: any = {
+        all: 'true', // Fetch all data instead of paginated
         page: page.toString(),
         limit: regulatoryPageSize.toString(),
       };
       if (search) params.search = search;
       
+      console.log('[AdminDashboard] Fetching regulatory data with params:', params);
       const data = await apiService.get('/admin/regulatory', params);
+      console.log('[AdminDashboard] Regulatory data response:', data);
+      
       if (data.success) {
         setRegulatoryData({
           regulatory: data.data || [],
-          pagination: data.pagination || { total: 0, page: 1, limit: regulatoryPageSize, has_more: false },
+          pagination: data.pagination || { total: data.data?.length || 0, page: 1, limit: data.data?.length || 0, has_more: false },
         });
+        console.log('[AdminDashboard] Set regulatory data:', data.data?.length || 0, 'records');
       } else {
         throw new Error(data.error || 'Failed to fetch regulatory data');
       }
     } catch (err: any) {
       setError(`Failed to load regulatory data: ${err?.message || 'Unknown error'}`);
-      console.error('Error fetching regulatory data:', err);
+      console.error('[AdminDashboard] Error fetching regulatory data:', err);
       setRegulatoryData({ regulatory: [], pagination: { total: 0, page: 1, limit: regulatoryPageSize, has_more: false } });
     } finally {
       setLoading(false);
@@ -3689,21 +3694,45 @@ const AdminDashboard: React.FC = () => {
   const pagedUserOverrides = filteredUserOverrides.slice((pageSafe-1)*usersPageSize, pageSafe*usersPageSize);
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 sm:space-y-6 p-4 sm:p-6">
 
-      {/* Tabs */}
-      <div className="flex gap-2 flex-wrap">
+      {/* Tabs - Mobile: Dropdown, Desktop: Horizontal */}
+      <div className="lg:hidden mb-4 sm:mb-6">
+        <div className="bg-[var(--color-background-surface)] border border-[var(--color-divider-gray)] rounded-xl p-4 shadow-sm">
+          <label className="block text-xs sm:text-sm font-medium text-[var(--color-text-primary)] mb-2">
+            Dashboard Sections
+          </label>
+          <select
+            value={activeTab}
+            onChange={(e) => handleTabChange(e.target.value as any)}
+            className="w-full px-4 py-3 text-sm sm:text-base border border-[var(--color-divider-gray)] rounded-lg bg-[var(--color-background-default)] text-[var(--color-text-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary-teal)] focus:border-[var(--color-primary-teal)] transition-all appearance-none bg-[url('data:image/svg+xml;charset=UTF-8,%3csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 24 24%27 fill=%27none%27 stroke=%27currentColor%27 stroke-width=%272%27 stroke-linecap=%27round%27 stroke-linejoin=%27round%27%3e%3cpolyline points=%276 9 12 15 18 9%27%3e%3c/polyline%3e%3c/svg%3e')] bg-no-repeat bg-right pr-10"
+            style={{
+              backgroundPosition: 'right 0.75rem center',
+              backgroundSize: '1.5em 1.5em'
+            }}
+          >
+            {visibleTabs.map(({ id, label }) => (
+              <option key={id} value={id}>
+                {label}
+              </option>
+            ))}
+          </select>
+        </div>
+      </div>
+
+      {/* Tabs - Desktop */}
+      <div className="hidden lg:flex gap-2 sm:gap-3 flex-wrap">
         {visibleTabs.map(({ id, label, icon: Icon }) => (
           <button
             key={id}
             onClick={() => handleTabChange(id as any)}
-            className={`px-4 py-3 rounded-lg border-2 transition-all duration-200 flex items-center space-x-2 ${
+            className={`px-4 sm:px-5 py-2.5 sm:py-3 rounded-lg sm:rounded-xl border transition-all duration-200 flex items-center space-x-2 text-sm sm:text-base ${
               activeTab === id 
-                ? 'bg-slate-800 dark:bg-slate-700 text-white dark:text-white border-black dark:border-gray-600 shadow-lg' 
-                : 'card-glass text-slate-700 dark:text-slate-200 border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:bg-slate-800/30 hover:border-black dark:hover:border-white/50'
+                ? 'btn-primary-elevated border-[var(--color-primary-teal)]/50 shadow-lg' 
+                : 'btn-outline border-[var(--color-divider-gray)] hover:border-[var(--color-primary-teal)]/30'
             }`}
           >
-            <Icon className={`h-4 w-4 ${activeTab === id ? 'text-white dark:text-white' : 'text-slate-700 dark:text-slate-200'}`}/>
+            <Icon className={`h-4 w-4 sm:h-5 sm:w-5 ${activeTab === id ? 'text-white' : 'text-[var(--color-text-primary)]'}`}/>
             <span className="font-medium">{label}</span>
           </button>
         ))}
@@ -3730,9 +3759,9 @@ const AdminDashboard: React.FC = () => {
             )}
             
             {overviewData && !loading && (
-              <div className="space-y-3">
+              <div className="space-y-3 sm:space-y-4 md:space-y-6">
             {/* Key Metrics - Compact Style */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
               <StatCard
                 title="Total Users"
                 value={overviewData?.userStats.totalUsers.toLocaleString() || '0'}
@@ -3764,7 +3793,7 @@ const AdminDashboard: React.FC = () => {
             </div>
 
             {/* Charts and Activity Row - 3 Columns */}
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-3">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-5 md:gap-6">
               <div className="lg:col-span-2">
                 <UserGrowthChart
                   data={overviewData?.userGrowth?.slice(-6).map(item => ({ 
@@ -3786,7 +3815,7 @@ const AdminDashboard: React.FC = () => {
             </div>
 
             {/* Revenue, Activity, and Recent Users Row - 3 Columns */}
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-3">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-5 md:gap-6">
               <RevenueByTierChart
                 data={overviewData?.revenueByTier?.map(item => ({ 
                   label: item.tier || 'Unknown', 
@@ -3797,32 +3826,32 @@ const AdminDashboard: React.FC = () => {
               <ActivityFeed activities={overviewData?.recentActivity || []} />
               
               {/* Recent Users Section */}
-              <div className="card-glass p-3 rounded-lg h-full flex flex-col">
-                <div className="flex items-center justify-between mb-3">
-                  <h3 className="text-base font-medium text-slate-700 dark:text-slate-200">Recent Users</h3>
+              <div className="bg-[var(--color-background-surface)] border border-[var(--color-divider-gray)]/20 p-4 sm:p-5 rounded-xl sm:rounded-2xl h-full flex flex-col shadow-sm">
+                <div className="flex items-center justify-between mb-3 sm:mb-4">
+                  <h3 className="text-base sm:text-lg font-medium text-[var(--color-text-primary)]">Recent Users</h3>
                   <button 
-                    onClick={() => setActiveTab('users')}
-                    className="text-xs text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 transition-colors"
+                    onClick={() => handleTabChange('users')}
+                    className="text-xs sm:text-sm text-[var(--color-primary-teal)] hover:text-[var(--color-primary-teal)]/80 transition-colors font-medium"
                   >
                     View All →
                   </button>
                 </div>
-                <div className="space-y-2 flex-1">
+                <div className="space-y-2 sm:space-y-2.5 flex-1">
                   {usersData?.users && usersData.users.length > 0 ? (
                     usersData.users.slice(0, 5).map((user, index) => (
-                      <div key={user.id || index} className="flex items-center justify-between p-2 card-glass rounded-lg hover:shadow-md transition-all">
-                        <div className="flex items-center space-x-2 min-w-0 flex-1">
-                          <div className="w-8 h-8 bg-teal-600 dark:bg-gradient-to-br dark:from-cyan-500 dark:to-teal-500 rounded-full flex items-center justify-center text-white !text-white text-xs font-medium flex-shrink-0">
+                      <div key={user.id || index} className="flex items-center justify-between p-2.5 sm:p-3 bg-[var(--color-background-default)] border border-[var(--color-divider-gray)]/20 rounded-lg sm:rounded-xl hover:shadow-md transition-all">
+                        <div className="flex items-center space-x-2 sm:space-x-3 min-w-0 flex-1">
+                          <div className="w-8 h-8 sm:w-10 sm:h-10 bg-[var(--color-primary-teal)] rounded-full flex items-center justify-center text-white text-xs sm:text-sm font-medium flex-shrink-0">
                             {user.first_name?.charAt(0) || user.email?.charAt(0)?.toUpperCase() || 'U'}
                           </div>
                           <div className="min-w-0 flex-1">
-                            <div className="text-xs font-medium text-slate-700 dark:text-slate-200 truncate">
+                            <div className="text-xs sm:text-sm font-medium text-[var(--color-text-primary)] truncate">
                               {user.first_name && user.last_name ? `${user.first_name} ${user.last_name}` : user.email || 'Unknown User'}
                             </div>
-                            <div className="text-xs text-slate-500 dark:text-slate-400 truncate">{user.email || 'No email'}</div>
+                            <div className="text-xs text-[var(--color-text-secondary)] truncate">{user.email || 'No email'}</div>
                           </div>
                         </div>
-                        <span className={`text-xs px-1.5 py-0.5 rounded-full ${
+                        <span className={`text-xs sm:text-sm px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-full flex-shrink-0 ${
                           user.is_active 
                             ? 'bg-emerald-100 dark:bg-emerald-500/40 text-emerald-700 dark:text-emerald-300'
                             : 'bg-slate-100 dark:bg-slate-500/40 text-slate-700 dark:text-slate-300'
@@ -3832,169 +3861,169 @@ const AdminDashboard: React.FC = () => {
                       </div>
                     ))
                   ) : (
-                    <div className="text-xs text-slate-500 dark:text-slate-400 text-center py-4">No recent users</div>
+                    <div className="text-xs sm:text-sm text-[var(--color-text-secondary)] text-center py-6 sm:py-8">No recent users</div>
                   )}
                 </div>
               </div>
             </div>
 
             {/* Additional Stats - Side by Side */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
-              <div className="card-glass p-3 rounded-lg hover:shadow-lg transition-all duration-200 group relative overflow-hidden h-full flex flex-col bg-cyan-50/50 dark:bg-cyan-950/30">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
+              <div className="card-glass p-2.5 sm:p-3 rounded-lg hover:shadow-lg transition-all duration-200 group relative overflow-hidden h-full flex flex-col bg-cyan-50/50 dark:bg-cyan-950/30">
                 <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/10 to-teal-500/10 dark:from-cyan-500/15 dark:to-teal-500/15 opacity-0 group-hover:opacity-100 transition-opacity"></div>
                 <div className="relative flex items-center justify-between flex-1">
                   <div className="min-w-0 flex-1">
-                    <p className="text-xs font-medium text-slate-500 dark:text-slate-400 mb-1 uppercase tracking-wide">New Users</p>
-                    <p className="text-2xl font-medium text-slate-700 dark:text-slate-200 mb-1">{overviewData?.userStats.newUsersThisMonth || 0}</p>
-                    <p className="text-xs text-slate-500 dark:text-slate-400">This month</p>
+                    <p className="text-[10px] sm:text-xs font-medium text-slate-500 dark:text-slate-400 mb-1 uppercase tracking-wide">New Users</p>
+                    <p className="text-xl sm:text-2xl font-medium text-slate-700 dark:text-slate-200 mb-0.5 sm:mb-1">{overviewData?.userStats.newUsersThisMonth || 0}</p>
+                    <p className="text-[10px] sm:text-xs text-slate-500 dark:text-slate-400">This month</p>
                   </div>
-                  <div className="p-2.5 rounded-lg bg-teal-600 dark:bg-gradient-to-br dark:from-cyan-500 dark:to-teal-500 shadow-md group-hover:scale-105 transition-transform duration-200 flex-shrink-0 ml-3">
-                    <UserCheck className="h-5 w-5 text-white !text-white" />
+                  <div className="p-2 sm:p-2.5 rounded-lg bg-teal-600 dark:bg-gradient-to-br dark:from-cyan-500 dark:to-teal-500 shadow-md group-hover:scale-105 transition-transform duration-200 flex-shrink-0 ml-2 sm:ml-3">
+                    <UserCheck className="h-4 w-4 sm:h-5 sm:w-5 text-white !text-white" />
                   </div>
                 </div>
               </div>
 
-              <div className="card-glass p-3 rounded-lg hover:shadow-lg transition-all duration-200 group relative overflow-hidden h-full flex flex-col bg-emerald-50/50 dark:bg-emerald-950/30">
+              <div className="card-glass p-2.5 sm:p-3 rounded-lg hover:shadow-lg transition-all duration-200 group relative overflow-hidden h-full flex flex-col bg-emerald-50/50 dark:bg-emerald-950/30">
                 <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/10 to-green-500/10 dark:from-emerald-500/15 dark:to-green-500/15 opacity-0 group-hover:opacity-100 transition-opacity"></div>
                 <div className="relative flex items-center justify-between flex-1">
                   <div className="min-w-0 flex-1">
-                    <p className="text-xs font-medium text-slate-500 dark:text-slate-400 mb-1 uppercase tracking-wide">Total Revenue</p>
-                    <p className="text-2xl font-medium text-slate-700 dark:text-slate-200 mb-1">${overviewData?.revenueStats.totalRevenue.toLocaleString() || '0'}</p>
-                    <p className="text-xs text-slate-500 dark:text-slate-400">All time</p>
+                    <p className="text-[10px] sm:text-xs font-medium text-slate-500 dark:text-slate-400 mb-1 uppercase tracking-wide">Total Revenue</p>
+                    <p className="text-xl sm:text-2xl font-medium text-slate-700 dark:text-slate-200 mb-0.5 sm:mb-1">${overviewData?.revenueStats.totalRevenue.toLocaleString() || '0'}</p>
+                    <p className="text-[10px] sm:text-xs text-slate-500 dark:text-slate-400">All time</p>
                   </div>
-                  <div className="p-2.5 rounded-lg bg-green-600 dark:bg-gradient-to-br dark:from-emerald-500 dark:to-green-500 shadow-md group-hover:scale-105 transition-transform duration-200 flex-shrink-0 ml-3">
-                    <DollarSign className="h-5 w-5 text-white !text-white" />
+                  <div className="p-2 sm:p-2.5 rounded-lg bg-green-600 dark:bg-gradient-to-br dark:from-emerald-500 dark:to-green-500 shadow-md group-hover:scale-105 transition-transform duration-200 flex-shrink-0 ml-2 sm:ml-3">
+                    <DollarSign className="h-4 w-4 sm:h-5 sm:w-5 text-white !text-white" />
                   </div>
                 </div>
               </div>
 
-              <div className="card-glass p-3 rounded-lg hover:shadow-lg transition-all duration-200 group relative overflow-hidden h-full flex flex-col bg-amber-50/50 dark:bg-amber-950/30">
+              <div className="card-glass p-2.5 sm:p-3 rounded-lg hover:shadow-lg transition-all duration-200 group relative overflow-hidden h-full flex flex-col bg-amber-50/50 dark:bg-amber-950/30">
                 <div className="absolute inset-0 bg-gradient-to-br from-amber-500/10 to-orange-500/10 dark:from-amber-500/15 dark:to-orange-500/15 opacity-0 group-hover:opacity-100 transition-opacity"></div>
                 <div className="relative flex items-center justify-between flex-1">
                   <div className="min-w-0 flex-1">
-                    <p className="text-xs font-medium text-slate-500 dark:text-slate-400 mb-1 uppercase tracking-wide">Conversion Rate</p>
-                    <p className="text-2xl font-medium text-slate-700 dark:text-slate-200 mb-1">{overviewData?.metrics.conversion_rate || '12.5'}%</p>
-                    <p className="text-xs text-slate-500 dark:text-slate-400">Overall</p>
+                    <p className="text-[10px] sm:text-xs font-medium text-slate-500 dark:text-slate-400 mb-1 uppercase tracking-wide">Conversion Rate</p>
+                    <p className="text-xl sm:text-2xl font-medium text-slate-700 dark:text-slate-200 mb-0.5 sm:mb-1">{overviewData?.metrics.conversion_rate || '12.5'}%</p>
+                    <p className="text-[10px] sm:text-xs text-slate-500 dark:text-slate-400">Overall</p>
                   </div>
-                  <div className="p-2.5 rounded-lg bg-orange-600 dark:bg-gradient-to-br dark:from-amber-500 dark:to-orange-500 shadow-md group-hover:scale-105 transition-transform duration-200 flex-shrink-0 ml-3">
-                    <Target className="h-5 w-5 text-white !text-white" />
+                  <div className="p-2 sm:p-2.5 rounded-lg bg-orange-600 dark:bg-gradient-to-br dark:from-amber-500 dark:to-orange-500 shadow-md group-hover:scale-105 transition-transform duration-200 flex-shrink-0 ml-2 sm:ml-3">
+                    <Target className="h-4 w-4 sm:h-5 sm:w-5 text-white !text-white" />
                   </div>
                 </div>
               </div>
             </div>
 
             {/* System Status, Quick Actions, and Recent Blog Posts - 3 Columns */}
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-3">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-5 md:gap-6">
               {/* System Status - Compact Style */}
-              <div className="card-glass p-3 rounded-lg">
-                <h3 className="text-base font-medium text-slate-700 dark:text-slate-200 mb-3">System Status</h3>
-                <div className="grid grid-cols-2 gap-3">
-                <div className="flex items-center space-x-3">
-                  <div className="p-2 bg-emerald-100 dark:bg-emerald-500/30 rounded-lg">
-                    <CheckCircle className="h-5 w-5 text-emerald-600 dark:text-emerald-400" />
+              <div className="card-glass p-3 sm:p-4 rounded-lg">
+                <h3 className="text-sm sm:text-base font-medium text-slate-700 dark:text-slate-200 mb-3 sm:mb-4">System Status</h3>
+                <div className="grid grid-cols-2 gap-2 sm:gap-3">
+                <div className="flex items-center space-x-2 sm:space-x-3">
+                  <div className="p-1.5 sm:p-2 bg-emerald-100 dark:bg-emerald-500/30 rounded-lg flex-shrink-0">
+                    <CheckCircle className="h-4 w-4 sm:h-5 sm:w-5 text-emerald-600 dark:text-emerald-400" />
                   </div>
-                  <div>
-                    <p className="text-sm font-medium text-slate-700 dark:text-slate-200">Database</p>
+                  <div className="min-w-0">
+                    <p className="text-xs sm:text-sm font-medium text-slate-700 dark:text-slate-200 truncate">Database</p>
                     <p className="text-xs text-slate-500 dark:text-slate-400">Online</p>
                   </div>
                 </div>
-                <div className="flex items-center space-x-3">
-                  <div className="p-2 bg-emerald-100 dark:bg-emerald-500/30 rounded-lg">
-                    <CheckCircle className="h-5 w-5 text-emerald-600 dark:text-emerald-400" />
+                <div className="flex items-center space-x-2 sm:space-x-3">
+                  <div className="p-1.5 sm:p-2 bg-emerald-100 dark:bg-emerald-500/30 rounded-lg flex-shrink-0">
+                    <CheckCircle className="h-4 w-4 sm:h-5 sm:w-5 text-emerald-600 dark:text-emerald-400" />
                   </div>
-                  <div>
-                    <p className="text-sm font-medium text-slate-700 dark:text-slate-200">API</p>
+                  <div className="min-w-0">
+                    <p className="text-xs sm:text-sm font-medium text-slate-700 dark:text-slate-200 truncate">API</p>
                     <p className="text-xs text-slate-500 dark:text-slate-400">Healthy</p>
                   </div>
                 </div>
-                <div className="flex items-center space-x-3">
-                  <div className="p-2 bg-rose-100 dark:bg-rose-500/30 rounded-lg">
-                    <AlertCircle className="h-5 w-5 text-rose-600 dark:text-rose-400" />
+                <div className="flex items-center space-x-2 sm:space-x-3">
+                  <div className="p-1.5 sm:p-2 bg-rose-100 dark:bg-rose-500/30 rounded-lg flex-shrink-0">
+                    <AlertCircle className="h-4 w-4 sm:h-5 sm:w-5 text-rose-600 dark:text-rose-400" />
                   </div>
-                  <div>
-                    <p className="text-sm font-medium text-slate-700 dark:text-slate-200">Cache</p>
+                  <div className="min-w-0">
+                    <p className="text-xs sm:text-sm font-medium text-slate-700 dark:text-slate-200 truncate">Cache</p>
                     <p className="text-xs text-slate-500 dark:text-slate-400">Warning</p>
                   </div>
                 </div>
-                <div className="flex items-center space-x-3">
-                  <div className="p-2 bg-indigo-100 dark:bg-indigo-500/30 rounded-lg">
-                    <CheckCircle className="h-5 w-5 text-indigo-600 dark:text-indigo-400" />
+                <div className="flex items-center space-x-2 sm:space-x-3">
+                  <div className="p-1.5 sm:p-2 bg-indigo-100 dark:bg-indigo-500/30 rounded-lg flex-shrink-0">
+                    <CheckCircle className="h-4 w-4 sm:h-5 sm:w-5 text-indigo-600 dark:text-indigo-400" />
                   </div>
-                  <div>
-                    <p className="text-sm font-medium text-slate-700 dark:text-slate-200">Storage</p>
+                  <div className="min-w-0">
+                    <p className="text-xs sm:text-sm font-medium text-slate-700 dark:text-slate-200 truncate">Storage</p>
                     <p className="text-xs text-slate-500 dark:text-slate-400">85% used</p>
                   </div>
-                  </div>
+                </div>
                 </div>
               </div>
 
               {/* Quick Actions Section */}
-              <div className="card-glass p-3 rounded-lg">
-                <h3 className="text-base font-medium text-slate-700 dark:text-slate-200 mb-3">Quick Actions</h3>
-                <div className="space-y-2">
+              <div className="card-glass p-3 sm:p-4 rounded-lg">
+                <h3 className="text-sm sm:text-base font-medium text-slate-700 dark:text-slate-200 mb-3 sm:mb-4">Quick Actions</h3>
+                <div className="space-y-2 sm:space-y-2.5">
                   <button 
                     onClick={() => setActiveTab('users')}
-                    className="w-full flex items-center justify-between p-2.5 card-glass rounded-lg hover:shadow-md transition-all text-left group"
+                    className="w-full flex items-center justify-between p-2 sm:p-2.5 card-glass rounded-lg hover:shadow-md transition-all text-left group"
                   >
-                    <div className="flex items-center space-x-2">
-                      <div className="p-1.5 bg-cyan-100 dark:bg-cyan-500/30 rounded-lg">
+                    <div className="flex items-center space-x-2 min-w-0 flex-1">
+                      <div className="p-1.5 bg-cyan-100 dark:bg-cyan-500/30 rounded-lg flex-shrink-0">
                         <UsersIcon className="h-4 w-4 text-cyan-600 dark:text-cyan-400" />
                       </div>
-                      <span className="text-sm font-medium text-slate-700 dark:text-slate-200">Manage Users</span>
+                      <span className="text-xs sm:text-sm font-medium text-slate-700 dark:text-slate-200 truncate">Manage Users</span>
                     </div>
-                    <ArrowUp className="h-4 w-4 text-slate-400 group-hover:text-slate-700 dark:group-hover:text-slate-200 transition-colors" />
+                    <ArrowUp className="h-4 w-4 text-slate-400 group-hover:text-slate-700 dark:group-hover:text-slate-200 transition-colors flex-shrink-0 ml-2" />
                   </button>
                   <button 
                     onClick={() => setActiveTab('blog')}
-                    className="w-full flex items-center justify-between p-2.5 card-glass rounded-lg hover:shadow-md transition-all text-left group"
+                    className="w-full flex items-center justify-between p-2 sm:p-2.5 card-glass rounded-lg hover:shadow-md transition-all text-left group"
                   >
-                    <div className="flex items-center space-x-2">
-                      <div className="p-1.5 bg-indigo-100 dark:bg-indigo-500/30 rounded-lg">
+                    <div className="flex items-center space-x-2 min-w-0 flex-1">
+                      <div className="p-1.5 bg-indigo-100 dark:bg-indigo-500/30 rounded-lg flex-shrink-0">
                         <Newspaper className="h-4 w-4 text-indigo-600 dark:text-indigo-400" />
                       </div>
-                      <span className="text-sm font-medium text-slate-700 dark:text-slate-200">Manage Blog</span>
+                      <span className="text-xs sm:text-sm font-medium text-slate-700 dark:text-slate-200 truncate">Manage Blog</span>
                     </div>
-                    <ArrowUp className="h-4 w-4 text-slate-400 group-hover:text-slate-700 dark:group-hover:text-slate-200 transition-colors" />
+                    <ArrowUp className="h-4 w-4 text-slate-400 group-hover:text-slate-700 dark:group-hover:text-slate-200 transition-colors flex-shrink-0 ml-2" />
                   </button>
                   <button 
                     onClick={() => setActiveTab('ads')}
-                    className="w-full flex items-center justify-between p-2.5 card-glass rounded-lg hover:shadow-md transition-all text-left group"
+                    className="w-full flex items-center justify-between p-2 sm:p-2.5 card-glass rounded-lg hover:shadow-md transition-all text-left group"
                   >
-                    <div className="flex items-center space-x-2">
-                      <div className="p-1.5 bg-rose-100 dark:bg-rose-500/30 rounded-lg">
+                    <div className="flex items-center space-x-2 min-w-0 flex-1">
+                      <div className="p-1.5 bg-rose-100 dark:bg-rose-500/30 rounded-lg flex-shrink-0">
                         <Megaphone className="h-4 w-4 text-rose-600 dark:text-rose-400" />
                       </div>
-                      <span className="text-sm font-medium text-slate-700 dark:text-slate-200">Manage Ads</span>
+                      <span className="text-xs sm:text-sm font-medium text-slate-700 dark:text-slate-200 truncate">Manage Ads</span>
                     </div>
-                    <ArrowUp className="h-4 w-4 text-slate-400 group-hover:text-slate-700 dark:group-hover:text-slate-200 transition-colors" />
+                    <ArrowUp className="h-4 w-4 text-slate-400 group-hover:text-slate-700 dark:group-hover:text-slate-200 transition-colors flex-shrink-0 ml-2" />
                   </button>
                   <button 
                     onClick={() => setActiveTab('data-management')}
-                    className="w-full flex items-center justify-between p-2.5 card-glass rounded-lg hover:shadow-md transition-all text-left group"
+                    className="w-full flex items-center justify-between p-2 sm:p-2.5 card-glass rounded-lg hover:shadow-md transition-all text-left group"
                   >
-                    <div className="flex items-center space-x-2">
-                      <div className="p-1.5 bg-emerald-100 dark:bg-emerald-500/30 rounded-lg">
+                    <div className="flex items-center space-x-2 min-w-0 flex-1">
+                      <div className="p-1.5 bg-emerald-100 dark:bg-emerald-500/30 rounded-lg flex-shrink-0">
                         <Database className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
                       </div>
-                      <span className="text-sm font-medium text-slate-700 dark:text-slate-200">Data Management</span>
+                      <span className="text-xs sm:text-sm font-medium text-slate-700 dark:text-slate-200 truncate">Data Management</span>
                     </div>
-                    <ArrowUp className="h-4 w-4 text-slate-400 group-hover:text-slate-700 dark:group-hover:text-slate-200 transition-colors" />
+                    <ArrowUp className="h-4 w-4 text-slate-400 group-hover:text-slate-700 dark:group-hover:text-slate-200 transition-colors flex-shrink-0 ml-2" />
                   </button>
                 </div>
               </div>
 
               {/* Recent Blog Posts Section */}
-              <div className="card-glass p-3 rounded-lg h-full flex flex-col">
-                <div className="flex items-center justify-between mb-3">
-                  <h3 className="text-base font-medium text-slate-700 dark:text-slate-200">Recent Blog Posts</h3>
+              <div className="card-glass p-3 sm:p-4 rounded-lg h-full flex flex-col">
+                <div className="flex items-center justify-between mb-3 sm:mb-4">
+                  <h3 className="text-sm sm:text-base font-medium text-slate-700 dark:text-slate-200">Recent Blog Posts</h3>
                   <button 
                     onClick={() => setActiveTab('blog')}
-                    className="text-xs text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 transition-colors"
+                    className="text-xs text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 transition-colors flex-shrink-0 ml-2"
                   >
                     View All →
                   </button>
                 </div>
-                <div className="space-y-2 flex-1">
+                <div className="space-y-2 sm:space-y-2.5 flex-1">
                   {blogData?.posts && blogData.posts.length > 0 ? (
                     blogData.posts.slice(0, 4).map((post, index) => (
                       <div key={post.id || index} className="p-2 card-glass rounded-lg hover:shadow-md transition-all group">
@@ -4027,29 +4056,29 @@ const AdminDashboard: React.FC = () => {
             </div>
 
             {/* Module Overview and Performance Metrics - Side by Side */}
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-3">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-5 md:gap-6">
               {/* Module Overview Section - 2 columns */}
-              <div className="lg:col-span-2 card-glass p-3 rounded-lg">
-                <div className="flex items-center justify-between mb-3">
-                  <h3 className="text-base font-medium text-slate-700 dark:text-slate-200">Module Overview</h3>
-                  <button className="text-xs text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 transition-colors">
+              <div className="lg:col-span-2 card-glass p-3 sm:p-4 rounded-lg">
+                <div className="flex items-center justify-between mb-3 sm:mb-4">
+                  <h3 className="text-sm sm:text-base font-medium text-slate-700 dark:text-slate-200">Module Overview</h3>
+                  <button className="text-xs text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 transition-colors flex-shrink-0 ml-2">
                     View All →
                   </button>
                 </div>
                 
                 {/* Module Grid - More compact */}
-                <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-3 gap-2">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
                 {/* Companies Module */}
-                <div className="card-glass p-3 rounded-lg hover:shadow-md transition-all duration-200 group h-full flex flex-col">
+                <div className="card-glass p-2.5 sm:p-3 rounded-lg hover:shadow-md transition-all duration-200 group h-full flex flex-col">
                   <div className="flex items-center justify-between mb-2">
-                    <h4 className="text-sm font-medium text-slate-700 dark:text-slate-200">Companies</h4>
-                    <div className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></div>
+                    <h4 className="text-xs sm:text-sm font-medium text-slate-700 dark:text-slate-200">Companies</h4>
+                    <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-emerald-500 rounded-full animate-pulse flex-shrink-0"></div>
                   </div>
                   <div className="flex-1 flex flex-col">
-                    <div className="space-y-2">
+                    <div className="space-y-1.5 sm:space-y-2">
                     <div className="flex justify-between items-center">
-                      <span className="text-xs text-slate-500 dark:text-slate-400">Total Companies</span>
-                      <span className="text-base font-medium text-slate-700 dark:text-slate-200">
+                      <span className="text-xs text-slate-500 dark:text-slate-400">Total</span>
+                      <span className="text-sm sm:text-base font-medium text-slate-700 dark:text-slate-200">
                         {overviewData?.moduleStats?.companies || 0}
                       </span>
                     </div>
@@ -4059,8 +4088,8 @@ const AdminDashboard: React.FC = () => {
                         {Math.floor((overviewData?.moduleStats?.companies || 0) * 0.95)}
                       </span>
                     </div>
-                    <div className="flex justify-between items-center pt-2 border-t border-slate-200 dark:border-slate-700">
-                      <span className="text-xs text-slate-500 dark:text-slate-400">New This Month</span>
+                    <div className="flex justify-between items-center pt-1.5 sm:pt-2 border-t border-slate-200 dark:border-slate-700">
+                      <span className="text-xs text-slate-500 dark:text-slate-400">New</span>
                       <span className="text-xs font-medium text-cyan-600 dark:text-cyan-400">
                         +{Math.floor((overviewData?.moduleStats?.companies || 0) * 0.02)}
                       </span>
@@ -4070,26 +4099,26 @@ const AdminDashboard: React.FC = () => {
                 </div>
 
                 {/* Deals Module */}
-                <div className="card-glass p-3 rounded-lg hover:shadow-md transition-all duration-200 group h-full flex flex-col">
+                <div className="card-glass p-2.5 sm:p-3 rounded-lg hover:shadow-md transition-all duration-200 group h-full flex flex-col">
                   <div className="flex items-center justify-between mb-2">
-                    <h4 className="text-sm font-medium text-slate-700 dark:text-slate-200">Deals</h4>
-                    <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+                    <h4 className="text-xs sm:text-sm font-medium text-slate-700 dark:text-slate-200">Deals</h4>
+                    <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-green-500 rounded-full animate-pulse flex-shrink-0"></div>
                   </div>
                   <div className="flex-1 flex flex-col">
-                    <div className="space-y-2">
+                    <div className="space-y-1.5 sm:space-y-2">
                     <div className="flex justify-between items-center">
-                      <span className="text-sm text-slate-500 dark:text-slate-400">Total Deals</span>
-                      <span className="text-lg font-medium text-slate-700 dark:text-slate-200">
+                      <span className="text-xs text-slate-500 dark:text-slate-400">Total</span>
+                      <span className="text-sm sm:text-base font-medium text-slate-700 dark:text-slate-200">
                         {overviewData?.moduleStats?.deals || 0}
                       </span>
                     </div>
                     <div className="flex justify-between items-center">
-                      <span className="text-sm text-slate-500 dark:text-slate-400">Value</span>
-                      <span className="text-sm font-medium text-emerald-600 dark:text-emerald-400">
+                      <span className="text-xs text-slate-500 dark:text-slate-400">Value</span>
+                      <span className="text-xs sm:text-sm font-medium text-emerald-600 dark:text-emerald-400">
                         ${((overviewData?.moduleStats?.deals || 0) * 7.2).toFixed(1)}M
                       </span>
                     </div>
-                    <div className="flex justify-between items-center pt-2 border-t border-slate-200 dark:border-slate-700">
+                    <div className="flex justify-between items-center pt-1.5 sm:pt-2 border-t border-slate-200 dark:border-slate-700">
                       <span className="text-xs text-slate-500 dark:text-slate-400">This Month</span>
                       <span className="text-xs font-medium text-cyan-600 dark:text-cyan-400">
                         +{Math.floor((overviewData?.moduleStats?.deals || 0) * 0.05)}
@@ -4100,27 +4129,27 @@ const AdminDashboard: React.FC = () => {
                 </div>
 
                 {/* Grants Module */}
-                <div className="card-glass p-3 rounded-lg hover:shadow-md transition-all duration-200 group h-full flex flex-col">
+                <div className="card-glass p-2.5 sm:p-3 rounded-lg hover:shadow-md transition-all duration-200 group h-full flex flex-col">
                   <div className="flex items-center justify-between mb-2">
-                    <h4 className="text-sm font-medium text-slate-700 dark:text-slate-200">Grants</h4>
-                    <div className="w-2 h-2 bg-yellow-500 rounded-full animate-pulse"></div>
+                    <h4 className="text-xs sm:text-sm font-medium text-slate-700 dark:text-slate-200">Grants</h4>
+                    <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-yellow-500 rounded-full animate-pulse flex-shrink-0"></div>
                   </div>
                   <div className="flex-1 flex flex-col">
-                    <div className="space-y-2">
+                    <div className="space-y-1.5 sm:space-y-2">
                     <div className="flex justify-between items-center">
-                      <span className="text-sm text-slate-500 dark:text-slate-400">Available</span>
-                      <span className="text-lg font-medium text-slate-700 dark:text-slate-200">
+                      <span className="text-xs text-slate-500 dark:text-slate-400">Available</span>
+                      <span className="text-sm sm:text-base font-medium text-slate-700 dark:text-slate-200">
                         {overviewData?.moduleStats?.grants || 0}
                       </span>
                     </div>
                     <div className="flex justify-between items-center">
-                      <span className="text-sm text-slate-500 dark:text-slate-400">Total Value</span>
-                      <span className="text-sm font-medium text-emerald-600 dark:text-emerald-400">
+                      <span className="text-xs text-slate-500 dark:text-slate-400">Value</span>
+                      <span className="text-xs sm:text-sm font-medium text-emerald-600 dark:text-emerald-400">
                         ${((overviewData?.moduleStats?.grants || 0) * 0.3).toFixed(1)}M
                       </span>
                     </div>
-                    <div className="flex justify-between items-center pt-2 border-t border-slate-200 dark:border-slate-700">
-                      <span className="text-xs text-slate-500 dark:text-slate-400">Deadline Soon</span>
+                    <div className="flex justify-between items-center pt-1.5 sm:pt-2 border-t border-slate-200 dark:border-slate-700">
+                      <span className="text-xs text-slate-500 dark:text-slate-400">Deadline</span>
                       <span className="text-xs font-medium text-orange-600 dark:text-orange-400">
                         {Math.floor((overviewData?.moduleStats?.grants || 0) * 0.08)}
                       </span>
@@ -4130,26 +4159,26 @@ const AdminDashboard: React.FC = () => {
                 </div>
 
                 {/* Clinical Trials Module */}
-                <div className="card-glass p-3 rounded-lg hover:shadow-md transition-all duration-200 group h-full flex flex-col">
+                <div className="card-glass p-2.5 sm:p-3 rounded-lg hover:shadow-md transition-all duration-200 group h-full flex flex-col">
                   <div className="flex items-center justify-between mb-2">
-                    <h4 className="text-sm font-medium text-slate-700 dark:text-slate-200">Clinical Trials</h4>
-                    <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+                    <h4 className="text-xs sm:text-sm font-medium text-slate-700 dark:text-slate-200">Clinical Trials</h4>
+                    <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-green-500 rounded-full animate-pulse flex-shrink-0"></div>
                   </div>
                   <div className="flex-1 flex flex-col">
-                    <div className="space-y-2">
+                    <div className="space-y-1.5 sm:space-y-2">
                     <div className="flex justify-between items-center">
-                      <span className="text-sm text-slate-500 dark:text-slate-400">Active Trials</span>
-                      <span className="text-lg font-medium text-slate-700 dark:text-slate-200">
+                      <span className="text-xs text-slate-500 dark:text-slate-400">Active</span>
+                      <span className="text-sm sm:text-base font-medium text-slate-700 dark:text-slate-200">
                         {overviewData?.moduleStats?.clinical_trials || 0}
                       </span>
                     </div>
                     <div className="flex justify-between items-center">
-                      <span className="text-sm text-slate-500 dark:text-slate-400">Recruiting</span>
-                      <span className="text-sm font-medium text-cyan-600 dark:text-cyan-400">
+                      <span className="text-xs text-slate-500 dark:text-slate-400">Recruiting</span>
+                      <span className="text-xs sm:text-sm font-medium text-cyan-600 dark:text-cyan-400">
                         {Math.floor((overviewData?.moduleStats?.clinical_trials || 0) * 0.38)}
                       </span>
                     </div>
-                    <div className="flex justify-between items-center pt-2 border-t border-slate-200 dark:border-slate-700">
+                    <div className="flex justify-between items-center pt-1.5 sm:pt-2 border-t border-slate-200 dark:border-slate-700">
                       <span className="text-xs text-slate-500 dark:text-slate-400">Completed</span>
                       <span className="text-xs font-medium text-emerald-600 dark:text-emerald-400">
                         {Math.floor((overviewData?.moduleStats?.clinical_trials || 0) * 1.75)}
@@ -4160,27 +4189,27 @@ const AdminDashboard: React.FC = () => {
                 </div>
 
                 {/* Investors Module */}
-                <div className="card-glass p-3 rounded-lg hover:shadow-md transition-all duration-200 group h-full flex flex-col">
+                <div className="card-glass p-2.5 sm:p-3 rounded-lg hover:shadow-md transition-all duration-200 group h-full flex flex-col">
                   <div className="flex items-center justify-between mb-2">
-                    <h4 className="text-sm font-medium text-slate-700 dark:text-slate-200">Investors</h4>
-                    <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+                    <h4 className="text-xs sm:text-sm font-medium text-slate-700 dark:text-slate-200">Investors</h4>
+                    <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-green-500 rounded-full animate-pulse flex-shrink-0"></div>
                   </div>
                   <div className="flex-1 flex flex-col">
-                    <div className="space-y-2">
+                    <div className="space-y-1.5 sm:space-y-2">
                     <div className="flex justify-between items-center">
-                      <span className="text-sm text-slate-500 dark:text-slate-400">Total Investors</span>
-                      <span className="text-lg font-medium text-slate-700 dark:text-slate-200">
+                      <span className="text-xs text-slate-500 dark:text-slate-400">Total</span>
+                      <span className="text-sm sm:text-base font-medium text-slate-700 dark:text-slate-200">
                         {overviewData?.moduleStats?.investors || 0}
                       </span>
                     </div>
                     <div className="flex justify-between items-center">
-                      <span className="text-sm text-slate-500 dark:text-slate-400">Active</span>
-                      <span className="text-sm font-medium text-emerald-600 dark:text-emerald-400">
+                      <span className="text-xs text-slate-500 dark:text-slate-400">Active</span>
+                      <span className="text-xs sm:text-sm font-medium text-emerald-600 dark:text-emerald-400">
                         {Math.floor((overviewData?.moduleStats?.investors || 0) * 0.85)}
                       </span>
                     </div>
-                    <div className="flex justify-between items-center pt-2 border-t border-slate-200 dark:border-slate-700">
-                      <span className="text-xs text-slate-500 dark:text-slate-400">New This Month</span>
+                    <div className="flex justify-between items-center pt-1.5 sm:pt-2 border-t border-slate-200 dark:border-slate-700">
+                      <span className="text-xs text-slate-500 dark:text-slate-400">New</span>
                       <span className="text-xs font-medium text-cyan-600 dark:text-cyan-400">
                         +{Math.floor((overviewData?.moduleStats?.investors || 0) * 0.02)}
                       </span>
@@ -4190,26 +4219,26 @@ const AdminDashboard: React.FC = () => {
                 </div>
 
                 {/* Regulatory Module */}
-                <div className="card-glass p-3 rounded-lg hover:shadow-md transition-all duration-200 group h-full flex flex-col">
+                <div className="card-glass p-2.5 sm:p-3 rounded-lg hover:shadow-md transition-all duration-200 group h-full flex flex-col">
                   <div className="flex items-center justify-between mb-2">
-                    <h4 className="text-sm font-medium text-slate-700 dark:text-slate-200">Regulatory</h4>
-                    <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></div>
+                    <h4 className="text-xs sm:text-sm font-medium text-slate-700 dark:text-slate-200">Regulatory</h4>
+                    <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-blue-500 rounded-full animate-pulse flex-shrink-0"></div>
                   </div>
                   <div className="flex-1 flex flex-col">
-                    <div className="space-y-2">
+                    <div className="space-y-1.5 sm:space-y-2">
                     <div className="flex justify-between items-center">
-                      <span className="text-sm text-slate-500 dark:text-slate-400">Regulations</span>
-                      <span className="text-lg font-medium text-slate-700 dark:text-slate-200">
+                      <span className="text-xs text-slate-500 dark:text-slate-400">Total</span>
+                      <span className="text-sm sm:text-base font-medium text-slate-700 dark:text-slate-200">
                         {overviewData?.moduleStats?.regulatory_bodies || 0}
                       </span>
                     </div>
                     <div className="flex justify-between items-center">
-                      <span className="text-sm text-slate-500 dark:text-slate-400">Updated</span>
-                      <span className="text-sm font-medium text-emerald-600 dark:text-emerald-400">
+                      <span className="text-xs text-slate-500 dark:text-slate-400">Updated</span>
+                      <span className="text-xs sm:text-sm font-medium text-emerald-600 dark:text-emerald-400">
                         {Math.floor((overviewData?.moduleStats?.regulatory_bodies || 0) * 0.02)}
                       </span>
                     </div>
-                    <div className="flex justify-between items-center pt-2 border-t border-slate-200 dark:border-slate-700">
+                    <div className="flex justify-between items-center pt-1.5 sm:pt-2 border-t border-slate-200 dark:border-slate-700">
                       <span className="text-xs text-slate-500 dark:text-slate-400">Pending</span>
                       <span className="text-xs font-medium text-orange-600 dark:text-orange-400">
                         {Math.floor((overviewData?.moduleStats?.regulatory_bodies || 0) * 0.005)}
@@ -4222,9 +4251,9 @@ const AdminDashboard: React.FC = () => {
               </div>
 
               {/* Performance Metrics Section */}
-              <div className="card-glass p-3 rounded-lg h-full flex flex-col">
-                <h3 className="text-base font-medium text-slate-700 dark:text-slate-200 mb-3">Performance Metrics</h3>
-                <div className="space-y-3 flex-1">
+              <div className="card-glass p-3 sm:p-4 rounded-lg h-full flex flex-col">
+                <h3 className="text-sm sm:text-base font-medium text-slate-700 dark:text-slate-200 mb-3 sm:mb-4">Performance Metrics</h3>
+                <div className="space-y-2.5 sm:space-y-3 flex-1">
                   <div className="p-2.5 card-glass rounded-lg">
                     <div className="flex items-center justify-between mb-1.5">
                       <span className="text-xs text-slate-500 dark:text-slate-400">Page Load Time</span>
@@ -6389,134 +6418,6 @@ const AdminDashboard: React.FC = () => {
                   )}
                 </button>
               </div>
-            </div>
-
-            {/* Module Selector */}
-            <div className="card-glass p-3 rounded-lg border border-slate-200 dark:border-slate-700">
-              <h3 className="text-base font-medium text-slate-700 dark:text-slate-200 mb-3">Select Data Module</h3>
-              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-3">
-                <button
-                  onClick={() => handleModuleChange('companies')}
-                  className={`p-4 rounded-lg border-2 transition-all duration-200 flex flex-col items-center gap-2 ${
-                    selectedDataModule === 'companies'
-                      ? 'bg-slate-800 dark:bg-slate-700 text-white dark:text-white border-black dark:border-gray-600 shadow-lg'
-                      : 'card-glass text-slate-700 dark:text-slate-200 border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:bg-slate-800/30 hover:border-black dark:hover:border-white/50'
-                  }`}
-                >
-                  <Building2 className="h-6 w-6" />
-                  <span className="text-sm font-medium">Companies</span>
-                </button>
-                <button
-                  onClick={() => handleModuleChange('deals')}
-                  className={`p-4 rounded-lg border-2 transition-all duration-200 flex flex-col items-center gap-2 ${
-                    selectedDataModule === 'deals'
-                      ? 'bg-slate-800 dark:bg-slate-700 text-white dark:text-white border-black dark:border-gray-600 shadow-lg'
-                      : 'card-glass text-slate-700 dark:text-slate-200 border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:bg-slate-800/30 hover:border-black dark:hover:border-white/50'
-                  }`}
-                >
-                  <DollarSign className="h-6 w-6" />
-                  <span className="text-sm font-medium">Deals</span>
-                </button>
-                <button
-                  onClick={() => handleModuleChange('grants')}
-                  className={`p-4 rounded-lg border-2 transition-all duration-200 flex flex-col items-center gap-2 ${
-                    selectedDataModule === 'grants'
-                      ? 'bg-slate-800 dark:bg-slate-700 text-white dark:text-white border-black dark:border-gray-600 shadow-lg'
-                      : 'card-glass text-slate-700 dark:text-slate-200 border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:bg-slate-800/30 hover:border-black dark:hover:border-white/50'
-                  }`}
-                >
-                  <Target className="h-6 w-6" />
-                  <span className="text-sm font-medium">Grants</span>
-                </button>
-                <button
-                  onClick={() => handleModuleChange('investors')}
-                  className={`p-4 rounded-lg border-2 transition-all duration-200 flex flex-col items-center gap-2 ${
-                    selectedDataModule === 'investors'
-                      ? 'bg-slate-800 dark:bg-slate-700 text-white dark:text-white border-black dark:border-gray-600 shadow-lg'
-                      : 'card-glass text-slate-700 dark:text-slate-200 border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:bg-slate-800/30 hover:border-black dark:hover:border-white/50'
-                  }`}
-                >
-                  <Users className="h-6 w-6" />
-                  <span className="text-sm font-medium">Investors</span>
-                </button>
-                <button
-                  onClick={() => handleModuleChange('clinical-trials')}
-                  className={`p-4 rounded-lg border-2 transition-all duration-200 flex flex-col items-center gap-2 ${
-                    selectedDataModule === 'clinical-trials'
-                      ? 'bg-slate-800 dark:bg-slate-700 text-white dark:text-white border-black dark:border-gray-600 shadow-lg'
-                      : 'card-glass text-slate-700 dark:text-slate-200 border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:bg-slate-800/30 hover:border-black dark:hover:border-white/50'
-                  }`}
-                >
-                  <Activity className="h-6 w-6" />
-                  <span className="text-sm font-medium">Clinical Trials</span>
-                </button>
-                <button
-                  onClick={() => handleModuleChange('regulatory-ecosystem')}
-                  className={`p-4 rounded-lg border-2 transition-all duration-200 flex flex-col items-center gap-2 ${
-                    selectedDataModule === 'regulatory-ecosystem'
-                      ? 'bg-slate-800 dark:bg-slate-700 text-white dark:text-white border-black dark:border-gray-600 shadow-lg'
-                      : 'card-glass text-slate-700 dark:text-slate-200 border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:bg-slate-800/30 hover:border-black dark:hover:border-white/50'
-                  }`}
-                >
-                  <Shield className="h-6 w-6" />
-                  <span className="text-sm font-medium">Regulatory</span>
-                </button>
-                <button
-                  onClick={() => handleModuleChange('public-markets')}
-                  className={`p-4 rounded-lg border-2 transition-all duration-200 flex flex-col items-center gap-2 ${
-                    selectedDataModule === 'public-markets'
-                      ? 'bg-slate-800 dark:bg-slate-700 text-white dark:text-white border-black dark:border-gray-600 shadow-lg'
-                      : 'card-glass text-slate-700 dark:text-slate-200 border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:bg-slate-800/30 hover:border-black dark:hover:border-white/50'
-                  }`}
-                >
-                  <TrendingUp className="h-6 w-6" />
-                  <span className="text-sm font-medium">Public Markets</span>
-                </button>
-                <button
-                  onClick={() => handleModuleChange('clinical-centers')}
-                  className={`p-4 rounded-lg border-2 transition-all duration-200 flex flex-col items-center gap-2 ${
-                    selectedDataModule === 'clinical-centers'
-                      ? 'bg-slate-800 dark:bg-slate-700 text-white dark:text-white border-black dark:border-gray-600 shadow-lg'
-                      : 'card-glass text-slate-700 dark:text-slate-200 border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:bg-slate-800/30 hover:border-black dark:hover:border-white/50'
-                  }`}
-                >
-                  <Globe className="h-6 w-6" />
-                  <span className="text-sm font-medium">Clinical Centers</span>
-                </button>
-                <button
-                  onClick={() => handleModuleChange('investigators')}
-                  className={`p-4 rounded-lg border-2 transition-all duration-200 flex flex-col items-center gap-2 ${
-                    selectedDataModule === 'investigators'
-                      ? 'bg-slate-800 dark:bg-slate-700 text-white dark:text-white border-black dark:border-gray-600 shadow-lg'
-                      : 'card-glass text-slate-700 dark:text-slate-200 border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:bg-slate-800/30 hover:border-black dark:hover:border-white/50'
-                  }`}
-                >
-                  <UserCheck className="h-6 w-6" />
-                  <span className="text-sm font-medium">Investigators</span>
-                </button>
-                <button
-                  onClick={() => handleModuleChange('nation-pulse')}
-                  className={`p-4 rounded-lg border-2 transition-all duration-200 flex flex-col items-center gap-2 ${
-                    selectedDataModule === 'nation-pulse'
-                      ? 'bg-slate-800 dark:bg-slate-700 text-white dark:text-white border-black dark:border-gray-600 shadow-lg'
-                      : 'card-glass text-slate-700 dark:text-slate-200 border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:bg-slate-800/30 hover:border-black dark:hover:border-white/50'
-                  }`}
-                >
-                  <BarChart3 className="h-6 w-6" />
-                  <span className="text-sm font-medium">Nation Pulse</span>
-                </button>
-                <button
-                  onClick={() => handleModuleChange('fundraising-crm')}
-                  className={`p-4 rounded-lg border-2 transition-all duration-200 flex flex-col items-center gap-2 ${
-                    selectedDataModule === 'fundraising-crm'
-                      ? 'bg-slate-800 dark:bg-slate-700 text-white dark:text-white border-black dark:border-gray-600 shadow-lg'
-                      : 'card-glass text-slate-700 dark:text-slate-200 border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:bg-slate-800/30 hover:border-black dark:hover:border-white/50'
-                  }`}
-                >
-                  <Database className="h-6 w-6" />
-                  <span className="text-sm font-medium">Fundraising CRM</span>
-                </button>
-          </div>
             </div>
 
             {/* Data Tables - Will be rendered here based on selectedDataModule */}

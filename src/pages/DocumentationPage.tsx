@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import { Globe, Book, Code, Database, Key, ArrowLeft, Search, ExternalLink, Copy, Check } from 'lucide-react';
+import { useTheme } from '../contexts/ThemeContext';
 
 interface DocumentationPageProps {
   onBack: () => void;
 }
 
 const DocumentationPage: React.FC<DocumentationPageProps> = ({ onBack }) => {
+  const { theme } = useTheme();
   const [activeSection, setActiveSection] = useState('getting-started');
   const [searchTerm, setSearchTerm] = useState('');
   const [copiedCode, setCopiedCode] = useState('');
@@ -25,19 +27,23 @@ const DocumentationPage: React.FC<DocumentationPageProps> = ({ onBack }) => {
     setTimeout(() => setCopiedCode(''), 2000);
   };
 
+  const handleSectionChange = (sectionId: string) => {
+    setActiveSection(sectionId);
+  };
+
   const CodeBlock = ({ code, language = 'javascript', id }: { code: string; language?: string; id: string }) => (
-    <div className="relative bg-gray-900 dark:bg-gray-950 rounded-xl p-5 mb-6 border border-gray-800 dark:border-gray-700 shadow-lg">
-      <div className="flex items-center justify-between mb-3">
+    <div className="relative bg-gray-900 dark:bg-gray-950 rounded-xl sm:rounded-2xl p-4 sm:p-5 md:p-6 mb-4 sm:mb-6 border border-gray-800 dark:border-gray-700 shadow-lg overflow-hidden">
+      <div className="flex items-center justify-between mb-3 flex-wrap gap-2">
         <span className="text-gray-400 text-xs font-mono uppercase tracking-wide">{language}</span>
         <button
           onClick={() => copyToClipboard(code, id)}
-          className="flex items-center space-x-2 px-3 py-1.5 text-gray-400 hover:text-white hover:bg-gray-800 rounded-lg transition-all text-sm"
+          className="flex items-center space-x-2 px-2 sm:px-3 py-1.5 text-gray-400 hover:text-white hover:bg-gray-800 rounded-lg transition-all text-xs sm:text-sm"
         >
-          {copiedCode === id ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
+          {copiedCode === id ? <Check className="h-3.5 w-3.5 sm:h-4 sm:w-4" /> : <Copy className="h-3.5 w-3.5 sm:h-4 sm:w-4" />}
           <span>{copiedCode === id ? 'Copied!' : 'Copy'}</span>
         </button>
       </div>
-      <pre className="text-green-400 text-sm overflow-x-auto font-mono leading-relaxed">
+      <pre className="text-green-400 text-xs sm:text-sm overflow-x-auto font-mono leading-relaxed">
         <code>{code}</code>
       </pre>
     </div>
@@ -47,25 +53,25 @@ const DocumentationPage: React.FC<DocumentationPageProps> = ({ onBack }) => {
     switch (activeSection) {
       case 'getting-started':
         return (
-          <div className="space-y-8">
+          <div className="space-y-6 sm:space-y-8">
             <div>
-              <h2 className="text-3xl font-medium text-gray-900 dark:text-white mb-4">Getting Started</h2>
-              <p className="text-gray-600 dark:text-gray-300 mb-6">
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-normal text-[var(--color-text-primary)] mb-3 sm:mb-4 tracking-tight leading-tight">Getting Started</h2>
+              <p className="text-sm sm:text-base text-[var(--color-text-secondary)] mb-4 sm:mb-6 leading-relaxed">
                 Welcome to the Medarion API documentation. Our API provides comprehensive access to African healthcare 
                 investment data, company information, and market intelligence.
               </p>
             </div>
 
-            <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-6">
-              <h3 className="text-lg font-medium text-blue-900 dark:text-blue-100 mb-2">Base URL</h3>
-              <code className="text-blue-800 dark:text-blue-200 bg-blue-100 dark:bg-blue-900 px-2 py-1 rounded">
+            <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg sm:rounded-xl p-4 sm:p-6">
+              <h3 className="text-base sm:text-lg font-medium text-blue-900 dark:text-blue-100 mb-2">Base URL</h3>
+              <code className="text-xs sm:text-sm text-blue-800 dark:text-blue-200 bg-blue-100 dark:bg-blue-900 px-2 py-1 rounded break-all">
                 https://api.medarion.com/v1
               </code>
             </div>
 
             <div>
-              <h3 className="text-xl font-medium text-gray-900 dark:text-white mb-4">Quick Start</h3>
-              <ol className="list-decimal list-inside space-y-3 text-gray-600 dark:text-gray-300">
+              <h3 className="text-lg sm:text-xl md:text-2xl font-medium text-[var(--color-text-primary)] mb-3 sm:mb-4">Quick Start</h3>
+              <ol className="list-decimal list-inside space-y-2 sm:space-y-3 text-sm sm:text-base text-[var(--color-text-secondary)] leading-relaxed">
                 <li>Sign up for a Medarion account and obtain your API key</li>
                 <li>Make your first API request to test connectivity</li>
                 <li>Explore our endpoints to access healthcare data</li>
@@ -74,7 +80,7 @@ const DocumentationPage: React.FC<DocumentationPageProps> = ({ onBack }) => {
             </div>
 
             <div>
-              <h3 className="text-xl font-medium text-gray-900 dark:text-white mb-4">First API Call</h3>
+              <h3 className="text-lg sm:text-xl md:text-2xl font-medium text-[var(--color-text-primary)] mb-3 sm:mb-4">First API Call</h3>
               <CodeBlock
                 id="first-call"
                 code={`curl -H "Authorization: Bearer YOUR_API_KEY" \\
@@ -84,9 +90,9 @@ const DocumentationPage: React.FC<DocumentationPageProps> = ({ onBack }) => {
               />
             </div>
 
-            <div className="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg p-6">
-              <h4 className="text-lg font-medium text-yellow-900 dark:text-yellow-100 mb-2">Rate Limits</h4>
-              <div className="space-y-2 text-yellow-800 dark:text-yellow-200">
+            <div className="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg sm:rounded-xl p-4 sm:p-6">
+              <h4 className="text-base sm:text-lg font-medium text-yellow-900 dark:text-yellow-100 mb-2">Rate Limits</h4>
+              <div className="space-y-1.5 sm:space-y-2 text-xs sm:text-sm text-yellow-800 dark:text-yellow-200">
                 <p><strong>Free account:</strong> 5 requests per hour or less. Upgrade to paid for more access.</p>
                 <p><strong>Paid account:</strong> 20 exports per day.</p>
                 <p><strong>Company account:</strong> Custom limits based on your subscription plan.</p>
@@ -97,17 +103,17 @@ const DocumentationPage: React.FC<DocumentationPageProps> = ({ onBack }) => {
 
       case 'authentication':
         return (
-          <div className="space-y-8">
+          <div className="space-y-6 sm:space-y-8">
             <div>
-              <h2 className="text-3xl font-medium text-gray-900 dark:text-white mb-4">Authentication</h2>
-              <p className="text-gray-600 dark:text-gray-300 mb-6">
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-normal text-[var(--color-text-primary)] mb-3 sm:mb-4 tracking-tight leading-tight">Authentication</h2>
+              <p className="text-sm sm:text-base text-[var(--color-text-secondary)] mb-4 sm:mb-6 leading-relaxed">
                 The Medarion API uses API keys for authentication. Include your API key in the Authorization header 
                 of all requests.
               </p>
             </div>
 
             <div>
-              <h3 className="text-xl font-medium text-gray-900 dark:text-white mb-4">API Key Authentication</h3>
+              <h3 className="text-lg sm:text-xl md:text-2xl font-medium text-[var(--color-text-primary)] mb-3 sm:mb-4">API Key Authentication</h3>
               <CodeBlock
                 id="auth-header"
                 code={`Authorization: Bearer YOUR_API_KEY`}
@@ -116,7 +122,7 @@ const DocumentationPage: React.FC<DocumentationPageProps> = ({ onBack }) => {
             </div>
 
             <div>
-              <h3 className="text-xl font-medium text-gray-900 dark:text-white mb-4">JavaScript Example</h3>
+              <h3 className="text-lg sm:text-xl md:text-2xl font-medium text-[var(--color-text-primary)] mb-3 sm:mb-4">JavaScript Example</h3>
               <CodeBlock
                 id="js-auth"
                 code={`const apiKey = 'your_api_key_here';
@@ -134,7 +140,7 @@ console.log(data);`}
             </div>
 
             <div>
-              <h3 className="text-xl font-medium text-gray-900 dark:text-white mb-4">Python Example</h3>
+              <h3 className="text-lg sm:text-xl md:text-2xl font-medium text-[var(--color-text-primary)] mb-3 sm:mb-4">Python Example</h3>
               <CodeBlock
                 id="python-auth"
                 code={`import requests
@@ -152,9 +158,9 @@ print(data)`}
               />
             </div>
 
-            <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-6">
-              <h4 className="text-lg font-medium text-red-900 dark:text-red-100 mb-2">Security Best Practices</h4>
-              <ul className="list-disc list-inside space-y-1 text-red-800 dark:text-red-200">
+            <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg sm:rounded-xl p-4 sm:p-6">
+              <h4 className="text-base sm:text-lg font-medium text-red-900 dark:text-red-100 mb-2">Security Best Practices</h4>
+              <ul className="list-disc list-inside space-y-1 text-xs sm:text-sm text-red-800 dark:text-red-200">
                 <li>Never expose your API key in client-side code</li>
                 <li>Store API keys securely using environment variables</li>
                 <li>Rotate your API keys regularly</li>
@@ -166,58 +172,60 @@ print(data)`}
 
       case 'api-reference':
         return (
-          <div className="space-y-8">
+          <div className="space-y-6 sm:space-y-8">
             <div>
-              <h2 className="text-3xl font-medium text-gray-900 dark:text-white mb-4">API Reference</h2>
-              <p className="text-gray-600 dark:text-gray-300 mb-6">
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-normal text-[var(--color-text-primary)] mb-3 sm:mb-4 tracking-tight leading-tight">API Reference</h2>
+              <p className="text-sm sm:text-base text-[var(--color-text-secondary)] mb-4 sm:mb-6 leading-relaxed">
                 Complete reference for all available endpoints in the Medarion API.
               </p>
             </div>
 
-            <div className="space-y-6">
-              <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-6">
-                <h3 className="text-xl font-medium text-gray-900 dark:text-white mb-4">Deals Endpoint</h3>
-                <div className="mb-4">
-                  <span className="bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 px-2 py-1 rounded text-sm font-mono">
+            <div className="space-y-5 sm:space-y-6">
+              <div className="bg-white dark:bg-gray-800 border border-[var(--color-divider-gray)]/20 rounded-lg sm:rounded-xl p-4 sm:p-6 md:p-8">
+                <h3 className="text-lg sm:text-xl md:text-2xl font-medium text-[var(--color-text-primary)] mb-3 sm:mb-4">Deals Endpoint</h3>
+                <div className="mb-3 sm:mb-4 flex flex-wrap items-center gap-2">
+                  <span className="bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 px-2 py-1 rounded text-xs sm:text-sm font-mono">
                     GET
                   </span>
-                  <code className="ml-2 text-gray-700 dark:text-gray-300">/v1/deals</code>
+                  <code className="text-xs sm:text-sm text-[var(--color-text-secondary)] break-all">/v1/deals</code>
                 </div>
-                <p className="text-gray-600 dark:text-gray-300 mb-4">
+                <p className="text-sm sm:text-base text-[var(--color-text-secondary)] mb-3 sm:mb-4 leading-relaxed">
                   Retrieve investment deals and grants data across African healthcare companies.
                 </p>
                 
-                <h4 className="font-medium text-gray-900 dark:text-white mb-2">Query Parameters</h4>
-                <div className="overflow-x-auto">
-                  <table className="w-full text-sm">
-                    <thead className="bg-gray-50 dark:bg-gray-700">
-                      <tr>
-                        <th className="text-left p-2 text-gray-900 dark:text-white">Parameter</th>
-                        <th className="text-left p-2 text-gray-900 dark:text-white">Type</th>
-                        <th className="text-left p-2 text-gray-900 dark:text-white">Description</th>
-                      </tr>
-                    </thead>
-                    <tbody className="divide-y divide-gray-200 dark:divide-gray-600">
-                      <tr>
-                        <td className="p-2 font-mono text-gray-700 dark:text-gray-300">country</td>
-                        <td className="p-2 text-gray-600 dark:text-gray-400">string</td>
-                        <td className="p-2 text-gray-600 dark:text-gray-400">Filter by country (e.g., "Nigeria", "Kenya")</td>
-                      </tr>
-                      <tr>
-                        <td className="p-2 font-mono text-gray-700 dark:text-gray-300">sector</td>
-                        <td className="p-2 text-gray-600 dark:text-gray-400">string</td>
-                        <td className="p-2 text-gray-600 dark:text-gray-400">Filter by sector (e.g., "Telemedicine", "AI Diagnostics")</td>
-                      </tr>
-                      <tr>
-                        <td className="p-2 font-mono text-gray-700 dark:text-gray-300">limit</td>
-                        <td className="p-2 text-gray-600 dark:text-gray-400">integer</td>
-                        <td className="p-2 text-gray-600 dark:text-gray-400">Number of results to return (default: 50, max: 100)</td>
-                      </tr>
-                    </tbody>
-                  </table>
+                <h4 className="font-medium text-[var(--color-text-primary)] mb-2 mt-4 sm:mt-6 text-sm sm:text-base">Query Parameters</h4>
+                <div className="overflow-x-auto -mx-4 sm:mx-0">
+                  <div className="inline-block min-w-full align-middle">
+                    <table className="min-w-full text-xs sm:text-sm divide-y divide-[var(--color-divider-gray)]">
+                      <thead className="bg-[var(--color-background-surface)]">
+                        <tr>
+                          <th className="text-left p-2 sm:p-3 text-[var(--color-text-primary)] font-medium">Parameter</th>
+                          <th className="text-left p-2 sm:p-3 text-[var(--color-text-primary)] font-medium">Type</th>
+                          <th className="text-left p-2 sm:p-3 text-[var(--color-text-primary)] font-medium">Description</th>
+                        </tr>
+                      </thead>
+                      <tbody className="divide-y divide-[var(--color-divider-gray)]">
+                        <tr>
+                          <td className="p-2 sm:p-3 font-mono text-[var(--color-text-secondary)] text-xs sm:text-sm">country</td>
+                          <td className="p-2 sm:p-3 text-[var(--color-text-secondary)] text-xs sm:text-sm">string</td>
+                          <td className="p-2 sm:p-3 text-[var(--color-text-secondary)] text-xs sm:text-sm">Filter by country (e.g., "Nigeria", "Kenya")</td>
+                        </tr>
+                        <tr>
+                          <td className="p-2 sm:p-3 font-mono text-[var(--color-text-secondary)] text-xs sm:text-sm">sector</td>
+                          <td className="p-2 sm:p-3 text-[var(--color-text-secondary)] text-xs sm:text-sm">string</td>
+                          <td className="p-2 sm:p-3 text-[var(--color-text-secondary)] text-xs sm:text-sm">Filter by sector (e.g., "Telemedicine", "AI Diagnostics")</td>
+                        </tr>
+                        <tr>
+                          <td className="p-2 sm:p-3 font-mono text-[var(--color-text-secondary)] text-xs sm:text-sm">limit</td>
+                          <td className="p-2 sm:p-3 text-[var(--color-text-secondary)] text-xs sm:text-sm">integer</td>
+                          <td className="p-2 sm:p-3 text-[var(--color-text-secondary)] text-xs sm:text-sm">Number of results to return (default: 50, max: 100)</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
                 </div>
 
-                <h4 className="font-medium text-gray-900 dark:text-white mb-2 mt-4">Example Response</h4>
+                <h4 className="font-medium text-[var(--color-text-primary)] mb-2 mt-4 sm:mt-6 text-sm sm:text-base">Example Response</h4>
                 <CodeBlock
                   id="deals-response"
                   code={`{
@@ -243,15 +251,15 @@ print(data)`}
                 />
               </div>
 
-              <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-6">
-                <h3 className="text-xl font-medium text-gray-900 dark:text-white mb-4">Companies Endpoint</h3>
-                <div className="mb-4">
-                  <span className="bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 px-2 py-1 rounded text-sm font-mono">
+              <div className="bg-white dark:bg-gray-800 border border-[var(--color-divider-gray)]/20 rounded-lg sm:rounded-xl p-4 sm:p-6 md:p-8">
+                <h3 className="text-lg sm:text-xl md:text-2xl font-medium text-[var(--color-text-primary)] mb-3 sm:mb-4">Companies Endpoint</h3>
+                <div className="mb-3 sm:mb-4 flex flex-wrap items-center gap-2">
+                  <span className="bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 px-2 py-1 rounded text-xs sm:text-sm font-mono">
                     GET
                   </span>
-                  <code className="ml-2 text-gray-700 dark:text-gray-300">/v1/companies</code>
+                  <code className="text-xs sm:text-sm text-[var(--color-text-secondary)] break-all">/v1/companies</code>
                 </div>
-                <p className="text-gray-600 dark:text-gray-300 mb-4">
+                <p className="text-sm sm:text-base text-[var(--color-text-secondary)] mb-3 sm:mb-4 leading-relaxed">
                   Access comprehensive company profiles and information.
                 </p>
 
@@ -280,17 +288,17 @@ print(data)`}
 
       case 'data-models':
         return (
-          <div className="space-y-8">
+          <div className="space-y-6 sm:space-y-8">
             <div>
-              <h2 className="text-3xl font-medium text-gray-900 dark:text-white mb-4">Data Models</h2>
-              <p className="text-gray-600 dark:text-gray-300 mb-6">
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-normal text-[var(--color-text-primary)] mb-3 sm:mb-4 tracking-tight leading-tight">Data Models</h2>
+              <p className="text-sm sm:text-base text-[var(--color-text-secondary)] mb-4 sm:mb-6 leading-relaxed">
                 Detailed schemas for all data objects returned by the Medarion API.
               </p>
             </div>
 
-            <div className="space-y-6">
-              <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-6">
-                <h3 className="text-xl font-medium text-gray-900 dark:text-white mb-4">Deal Object</h3>
+            <div className="space-y-5 sm:space-y-6">
+              <div className="bg-white dark:bg-gray-800 border border-[var(--color-divider-gray)]/20 rounded-lg sm:rounded-xl p-4 sm:p-6 md:p-8">
+                <h3 className="text-lg sm:text-xl md:text-2xl font-medium text-[var(--color-text-primary)] mb-3 sm:mb-4">Deal Object</h3>
                 <CodeBlock
                   id="deal-schema"
                   code={`{
@@ -310,8 +318,8 @@ print(data)`}
                 />
               </div>
 
-              <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-6">
-                <h3 className="text-xl font-medium text-gray-900 dark:text-white mb-4">Company Object</h3>
+              <div className="bg-white dark:bg-gray-800 border border-[var(--color-divider-gray)]/20 rounded-lg sm:rounded-xl p-4 sm:p-6 md:p-8">
+                <h3 className="text-lg sm:text-xl md:text-2xl font-medium text-[var(--color-text-primary)] mb-3 sm:mb-4">Company Object</h3>
                 <CodeBlock
                   id="company-schema"
                   code={`{
@@ -332,8 +340,8 @@ print(data)`}
                 />
               </div>
 
-              <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-6">
-                <h3 className="text-xl font-medium text-gray-900 dark:text-white mb-4">Clinical Trial Object</h3>
+              <div className="bg-white dark:bg-gray-800 border border-[var(--color-divider-gray)]/20 rounded-lg sm:rounded-xl p-4 sm:p-6 md:p-8">
+                <h3 className="text-lg sm:text-xl md:text-2xl font-medium text-[var(--color-text-primary)] mb-3 sm:mb-4">Clinical Trial Object</h3>
                 <CodeBlock
                   id="trial-schema"
                   code={`{
@@ -356,17 +364,17 @@ print(data)`}
 
       case 'examples':
         return (
-          <div className="space-y-8">
+          <div className="space-y-6 sm:space-y-8">
             <div>
-              <h2 className="text-3xl font-medium text-gray-900 dark:text-white mb-4">Code Examples</h2>
-              <p className="text-gray-600 dark:text-gray-300 mb-6">
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-normal text-[var(--color-text-primary)] mb-3 sm:mb-4 tracking-tight leading-tight">Code Examples</h2>
+              <p className="text-sm sm:text-base text-[var(--color-text-secondary)] mb-4 sm:mb-6 leading-relaxed">
                 Practical examples showing how to integrate Medarion API into your applications.
               </p>
             </div>
 
-            <div className="space-y-6">
-              <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-6">
-                <h3 className="text-xl font-medium text-gray-900 dark:text-white mb-4">React Integration</h3>
+            <div className="space-y-5 sm:space-y-6">
+              <div className="bg-white dark:bg-gray-800 border border-[var(--color-divider-gray)]/20 rounded-lg sm:rounded-xl p-4 sm:p-6 md:p-8">
+                <h3 className="text-lg sm:text-xl md:text-2xl font-medium text-[var(--color-text-primary)] mb-3 sm:mb-4">React Integration</h3>
                 <CodeBlock
                   id="react-example"
                   code={`import React, { useState, useEffect } from 'react';
@@ -419,8 +427,8 @@ export default MedarionDeals;`}
                 />
               </div>
 
-              <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-6">
-                <h3 className="text-xl font-medium text-gray-900 dark:text-white mb-4">Node.js Backend</h3>
+              <div className="bg-white dark:bg-gray-800 border border-[var(--color-divider-gray)]/20 rounded-lg sm:rounded-xl p-4 sm:p-6 md:p-8">
+                <h3 className="text-lg sm:text-xl md:text-2xl font-medium text-[var(--color-text-primary)] mb-3 sm:mb-4">Node.js Backend</h3>
                 <CodeBlock
                   id="nodejs-example"
                   code={`const express = require('express');
@@ -466,8 +474,8 @@ app.listen(3000, () => {
                 />
               </div>
 
-              <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-6">
-                <h3 className="text-xl font-medium text-gray-900 dark:text-white mb-4">Python Data Analysis</h3>
+              <div className="bg-white dark:bg-gray-800 border border-[var(--color-divider-gray)]/20 rounded-lg sm:rounded-xl p-4 sm:p-6 md:p-8">
+                <h3 className="text-lg sm:text-xl md:text-2xl font-medium text-[var(--color-text-primary)] mb-3 sm:mb-4">Python Data Analysis</h3>
                 <CodeBlock
                   id="python-analysis"
                   code={`import requests
@@ -533,17 +541,17 @@ print(trends)`}
 
       case 'webhooks':
         return (
-          <div className="space-y-8">
+          <div className="space-y-6 sm:space-y-8">
             <div>
-              <h2 className="text-3xl font-medium text-gray-900 dark:text-white mb-4">Webhooks</h2>
-              <p className="text-gray-600 dark:text-gray-300 mb-6">
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-normal text-[var(--color-text-primary)] mb-3 sm:mb-4 tracking-tight leading-tight">Webhooks</h2>
+              <p className="text-sm sm:text-base text-[var(--color-text-secondary)] mb-4 sm:mb-6 leading-relaxed">
                 Set up webhooks to receive real-time notifications when new data is added to the Medarion platform.
               </p>
             </div>
 
-            <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-6">
-              <h3 className="text-lg font-medium text-blue-900 dark:text-blue-100 mb-2">Webhook Events</h3>
-              <ul className="list-disc list-inside space-y-1 text-blue-800 dark:text-blue-200">
+            <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg sm:rounded-xl p-4 sm:p-6">
+              <h3 className="text-base sm:text-lg font-medium text-blue-900 dark:text-blue-100 mb-2">Webhook Events</h3>
+              <ul className="list-disc list-inside space-y-1 text-xs sm:text-sm text-blue-800 dark:text-blue-200">
                 <li><code>deal.created</code> - New investment deal added</li>
                 <li><code>company.created</code> - New company profile added</li>
                 <li><code>trial.updated</code> - Clinical trial status updated</li>
@@ -551,9 +559,9 @@ print(trends)`}
               </ul>
             </div>
 
-            <div className="space-y-6">
-              <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-6">
-                <h3 className="text-xl font-medium text-gray-900 dark:text-white mb-4">Webhook Payload Example</h3>
+            <div className="space-y-5 sm:space-y-6">
+              <div className="bg-white dark:bg-gray-800 border border-[var(--color-divider-gray)]/20 rounded-lg sm:rounded-xl p-4 sm:p-6 md:p-8">
+                <h3 className="text-lg sm:text-xl md:text-2xl font-medium text-[var(--color-text-primary)] mb-3 sm:mb-4">Webhook Payload Example</h3>
                 <CodeBlock
                   id="webhook-payload"
                   code={`{
@@ -575,8 +583,8 @@ print(trends)`}
                 />
               </div>
 
-              <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-6">
-                <h3 className="text-xl font-medium text-gray-900 dark:text-white mb-4">Webhook Handler Example</h3>
+              <div className="bg-white dark:bg-gray-800 border border-[var(--color-divider-gray)]/20 rounded-lg sm:rounded-xl p-4 sm:p-6 md:p-8">
+                <h3 className="text-lg sm:text-xl md:text-2xl font-medium text-[var(--color-text-primary)] mb-3 sm:mb-4">Webhook Handler Example</h3>
                 <CodeBlock
                   id="webhook-handler"
                   code={`const express = require('express');
@@ -626,12 +634,12 @@ app.listen(3000);`}
               </div>
             </div>
 
-            <div className="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg p-6">
-              <h4 className="text-lg font-medium text-yellow-900 dark:text-yellow-100 mb-2">Webhook Security</h4>
-              <p className="text-yellow-800 dark:text-yellow-200 mb-2">
+            <div className="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg sm:rounded-xl p-4 sm:p-6">
+              <h4 className="text-base sm:text-lg font-medium text-yellow-900 dark:text-yellow-100 mb-2">Webhook Security</h4>
+              <p className="text-xs sm:text-sm text-yellow-800 dark:text-yellow-200 mb-2 leading-relaxed">
                 All webhook payloads are signed with HMAC SHA256. Always verify the signature before processing webhook data.
               </p>
-              <p className="text-yellow-800 dark:text-yellow-200">
+              <p className="text-xs sm:text-sm text-yellow-800 dark:text-yellow-200 leading-relaxed">
                 The signature is included in the <code>X-Medarion-Signature</code> header.
               </p>
             </div>
@@ -658,8 +666,8 @@ app.listen(3000);`}
         
         <div className="page-hero-content">
           <div className="page-hero-content-inner">
-            <div className="inline-flex items-center justify-center p-3 rounded-xl bg-[var(--color-primary-teal)]/20 backdrop-blur-sm mb-6">
-              <Code className="h-8 w-8 text-white" />
+            <div className="inline-flex items-center justify-center p-2 sm:p-3 rounded-xl bg-[var(--color-primary-teal)]/20 backdrop-blur-sm mb-4 sm:mb-6">
+              <Code className="h-6 w-6 sm:h-8 sm:w-8 text-white" />
             </div>
             <h1 className="page-hero-heading">
               API Documentation
@@ -671,18 +679,18 @@ app.listen(3000);`}
         </div>
       </div>
 
-      <div className="flex max-w-7xl mx-auto">
-        {/* Sidebar */}
-        <div className="w-72 bg-[var(--color-background-surface)] border-r border-[var(--color-divider-gray)] min-h-screen sticky top-0 h-screen overflow-y-auto">
-          <div className="p-6">
-            <div className="relative mb-6">
+      <div className="flex flex-col lg:flex-row max-w-7xl mx-auto">
+        {/* Sidebar - Desktop */}
+        <div className="hidden lg:block lg:w-72 bg-[var(--color-background-surface)] border-r border-[var(--color-divider-gray)] sticky top-0 h-screen overflow-y-auto">
+          <div className="p-4 sm:p-6">
+            <div className="relative mb-4 sm:mb-6">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-[var(--color-text-secondary)]" />
               <input
                 type="text"
                 placeholder="Search docs..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-10 pr-4 py-2.5 border border-[var(--color-divider-gray)] rounded-lg bg-[var(--color-background-default)] text-[var(--color-text-primary)] focus:ring-2 focus:ring-[var(--color-primary-teal)] focus:border-transparent text-sm"
+                className="w-full pl-10 pr-4 py-2.5 text-sm border border-[var(--color-divider-gray)] rounded-lg bg-[var(--color-background-default)] text-[var(--color-text-primary)] focus:ring-2 focus:ring-[var(--color-primary-teal)] focus:border-transparent"
               />
             </div>
             
@@ -692,15 +700,15 @@ app.listen(3000);`}
                 return (
                   <button
                     key={section.id}
-                    onClick={() => setActiveSection(section.id)}
-                    className={`w-full flex items-center space-x-3 px-4 py-2.5 rounded-lg text-left transition-all ${
+                    onClick={() => handleSectionChange(section.id)}
+                    className={`w-full flex items-center space-x-3 px-3 sm:px-4 py-2.5 rounded-lg text-left transition-all text-sm ${
                       activeSection === section.id
                         ? 'bg-[var(--color-primary-teal)] text-white shadow-sm'
                         : 'text-[var(--color-text-primary)] hover:bg-[var(--color-background-default)]'
                     }`}
                   >
-                    <Icon className="h-4 w-4" />
-                    <span className="text-sm font-medium">{section.title}</span>
+                    <Icon className="h-4 w-4 flex-shrink-0" />
+                    <span className="font-medium">{section.title}</span>
                   </button>
                 );
               })}
@@ -709,8 +717,32 @@ app.listen(3000);`}
         </div>
 
         {/* Main Content */}
-        <div className="flex-1 p-8 p-12">
-          <div className="max-w-4xl">
+        <div className="flex-1 p-4 sm:p-6 md:p-8 lg:p-12">
+          <div className="max-w-4xl mx-auto">
+            {/* Mobile Navigation Dropdown */}
+            <div className="lg:hidden mb-6 sm:mb-8">
+              <div className="bg-[var(--color-background-surface)] border border-[var(--color-divider-gray)] rounded-xl sm:rounded-2xl p-4 shadow-sm">
+                <label className="block text-xs sm:text-sm font-medium text-[var(--color-text-primary)] mb-2">
+                  Documentation Sections
+                </label>
+                <select
+                  value={activeSection}
+                  onChange={(e) => handleSectionChange(e.target.value)}
+                  className="w-full px-4 py-3 text-sm sm:text-base border border-[var(--color-divider-gray)] rounded-lg bg-[var(--color-background-default)] text-[var(--color-text-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary-teal)] focus:border-[var(--color-primary-teal)] transition-all appearance-none bg-[url('data:image/svg+xml;charset=UTF-8,%3csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 24 24%27 fill=%27none%27 stroke=%27currentColor%27 stroke-width=%272%27 stroke-linecap=%27round%27 stroke-linejoin=%27round%27%3e%3cpolyline points=%276 9 12 15 18 9%27%3e%3c/polyline%3e%3c/svg%3e')] bg-no-repeat bg-right pr-10"
+                  style={{
+                    backgroundPosition: 'right 0.75rem center',
+                    backgroundSize: '1.5em 1.5em'
+                  }}
+                >
+                  {sections.map(section => (
+                    <option key={section.id} value={section.id}>
+                      {section.title}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </div>
+
             {renderContent()}
           </div>
         </div>

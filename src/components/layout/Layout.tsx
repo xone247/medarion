@@ -9,7 +9,7 @@ interface LayoutProps {
 
 const Layout: React.FC<LayoutProps> = ({ children, currentPage }) => {
   const scopedClass = currentPage && (currentPage === 'blog' || currentPage === 'blog-detail') ? 'blog-theme' : '';
-  const removePad = currentPage === 'home' || currentPage === 'blog' || currentPage === 'blog-detail';
+  const removePad = currentPage === 'home' || currentPage === 'blog' || currentPage === 'blog-detail' || currentPage === 'auth' || currentPage === 'contact' || currentPage === 'about' || currentPage === 'pricing' || currentPage === 'documentation' || currentPage === 'm-index';
   const topPadClass = removePad ? 'pt-0 pt-0' : 'pt-4 pt-6';
   return (
     <div className={`min-h-screen bg-[var(--color-background-default)] text-[var(--color-text-primary)] ${scopedClass}`}>

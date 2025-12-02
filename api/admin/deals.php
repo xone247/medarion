@@ -81,7 +81,7 @@ try {
         if ($dealId) {
             // Get single deal with company info
             $stmt = $pdo->prepare("
-                SELECT d.*, c.name as company_name, c.industry, c.sector as company_sector, c.country as company_country
+                SELECT d.*, c.name as company_name_from_table, c.industry, c.sector as company_sector, c.country as company_country
                 FROM deals d
                 LEFT JOIN companies c ON d.company_id = c.id
                 WHERE d.id = :id
@@ -95,6 +95,16 @@ try {
                 if ($deal['participants']) {
                     $deal['participants'] = json_decode($deal['participants'], true) ?? [];
                 }
+                // Use company_name from deals table first, then fallback to companies table
+                if (empty($deal['company_name']) && !empty($deal['company_name_from_table'])) {
+                    $deal['company_name'] = $deal['company_name_from_table'];
+                }
+                // Remove the temporary field
+                unset($deal['company_name_from_table']);
+                // Ensure country has a fallback
+                if (empty($deal['country'])) {
+                    $deal['country'] = $deal['company_country'] ?? 'Unknown';
+                }
 
                 echo json_encode(['success' => true, 'data' => $deal]);
             } else {
@@ -103,16 +113,18 @@ try {
             }
         } else {
             // List all deals with pagination and search
-            $limit = $_GET['limit'] ?? 20;
+            // Check if 'all' parameter is set to get all records
+            $getAll = isset($_GET['all']) && ($_GET['all'] === 'true' || $_GET['all'] === '1');
+            $limit = $getAll ? 10000 : ($_GET['limit'] ?? 20); // Large limit if 'all' is requested
             $page = $_GET['page'] ?? 1;
             $offset = ($page - 1) * $limit;
             $search = $_GET['search'] ?? '';
 
             $sql = "
-                SELECT d.id, d.company_id, d.deal_type, d.amount, d.valuation, 
+                SELECT d.id, d.company_id, d.company_name, d.deal_type, d.amount, d.valuation, 
                        d.lead_investor, d.participants, d.deal_date, d.status, 
-                       d.description, d.sector, d.created_at, d.updated_at,
-                       c.name as company_name, c.industry, c.sector as company_sector, c.country
+                       d.description, d.sector, d.country, d.created_at, d.updated_at,
+                       c.name as company_name_from_table, c.industry, c.sector as company_sector, c.country as company_country
                 FROM deals d
                 LEFT JOIN companies c ON d.company_id = c.id
             ";
@@ -121,7 +133,7 @@ try {
             $params = [];
 
             if ($search) {
-                $whereConditions[] = "(c.name LIKE :search OR d.description LIKE :search OR d.deal_type LIKE :search OR d.lead_investor LIKE :search)";
+                $whereConditions[] = "(d.company_name LIKE :search OR c.name LIKE :search OR d.description LIKE :search OR d.deal_type LIKE :search OR d.lead_investor LIKE :search)";
                 $params[':search'] = "%$search%";
             }
 
@@ -130,14 +142,19 @@ try {
                 $countSql .= " WHERE " . implode(" AND ", $whereConditions);
             }
 
-            $sql .= " ORDER BY d.deal_date DESC LIMIT :limit OFFSET :offset";
+            $sql .= " ORDER BY d.deal_date DESC";
+            if (!$getAll) {
+                $sql .= " LIMIT :limit OFFSET :offset";
+            }
 
             $stmt = $pdo->prepare($sql);
             foreach ($params as $key => $value) {
                 $stmt->bindValue($key, $value);
             }
-            $stmt->bindValue(':limit', (int)$limit, PDO::PARAM_INT);
-            $stmt->bindValue(':offset', (int)$offset, PDO::PARAM_INT);
+            if (!$getAll) {
+                $stmt->bindValue(':limit', (int)$limit, PDO::PARAM_INT);
+                $stmt->bindValue(':offset', (int)$offset, PDO::PARAM_INT);
+            }
             $stmt->execute();
             $deals = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
@@ -146,18 +163,22 @@ try {
                 if ($deal['participants']) {
                     $deal['participants'] = json_decode($deal['participants'], true) ?? [];
                 }
-                // Ensure company_name has a proper fallback if NULL
-                // Only use fallback if company_id exists but company was not found (NULL from JOIN)
-                // If company_id is NULL, show "No Company" instead of misleading names
+                // Use company_name from deals table first, then fallback to companies table
+                if (empty($deal['company_name']) && !empty($deal['company_name_from_table'])) {
+                    $deal['company_name'] = $deal['company_name_from_table'];
+                }
+                // If still empty, provide fallback
                 if (empty($deal['company_name'])) {
                     if (!empty($deal['company_id'])) {
-                        // Company ID exists but JOIN returned NULL - company was deleted or doesn't exist
+                        // Company ID exists but name not found
                         $deal['company_name'] = 'Company Not Found';
                     } else {
                         // No company_id set - deal is not linked to a company
                         $deal['company_name'] = 'No Company';
                     }
                 }
+                // Remove the temporary field
+                unset($deal['company_name_from_table']);
                 // Ensure country has a fallback
                 if (empty($deal['country'])) {
                     $deal['country'] = $deal['company_country'] ?? 'Unknown';

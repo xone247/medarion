@@ -181,8 +181,8 @@ const GlobalHeader: React.FC = () => {
             <Menu className="h-5 w-5 text-slate-900 dark:text-slate-300 group-hover:text-cyan-600 dark:group-hover:text-cyan-400 transition-colors" />
           </button>
           
-          {/* Module Title - Always shown */}
-          <div className="flex-1 min-w-0">
+          {/* Module Title - Hidden on mobile, shown on desktop */}
+          <div className="hidden lg:flex flex-1 min-w-0">
             <h1 className="text-2xl font-medium text-slate-900 dark:text-slate-100">
               {moduleTitle}
             </h1>

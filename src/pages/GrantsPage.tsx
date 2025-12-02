@@ -193,18 +193,6 @@ const GrantsPage = () => {
     }
   };
 
-  const copyJSON = async () => {
-    try {
-      const data = { filters: { searchTerm, selectedSector, selectedType, selectedCountry, timeframe }, grants: filteredGrants, exportedAt: new Date().toISOString() };
-      const text = JSON.stringify(data, null, 2);
-      if (navigator.clipboard && navigator.clipboard.writeText) {
-        await navigator.clipboard.writeText(text);
-      } else {
-        const ta = document.createElement('textarea'); ta.value = text; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta);
-      }
-      alert('Copied grants JSON to clipboard');
-    } catch {}
-  };
 
   const applyView = (name: string) => {
     setSelectedView(name);
@@ -240,19 +228,57 @@ const GrantsPage = () => {
     setAiLoading(false);
   };
 
+  const canAI = !!(profile && (profile.is_admin || ['paid','enterprise'].includes((profile as any).account_tier)));
+
   return (
-    <div className="w-full space-y-6">
-      {/* Action Buttons */}
-      <div className="flex flex-wrap gap-2 items-center justify-end">
-        {(() => { try { const { useAuth } = require('../contexts/AuthContext'); const { profile } = useAuth(); const canAI = !!(profile && (profile.is_admin || ['paid','enterprise'].includes((profile as any).account_tier))); return canAI; } catch { return false; } })() && <button onClick={runAISuggest} className="btn-primary-elevated flex items-center gap-2 px-4 py-2 rounded-lg"><Bot className="h-4 w-4" /><span className="text-sm">AI Summary</span></button>}
+    <div className="w-full space-y-3 sm:space-y-4 md:space-y-6 p-2.5 sm:p-3 md:p-4 lg:p-6">
+      {/* Top Bar: Search and Actions - Mobile Optimized */}
+      <div className="card-glass p-3 sm:p-4 rounded-lg">
+        <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4">
+          {/* Search Bar - Prominent */}
+          <div className="relative flex-1 min-w-0">
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 sm:h-5 sm:w-5 text-slate-400 dark:text-slate-500" />
+            <input 
+              type="text" 
+              placeholder="Search organizations or funders..." 
+              value={searchTerm} 
+              onChange={(e) => setSearchTerm(e.target.value)} 
+              className="w-full pl-10 sm:pl-12 pr-3 py-2.5 sm:py-3 text-sm sm:text-base bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-lg text-slate-700 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-cyan-500/30 focus:border-cyan-500/50 transition-all" 
+            />
+          </div>
+          {/* Action Buttons */}
+          <div className="flex flex-wrap items-center gap-1.5 sm:gap-2 justify-end">
+            {canAI && (
+              <button 
+                onClick={runAISuggest} 
+                className="btn-primary-elevated flex items-center justify-center gap-1.5 sm:gap-2 px-3 sm:px-3 py-2 sm:py-2.5 rounded-lg text-xs sm:text-sm flex-shrink-0 min-w-[60px] sm:min-w-0 h-[40px] sm:h-auto"
+                title="AI Summary"
+              >
+                <Bot className="h-4 w-4" />
+                <span className="hidden sm:inline">AI Summary</span>
+              </button>
+            )}
             {canExport && (
               <>
-            <button onClick={copyJSON} className="btn-outline px-4 py-2 rounded-lg">Copy</button>
-            <button onClick={exportExcel} className="btn-outline px-4 py-2 rounded-lg flex items-center gap-2"><FileDown className="h-4 w-4" /><span>Export Excel</span></button>
-            <button onClick={exportJSON} className="btn-outline px-4 py-2 rounded-lg flex items-center gap-2"><FileDown className="h-4 w-4" /><span>Export JSON</span></button>
-            <button onClick={exportCSV} className="btn-outline px-4 py-2 rounded-lg flex items-center gap-2"><FileDown className="h-4 w-4" /><span>Export CSV</span></button>
+                <button onClick={exportExcel} className="btn-outline px-3 sm:px-3 py-2 sm:py-2.5 rounded-lg flex items-center justify-center gap-1.5 text-xs sm:text-sm flex-shrink-0 min-w-[60px] sm:min-w-0 h-[40px] sm:h-auto" title="Export Excel">
+                  <FileDown className="h-3.5 w-3.5 sm:h-4 sm:w-4 flex-shrink-0"/>
+                  <span className="hidden sm:inline">Excel</span>
+                  <span className="sm:hidden">XLS</span>
+                </button>
+                <button onClick={exportJSON} className="btn-outline px-3 sm:px-3 py-2 sm:py-2.5 rounded-lg flex items-center justify-center gap-1.5 text-xs sm:text-sm flex-shrink-0 min-w-[60px] sm:min-w-0 h-[40px] sm:h-auto" title="Export JSON">
+                  <FileDown className="h-3.5 w-3.5 sm:h-4 sm:w-4 flex-shrink-0"/>
+                  <span className="hidden sm:inline">JSON</span>
+                  <span className="sm:hidden">JSON</span>
+                </button>
+                <button onClick={exportCSV} className="btn-outline px-3 sm:px-3 py-2 sm:py-2.5 rounded-lg flex items-center justify-center gap-1.5 text-xs sm:text-sm flex-shrink-0 min-w-[60px] sm:min-w-0 h-[40px] sm:h-auto" title="Export CSV">
+                  <FileDown className="h-3.5 w-3.5 sm:h-4 sm:w-4 flex-shrink-0"/>
+                  <span className="hidden sm:inline">CSV</span>
+                  <span className="sm:hidden">CSV</span>
+                </button>
               </>
             )}
+          </div>
+        </div>
       </div>
 
       {aiSuggest && (
@@ -265,94 +291,124 @@ const GrantsPage = () => {
         </div>
       )}
 
-      {/* Summary Stats - Compact Modern Style */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-        <div className="card-glass p-3 rounded-lg hover:shadow-lg transition-all duration-200 group relative overflow-hidden h-full flex flex-col bg-emerald-50/50 dark:bg-emerald-950/30">
-          <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/10 to-green-500/10 dark:from-emerald-500/15 dark:to-green-500/15 opacity-0 group-hover:opacity-100 transition-opacity"></div>
-          <div className="relative flex items-center justify-between flex-1">
+      {/* Summary Stats - Matching Deals Page Style */}
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
+        <div className="card-glass p-3 sm:p-4 rounded-lg">
+          <div className="flex items-center justify-between">
             <div className="min-w-0 flex-1">
-              <p className="text-xs font-medium text-slate-500 dark:text-slate-400 mb-1 uppercase tracking-wide">Total Value</p>
-              <p className="text-2xl font-medium text-slate-700 dark:text-slate-200 mb-1">${(totalValue / 1000000).toFixed(1)}M</p>
+              <p className="text-xs sm:text-sm font-medium text-slate-500 dark:text-slate-400 mb-1">Total Value</p>
+              <p className="text-xl sm:text-2xl font-bold text-slate-700 dark:text-slate-200">${(totalValue / 1000000).toFixed(1)}M</p>
             </div>
-            <div className="p-2.5 rounded-lg bg-emerald-600 dark:bg-gradient-to-br dark:from-emerald-500 dark:to-green-500 shadow-md group-hover:scale-105 transition-transform duration-200 flex-shrink-0 ml-3">
-              <DollarSign className="h-5 w-5 text-white" />
-            </div>
+            <DollarSign className="h-5 w-5 sm:h-6 sm:w-6 text-emerald-600 dark:text-emerald-400 flex-shrink-0 ml-2" />
           </div>
         </div>
-        <div className="card-glass p-3 rounded-lg hover:shadow-lg transition-all duration-200 group relative overflow-hidden h-full flex flex-col bg-cyan-50/50 dark:bg-cyan-950/30">
-          <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/10 to-teal-500/10 dark:from-cyan-500/15 dark:to-teal-500/15 opacity-0 group-hover:opacity-100 transition-opacity"></div>
-          <div className="relative flex items-center justify-between flex-1">
+        <div className="card-glass p-3 sm:p-4 rounded-lg">
+          <div className="flex items-center justify-between">
             <div className="min-w-0 flex-1">
-              <p className="text-xs font-medium text-slate-500 dark:text-slate-400 mb-1 uppercase tracking-wide">Total Grants</p>
-              <p className="text-2xl font-medium text-slate-700 dark:text-slate-200 mb-1">{filteredGrants.length}</p>
+              <p className="text-xs sm:text-sm font-medium text-slate-500 dark:text-slate-400 mb-1">Total Grants</p>
+              <p className="text-xl sm:text-2xl font-bold text-slate-700 dark:text-slate-200">{filteredGrants.length}</p>
             </div>
-            <div className="p-2.5 rounded-lg bg-cyan-600 dark:bg-gradient-to-br dark:from-cyan-500 dark:to-teal-500 shadow-md group-hover:scale-105 transition-transform duration-200 flex-shrink-0 ml-3">
-              <Building2 className="h-5 w-5 text-white" />
-            </div>
+            <Building2 className="h-5 w-5 sm:h-6 sm:w-6 text-cyan-600 dark:text-cyan-400 flex-shrink-0 ml-2" />
           </div>
         </div>
-        <div className="card-glass p-3 rounded-lg hover:shadow-lg transition-all duration-200 group relative overflow-hidden h-full flex flex-col bg-indigo-50/50 dark:bg-indigo-950/30">
-          <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/10 to-purple-500/10 dark:from-indigo-500/15 dark:to-purple-500/15 opacity-0 group-hover:opacity-100 transition-opacity"></div>
-          <div className="relative flex items-center justify-between flex-1">
+        <div className="card-glass p-3 sm:p-4 rounded-lg">
+          <div className="flex items-center justify-between">
             <div className="min-w-0 flex-1">
-              <p className="text-xs font-medium text-slate-500 dark:text-slate-400 mb-1 uppercase tracking-wide">Avg Grant Size</p>
-              <p className="text-2xl font-medium text-slate-700 dark:text-slate-200 mb-1">${(filteredGrants.length > 0 ? (totalValue / filteredGrants.length / 1000000) : 0).toFixed(1)}M</p>
+              <p className="text-xs sm:text-sm font-medium text-slate-500 dark:text-slate-400 mb-1">Avg Grant Size</p>
+              <p className="text-xl sm:text-2xl font-bold text-slate-700 dark:text-slate-200">${(filteredGrants.length > 0 ? (totalValue / filteredGrants.length / 1000000) : 0).toFixed(1)}M</p>
             </div>
-            <div className="p-2.5 rounded-lg bg-indigo-600 dark:bg-gradient-to-br dark:from-indigo-500 dark:to-purple-500 shadow-md group-hover:scale-105 transition-transform duration-200 flex-shrink-0 ml-3">
-              <Users className="h-5 w-5 text-white" />
-            </div>
+            <Users className="h-5 w-5 sm:h-6 sm:w-6 text-indigo-600 dark:text-indigo-400 flex-shrink-0 ml-2" />
           </div>
         </div>
-        <div className="card-glass p-3 rounded-lg hover:shadow-lg transition-all duration-200 group relative overflow-hidden h-full flex flex-col bg-amber-50/50 dark:bg-amber-950/30">
-          <div className="absolute inset-0 bg-gradient-to-br from-amber-500/10 to-orange-500/10 dark:from-amber-500/15 dark:to-orange-500/15 opacity-0 group-hover:opacity-100 transition-opacity"></div>
-          <div className="relative flex items-center justify-between flex-1">
+        <div className="card-glass p-3 sm:p-4 rounded-lg">
+          <div className="flex items-center justify-between">
             <div className="min-w-0 flex-1">
-              <p className="text-xs font-medium text-slate-500 dark:text-slate-400 mb-1 uppercase tracking-wide">Countries</p>
-              <p className="text-2xl font-medium text-slate-700 dark:text-slate-200 mb-1">{new Set(filteredGrants.map((g: any) => g.country)).size}</p>
+              <p className="text-xs sm:text-sm font-medium text-slate-500 dark:text-slate-400 mb-1">Countries</p>
+              <p className="text-xl sm:text-2xl font-bold text-slate-700 dark:text-slate-200">{new Set(filteredGrants.map((g: any) => g.country)).size}</p>
             </div>
-            <div className="p-2.5 rounded-lg bg-amber-600 dark:bg-gradient-to-br dark:from-amber-500 dark:to-orange-500 shadow-md group-hover:scale-105 transition-transform duration-200 flex-shrink-0 ml-3">
-              <MapPin className="h-5 w-5 text-white" />
-            </div>
+            <MapPin className="h-5 w-5 sm:h-6 sm:w-6 text-amber-600 dark:text-amber-400 flex-shrink-0 ml-2" />
           </div>
         </div>
       </div>
 
-      {/* Charts Section with glassmorphism */}
-      <div className="grid grid-cols-2 gap-6">
-        <MonthlyGrantChart grants={grants} />
+      {/* Charts Section - Mobile Optimized */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-5 md:gap-6">
+        {/* Chart - Hidden on mobile, shown on desktop */}
+        <div className="hidden lg:block min-h-[500px]">
+          <MonthlyGrantChart grants={filteredGrants} />
+        </div>
         
-        <div className="card-glass overflow-hidden shadow-soft">
-          <div className="p-4 border-b border-[var(--color-divider-gray)] flex items-center justify-between">
-            <div>
-              <h3 className="text-lg font-medium text-[var(--color-text-primary)]">African Funding Map</h3>
-              <p className="text-sm text-[var(--color-text-secondary)] mt-1">Grant and funding activity across Africa</p>
+        {/* Map - Hidden on mobile, shown on desktop */}
+        <div className="hidden lg:block card-glass overflow-hidden shadow-soft rounded-lg flex flex-col" style={{ minHeight: '600px', height: '100%' }}>
+          <div className="p-4 md:p-5 border-b border-slate-200 dark:border-slate-700 flex flex-row items-center justify-between gap-4 flex-shrink-0">
+            <div className="min-w-0 flex-1">
+              <h3 className="text-lg font-medium text-slate-700 dark:text-slate-200">African Funding Map</h3>
+              <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">Grant and funding activity across Africa</p>
             </div>
-            <div className="flex bg-[var(--color-background-default)] rounded-lg p-1 border border-[var(--color-divider-gray)]">
-              <button onClick={() => setMapDataType('value')} className={`px-3 py-1 text-xs font-medium rounded transition-colors ${mapDataType === 'value' ? 'bg-[var(--color-primary-teal)] text-[var(--color-background-surface)]' : 'text-[var(--color-text-secondary)] hover:bg-[var(--color-background-default)]'}`}>Value</button>
-              <button onClick={() => setMapDataType('count')} className={`px-3 py-1 text-xs font-medium rounded transition-colors ${mapDataType === 'count' ? 'bg-[var(--color-primary-teal)] text-[var(--color-background-surface)]' : 'text-[var(--color-text-secondary)] hover:bg-[var(--color-background-default)]'}`}>Count</button>
+            <div className="flex bg-slate-100 dark:bg-slate-800 rounded-lg p-1 border border-slate-200 dark:border-slate-700 flex-shrink-0">
+              <button 
+                onClick={() => setMapDataType('value')} 
+                className={`px-4 py-2 text-sm font-medium rounded transition-colors ${mapDataType === 'value' ? 'bg-cyan-600 dark:bg-cyan-500 text-white' : 'text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-700'}`}
+              >
+                Value
+              </button>
+              <button 
+                onClick={() => setMapDataType('count')} 
+                className={`px-4 py-2 text-sm font-medium rounded transition-colors ${mapDataType === 'count' ? 'bg-cyan-600 dark:bg-cyan-500 text-white' : 'text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-700'}`}
+              >
+                Count
+              </button>
             </div>
           </div>
-          <div className="h-80">
-            <InteractiveMap title="" dataType={mapDataType as 'value' | 'count' | 'investment'} height={320} heightSm={240} />
+          <div className="flex-1 min-h-0 w-full h-full">
+            <div className="h-full w-full">
+              <InteractiveMap 
+                title="" 
+                dataType={mapDataType as 'value' | 'count' | 'investment'} 
+                height={600}
+                heightSm={280}
+                showPopup={true}
+                deals={filteredGrants.map(g => ({ country: g.country, value_usd: g.value, date: g.date }))}
+                itemType="grant"
+              />
+            </div>
           </div>
         </div>
       </div>
 
-      {/* Filters with glassmorphism */}
-      <div className="card-glass p-6 shadow-soft">
-        <div className="flex items-center space-x-2 mb-4">
-          <Filter className="h-5 w-5 icon-primary" />
-          <h3 className="text-lg font-medium text-[var(--color-text-primary)]">Filters</h3>
+      {/* Filters - Mobile Optimized */}
+      <div className="card-glass p-4 sm:p-5 md:p-6 shadow-soft rounded-lg">
+        <div className="flex items-center gap-2 mb-4 sm:mb-5">
+          <Filter className="h-4 w-4 sm:h-5 sm:w-5 text-cyan-600 dark:text-cyan-400" />
+          <h3 className="text-base sm:text-lg font-medium text-slate-700 dark:text-slate-200">Filters</h3>
         </div>
-        <div className="grid grid-cols-5 gap-4">
-          <div className="relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-[var(--color-text-secondary)]" />
-            <input type="text" placeholder="Search organizations or funders..." value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} className="input pl-10" />
-          </div>
-          <select value={selectedSector} onChange={(e) => setSelectedSector(e.target.value)} className="input">{sectors.map(sector => (<option key={sector} value={sector}>{sector}</option>))}</select>
-          <select value={selectedType} onChange={(e) => setSelectedType(e.target.value)} className="input">{types.map(type => (<option key={type} value={type}>{type}</option>))}</select>
-          <select value={selectedCountry} onChange={(e) => setSelectedCountry(e.target.value)} className="input">{countries.map(country => (<option key={country} value={country}>{country}</option>))}</select>
-          <select value={timeframe} onChange={(e)=> setTimeframe(e.target.value as any)} className="input">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 md:gap-5">
+          <select 
+            value={selectedSector} 
+            onChange={(e) => setSelectedSector(e.target.value)} 
+            className="w-full px-3 py-2.5 text-sm bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-lg text-slate-700 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-cyan-500/30 focus:border-cyan-500/50 transition-all"
+          >
+            {sectors.map(sector => (<option key={sector} value={sector}>{sector}</option>))}
+          </select>
+          <select 
+            value={selectedType} 
+            onChange={(e) => setSelectedType(e.target.value)} 
+            className="w-full px-3 py-2.5 text-sm bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-lg text-slate-700 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-cyan-500/30 focus:border-cyan-500/50 transition-all"
+          >
+            {types.map(type => (<option key={type} value={type}>{type}</option>))}
+          </select>
+          <select 
+            value={selectedCountry} 
+            onChange={(e) => setSelectedCountry(e.target.value)} 
+            className="w-full px-3 py-2.5 text-sm bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-lg text-slate-700 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-cyan-500/30 focus:border-cyan-500/50 transition-all"
+          >
+            {countries.map(country => (<option key={country} value={country}>{country}</option>))}
+          </select>
+          <select 
+            value={timeframe} 
+            onChange={(e)=> setTimeframe(e.target.value as any)} 
+            className="w-full px-3 py-2.5 text-sm bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-lg text-slate-700 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-cyan-500/30 focus:border-cyan-500/50 transition-all"
+          >
             <option value="3m">3m</option>
             <option value="6m">6m</option>
             <option value="12m">12m</option>
@@ -362,56 +418,103 @@ const GrantsPage = () => {
         </div>
       </div>
 
-      {/* Grants Table with glassmorphism */}
+      {/* Grants Table with glassmorphism - Desktop Table, Mobile Cards */}
       <div className="card-glass overflow-hidden shadow-soft">
-        <div className="p-6 border-b border-[var(--color-divider-gray)]">
-          <h2 className="text-xl font-medium text-[var(--color-text-primary)]">Recent Grants</h2>
+        <div className="p-4 sm:p-6 border-b border-[var(--color-divider-gray)]">
+          <h2 className="text-lg sm:text-xl font-medium text-[var(--color-text-primary)]">Recent Grants</h2>
         </div>
-        <div className="overflow-x-auto">
-          <table className="w-full">
-            <thead className="bg-[var(--color-background-default)]">
+        
+        {/* Desktop Table View */}
+        <div className="hidden md:block overflow-x-auto">
+          <table className="w-full" style={{ tableLayout: 'fixed', width: '100%', minWidth: '1500px' }}>
+            <thead className="bg-slate-50 dark:bg-slate-800/50">
               <tr>
-                <th className="px-6 py-4 text-left text-xs font-medium text-[var(--color-text-secondary)] uppercase tracking-wider">Organization</th>
-                <th className="px-6 py-4 text-left text-xs font-medium text-[var(--color-text-secondary)] uppercase tracking-wider">Amount</th>
-                <th className="px-6 py-4 text-left text-xs font-medium text-[var(--color-text-secondary)] uppercase tracking-wider">Type</th>
-                <th className="px-6 py-4 text-left text-xs font-medium text-[var(--color-text-secondary)] uppercase tracking-wider">Sector</th>
-                <th className="px-6 py-4 text-left text-xs font-medium text-[var(--color-text-secondary)] uppercase tracking-wider">Country</th>
-                <th className="px-6 py-4 text-left text-xs font-medium text-[var(--color-text-secondary)] uppercase tracking-wider">Duration</th>
-                <th className="px-6 py-4 text-left text-xs font-medium text-[var(--color-text-secondary)] uppercase tracking-wider">Date</th>
-                <th className="px-6 py-4 text-left text-xs font-medium text-[var(--color-text-secondary)] uppercase tracking-wider">Actions</th>
+                <th className="px-3 sm:px-4 py-2.5 sm:py-3 text-left text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider" style={{ width: '300px', minWidth: '300px' }}>Organization</th>
+                <th className="px-3 sm:px-4 py-2.5 sm:py-3 text-left text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider whitespace-nowrap" style={{ width: '110px', minWidth: '110px' }}>Amount</th>
+                <th className="px-3 sm:px-4 py-2.5 sm:py-3 text-left text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider" style={{ width: '90px', minWidth: '90px' }}>Type</th>
+                <th className="px-3 sm:px-4 py-2.5 sm:py-3 text-left text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider" style={{ width: '110px', minWidth: '110px' }}>Sector</th>
+                <th className="px-3 sm:px-4 py-2.5 sm:py-3 text-left text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider whitespace-nowrap" style={{ width: '90px', minWidth: '90px' }}>Country</th>
+                <th className="px-3 sm:px-4 py-2.5 sm:py-3 text-left text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider whitespace-nowrap" style={{ width: '110px', minWidth: '110px' }}>Duration</th>
+                <th className="px-4 py-2.5 sm:py-3 text-left text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider whitespace-nowrap" style={{ width: '220px', minWidth: '220px' }}>Date</th>
+                <th className="px-3 sm:px-4 py-2.5 sm:py-3 text-left text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider whitespace-nowrap" style={{ width: '120px', minWidth: '120px' }}>Actions</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-[var(--color-divider-gray)]">
+            <tbody className="divide-y divide-slate-200 dark:divide-slate-700">
               {filteredGrants.slice().sort((a: any, b: any) => new Date(b.date).getTime() - new Date(a.date).getTime()).map((grant: any) => (
-                <tr key={grant.id} className="hover:bg-[var(--color-background-default)] transition-colors">
-                  <td className="px-6 py-4">
-                    <div className="flex items-center">
-                      <div className="w-10 h-10 bg-black dark:bg-gray-700 rounded-lg flex items-center justify-center border border-black/20 dark:border-gray-600/30">
-                        <Building2 className="h-5 w-5 text-white" />
+                <tr key={grant.id} className="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+                  <td className="px-4 py-2.5 sm:py-3" style={{ width: '300px', minWidth: '300px', maxWidth: '300px', overflow: 'hidden' }}>
+                    <div className="flex items-center gap-3 w-full">
+                      <div className="w-12 h-12 bg-slate-700 dark:bg-slate-600 rounded-lg flex items-center justify-center border border-slate-300 dark:border-slate-600 flex-shrink-0 p-2">
+                        <Building2 className="h-6 w-6 text-white" />
                       </div>
-                      <div className="ml-4">
-                        <button onClick={() => handleOpenOrganization(grant.organizationName)} className="text-sm font-medium link hover:text-[var(--color-primary-light)]">{grant.organizationName}</button>
+                      <div className="min-w-0 flex-1 overflow-hidden">
+                        <button onClick={() => handleOpenOrganization(grant.organizationName)} className="text-sm font-medium text-cyan-600 dark:text-cyan-400 hover:text-cyan-700 dark:hover:text-cyan-300 truncate block w-full text-left max-w-full">
+                          {grant.organizationName}
+                        </button>
                       </div>
                     </div>
                   </td>
-                  <td className="px-6 py-4"><span className="text-[var(--color-primary-teal)] font-medium">${(grant.value / 1000000).toFixed(1)}M</span></td>
-                  <td className="px-6 py-4">
+                  <td className="px-3 sm:px-4 py-2.5 sm:py-3 whitespace-nowrap" style={{ width: '110px', minWidth: '110px', maxWidth: '110px', overflow: 'hidden' }}><span className="text-cyan-600 dark:text-cyan-400 font-medium">${(grant.value / 1000000).toFixed(1)}M</span></td>
+                  <td className="px-3 sm:px-4 py-2.5 sm:py-3" style={{ width: '90px', minWidth: '90px', maxWidth: '90px', overflow: 'hidden' }}>
                     <span className={`${badgeClassesFromVar(grantTypeToVar(grant.type))} px-2 py-1 rounded text-xs font-medium`}>{grant.type}</span>
                   </td>
-                  <td className="px-6 py-4 text-sm text-[var(--color-text-primary)]">{grant.sector}</td>
-                  <td className="px-6 py-4 text-sm text-[var(--color-text-primary)]">{grant.country}</td>
-                  <td className="px-6 py-4"><div className="flex items-center space-x-1"><Clock className="h-3 w-3 text-[var(--color-text-secondary)]" /><span className="text-sm text-[var(--color-text-primary)]">{grant.duration}</span></div></td>
-                  <td className="px-6 py-4 text-sm text-[var(--color-text-primary)]">{new Date(grant.date).toLocaleDateString()}</td>
-                  <td className="px-6 py-4">
-                    <div className="flex space-x-2">
-                      <button onClick={() => handleViewGrant(grant)} className="btn-outline btn-sm"><Eye className="h-3 w-3" /></button>
-                      <button onClick={() => handleSaveGrant(grant.id)} className="btn-outline btn-sm">Save</button>
+                  <td className="px-3 sm:px-4 py-2.5 sm:py-3 text-sm text-slate-700 dark:text-slate-200" style={{ width: '110px', minWidth: '110px' }}>{grant.sector}</td>
+                  <td className="px-3 sm:px-4 py-2.5 sm:py-3 text-sm text-slate-700 dark:text-slate-200 whitespace-nowrap" style={{ width: '90px', minWidth: '90px', maxWidth: '90px', overflow: 'hidden' }}>{grant.country}</td>
+                  <td className="px-3 sm:px-4 py-2.5 sm:py-3 whitespace-nowrap" style={{ width: '110px', minWidth: '110px', maxWidth: '110px', overflow: 'hidden' }}><div className="flex items-center space-x-1"><Clock className="h-3 w-3 text-slate-500 dark:text-slate-400 flex-shrink-0" /><span className="text-sm text-slate-700 dark:text-slate-200 truncate">{grant.duration}</span></div></td>
+                  <td className="px-4 py-2.5 sm:py-3 text-sm text-slate-700 dark:text-slate-200" style={{ width: '220px', minWidth: '220px', maxWidth: '220px' }}>
+                    <div className="whitespace-nowrap">{new Date(grant.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</div>
+                  </td>
+                  <td className="px-3 sm:px-4 py-2.5 sm:py-3" style={{ width: '120px', minWidth: '120px' }}>
+                    <div className="flex space-x-1.5 sm:space-x-2">
+                      <button onClick={() => handleViewGrant(grant)} className="btn-outline btn-sm p-1.5 sm:p-2" title="View"><Eye className="h-3.5 w-3.5 sm:h-4 sm:w-4" /></button>
+                      <button onClick={() => handleSaveGrant(grant.id)} className="btn-outline btn-sm p-1.5 sm:p-2" title="Save">Save</button>
                     </div>
                   </td>
                 </tr>
               ))}
             </tbody>
           </table>
+        </div>
+        
+        {/* Mobile Card View */}
+        <div className="md:hidden divide-y divide-slate-200 dark:divide-slate-700">
+          {filteredGrants.slice().sort((a: any, b: any) => new Date(b.date).getTime() - new Date(a.date).getTime()).map((grant: any) => (
+            <div key={grant.id} className="p-4 hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+              <div className="flex items-start gap-3 mb-3">
+                <div className="w-12 h-12 bg-slate-700 dark:bg-slate-600 rounded-lg flex items-center justify-center border border-slate-300 dark:border-slate-600 flex-shrink-0 p-2">
+                  <Building2 className="h-6 w-6 text-white" />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-start justify-between gap-2 mb-1">
+                    <button onClick={() => handleOpenOrganization(grant.organizationName)} className="text-sm font-medium text-cyan-600 dark:text-cyan-400 hover:text-cyan-700 dark:hover:text-cyan-300 truncate flex-1 min-w-0">
+                      {grant.organizationName}
+                    </button>
+                    <span className="text-cyan-600 dark:text-cyan-400 font-medium text-sm flex-shrink-0 whitespace-nowrap">${(grant.value / 1000000).toFixed(1)}M</span>
+                  </div>
+                  <p className="text-xs text-slate-500 dark:text-slate-400">{grant.sector}</p>
+                </div>
+              </div>
+              <div className="flex flex-wrap items-center gap-2 sm:gap-2.5 text-xs text-slate-500 dark:text-slate-400 mb-3">
+                <span className={`${badgeClassesFromVar(grantTypeToVar(grant.type))} px-2 py-1 rounded font-medium flex-shrink-0`}>{grant.type}</span>
+                <span className="flex items-center flex-shrink-0 gap-1 min-w-0">
+                  <MapPin className="h-3 w-3 flex-shrink-0" />
+                  <span className="truncate max-w-[70px] sm:max-w-[100px]">{grant.country}</span>
+                </span>
+                <span className="flex items-center flex-shrink-0 gap-1">
+                  <Clock className="h-3 w-3 flex-shrink-0" />
+                  <span className="whitespace-nowrap text-[10px] sm:text-xs">{grant.duration}</span>
+                </span>
+                <span className="flex items-center flex-shrink-0 gap-1 min-w-0">
+                  <Calendar className="h-3 w-3 flex-shrink-0" />
+                  <span className="whitespace-nowrap text-[10px] sm:text-xs">{new Date(grant.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</span>
+                </span>
+              </div>
+              <div className="flex space-x-2">
+                <button onClick={() => handleViewGrant(grant)} className="btn-outline btn-sm flex-1"><Eye className="h-3 w-3 mr-1" />View</button>
+                <button onClick={() => handleSaveGrant(grant.id)} className="btn-outline btn-sm flex-1">Save</button>
+              </div>
+            </div>
+          ))}
         </div>
       </div>
 
@@ -434,13 +537,13 @@ const GrantsPage = () => {
 
       {/* Grant Details Modal with glassmorphism */}
       {showGrantDetails && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-          <div className="card-glass p-6 max-w-2xl w-full mx-auto max-h-96 overflow-y-auto shadow-elevated">
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-3 sm:p-4">
+          <div className="card-glass p-4 sm:p-6 max-w-2xl w-full mx-auto max-h-[90vh] overflow-y-auto shadow-elevated">
             <div className="flex items-center justify-between mb-4">
-              <h3 className="text-xl font-medium text-[var(--color-text-primary)]">{showGrantDetails.organizationName}</h3>
-              <button onClick={() => setShowGrantDetails(null)} className="text-[var(--color-text-secondary)] hover:opacity-80">✕</button>
+              <h3 className="text-lg sm:text-xl font-medium text-[var(--color-text-primary)] pr-2">{showGrantDetails.organizationName}</h3>
+              <button onClick={() => setShowGrantDetails(null)} className="text-[var(--color-text-secondary)] hover:opacity-80 flex-shrink-0">✕</button>
             </div>
-            <div className="grid grid-cols-2 gap-4 mb-4">
+            <div className="grid-2-col gap-3 sm:gap-4 mb-4">
               <div><p className="text-sm text-[var(--color-text-secondary)]">Grant Amount</p><p className="text-2xl font-medium text-[var(--color-primary-teal)]">${(showGrantDetails.value / 1000000).toFixed(1)}M</p></div>
               <div><p className="text-sm text-[var(--color-text-secondary)]">Grant Type</p><p className="font-medium text-[var(--color-text-primary)]">{showGrantDetails.type}</p></div>
               <div><p className="text-sm text-[var(--color-text-secondary)]">Sector</p><p className="font-medium text-[var(--color-text-primary)]">{showGrantDetails.sector}</p></div>

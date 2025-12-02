@@ -178,70 +178,66 @@ switch ($path) {
         break;
         
     case 'blog':
-        if ($method === 'GET') {
-            include 'blog/get_posts.php';
-        } elseif ($method === 'POST') {
-            include 'blog/create_post.php';
-        }
+        // Moved to Node.js - handled by /api/blog endpoint
+        http_response_code(404);
+        echo json_encode(['success' => false, 'error' => 'Endpoint moved to Node.js. Use /api/blog']);
         break;
         
     case 'blog/get_posts':
-        if ($method === 'GET') {
-            include 'blog/get_posts.php';
-        }
+        // Moved to Node.js - handled by /api/blog endpoint
+        http_response_code(404);
+        echo json_encode(['success' => false, 'error' => 'Endpoint moved to Node.js. Use /api/blog']);
         break;
         
     case 'blog/post':
-        if ($method === 'GET') {
-            include 'blog/get_post.php';
-        }
+        // Moved to Node.js - handled by /api/blog/:id endpoint
+        http_response_code(404);
+        echo json_encode(['success' => false, 'error' => 'Endpoint moved to Node.js. Use /api/blog/:id']);
         break;
     case 'blog/update':
-        if ($method === 'POST' || $method === 'PUT') {
-            include 'blog/update_post.php';
-        }
+        // Moved to Node.js - handled by /api/blog/:id endpoint (PUT)
+        http_response_code(404);
+        echo json_encode(['success' => false, 'error' => 'Endpoint moved to Node.js. Use PUT /api/blog/:id']);
         break;
     case 'blog/delete':
-        if ($method === 'POST' || $method === 'DELETE') {
-            include 'blog/delete_post.php';
-        }
+        // Moved to Node.js - handled by /api/blog/:id endpoint (DELETE)
+        http_response_code(404);
+        echo json_encode(['success' => false, 'error' => 'Endpoint moved to Node.js. Use DELETE /api/blog/:id']);
         break;
     case 'blog/categories':
-        if ($method === 'GET') {
-            include 'blog/get_categories.php';
-        } elseif ($method === 'POST') {
-            include 'blog/create_category.php';
-        }
+        // Moved to Node.js - handled by /api/blog/categories endpoint
+        http_response_code(404);
+        echo json_encode(['success' => false, 'error' => 'Endpoint moved to Node.js. Use /api/blog/categories']);
         break;
     case 'blog/categories/update':
-        if ($method === 'POST' || $method === 'PUT') {
-            include 'blog/update_category.php';
-        }
+        // Moved to Node.js - handled by /api/blog/categories/:id endpoint (PUT)
+        http_response_code(404);
+        echo json_encode(['success' => false, 'error' => 'Endpoint moved to Node.js. Use PUT /api/blog/categories/:id']);
         break;
     case 'blog/categories/delete':
-        if ($method === 'POST' || $method === 'DELETE') {
-            include 'blog/delete_category.php';
-        }
+        // Moved to Node.js - handled by /api/blog/categories/:id endpoint (DELETE)
+        http_response_code(404);
+        echo json_encode(['success' => false, 'error' => 'Endpoint moved to Node.js. Use DELETE /api/blog/categories/:id']);
         break;
     case 'blog/migrate-categories-fk':
-        if ($method === 'GET' || $method === 'POST') {
-            include 'blog/migrate_categories_fk.php';
-        }
+        // Moved to Node.js - can be converted to Node.js script if needed
+        http_response_code(404);
+        echo json_encode(['success' => false, 'error' => 'Endpoint moved to Node.js']);
         break;
     case 'ads':
-        if ($method === 'GET') {
-            include 'ads/get_ads.php';
-        }
+        // Moved to Node.js - handled by /api/ads endpoint
+        http_response_code(404);
+        echo json_encode(['success' => false, 'error' => 'Endpoint moved to Node.js. Use /api/ads']);
         break;
     case 'ads/seed-demo':
-        if ($method === 'GET' || $method === 'POST') {
-            include 'ads/seed_demo_ads.php';
-        }
+        // Moved to Node.js - can be converted to Node.js script if needed
+        http_response_code(404);
+        echo json_encode(['success' => false, 'error' => 'Endpoint moved to Node.js']);
         break;
     case 'blog/seed-demo':
-        if ($method === 'POST' || $method === 'GET') {
-            include 'blog/seed_demo_posts.php';
-        }
+        // Moved to Node.js - handled by /api/blog/seed-demo endpoint
+        http_response_code(404);
+        echo json_encode(['success' => false, 'error' => 'Endpoint moved to Node.js. Use /api/blog/seed-demo']);
         break;
         
     // Admin Dashboard Routes
@@ -274,15 +270,15 @@ switch ($path) {
         break;
         
     case 'admin/blog':
-        if ($method === 'GET') {
-            include 'admin/blog.php';
-        }
+        // Moved to Node.js - handled by /api/admin/blog-posts endpoint
+        http_response_code(404);
+        echo json_encode(['success' => false, 'error' => 'Endpoint moved to Node.js. Use /api/admin/blog-posts']);
         break;
         
     case 'admin/ads':
-        if ($method === 'GET') {
-            include 'admin/ads.php';
-        }
+        // Moved to Node.js - handled by /api/admin/ads endpoint
+        http_response_code(404);
+        echo json_encode(['success' => false, 'error' => 'Endpoint moved to Node.js. Use /api/admin/ads']);
         break;
         
     case 'admin/user-overrides':
@@ -312,33 +308,21 @@ switch ($path) {
         break;
         
     case 'admin/blog-posts':
-        if ($method === 'GET') {
-            include 'admin/blog-posts.php';
-        } elseif ($method === 'POST') {
-            include 'admin/blog-posts.php';
-        } elseif ($method === 'PUT' || $method === 'PATCH') {
-            include 'admin/blog-posts.php';
-        } elseif ($method === 'DELETE') {
-            include 'admin/blog-posts.php';
-        }
+        // Moved to Node.js - handled by /api/admin/blog-posts endpoint
+        http_response_code(404);
+        echo json_encode(['success' => false, 'error' => 'Endpoint moved to Node.js. Use /api/admin/blog-posts']);
         break;
         
     case 'admin/advertisements':
-        if ($method === 'GET') {
-            include 'admin/advertisements.php';
-        } elseif ($method === 'POST') {
-            include 'admin/advertisements.php';
-        } elseif ($method === 'PUT') {
-            include 'admin/advertisements.php';
-        } elseif ($method === 'DELETE') {
-            include 'admin/advertisements.php';
-        }
+        // Moved to Node.js - handled by /api/admin/advertisements endpoint
+        http_response_code(404);
+        echo json_encode(['success' => false, 'error' => 'Endpoint moved to Node.js. Use /api/admin/advertisements']);
         break;
         
     case 'admin/advertisements/active':
-        if ($method === 'GET') {
-            include 'admin/advertisements/active.php';
-        }
+        // Moved to Node.js - handled by /api/admin/advertisements/active endpoint
+        http_response_code(404);
+        echo json_encode(['success' => false, 'error' => 'Endpoint moved to Node.js. Use /api/admin/advertisements/active']);
         break;
         
     case 'admin/companies':
@@ -477,15 +461,11 @@ switch ($path) {
         // if (preg_match('/^notifications\/(\d+)$/', $path, $matches)) {
         
         // Handle dynamic blog post paths like /admin/blog-posts/{id}
+        // Moved to Node.js - handled by /api/admin/blog-posts/:id endpoint
         if (preg_match('/^admin\/blog-posts\/(\d+)$/', $path, $matches)) {
-            $GLOBALS['postId'] = $matches[1];
-            if ($method === 'GET') {
-                include 'admin/blog-posts.php';
-            } elseif ($method === 'PUT' || $method === 'PATCH') {
-                include 'admin/blog-posts.php';
-            } elseif ($method === 'DELETE') {
-                include 'admin/blog-posts.php';
-            }
+            http_response_code(404);
+            echo json_encode(['success' => false, 'error' => 'Endpoint moved to Node.js. Use /api/admin/blog-posts/:id']);
+            exit();
         }
         // Handle dynamic company paths like /admin/companies/{id}
         elseif (preg_match('/^admin\/companies\/(\d+)$/', $path, $matches)) {

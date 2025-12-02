@@ -28,7 +28,17 @@ const AfricaMap: React.FC<AfricaMapProps> = ({
   useEffect(() => {
     const fetchCountryData = async () => {
       try {
-        const response = await fetch(getApiUrl('/countries/africa'));
+        const response = await fetch(getApiUrl('/api/countries/africa'));
+        
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        
+        const contentType = response.headers.get('content-type');
+        if (!contentType || !contentType.includes('application/json')) {
+          throw new Error('Response is not JSON');
+        }
+        
         const result = await response.json();
         
         if (result.success && result.data && result.data.length > 0) {
@@ -84,8 +94,8 @@ const AfricaMap: React.FC<AfricaMapProps> = ({
     colorMatch.push(defaultColor); // Default
 
     // Restrict to our listed African countries by English name
-    const countryFilter: any[] = ['in', 'name_en'];
-    countryData.forEach((c: AfricaCountryInfo) => countryFilter.push(c.name));
+    // Build array of country names
+    const countryNames: string[] = countryData.map((c: AfricaCountryInfo) => c.name);
     
     // Add a layer to hide all non-African countries by making them transparent
     if (!map.current.getLayer('non-africa-fills')) {
@@ -98,7 +108,8 @@ const AfricaMap: React.FC<AfricaMapProps> = ({
           'fill-color': defaultColor,
           'fill-opacity': 0.1 // Very transparent for non-African countries
         },
-        filter: ['!', countryFilter] // Everything NOT in our filter
+        // Filter: show countries that are NOT in our list
+        filter: ['!', ['in', ['get', 'name_en'], ['literal', countryNames]]]
       });
     }
 
@@ -121,7 +132,8 @@ const AfricaMap: React.FC<AfricaMapProps> = ({
             0.7
           ]
         },
-        filter: countryFilter
+        // Filter: show only countries in our list
+        filter: ['in', ['get', 'name_en'], ['literal', countryNames]]
       });
     }
 
@@ -136,7 +148,8 @@ const AfricaMap: React.FC<AfricaMapProps> = ({
           'line-width': 1,
           'line-opacity': 0.8
         },
-        filter: countryFilter
+        // Filter: show only countries in our list
+        filter: ['in', ['get', 'name_en'], ['literal', countryNames]]
       });
     }
 
@@ -185,21 +198,22 @@ const AfricaMap: React.FC<AfricaMapProps> = ({
         map.current = new (window as any).mapboxgl.Map({
           container: mapContainer.current as HTMLDivElement,
           style: styleId,
-          center: [20, 0],
-          zoom: 3,
+          center: [20, 5],
+          zoom: 2.5,
           projection: 'mercator',
           // Restrict to Africa only - bounds: [minLng, minLat, maxLng, maxLat]
-          maxBounds: [[-20, -35], [55, 38]], // Africa continent bounds
-          minZoom: 2.5,
+          maxBounds: [[-25, -40], [60, 40]], // Africa continent bounds (expanded slightly)
+          minZoom: 2,
           maxZoom: 8
         });
 
         // Single load handler that does everything
         map.current.on('load', () => {
-          // Fit to Africa bounds: [minLng, minLat], [maxLng, maxLat]
-          map.current.fitBounds([[-20, -35], [55, 38]], {
-            padding: { top: 50, bottom: 50, left: 50, right: 50 },
-            duration: 1000
+          // Fit to Africa bounds: [minLng, minLat], [maxLng, maxLat] with more padding
+          map.current.fitBounds([[-25, -40], [60, 40]], {
+            padding: { top: 80, bottom: 80, left: 80, right: 80 },
+            duration: 1000,
+            maxZoom: 3.5 // Limit max zoom when fitting to ensure whole continent is visible
           });
           
           // Add layers after fitBounds completes
@@ -225,7 +239,9 @@ const AfricaMap: React.FC<AfricaMapProps> = ({
         });
 
         map.current.on('error', (e: any) => {
-          console.error('Map error:', e);
+          // Log error details for debugging
+          const errorMessage = e.error?.message || e.message || JSON.stringify(e);
+          console.debug('Map error:', errorMessage);
           // Only set error for critical failures, not style loading issues
           if (e.error && e.error.message && (
             e.error.message.includes('token') || 

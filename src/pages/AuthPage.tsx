@@ -226,11 +226,38 @@ const AuthPage: React.FC<AuthPageProps> = ({ onBack }) => {
   }
 
   return (
-    <div className="min-h-screen bg-[var(--color-background-default)] flex items-center justify-center px-4 sm:px-6 md:px-8 py-10 md:py-16 relative overflow-hidden">
-      <div className="absolute -top-40 -left-40 w-[520px] h-[520px] rounded-full pointer-events-none opacity-30" style={{background:'radial-gradient(circle at 30% 30%, rgba(90,215,192,0.15), transparent 60%)'}}/>
-      <div className="absolute -bottom-32 -right-32 w-[600px] h-[600px] rounded-full pointer-events-none opacity-30" style={{background:'radial-gradient(circle at 70% 70%, rgba(56,189,248,0.15), transparent 60%)'}}/>
+    <div className="min-h-screen bg-[var(--color-background-default)] transition-colors duration-500">
+      {/* Hero Section */}
+      <div className="page-hero">
+        <div aria-hidden className="page-hero-bg">
+          <img
+            src={(import.meta as any)?.env?.VITE_AUTH_HERO_URL || (import.meta as any)?.env?.VITE_BLOG_HERO_URL || '/images/page hero section.jpeg'}
+            alt=""
+            onError={(e) => {
+              e.currentTarget.src = 'https://images.unsplash.com/photo-1576091160399-112ba8d25d1f?w=1920&h=1080&fit=crop&q=80';
+            }}
+          />
+          <div className="page-hero-overlay" />
+          <div className="page-hero-gradient" />
+        </div>
+        
+        <div className="page-hero-content">
+          <div className="page-hero-content-inner">
+            <h1 className="page-hero-heading">
+              {isLogin ? 'Sign In' : 'Create Account'}
+            </h1>
+            <p className="page-hero-subtext">
+              {isLogin 
+                ? 'Access your dashboard and continue your journey with African healthcare intelligence.'
+                : 'Join Medarion to access comprehensive healthcare data, insights, and AI-powered assistance.'}
+            </p>
+          </div>
+        </div>
+      </div>
 
-      <div className="max-w-6xl w-full grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-stretch">
+      {/* Auth Form Section */}
+      <div className="max-w-screen-2xl mx-auto px-6 md:px-8 lg:px-12 xl:px-16 py-16 md:py-20 lg:py-24">
+        <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-stretch">
         {/* Left showcase panel (hidden on small screens) */}
         <div className="hidden lg:flex flex-col justify-between rounded-2xl p-8 md:p-10 border border-[var(--color-divider-gray)]/20 bg-[var(--color-background-surface)] shadow-lg hover:shadow-xl transition-shadow duration-300">
           <div>
@@ -266,7 +293,7 @@ const AuthPage: React.FC<AuthPageProps> = ({ onBack }) => {
             <div className="mb-6">
               <button
                 onClick={() => setShowSignup(true)}
-                className="w-full py-3 px-6 rounded-lg border-2 border-black dark:border-white text-black dark:text-white hover:bg-black/10 dark:hover:bg-white/10 transition-all duration-200 flex items-center justify-center gap-2 font-medium"
+                className="w-full btn-outline py-3 px-6 rounded-lg transition-all duration-200 flex items-center justify-center gap-2 font-medium"
               >
                 <UserPlus size={18} />
                 <span>Create New Account</span>
@@ -444,7 +471,7 @@ const AuthPage: React.FC<AuthPageProps> = ({ onBack }) => {
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full bg-black dark:bg-white hover:opacity-90 dark:hover:opacity-80 disabled:opacity-50 text-white dark:text-black py-3 px-6 rounded-lg transition-all duration-200 flex items-center justify-center gap-2 font-medium shadow-md hover:shadow-lg disabled:cursor-not-allowed"
+                className="w-full btn-primary-elevated py-3 px-6 rounded-lg transition-all duration-200 flex items-center justify-center gap-2 font-medium disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {loading ? (
                   <>
@@ -485,6 +512,7 @@ const AuthPage: React.FC<AuthPageProps> = ({ onBack }) => {
           )}
           </div>
         </div>
+      </div>
       </div>
     </div>
   )

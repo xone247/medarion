@@ -24,6 +24,7 @@ import adminRoutes from './routes/admin.js';
 import countriesRoutes from './routes/countries.js';
 import uploadRoutes from './routes/upload.js';
 import newsletterRoutes from './routes/newsletter.js';
+import adsRoutes from './routes/ads.js';
 
 // Load environment variables
 dotenv.config();
@@ -209,6 +210,7 @@ app.use('/api/admin', adminRoutes);
 app.use('/api/countries', countriesRoutes);
 app.use('/api/upload', uploadRoutes);
 app.use('/api/newsletter', newsletterRoutes);
+app.use('/api/ads', adsRoutes);
 
 // Serve uploaded files statically - MUST be before 404 handler
 // This middleware should be registered early to catch /uploads requests
@@ -288,6 +290,7 @@ app.get('/', (req, res) => {
       aiDataUpdates: '/api/ai/update',
       notifications: '/api/notifications',
       admin: '/api/admin',
+      ads: '/api/ads/public',
       health: '/health'
     }
   });

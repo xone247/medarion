@@ -19,18 +19,18 @@
 
 @layer base {
   :root {
-    /* Cursor.com style - Pure black and white theme */
-    /* Primary & Accent Colors - Monochrome only */
-    --color-primary-teal: #000000;      /* Black - primary */
-    --color-primary-light: #1F1F1F;     /* Dark gray */
+    /* Light mode - Sophisticated gray theme (black and white design) */
+    /* Primary & Accent Colors - Rich gray tones */
+    --color-primary-teal: #1e293b;      /* slate-800 - primary highlight */
+    --color-primary-light: #475569;     /* slate-600 - light highlight */
     --color-secondary-gold: #4A4A4A;     /* Medium gray */
 
-    /* Functional & Accent Colors - Grayscale only */
-    --color-accent-sky: #000000;        /* Black */
-    --color-success: #000000;           /* Black */
-    --color-error: #000000;             /* Black */
-    --color-warning: #4A4A4A;           /* Gray */
-    --color-info: #000000;              /* Black */
+    /* Functional & Accent Colors */
+    --color-accent-sky: #334155;        /* slate-700 */
+    --color-success: #10b981;           /* Green-500 */
+    --color-error: #ef4444;             /* Red-500 */
+    --color-warning: #f59e0b;           /* Amber-500 */
+    --color-info: #1e293b;              /* slate-800 */
 
     /* Text Colors */
     --color-text-primary: #000000;      /* Pure black */
@@ -182,7 +182,15 @@
 /* Custom utility classes for the new color system */
 @layer components {
   .btn-primary {
-    @apply bg-black dark:bg-gray-700 text-white dark:text-white border border-black dark:border-gray-600 hover:bg-gray-800 dark:hover:opacity-80 transition-all;
+    @apply dark:bg-gray-700 text-white dark:text-white dark:border-gray-600 dark:hover:opacity-80 transition-all;
+    /* Light mode: Sophisticated dark gray instead of pure black */
+    background-color: #1e293b; /* slate-800 - rich dark gray */
+    border-color: #1e293b;
+    color: #ffffff;
+  }
+  .btn-primary:hover {
+    background-color: #334155; /* slate-700 - lighter on hover */
+    border-color: #334155;
   }
   
   .btn-secondary {
@@ -236,12 +244,25 @@
 
   /* Ghost, size variants, and elevated primary */
   .btn-ghost { @apply bg-transparent text-[var(--color-text-primary)] border border-transparent; }
-  .btn-ghost:hover { background-color: color-mix(in srgb, var(--color-primary-teal), white 94%); }
+  .btn-ghost:hover { 
+    background-color: color-mix(in srgb, var(--color-primary-teal), white 94%); 
+  }
+  html:not(.dark) .btn-ghost:hover {
+    background-color: #f1f5f9 !important; /* slate-100 - subtle gray hover */
+  }
   .btn-lg { @apply px-5 py-3 rounded-lg text-base; }
   .btn-sm { @apply px-2.5 py-1.5 rounded-md text-xs; }
   /* Flat primary (no gradients) */
   .btn-primary-elevated { 
-    @apply bg-black dark:bg-gray-700 text-white dark:text-white border border-black dark:border-gray-600 shadow-sm hover:shadow-md transition-all hover:bg-gray-800 dark:hover:opacity-80; 
+    @apply dark:bg-gray-700 text-white dark:text-white dark:border-gray-600 shadow-sm hover:shadow-md transition-all dark:hover:opacity-80; 
+    /* Light mode: Sophisticated dark gray with elevation */
+    background-color: #1e293b; /* slate-800 - rich dark gray */
+    border-color: #1e293b;
+    color: #ffffff;
+  }
+  .btn-primary-elevated:hover {
+    background-color: #334155; /* slate-700 - lighter on hover */
+    border-color: #334155;
   }
   .btn-primary-elevated:hover {
     @apply shadow-lg;
@@ -331,13 +352,20 @@
   /* Fixed page container and grids - responsive padding */
   .page-container { 
     width: 100%;
-    padding-left: 1rem;
-    padding-right: 1rem;
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
     max-width: 100%;
     box-sizing: border-box;
   }
 
   @media (min-width: 640px) {
+    .page-container {
+      padding-left: 1rem;
+      padding-right: 1rem;
+    }
+  }
+
+  @media (min-width: 768px) {
     .page-container {
       padding-left: 1.5rem;
       padding-right: 1.5rem;
@@ -371,6 +399,25 @@
     min-height: 40vh;
     padding-top: 120px;
     padding-bottom: 48px;
+  }
+
+  /* Blog detail hero content positioning - mobile: below header, desktop: centered */
+  @media (max-width: 639px) {
+    .blog-detail-hero-content {
+      top: 100px !important;
+      padding-top: 1.5rem !important;
+    }
+  }
+
+  /* Mobile: Hero image extends to top behind header (same as desktop) */
+  @media (max-width: 767px) {
+    .page-hero {
+      margin-top: -100px;
+      padding-top: 120px;
+    }
+    .page-hero-content {
+      padding-top: 4rem;
+    }
   }
 
   /* Hero background image container */
@@ -1004,8 +1051,23 @@
 
   .btn-category-active {
     background-color: var(--color-primary-teal);
-    color: white;
+    color: white !important;
     border-color: var(--color-primary-teal);
+  }
+  
+  /* Ensure all buttons with dark backgrounds in light mode have white text */
+  html:not(.dark) button[class*="bg-[var(--color-primary-teal)]"],
+  html:not(.dark) .btn-category-active,
+  html:not(.dark) button[class*="bg-black"],
+  html:not(.dark) button.bg-black {
+    color: white !important;
+  }
+  
+  html:not(.dark) button[class*="bg-[var(--color-primary-teal)]"] *,
+  html:not(.dark) .btn-category-active *,
+  html:not(.dark) button[class*="bg-black"] *,
+  html:not(.dark) button.bg-black * {
+    color: white !important;
   }
 
   .btn-category-inactive {
@@ -1429,17 +1491,18 @@
     background-image: none !important;
     background-color: transparent !important;
   }
-  /* Primary buttons (.btn-primary, .btn-primary-elevated) - solid black background with white text (Cursor.com minimalist style) */
+  /* Primary buttons (.btn-primary, .btn-primary-elevated) - sophisticated dark gray in light mode */
   html:not(.dark) .btn-primary,
   html:not(.dark) .btn-primary-elevated {
-    background: #000000 !important; /* Solid black like Cursor.com */
+    background: #1e293b !important; /* slate-800 - rich dark gray */
     color: #FFFFFF !important; /* White text */
-    border-color: #000000 !important;
+    border-color: #1e293b !important;
     background-image: none !important; /* No gradients - minimalist */
   }
   html:not(.dark) .btn-primary:hover,
   html:not(.dark) .btn-primary-elevated:hover {
-    background: #1a1a1a !important; /* Slightly lighter black on hover */
+    background: #334155 !important; /* slate-700 - lighter gray on hover */
+    border-color: #334155 !important;
     background-image: none !important; /* No gradients */
   }
   html:not(.dark) .btn-primary .lucide,
@@ -1455,21 +1518,34 @@
     color: #FFFFFF !important;
   }
   
-  /* Remove all gradients from buttons in light mode - minimalist Cursor.com style */
+  /* Remove all gradients from buttons in light mode - use sophisticated dark gray */
   html:not(.dark) button[class*="bg-black"],
   html:not(.dark) button.bg-black,
   html:not(.dark) button[class*="bg-gray-900"],
   html:not(.dark) button.bg-gray-900 {
-    background: #000000 !important; /* Solid black */
+    background: #1e293b !important; /* slate-800 - rich dark gray */
     background-image: none !important; /* No gradients */
     color: #FFFFFF !important; /* White text */
+    border-color: #1e293b !important;
+  }
+  html:not(.dark) button[class*="bg-black"]:hover,
+  html:not(.dark) button.bg-black:hover,
+  html:not(.dark) button[class*="bg-gray-900"]:hover,
+  html:not(.dark) button.bg-gray-900:hover {
+    background: #334155 !important; /* slate-700 - lighter on hover */
+    border-color: #334155 !important;
   }
   
-  /* Remove all gradients from buttons in light mode - keep it minimalist */
+  /* Remove all gradients from buttons in light mode - use sophisticated dark gray */
   html:not(.dark) button[class*="bg-gradient-to"] {
     background-image: none !important; /* Remove all gradients */
-    background: #000000 !important; /* Replace with solid black */
+    background: #1e293b !important; /* Rich dark gray instead of black */
     color: #FFFFFF !important; /* White text */
+    border-color: #1e293b !important;
+  }
+  html:not(.dark) button[class*="bg-gradient-to"]:hover {
+    background: #334155 !important; /* Lighter gray on hover */
+    border-color: #334155 !important;
   }
   
   /* Ensure ALL buttons with colored backgrounds (not white) have white text and icons */
@@ -1502,6 +1578,129 @@
   html:not(.dark) button[class*="bg-slate"]:not([class*="bg-white"]):not([class*="bg-slate-50"]):not([class*="bg-slate-100"]):not([class*="bg-slate-200"]) *,
   html:not(.dark) button[class*="bg-gray"]:not([class*="bg-white"]):not([class*="bg-gray-50"]):not([class*="bg-gray-100"]):not([class*="bg-gray-200"]) * {
     color: #FFFFFF !important;
+  }
+  
+  /* Ensure buttons with CSS variable backgrounds (dark colors) have white text */
+  html:not(.dark) button[class*="bg-[var(--color-primary-teal)]"],
+  html:not(.dark) button[class*="bg-[var(--color-primary)]"],
+  html:not(.dark) button[class*="bg-[var(--color-primary-dark)]"],
+  html:not(.dark) button[class*="bg-[var(--color-secondary-gold)]"]:not([class*="text-white"]) {
+    color: #FFFFFF !important;
+  }
+  html:not(.dark) button[class*="bg-[var(--color-primary-teal)]"] *,
+  html:not(.dark) button[class*="bg-[var(--color-primary)]"] *,
+  html:not(.dark) button[class*="bg-[var(--color-primary-dark)]"] *,
+  html:not(.dark) button[class*="bg-[var(--color-secondary-gold)]"]:not([class*="text-white"]) * {
+    color: #FFFFFF !important;
+  }
+  
+  /* Force white text on all buttons with dark backgrounds in light mode */
+  html:not(.dark) button.btn-primary-elevated,
+  html:not(.dark) button.btn-primary,
+  html:not(.dark) button[class*="btn-primary"] {
+    color: #FFFFFF !important;
+  }
+  html:not(.dark) button.btn-primary-elevated *,
+  html:not(.dark) button.btn-primary *,
+  html:not(.dark) button[class*="btn-primary"] * {
+    color: #FFFFFF !important;
+  }
+  
+  /* Ensure ALL buttons with bg-black have white text in light mode */
+  html:not(.dark) button[class*="bg-black"],
+  html:not(.dark) button.bg-black {
+    color: #FFFFFF !important;
+  }
+  html:not(.dark) button[class*="bg-black"] *,
+  html:not(.dark) button.bg-black * {
+    color: #FFFFFF !important;
+  }
+  
+  /* Universal rule: Any button with dark background should have white text */
+  /* This ensures buttons with CSS variables or any dark color have proper contrast */
+  html:not(.dark) button[class*="bg-[var(--color-primary-teal)]"],
+  html:not(.dark) button[class*="bg-[var(--color-primary)]"],
+  html:not(.dark) button[class*="bg-[var(--color-primary-dark)]"] {
+    color: #FFFFFF !important;
+  }
+  html:not(.dark) button[class*="bg-[var(--color-primary-teal)]"] *,
+  html:not(.dark) button[class*="bg-[var(--color-primary)]"] *,
+  html:not(.dark) button[class*="bg-[var(--color-primary-dark)]"] * {
+    color: #FFFFFF !important;
+  }
+  
+  /* Final catch-all: Ensure ALL buttons with btn-primary-elevated or btn-primary have white text */
+  /* This overrides any potential inline styles or conflicting classes */
+  html:not(.dark) .btn-primary-elevated,
+  html:not(.dark) .btn-primary {
+    color: #FFFFFF !important;
+  }
+  html:not(.dark) .btn-primary-elevated *,
+  html:not(.dark) .btn-primary *,
+  html:not(.dark) .btn-primary-elevated span,
+  html:not(.dark) .btn-primary span,
+  html:not(.dark) .btn-primary-elevated p,
+  html:not(.dark) .btn-primary p {
+    color: #FFFFFF !important;
+  }
+
+  /* ============================================
+     MAP & CHART MOBILE RESPONSIVENESS
+     ============================================ */
+  
+  /* Map container mobile fixes */
+  /* Map legend styling - prevent cut-off */
+  .map-container-responsive {
+    position: relative;
+    overflow: visible !important;
+  }
+  
+  .map-container-responsive .absolute {
+    max-width: calc(100% - 1.5rem);
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+  }
+  
+  @media (max-width: 640px) {
+    .map-container-responsive .absolute {
+      max-width: calc(100% - 0.75rem);
+      font-size: 0.625rem;
+    }
+  }
+
+  .mapboxgl-map {
+    width: 100% !important;
+    height: 100% !important;
+  }
+  
+  /* Ensure map container doesn't overflow on mobile */
+  @media (max-width: 767px) {
+    [class*="map"] {
+      overflow: hidden;
+      position: relative;
+    }
+    
+    /* Pie chart mobile optimization */
+    .recharts-wrapper {
+      overflow: visible !important;
+    }
+    
+    .recharts-surface {
+      max-width: 100% !important;
+    }
+    
+    /* ResponsiveContainer should handle sizing */
+    .recharts-responsive-container {
+      width: 100% !important;
+    }
+  }
+  
+  /* Tablet and up - ensure proper sizing */
+  @media (min-width: 768px) {
+    .recharts-wrapper {
+      width: 100% !important;
+      height: 100% !important;
+    }
   }
   
   /* Remove all gradients from buttons - Cursor.com style (no gradients) */

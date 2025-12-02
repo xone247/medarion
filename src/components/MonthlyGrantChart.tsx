@@ -37,16 +37,24 @@ const MonthlyGrantChart: React.FC<{ grants?: Grant[] }> = ({ grants = [] }) => {
   }, {} as Record<string, { month: string; value: number; count: number }>);
 
   const chartData = Object.values(monthlyData as Record<string, { month: string; value: number; count: number }>).sort((a, b) => new Date(a.month).getTime() - new Date(b.month).getTime());
+  
+  // Calculate interval for x-axis to show fewer dates
+  const getXAxisInterval = () => {
+    if (chartData.length <= 6) return 0; // Show all if 6 or fewer
+    if (chartData.length <= 12) return 1; // Show every other if 12 or fewer
+    if (chartData.length <= 24) return 2; // Show every 3rd if 24 or fewer
+    return Math.floor(chartData.length / 8); // Show approximately 8 dates max
+  };
 
   const CustomTooltip = ({ active, payload, label }: any) => {
     if (active && payload && payload.length) {
       return (
-        <div className="bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 p-3 rounded-lg shadow-lg">
-          <p className="text-gray-900 dark:text-white font-medium">{label}</p>
-          <p className="text-primary-600 dark:text-primary-400">
+        <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 p-3 rounded-lg shadow-lg">
+          <p className="text-slate-900 dark:text-white font-medium text-sm mb-2">{label}</p>
+          <p className="text-emerald-600 dark:text-emerald-400 font-semibold">
             Value: ${(payload[0].value / 1000000).toFixed(1)}M
           </p>
-          <p className="text-gray-700 dark:text-gray-300">
+          <p className="text-slate-600 dark:text-slate-400 text-xs mt-1">
             Grants: {payload[0].payload.count}
           </p>
         </div>
@@ -56,33 +64,39 @@ const MonthlyGrantChart: React.FC<{ grants?: Grant[] }> = ({ grants = [] }) => {
   };
 
   return (
-    <div className="bg-white dark:bg-gray-800 p-4 p-6 rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm">
-      <h3 className="text-base text-lg font-medium text-gray-900 dark:text-white mb-4">Monthly Grant & Funding</h3>
-      <div className="h-56 h-80">
-        <ResponsiveContainer width="100%" height="100%">
-          <BarChart data={chartData} margin={{ top: 5, right: 16, left: 8, bottom: isSmall ? 10 : 30 }}>
-            <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" className="dark:stroke-gray-600" />
-            <XAxis 
-              dataKey="month" 
-              stroke="#6b7280"
-              className="dark:stroke-gray-400"
-              fontSize={isSmall ? 10 : 12}
-              angle={isSmall ? 0 : -45}
-              textAnchor={isSmall ? 'middle' : 'end'}
-              height={isSmall ? 30 : 60}
-              interval={isSmall ? 'preserveStartEnd' : 0}
-              minTickGap={isSmall ? 12 : 0}
-            />
-            <YAxis 
-              stroke="#6b7280"
-              className="dark:stroke-gray-400"
-              fontSize={isSmall ? 10 : 12}
-              tickFormatter={(value: number) => `$${(value / 1000000).toFixed(0)}M`}
-            />
-            <Tooltip content={<CustomTooltip />} />
-            <Bar dataKey="value" fill="#4caf50" radius={[4, 4, 0, 0]} />
-          </BarChart>
-        </ResponsiveContainer>
+    <div className="card-glass overflow-hidden shadow-soft rounded-lg h-full flex flex-col">
+      <div className="p-3 sm:p-4 border-b border-slate-200 dark:border-slate-700 flex-shrink-0">
+        <h3 className="text-base sm:text-lg font-medium text-slate-700 dark:text-slate-200">Monthly Grant & Funding</h3>
+        <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-0.5">Funding activity overview</p>
+      </div>
+      <div className="flex-1 p-3 sm:p-4 min-h-0">
+        <div className="h-full w-full">
+          <ResponsiveContainer width="100%" height="100%">
+            <BarChart data={chartData} margin={{ top: 5, right: 10, left: 0, bottom: isSmall ? 40 : 60 }}>
+              <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" className="dark:stroke-slate-700" />
+              <XAxis 
+                dataKey="month" 
+                stroke="#6b7280"
+                fontSize={isSmall ? 9 : 11}
+                angle={isSmall ? 0 : -45}
+                textAnchor={isSmall ? 'middle' : 'end'}
+                height={isSmall ? 40 : 60}
+                interval={getXAxisInterval()}
+                minTickGap={isSmall ? 8 : 5}
+                tick={{ fill: '#6b7280' }}
+              />
+              <YAxis 
+                stroke="#6b7280"
+                fontSize={isSmall ? 9 : 11}
+                tickFormatter={(value: number) => `$${(value / 1000000).toFixed(0)}M`}
+                tick={{ fill: '#6b7280' }}
+                width={isSmall ? 50 : 60}
+              />
+              <Tooltip content={<CustomTooltip />} />
+              <Bar dataKey="value" fill="#10b981" radius={[4, 4, 0, 0]} />
+            </BarChart>
+          </ResponsiveContainer>
+        </div>
       </div>
     </div>
   );

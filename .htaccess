@@ -1,69 +1,20 @@
-# Medarion Platform - Apache Configuration for cPanel
+# Enforce HTTPS and SPA routing for Vite build on cPanel
 
-# Enable Rewrite Engine
-<IfModule mod_rewrite.c>
-    RewriteEngine On
-    RewriteBase /
+# Turn off MultiViews to avoid directory/file name conflicts
+Options -MultiViews
 
-    # Force HTTPS (uncomment when SSL is configured)
-    # RewriteCond %{HTTPS} off
-    # RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+RewriteEngine On
 
-    # Handle React Router - redirect all requests to index.html except for existing files
-    RewriteCond %{REQUEST_FILENAME} !-f
-    RewriteCond %{REQUEST_FILENAME} !-d
-    RewriteCond %{REQUEST_URI} !^/api/
-    RewriteRule ^(.*)$ /medarion-dist/index.html [L]
+# 1) Force HTTPS (handle direct and proxied requests without loops)
+# Redirect only if BOTH: Apache says not HTTPS AND X-Forwarded-Proto is not https
+RewriteCond %{HTTPS} !=on
+RewriteCond %{HTTP:X-Forwarded-Proto} !https
+RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 
-    # API routes - pass through to PHP
-    RewriteCond %{REQUEST_URI} ^/api/
-    RewriteRule ^api/(.*)$ /api/$1 [L]
-</IfModule>
+# 2) Serve existing files and directories as-is
+RewriteCond %{REQUEST_FILENAME} -f [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^ - [L]
 
-# Security Headers
-<IfModule mod_headers.c>
-    Header set X-Content-Type-Options "nosniff"
-    Header set X-Frame-Options "SAMEORIGIN"
-    Header set X-XSS-Protection "1; mode=block"
-    Header set Referrer-Policy "strict-origin-when-cross-origin"
-</IfModule>
-
-# PHP Configuration
-<IfModule mod_php7.c>
-    php_value upload_max_filesize 50M
-    php_value post_max_size 50M
-    php_value max_execution_time 300
-    php_value max_input_time 300
-    php_value memory_limit 256M
-</IfModule>
-
-# Enable Gzip Compression
-<IfModule mod_deflate.c>
-    AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css text/javascript application/javascript application/json
-</IfModule>
-
-# Browser Caching
-<IfModule mod_expires.c>
-    ExpiresActive On
-    ExpiresByType image/jpg "access plus 1 year"
-    ExpiresByType image/jpeg "access plus 1 year"
-    ExpiresByType image/gif "access plus 1 year"
-    ExpiresByType image/png "access plus 1 year"
-    ExpiresByType image/webp "access plus 1 year"
-    ExpiresByType text/css "access plus 1 month"
-    ExpiresByType application/javascript "access plus 1 month"
-    ExpiresByType application/json "access plus 0 seconds"
-</IfModule>
-
-# Prevent directory listing
-Options -Indexes
-
-# Protect sensitive files
-<FilesMatch "\.(env|log|json|md)$">
-    Order allow,deny
-    Deny from all
-</FilesMatch>
-
-# Custom Error Pages (optional)
-# ErrorDocument 404 /404.html
-# ErrorDocument 500 /500.html
+# 3) SPA fallback: send everything else to index.html
+RewriteRule . /index.html [L] 

@@ -335,7 +335,7 @@ const AIChatInterface: React.FC<AIChatInterfaceProps> = ({
           <button
             onClick={handleSend}
             disabled={!input.trim() || loading}
-            className="px-6 py-3 rounded-xl bg-black dark:bg-white text-white dark:text-black font-medium hover:bg-black/90 dark:hover:bg-white/80 disabled:opacity-50 disabled:cursor-not-allowed transition-all flex items-center gap-2 shadow-lg hover:shadow-xl hover:scale-[1.02] active:scale-[0.98]"
+            className="px-6 py-3 rounded-xl btn-primary-elevated font-medium disabled:opacity-50 disabled:cursor-not-allowed transition-all flex items-center gap-2 hover:scale-[1.02] active:scale-[0.98]"
           >
             {loading ? (
               <Loader2 className="h-5 w-5 animate-spin" />

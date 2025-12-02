@@ -109,7 +109,7 @@ const InvestorOverview = () => {
           <p className="text-[var(--color-text-secondary)]">Comprehensive view of African healthcare investments and market intelligence</p>
         </div>
         {canAI && (
-          <button onClick={() => setAiOpen(true)} className="inline-flex items-center space-x-2 px-3 py-2 rounded-lg bg-[var(--color-primary-teal)] text-[var(--color-background-surface)] border border-[color-mix(in_srgb,var(--color-primary-teal),black_10%)]">
+          <button onClick={() => setAiOpen(true)} className="inline-flex items-center space-x-2 px-3 py-2 rounded-lg bg-[var(--color-primary-teal)] text-white border border-[color-mix(in_srgb,var(--color-primary-teal),black_10%)]">
             <Bot className="h-4 w-4" />
             <span className="text-sm">AI insights</span>
           </button>
@@ -194,7 +194,7 @@ const InvestorOverview = () => {
                   onClick={() => setMapDataType('value')}
                   className={`px-2 py-1 text-xs font-medium rounded transition-colors ${
                     mapDataType === 'value'
-                      ? 'bg-[var(--color-primary-teal)] text-[var(--color-background-surface)]'
+                      ? 'bg-[var(--color-primary-teal)] text-white'
                       : 'text-[var(--color-text-secondary)] hover:bg-[var(--color-background-default)]'
                   }`}
                 >
@@ -204,7 +204,7 @@ const InvestorOverview = () => {
                   onClick={() => setMapDataType('count')}
                   className={`px-2 py-1 text-xs font-medium rounded transition-colors ${
                     mapDataType === 'count'
-                      ? 'bg-[var(--color-primary-teal)] text-[var(--color-background-surface)]'
+                      ? 'bg-[var(--color-primary-teal)] text-white'
                       : 'text-[var(--color-text-secondary)] hover:bg-[var(--color-background-default)]'
                   }`}
                 >

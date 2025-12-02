@@ -21,8 +21,8 @@ const RegulatoryPage: React.FC = () => {
     const fetchRegulatoryData = async () => {
       setLoading(true);
       try {
-        // Fetch from database API
-        const response = await apiService.get('/admin/regulatory', { limit: '500' });
+        // Fetch from database API - use all: 'true' to get all data
+        const response = await apiService.get('/admin/regulatory', { all: 'true' });
         console.log('[RegulatoryPage] API Response:', response);
         
         if (response.success && response.data && Array.isArray(response.data)) {
@@ -195,24 +195,6 @@ const RegulatoryPage: React.FC = () => {
     }
   };
 
-  const copyJSON = async () => {
-    try {
-      const data = { filters: { searchTerm, selectedStatus, selectedBody }, regulatory: filteredRegulatory, exportedAt: new Date().toISOString() };
-      const text = JSON.stringify(data, null, 2);
-      if (navigator.clipboard && navigator.clipboard.writeText) {
-        await navigator.clipboard.writeText(text);
-      } else {
-        const ta = document.createElement('textarea');
-        ta.value = text;
-        document.body.appendChild(ta);
-        ta.select();
-        document.execCommand('copy');
-        document.body.removeChild(ta);
-      }
-      alert('Copied regulatory JSON to clipboard');
-    } catch {}
-  };
-
   if (loading) {
     return (
       <div className="w-full flex items-center justify-center p-12">
@@ -222,193 +204,207 @@ const RegulatoryPage: React.FC = () => {
   }
 
   return (
-    <div className="w-full space-y-3">
-      {/* Top Bar: Filters and Actions - Compact and Organized */}
-      <div className="card-glass p-3 rounded-lg">
-        <div className="flex flex-col lg:flex-row gap-3 items-start lg:items-center">
+    <div className="w-full space-y-2 sm:space-y-3 md:space-y-4 p-2 sm:p-3 md:p-4">
+      {/* Top Bar: Filters and Actions - Compact Mobile Optimized */}
+      <div className="card-glass p-2.5 sm:p-3 rounded-lg">
+        <div className="flex flex-col lg:flex-row gap-2.5 sm:gap-3 items-stretch lg:items-center">
           {/* Filters Section */}
-          <div className="flex flex-wrap items-center gap-2 flex-1 min-w-0">
-            <div className="relative flex-1 min-w-[200px]">
-              <Search className="absolute left-2.5 top-1/2 transform -translate-y-1/2 h-4 w-4 text-slate-400" />
+          <div className="flex flex-col sm:flex-row gap-2 sm:gap-2.5 flex-1 min-w-0">
+            <div className="relative flex-1 min-w-0">
+              <Search className="absolute left-2.5 sm:left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-slate-400 dark:text-slate-500" />
               <input
                 type="text"
                 placeholder="Search products, companies, or regulatory bodies..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-9 pr-3 py-2 text-sm bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-lg text-slate-700 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-cyan-500/30"
+                className="w-full pl-9 sm:pl-10 pr-2.5 sm:pr-3 py-2 sm:py-2.5 text-sm bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-lg text-slate-700 dark:text-slate-200 focus:outline-none focus:ring-1 focus:ring-cyan-500/30 focus:border-cyan-500/50 transition-all"
               />
             </div>
-            <select
-              value={selectedStatus}
-              onChange={(e) => setSelectedStatus(e.target.value)}
-              className="px-3 py-2 text-sm bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-lg text-slate-700 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-cyan-500/30 min-w-[140px]"
-            >
-              {statuses.map(status => (
-                <option key={status} value={status}>{status}</option>
-              ))}
-            </select>
-            <select
-              value={selectedBody}
-              onChange={(e) => setSelectedBody(e.target.value)}
-              className="px-3 py-2 text-sm bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-lg text-slate-700 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-cyan-500/30 min-w-[160px]"
-            >
-              {bodies.map(body => (
-                <option key={body} value={body}>{body}</option>
-              ))}
-            </select>
+            <div className="flex flex-col sm:flex-row gap-2 flex-shrink-0">
+              <select
+                value={selectedStatus}
+                onChange={(e) => setSelectedStatus(e.target.value)}
+                className="px-3 py-2 sm:py-2.5 text-sm bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-lg text-slate-700 dark:text-slate-200 focus:outline-none focus:ring-1 focus:ring-cyan-500/30 focus:border-cyan-500/50 min-w-full sm:min-w-[140px]"
+              >
+                {statuses.map(status => (
+                  <option key={status} value={status}>{status}</option>
+                ))}
+              </select>
+              <select
+                value={selectedBody}
+                onChange={(e) => setSelectedBody(e.target.value)}
+                className="px-3 py-2 sm:py-2.5 text-sm bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-lg text-slate-700 dark:text-slate-200 focus:outline-none focus:ring-1 focus:ring-cyan-500/30 focus:border-cyan-500/50 min-w-full sm:min-w-[160px]"
+              >
+                {bodies.map(body => (
+                  <option key={body} value={body}>{body}</option>
+                ))}
+              </select>
+            </div>
           </div>
           
-          {/* Actions Section - Grouped */}
-          <div className="flex flex-wrap items-center gap-2 flex-shrink-0">
+          {/* Actions Section - Compact Mobile Optimized */}
+          <div className="flex flex-wrap items-center gap-1.5 sm:gap-2 flex-shrink-0 pt-2 sm:pt-0 border-t sm:border-t-0 border-slate-200 dark:border-slate-700 lg:border-l lg:border-slate-200 dark:lg:border-slate-700 lg:pl-2.5">
             {canAI && (
-              <button onClick={() => setAiOpen(true)} className="btn-primary-elevated flex items-center gap-2 px-3 py-2 rounded-lg text-sm">
-                <Bot className="h-4 w-4" />
-                <span>AI Summary</span>
+              <button 
+                onClick={() => setAiOpen(true)} 
+                className="btn-primary-elevated flex items-center justify-center gap-1.5 sm:gap-2 px-3 sm:px-3 py-2 sm:py-2.5 rounded-lg text-xs sm:text-sm flex-shrink-0 min-w-[60px] h-[40px] sm:h-auto"
+                title="AI Summary"
+              >
+                <Bot className="h-4 w-4 sm:h-4 sm:w-4" />
+                <span className="hidden sm:inline">AI Summary</span>
               </button>
             )}
             {canExport && (
-              <div className="flex items-center gap-1.5 border-l border-slate-200 dark:border-slate-700 pl-2.5">
-                <button onClick={copyJSON} className="btn-outline px-3 py-2 rounded-lg text-sm" title="Copy JSON">Copy</button>
-                <button onClick={exportExcel} className="btn-outline px-3 py-2 rounded-lg flex items-center gap-1.5 text-sm" title="Export Excel"><FileDown className="h-3.5 w-3.5"/>Excel</button>
-                <button onClick={exportJSON} className="btn-outline px-3 py-2 rounded-lg flex items-center gap-1.5 text-sm" title="Export JSON"><FileDown className="h-3.5 w-3.5"/>JSON</button>
-                <button onClick={exportCSV} className="btn-outline px-3 py-2 rounded-lg flex items-center gap-1.5 text-sm" title="Export CSV"><FileDown className="h-3.5 w-3.5"/>CSV</button>
+              <div className="flex items-center gap-1.5 sm:gap-2 flex-1 sm:flex-initial justify-end sm:justify-start">
+                <button onClick={exportExcel} className="btn-outline px-3 sm:px-3 py-2 sm:py-2.5 rounded-lg flex items-center justify-center gap-1.5 text-xs sm:text-sm flex-1 sm:flex-initial min-w-[60px] sm:min-w-0 h-[40px] sm:h-auto" title="Export Excel">
+                  <FileDown className="h-4 w-4 sm:h-4 sm:w-4 flex-shrink-0"/>
+                  <span className="hidden sm:inline">Excel</span>
+                </button>
+                <button onClick={exportJSON} className="btn-outline px-3 sm:px-3 py-2 sm:py-2.5 rounded-lg flex items-center justify-center gap-1.5 text-xs sm:text-sm flex-1 sm:flex-initial min-w-[60px] sm:min-w-0 h-[40px] sm:h-auto" title="Export JSON">
+                  <FileDown className="h-4 w-4 sm:h-4 sm:w-4 flex-shrink-0"/>
+                  <span className="hidden sm:inline">JSON</span>
+                </button>
+                <button onClick={exportCSV} className="btn-outline px-3 sm:px-3 py-2 sm:py-2.5 rounded-lg flex items-center justify-center gap-1.5 text-xs sm:text-sm flex-1 sm:flex-initial min-w-[60px] sm:min-w-0 h-[40px] sm:h-auto" title="Export CSV">
+                  <FileDown className="h-4 w-4 sm:h-4 sm:w-4 flex-shrink-0"/>
+                  <span className="hidden sm:inline">CSV</span>
+                </button>
               </div>
             )}
           </div>
         </div>
       </div>
 
-      {/* Summary Stats - Compact Modern Style (Matching Companies Page) */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
-        <div className="card-glass p-3 rounded-lg hover:shadow-lg transition-all duration-200 group relative overflow-hidden h-full flex flex-col bg-cyan-50/50 dark:bg-cyan-950/30">
+      {/* Summary Stats - Compact Mobile Optimized */}
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-3">
+        <div className="card-glass p-2 sm:p-3 rounded-lg hover:shadow-md transition-all duration-200 group relative overflow-hidden h-full flex flex-col bg-cyan-50/50 dark:bg-cyan-950/30">
           <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/10 to-teal-500/10 dark:from-cyan-500/15 dark:to-teal-500/15 opacity-0 group-hover:opacity-100 transition-opacity"></div>
           <div className="relative flex items-center justify-between flex-1">
             <div className="min-w-0 flex-1">
-              <p className="text-xs font-medium text-slate-500 dark:text-slate-400 mb-1 uppercase tracking-wide">Total Submissions</p>
-              <p className="text-2xl font-medium text-slate-700 dark:text-slate-200 mb-1">{filteredRegulatory.length}</p>
+              <p className="text-[10px] sm:text-xs font-medium text-slate-500 dark:text-slate-400 mb-0.5 uppercase tracking-wide">Total Submissions</p>
+              <p className="text-lg sm:text-xl md:text-2xl font-medium text-slate-700 dark:text-slate-200">{filteredRegulatory.length}</p>
             </div>
-            <div className="p-2.5 rounded-lg bg-cyan-600 dark:bg-gradient-to-br dark:from-cyan-500 dark:to-teal-500 shadow-md group-hover:scale-105 transition-transform duration-200 flex-shrink-0 ml-3">
-              <FileCheck className="h-5 w-5 text-white" />
+            <div className="p-1.5 sm:p-2 rounded-lg bg-cyan-600 dark:bg-gradient-to-br dark:from-cyan-500 dark:to-teal-500 shadow-sm group-hover:scale-105 transition-transform duration-200 flex-shrink-0 ml-1.5 sm:ml-2">
+              <FileCheck className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-white" />
             </div>
           </div>
         </div>
-        <div className="card-glass p-3 rounded-lg hover:shadow-lg transition-all duration-200 group relative overflow-hidden h-full flex flex-col bg-emerald-50/50 dark:bg-emerald-950/30">
+        <div className="card-glass p-2 sm:p-3 rounded-lg hover:shadow-md transition-all duration-200 group relative overflow-hidden h-full flex flex-col bg-emerald-50/50 dark:bg-emerald-950/30">
           <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/10 to-green-500/10 dark:from-emerald-500/15 dark:to-green-500/15 opacity-0 group-hover:opacity-100 transition-opacity"></div>
           <div className="relative flex items-center justify-between flex-1">
             <div className="min-w-0 flex-1">
-              <p className="text-xs font-medium text-slate-500 dark:text-slate-400 mb-1 uppercase tracking-wide">Approved</p>
-              <p className="text-2xl font-medium text-slate-700 dark:text-slate-200 mb-1">{approvedCount}</p>
+              <p className="text-[10px] sm:text-xs font-medium text-slate-500 dark:text-slate-400 mb-0.5 uppercase tracking-wide">Approved</p>
+              <p className="text-lg sm:text-xl md:text-2xl font-medium text-slate-700 dark:text-slate-200">{approvedCount}</p>
             </div>
-            <div className="p-2.5 rounded-lg bg-emerald-600 dark:bg-gradient-to-br dark:from-emerald-500 dark:to-green-500 shadow-md group-hover:scale-105 transition-transform duration-200 flex-shrink-0 ml-3">
-              <CheckCircle2 className="h-5 w-5 text-white" />
+            <div className="p-1.5 sm:p-2 rounded-lg bg-emerald-600 dark:bg-gradient-to-br dark:from-emerald-500 dark:to-green-500 shadow-sm group-hover:scale-105 transition-transform duration-200 flex-shrink-0 ml-1.5 sm:ml-2">
+              <CheckCircle2 className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-white" />
             </div>
           </div>
         </div>
-        <div className="card-glass p-3 rounded-lg hover:shadow-lg transition-all duration-200 group relative overflow-hidden h-full flex flex-col bg-amber-50/50 dark:bg-amber-950/30">
+        <div className="card-glass p-2 sm:p-3 rounded-lg hover:shadow-md transition-all duration-200 group relative overflow-hidden h-full flex flex-col bg-amber-50/50 dark:bg-amber-950/30">
           <div className="absolute inset-0 bg-gradient-to-br from-amber-500/10 to-orange-500/10 dark:from-amber-500/15 dark:to-orange-500/15 opacity-0 group-hover:opacity-100 transition-opacity"></div>
           <div className="relative flex items-center justify-between flex-1">
             <div className="min-w-0 flex-1">
-              <p className="text-xs font-medium text-slate-500 dark:text-slate-400 mb-1 uppercase tracking-wide">Pending</p>
-              <p className="text-2xl font-medium text-slate-700 dark:text-slate-200 mb-1">{pendingCount}</p>
+              <p className="text-[10px] sm:text-xs font-medium text-slate-500 dark:text-slate-400 mb-0.5 uppercase tracking-wide">Pending</p>
+              <p className="text-lg sm:text-xl md:text-2xl font-medium text-slate-700 dark:text-slate-200">{pendingCount}</p>
             </div>
-            <div className="p-2.5 rounded-lg bg-amber-600 dark:bg-gradient-to-br dark:from-amber-500 dark:to-orange-500 shadow-md group-hover:scale-105 transition-transform duration-200 flex-shrink-0 ml-3">
-              <Clock className="h-5 w-5 text-white" />
+            <div className="p-1.5 sm:p-2 rounded-lg bg-amber-600 dark:bg-gradient-to-br dark:from-amber-500 dark:to-orange-500 shadow-sm group-hover:scale-105 transition-transform duration-200 flex-shrink-0 ml-1.5 sm:ml-2">
+              <Clock className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-white" />
             </div>
           </div>
         </div>
-        <div className="card-glass p-3 rounded-lg hover:shadow-lg transition-all duration-200 group relative overflow-hidden h-full flex flex-col bg-indigo-50/50 dark:bg-indigo-950/30">
+        <div className="card-glass p-2 sm:p-3 rounded-lg hover:shadow-md transition-all duration-200 group relative overflow-hidden h-full flex flex-col bg-indigo-50/50 dark:bg-indigo-950/30">
           <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/10 to-purple-500/10 dark:from-indigo-500/15 dark:to-purple-500/15 opacity-0 group-hover:opacity-100 transition-opacity"></div>
           <div className="relative flex items-center justify-between flex-1">
             <div className="min-w-0 flex-1">
-              <p className="text-xs font-medium text-slate-500 dark:text-slate-400 mb-1 uppercase tracking-wide">Regulatory Bodies</p>
-              <p className="text-2xl font-medium text-slate-700 dark:text-slate-200 mb-1">{uniqueBodies}</p>
+              <p className="text-[10px] sm:text-xs font-medium text-slate-500 dark:text-slate-400 mb-0.5 uppercase tracking-wide">Regulatory Bodies</p>
+              <p className="text-lg sm:text-xl md:text-2xl font-medium text-slate-700 dark:text-slate-200">{uniqueBodies}</p>
             </div>
-            <div className="p-2.5 rounded-lg bg-indigo-600 dark:bg-gradient-to-br dark:from-indigo-500 dark:to-purple-500 shadow-md group-hover:scale-105 transition-transform duration-200 flex-shrink-0 ml-3">
-              <Building2 className="h-5 w-5 text-white" />
+            <div className="p-1.5 sm:p-2 rounded-lg bg-indigo-600 dark:bg-gradient-to-br dark:from-indigo-500 dark:to-purple-500 shadow-sm group-hover:scale-105 transition-transform duration-200 flex-shrink-0 ml-1.5 sm:ml-2">
+              <Building2 className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-white" />
             </div>
           </div>
         </div>
       </div>
 
       {/* Insights - Compact Side by Side (Matching Companies Page) */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-3">
         {/* Top Countries */}
-        <div className="card-glass p-3 rounded-lg">
-          <h3 className="text-xs font-medium text-slate-700 dark:text-slate-200 mb-2 uppercase tracking-wide">Top Countries</h3>
-          <ul className="space-y-1.5">
+        <div className="card-glass p-2.5 sm:p-3 rounded-lg">
+          <h3 className="text-[10px] sm:text-xs font-medium text-slate-700 dark:text-slate-200 mb-1.5 sm:mb-2 uppercase tracking-wide">Top Countries</h3>
+          <ul className="space-y-1 sm:space-y-1.5">
             {topCountries.map((country: any) => (
-              <li key={country.country} className="flex items-center justify-between text-xs">
+              <li key={country.country} className="flex items-center justify-between text-[10px] sm:text-xs">
                 <span className="text-slate-600 dark:text-slate-300 truncate flex-1">{country.country}</span>
-                <span className="text-slate-500 dark:text-slate-400 font-medium ml-2 bg-slate-100 dark:bg-slate-800/50 px-2 py-0.5 rounded">{country.count}</span>
+                <span className="text-slate-500 dark:text-slate-400 font-medium ml-2 bg-slate-100 dark:bg-slate-800/50 px-1.5 sm:px-2 py-0.5 rounded text-[10px] sm:text-xs">{country.count}</span>
               </li>
             ))}
           </ul>
         </div>
         {/* Top Regulatory Bodies */}
-        <div className="card-glass p-3 rounded-lg">
-          <h3 className="text-xs font-medium text-slate-700 dark:text-slate-200 mb-2 uppercase tracking-wide">Top Regulatory Bodies</h3>
-          <ul className="space-y-1.5">
+        <div className="card-glass p-2.5 sm:p-3 rounded-lg">
+          <h3 className="text-[10px] sm:text-xs font-medium text-slate-700 dark:text-slate-200 mb-1.5 sm:mb-2 uppercase tracking-wide">Top Regulatory Bodies</h3>
+          <ul className="space-y-1 sm:space-y-1.5">
             {bodyStats.map(([body, count]) => (
-              <li key={body} className="flex items-center justify-between text-xs">
+              <li key={body} className="flex items-center justify-between text-[10px] sm:text-xs">
                 <span className="text-slate-600 dark:text-slate-300 truncate flex-1">{body}</span>
-                <span className="text-slate-500 dark:text-slate-400 font-medium ml-2 bg-slate-100 dark:bg-slate-800/50 px-2 py-0.5 rounded">{count}</span>
+                <span className="text-slate-500 dark:text-slate-400 font-medium ml-2 bg-slate-100 dark:bg-slate-800/50 px-1.5 sm:px-2 py-0.5 rounded text-[10px] sm:text-xs">{count}</span>
               </li>
             ))}
           </ul>
         </div>
       </div>
 
-      {/* Regulatory Table - Modern Styling */}
+      {/* Regulatory Table - Mobile Responsive */}
       <div className="card-glass overflow-hidden rounded-lg">
         <div className="overflow-x-auto">
           <table className="w-full">
             <thead className="bg-slate-50 dark:bg-slate-800/50 border-b border-slate-200 dark:border-slate-700">
               <tr>
-                <th className="px-4 py-3 text-left text-xs font-medium text-slate-600 dark:text-slate-400 uppercase tracking-wider">Company</th>
-                <th className="px-4 py-3 text-left text-xs font-medium text-slate-600 dark:text-slate-400 uppercase tracking-wider">Product</th>
-                <th className="px-4 py-3 text-left text-xs font-medium text-slate-600 dark:text-slate-400 uppercase tracking-wider">Regulatory Body</th>
-                <th className="px-4 py-3 text-left text-xs font-medium text-slate-600 dark:text-slate-400 uppercase tracking-wider">Status</th>
-                <th className="px-4 py-3 text-left text-xs font-medium text-slate-600 dark:text-slate-400 uppercase tracking-wider">Date</th>
-                <th className="px-4 py-3 text-left text-xs font-medium text-slate-600 dark:text-slate-400 uppercase tracking-wider">Country</th>
-                <th className="px-4 py-3 text-left text-xs font-medium text-slate-600 dark:text-slate-400 uppercase tracking-wider">Source</th>
+                <th className="px-2 sm:px-3 md:px-4 py-2 sm:py-3 text-left text-[10px] sm:text-xs font-medium text-slate-600 dark:text-slate-400 uppercase tracking-wider">Company</th>
+                <th className="px-2 sm:px-3 md:px-4 py-2 sm:py-3 text-left text-[10px] sm:text-xs font-medium text-slate-600 dark:text-slate-400 uppercase tracking-wider">Product</th>
+                <th className="px-2 sm:px-3 md:px-4 py-2 sm:py-3 text-left text-[10px] sm:text-xs font-medium text-slate-600 dark:text-slate-400 uppercase tracking-wider">Body</th>
+                <th className="px-2 sm:px-3 md:px-4 py-2 sm:py-3 text-left text-[10px] sm:text-xs font-medium text-slate-600 dark:text-slate-400 uppercase tracking-wider">Status</th>
+                <th className="px-2 sm:px-3 md:px-4 py-2 sm:py-3 text-left text-[10px] sm:text-xs font-medium text-slate-600 dark:text-slate-400 uppercase tracking-wider hidden sm:table-cell">Date</th>
+                <th className="px-2 sm:px-3 md:px-4 py-2 sm:py-3 text-left text-[10px] sm:text-xs font-medium text-slate-600 dark:text-slate-400 uppercase tracking-wider hidden md:table-cell">Country</th>
+                <th className="px-2 sm:px-3 md:px-4 py-2 sm:py-3 text-left text-[10px] sm:text-xs font-medium text-slate-600 dark:text-slate-400 uppercase tracking-wider hidden lg:table-cell">Source</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-200 dark:divide-slate-700">
               {filteredRegulatory.length === 0 ? (
                 <tr>
-                  <td colSpan={7} className="px-4 py-8 text-center text-sm text-slate-500 dark:text-slate-400">
+                  <td colSpan={7} className="px-4 py-6 sm:py-8 text-center text-xs sm:text-sm text-slate-500 dark:text-slate-400">
                     No regulatory data found. {loading ? 'Loading...' : 'Try adjusting your filters.'}
                   </td>
                 </tr>
               ) : (
                 filteredRegulatory.slice().sort((a: any, b: any) => new Date(b.date).getTime() - new Date(a.date).getTime()).map((reg: any, index: number) => (
                   <tr key={`${reg.id || reg.companyName}-${reg.product}-${index}`} className="hover:bg-slate-50/50 dark:hover:bg-slate-800/30 transition-colors">
-                    <td className="px-4 py-3">
-                      <div className="flex items-center gap-2">
-                        <div className="w-8 h-8 bg-gradient-to-br from-cyan-500 to-teal-500 rounded-lg flex items-center justify-center flex-shrink-0">
-                          <Building2 className="h-4 w-4 text-white" />
+                    <td className="px-2 sm:px-3 md:px-4 py-2 sm:py-3">
+                      <div className="flex items-center gap-1.5 sm:gap-2">
+                        <div className="w-6 h-6 sm:w-8 sm:h-8 bg-gradient-to-br from-cyan-500 to-teal-500 rounded-lg flex items-center justify-center flex-shrink-0">
+                          <Building2 className="h-3 w-3 sm:h-4 sm:w-4 text-white" />
                         </div>
-                        <div className="text-sm font-medium text-slate-700 dark:text-slate-200 truncate max-w-[150px]">{reg.companyName}</div>
+                        <div className="text-xs sm:text-sm font-medium text-slate-700 dark:text-slate-200 truncate max-w-[120px] sm:max-w-[150px]">{reg.companyName}</div>
                       </div>
                     </td>
-                    <td className="px-4 py-3">
-                      <div className="text-sm font-medium text-slate-700 dark:text-slate-200 truncate max-w-[200px]">{reg.product}</div>
+                    <td className="px-2 sm:px-3 md:px-4 py-2 sm:py-3">
+                      <div className="text-xs sm:text-sm font-medium text-slate-700 dark:text-slate-200 truncate max-w-[150px] sm:max-w-[200px]">{reg.product}</div>
                     </td>
-                    <td className="px-4 py-3">
-                      <span className={`inline-flex px-2 py-1 rounded-full text-xs font-medium ${getBodyColor(reg.body)}`}>
+                    <td className="px-2 sm:px-3 md:px-4 py-2 sm:py-3">
+                      <span className={`inline-flex px-1.5 sm:px-2 py-0.5 sm:py-1 rounded-full text-[10px] sm:text-xs font-medium ${getBodyColor(reg.body)}`}>
                         {reg.body}
                       </span>
                     </td>
-                    <td className="px-4 py-3">
-                      <span className={`inline-flex px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(reg.status)}`}>
+                    <td className="px-2 sm:px-3 md:px-4 py-2 sm:py-3">
+                      <span className={`inline-flex px-1.5 sm:px-2 py-0.5 sm:py-1 rounded-full text-[10px] sm:text-xs font-medium ${getStatusColor(reg.status)}`}>
                         {reg.status}
                       </span>
                     </td>
-                    <td className="px-4 py-3 text-sm text-slate-600 dark:text-slate-400">
+                    <td className="px-2 sm:px-3 md:px-4 py-2 sm:py-3 text-xs sm:text-sm text-slate-600 dark:text-slate-400 hidden sm:table-cell">
                       {reg.date ? new Date(reg.date).toLocaleDateString() : 'N/A'}
                     </td>
-                    <td className="px-4 py-3 text-sm text-slate-600 dark:text-slate-400">{reg.country}</td>
-                    <td className="px-4 py-3">
+                    <td className="px-2 sm:px-3 md:px-4 py-2 sm:py-3 text-xs sm:text-sm text-slate-600 dark:text-slate-400 hidden md:table-cell">{reg.country}</td>
+                    <td className="px-2 sm:px-3 md:px-4 py-2 sm:py-3 hidden lg:table-cell">
                       {reg.dataSource ? (
                         <a 
                           href={reg.dataSource}
@@ -416,11 +412,11 @@ const RegulatoryPage: React.FC = () => {
                           rel="noopener noreferrer"
                           className="text-cyan-600 dark:text-cyan-400 hover:text-cyan-700 dark:hover:text-cyan-300 flex items-center gap-1"
                         >
-                          <ExternalLink className="h-3.5 w-3.5" />
-                          <span className="text-xs">View</span>
+                          <ExternalLink className="h-3 w-3 sm:h-3.5 sm:w-3.5" />
+                          <span className="text-[10px] sm:text-xs">View</span>
                         </a>
                       ) : (
-                        <span className="text-xs text-slate-400 dark:text-slate-500">—</span>
+                        <span className="text-[10px] sm:text-xs text-slate-400 dark:text-slate-500">—</span>
                       )}
                     </td>
                   </tr>

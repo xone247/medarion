@@ -250,8 +250,8 @@ const BlogDetailPage: React.FC = () => {
 			zIndex: 1,
 			paddingTop: 0,
 		}}>
-			{/* Featured Image */}
-			<div className="relative h-[75vh] min-h-[650px] overflow-hidden" style={{
+			{/* Featured Image - Background extends behind header */}
+			<div className="relative h-[60vh] sm:h-[70vh] md:h-[80vh] min-h-[500px] sm:min-h-[600px] md:min-h-[750px] overflow-hidden" style={{
 				marginTop: 0,
 				paddingTop: 0,
 			}}>
@@ -264,49 +264,44 @@ const BlogDetailPage: React.FC = () => {
 							marginTop: 0,
 						}}
 					/>
-					<div className="absolute inset-0 bg-black/50" />
+					<div className="absolute inset-0 bg-black/70" />
 					
 					{/* Back button removed per request */}
 
-					{/* Title and Metadata Overlay */}
-					<div className="absolute left-0 right-0 p-8 p-12" style={{
-						top: '160px',
-						paddingBottom: '2rem',
-						paddingLeft: '2rem',
-						paddingRight: '2rem',
-					} as React.CSSProperties}>
+					{/* Title and Metadata Overlay - Content positioned below header on mobile */}
+					<div className="blog-detail-hero-content absolute left-0 right-0 top-[100px] sm:top-[140px] md:top-[180px] px-4 sm:px-6 md:px-8 lg:px-12 pb-8 sm:pb-10 md:pb-12 pt-6 sm:pt-6 md:pt-8 lg:pt-12 z-10">
 						<div className="container mx-auto px-4">
-							<div className="max-w-6xl mx-auto">
+							<div className="max-w-6xl mx-auto space-y-4 sm:space-y-5 md:space-y-6">
 							{/* Category and Featured Badges - Modern horizontal layout */}
-							<div className="flex items-center gap-3 mb-6 flex-wrap">
+							<div className="flex items-center gap-2 sm:gap-3 flex-wrap">
 								{post.featured && (
-									<div className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-[var(--color-secondary-gold)] to-yellow-500 text-white rounded-full text-sm font-medium shadow-lg backdrop-blur-sm border border-yellow-400/30">
-										<span className="text-base">⭐</span>
+									<div className="inline-flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-1.5 sm:py-2 bg-gradient-to-r from-[var(--color-secondary-gold)] to-yellow-500 text-white rounded-full text-xs sm:text-sm font-medium shadow-lg backdrop-blur-sm border border-yellow-400/30">
+										<span className="text-sm sm:text-base">⭐</span>
 										<span>Featured</span>
 									</div>
 								)}
-								<span className="inline-flex items-center gap-2 px-4 py-2 bg-white/20 dark:bg-gray-800/30 backdrop-blur-md text-white rounded-full text-sm font-medium shadow-lg border border-white/20">
-									<Tag className="h-3.5 w-3.5" />
+								<span className="inline-flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-1.5 sm:py-2 bg-white/20 dark:bg-gray-800/30 backdrop-blur-md text-white rounded-full text-xs sm:text-sm font-medium shadow-lg border border-white/20">
+									<Tag className="h-3 w-3 sm:h-3.5 sm:w-3.5" />
 									{post.category}
 								</span>
 							</div>
 							
-							<h1 className="text-4xl text-5xl text-6xl font-normal text-white mb-6 leading-tight drop-shadow-lg">
+							<h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-normal text-white leading-[1.2] sm:leading-tight drop-shadow-lg">
 								{post.title}
 							</h1>
 							
 							{/* Excerpt */}
 							{post.excerpt && (
-								<p className="text-lg text-xl text-white/95 mb-8 leading-relaxed max-w-3xl drop-shadow-md font-light">
+								<p className="text-sm sm:text-base md:text-lg lg:text-xl text-white/95 leading-relaxed max-w-3xl drop-shadow-md font-light">
 									{post.excerpt}
 								</p>
 							)}
 
 							{/* Metadata - Modern design */}
-							<div className="flex flex-wrap items-center gap-4 text-white/90 text-sm text-base mb-6">
-								<div className="flex items-center gap-2 px-3 py-1.5 bg-white/10 backdrop-blur-sm rounded-lg border border-white/20">
-									<Calendar className="h-4 w-4" />
-									<span className="font-medium">
+							<div className="flex flex-wrap items-center gap-2 sm:gap-3 md:gap-4 text-white/90 text-xs sm:text-sm md:text-base">
+								<div className="flex items-center gap-1.5 sm:gap-2 px-2 sm:px-3 py-1 sm:py-1.5 bg-white/10 backdrop-blur-sm rounded-lg border border-white/20">
+									<Calendar className="h-3 w-3 sm:h-4 sm:w-4" />
+									<span className="font-medium text-xs sm:text-sm">
 										{post.date ? new Date(post.date).toLocaleDateString('en-US', {
 											year: 'numeric',
 											month: 'long',
@@ -314,21 +309,21 @@ const BlogDetailPage: React.FC = () => {
 										}) : 'Not published'}
 									</span>
 								</div>
-								<div className="flex items-center gap-2 px-3 py-1.5 bg-white/10 backdrop-blur-sm rounded-lg border border-white/20">
-									<User className="h-4 w-4" />
-									<span className="font-medium">{post.author || 'Admin'}</span>
+								<div className="flex items-center gap-1.5 sm:gap-2 px-2 sm:px-3 py-1 sm:py-1.5 bg-white/10 backdrop-blur-sm rounded-lg border border-white/20">
+									<User className="h-3 w-3 sm:h-4 sm:w-4" />
+									<span className="font-medium text-xs sm:text-sm">{post.author || 'Admin'}</span>
 								</div>
-								<div className="flex items-center gap-2 px-3 py-1.5 bg-white/10 backdrop-blur-sm rounded-lg border border-white/20">
-									<Clock className="h-4 w-4" />
-									<span className="font-medium">{post.readTime || '5 min read'}</span>
+								<div className="flex items-center gap-1.5 sm:gap-2 px-2 sm:px-3 py-1 sm:py-1.5 bg-white/10 backdrop-blur-sm rounded-lg border border-white/20">
+									<Clock className="h-3 w-3 sm:h-4 sm:w-4" />
+									<span className="font-medium text-xs sm:text-sm">{post.readTime || '5 min read'}</span>
 								</div>
 							</div>
 
 							{/* Action Buttons */}
-							<div className="flex items-center gap-4">
-								<button onClick={copyLink} className="flex items-center gap-2 px-6 py-3 bg-white/20 backdrop-blur-sm text-white rounded-full hover:bg-white/30 transition-all duration-200 border border-white/30">
-									<Share2 className="h-5 w-5" />
-									<span className="font-medium">Copy link</span>
+							<div className="flex items-center gap-2 sm:gap-4 pt-2">
+								<button onClick={copyLink} className="flex items-center gap-1.5 sm:gap-2 px-4 sm:px-6 py-2 sm:py-3 bg-white/10 backdrop-blur-sm text-white rounded-full hover:bg-white/20 transition-all duration-200 border border-white/30 text-xs sm:text-sm">
+									<Share2 className="h-4 w-4 sm:h-5 sm:w-5 text-white" />
+									<span className="font-medium text-white">Copy link</span>
 								</button>
 							</div>
 							</div>
@@ -338,32 +333,15 @@ const BlogDetailPage: React.FC = () => {
 			</div>
 
 			{/* Main Content */}
-			<div className="container mx-auto px-4 py-8" style={{ marginTop: '20px' }}>
+			<div className="container mx-auto px-4 sm:px-6 py-4 sm:py-6 md:py-8" style={{ marginTop: '20px' }}>
 				<div className="max-w-6xl mx-auto">
-					{/* Breadcrumb + actions */}
-					<div className="flex items-center justify-between mb-2">
-						<nav className="text-sm" aria-label="Breadcrumb">
-							<ol className="flex items-center gap-2 text-[var(--color-text-secondary)]">
-								<li><a href="/" className="hover:text-[var(--color-primary-teal)]">Home</a></li>
-								<li aria-hidden>/</li>
-								<li><a href="/arion" className="hover:text-[var(--color-primary-teal)]">Arion</a></li>
-								<li aria-hidden>/</li>
-								<li className="text-[var(--color-text-primary)] font-medium line-clamp-1 max-w-[50vw]">{post?.title || '...'}</li>
-							</ol>
-						</nav>
-						<div className="flex items-center gap-2">
-							<button onClick={copyLink} className="btn-outline btn-sm flex items-center gap-2">
-								<Share2 className="h-4 w-4" /><span className="text-sm">Copy link</span>
-							</button>
-						</div>
-					</div>
-					<div className="grid grid-cols-3 gap-12">
+					<div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8 md:gap-12">
 						{/* Main Content */}
-						<article className="col-span-2 space-y-8" id="blog-article">
+						<article className="col-span-1 md:col-span-2 space-y-6 sm:space-y-8" id="blog-article">
 							{/* Content */}
-							<div className="bg-white dark:bg-gray-800 rounded-3xl shadow-2xl overflow-hidden">
-								<div className="p-8 p-12">
-									<div className="prose prose-lg max-w-none dark:prose-invert prose-headings:text-gray-900 dark:prose-headings:text-white prose-p:text-gray-700 dark:prose-p:text-gray-300 prose-strong:text-gray-900 dark:prose-strong:text-white prose-a:text-blue-600 dark:prose-a:text-blue-400 prose-img:rounded-xl prose-img:shadow-lg prose-pre:bg-gray-100 dark:prose-pre:bg-gray-800 prose-pre:rounded-xl prose-blockquote:border-l-4 prose-blockquote:border-blue-500 prose-blockquote:bg-blue-50 dark:prose-blockquote:bg-blue-900/20 prose-blockquote:px-6 prose-blockquote:py-4 prose-blockquote:rounded-r-xl">
+							<div className="bg-white dark:bg-gray-800 rounded-2xl sm:rounded-3xl shadow-2xl overflow-hidden">
+								<div className="p-4 sm:p-6 md:p-8 lg:p-12">
+									<div className="prose prose-sm sm:prose-base md:prose-lg max-w-none dark:prose-invert prose-headings:text-gray-900 dark:prose-headings:text-white prose-p:text-gray-700 dark:prose-p:text-gray-300 prose-strong:text-gray-900 dark:prose-strong:text-white prose-a:text-blue-600 dark:prose-a:text-blue-400 prose-img:rounded-xl prose-img:shadow-lg prose-pre:bg-gray-100 dark:prose-pre:bg-gray-800 prose-pre:rounded-xl prose-blockquote:border-l-4 prose-blockquote:border-blue-500 prose-blockquote:bg-blue-50 dark:prose-blockquote:bg-blue-900/20 prose-blockquote:px-4 sm:prose-blockquote:px-6 prose-blockquote:py-3 sm:prose-blockquote:py-4 prose-blockquote:rounded-r-xl">
 										{post.content ? (
 											<div dangerouslySetInnerHTML={{ __html: post.content }} />
 										) : (
@@ -387,27 +365,27 @@ const BlogDetailPage: React.FC = () => {
 								});
 								
 								return embedUrl ? (
-									<div className="bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-900 rounded-3xl shadow-2xl overflow-hidden border border-gray-200 dark:border-gray-700">
-										<div className="p-6 p-8">
+									<div className="bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-900 rounded-2xl sm:rounded-3xl shadow-2xl overflow-hidden border border-gray-200 dark:border-gray-700">
+										<div className="p-4 sm:p-6 md:p-8">
 											{/* Video Header */}
-											<div className="flex items-center justify-between mb-6">
-												<div className="flex items-center gap-3">
-													<div className="w-12 h-12 bg-red-600 rounded-xl flex items-center justify-center shadow-lg">
-														<Play className="h-6 w-6 text-white ml-1" />
+											<div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-0 mb-4 sm:mb-6">
+												<div className="flex items-center gap-2 sm:gap-3">
+													<div className="w-10 h-10 sm:w-12 sm:h-12 bg-red-600 rounded-xl flex items-center justify-center shadow-lg">
+														<Play className="h-5 w-5 sm:h-6 sm:w-6 text-white ml-1" />
 													</div>
 													<div>
-														<h3 className="text-xl font-medium text-gray-900 dark:text-white">Watch Video</h3>
-														<p className="text-sm text-gray-600 dark:text-gray-400">Related video content</p>
+														<h3 className="text-lg sm:text-xl font-medium text-gray-900 dark:text-white">Watch Video</h3>
+														<p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400">Related video content</p>
 													</div>
 												</div>
 												<a
 													href={normalizedUrl}
 													target="_blank"
 													rel="noopener noreferrer"
-													className="inline-flex items-center gap-2 px-4 py-2 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-lg hover:bg-gray-100 dark:hover:bg-gray-600 transition-all duration-200 shadow-md hover:shadow-lg border border-gray-200 dark:border-gray-600"
+													className="inline-flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-2 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-lg hover:bg-gray-100 dark:hover:bg-gray-600 transition-all duration-200 shadow-md hover:shadow-lg border border-gray-200 dark:border-gray-600 text-xs sm:text-sm"
 												>
-													<span className="text-sm font-medium">Watch on YouTube</span>
-													<ExternalLink className="h-4 w-4" />
+													<span className="font-medium">Watch on YouTube</span>
+													<ExternalLink className="h-3 w-3 sm:h-4 sm:w-4" />
 												</a>
 											</div>
 											
@@ -429,23 +407,23 @@ const BlogDetailPage: React.FC = () => {
 
 							{/* Related Articles */}
 							{relatedPosts.length > 0 && (
-							<div className="bg-[var(--color-background-surface)] rounded-3xl shadow-2xl overflow-hidden border border-[var(--color-divider-gray)]">
-								<div className="px-8 px-12 py-8 border-b border-[var(--color-divider-gray)]">
-									<h3 className="text-3xl font-medium text-[var(--color-text-primary)] flex items-center gap-3">
-										<span className="w-1 h-8 bg-black dark:bg-white rounded-full"></span>
+							<div className="bg-[var(--color-background-surface)] rounded-2xl sm:rounded-3xl shadow-2xl overflow-hidden border border-[var(--color-divider-gray)]">
+								<div className="px-4 sm:px-6 md:px-8 lg:px-12 py-4 sm:py-6 md:py-8 border-b border-[var(--color-divider-gray)]">
+									<h3 className="text-xl sm:text-2xl md:text-3xl font-medium text-[var(--color-text-primary)] flex items-center gap-2 sm:gap-3">
+										<span className="w-1 h-6 sm:h-8 bg-black dark:bg-white rounded-full"></span>
 										{relatedPosts.some(r => r.category === post?.category) ? 'Related Articles' : 'You Might Also Like'}
 									</h3>
 									</div>
-									<div className="p-8 p-12">
-										<div className="grid grid-cols-2 gap-8">
+									<div className="p-4 sm:p-6 md:p-8 lg:p-12">
+										<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 md:gap-8">
                             {relatedPosts.map(r => (
 												<article 
 													key={r.id} 
 													className="group cursor-pointer"
 													onClick={() => navigate(`/arion/${r.id}`)}
 												>
-													<div className="bg-[var(--color-background-surface)] rounded-2xl overflow-hidden hover:shadow-xl transition-all duration-300 group-hover:scale-[1.02] border border-[var(--color-divider-gray)]">
-														<div className="relative h-56">
+													<div className="bg-[var(--color-background-surface)] rounded-xl sm:rounded-2xl overflow-hidden hover:shadow-xl transition-all duration-300 group-hover:scale-[1.02] border border-[var(--color-divider-gray)]">
+														<div className="relative h-48 sm:h-56">
 															<img 
 																src={getBlogPostImage(r.image, r.id, r.category)}
 																onError={(e) => handleImageError(e, r.id, r.category)} 
@@ -453,24 +431,24 @@ const BlogDetailPage: React.FC = () => {
 																className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" 
 															/>
 															<div className="absolute inset-0 bg-black/40" />
-															<div className="absolute top-4 left-4">
-																<span className="px-3 py-1 bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm text-xs font-medium rounded-full text-gray-700 dark:text-gray-300">
+															<div className="absolute top-3 sm:top-4 left-3 sm:left-4">
+																<span className="px-2 sm:px-3 py-1 bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm text-xs font-medium rounded-full text-gray-700 dark:text-gray-300">
 																	{r.category}
 																</span>
 															</div>
 														</div>
-														<div className="p-6">
-															<div className="flex items-center gap-3 text-sm text-gray-500 dark:text-gray-400 mb-3">
+														<div className="p-4 sm:p-6">
+															<div className="flex items-center gap-2 sm:gap-3 text-xs sm:text-sm text-gray-500 dark:text-gray-400 mb-2 sm:mb-3">
 																<span>{new Date(r.date).toLocaleDateString()}</span>
 																<span>•</span>
 																<span>{r.readTime}</span>
 															</div>
-															<h4 className="font-medium text-[var(--color-text-primary)] text-lg leading-snug group-hover:text-[var(--color-primary-teal)] transition-colors mb-2">
+															<h4 className="font-medium text-[var(--color-text-primary)] text-base sm:text-lg leading-snug group-hover:text-[var(--color-primary-teal)] transition-colors mb-2">
 																	{r.title}
 															</h4>
-															<div className="flex items-center text-[var(--color-primary-teal)] text-sm font-medium group-hover:gap-2 transition-all">
+															<div className="flex items-center text-[var(--color-primary-teal)] text-xs sm:text-sm font-medium group-hover:gap-2 transition-all">
 																<span>Read more</span>
-																<ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
+																<ArrowRight className="h-3 w-3 sm:h-4 sm:w-4 group-hover:translate-x-1 transition-transform" />
                                     </div>
                                         </div>
                                     </div>
@@ -484,35 +462,35 @@ const BlogDetailPage: React.FC = () => {
 						{/* Inline ad removed; bottom ad remains below */}
 
 						{/* Bottom Ad Placement */}
-						<div className="bg-[var(--color-background-surface)] rounded-3xl shadow-2xl p-8 p-12 border border-[var(--color-divider-gray)]">
+						<div className="bg-[var(--color-background-surface)] rounded-2xl sm:rounded-3xl shadow-2xl p-4 sm:p-6 md:p-8 lg:p-12 border border-[var(--color-divider-gray)]">
 							<AdSlot placement="blog_bottom" category="blog_general" />
 						</div>
 						</article>
 
 						{/* Sidebar */}
-						<aside className="space-y-8">
+						<aside className="space-y-4 sm:space-y-6 md:space-y-8">
 							{/* Author Card */}
-							<div className="bg-[var(--color-background-surface)] rounded-3xl shadow-2xl p-8 border border-[var(--color-divider-gray)]">
+							<div className="bg-[var(--color-background-surface)] rounded-2xl sm:rounded-3xl shadow-2xl p-4 sm:p-6 md:p-8 border border-[var(--color-divider-gray)]">
 								<div className="text-center">
-									<div className="w-20 h-20 bg-black dark:bg-white rounded-full flex items-center justify-center text-white dark:text-black font-medium text-2xl mx-auto mb-4 shadow-lg">
+									<div className="w-16 h-16 sm:w-20 sm:h-20 bg-black dark:bg-white rounded-full flex items-center justify-center text-white dark:text-black font-medium text-xl sm:text-2xl mx-auto mb-3 sm:mb-4 shadow-lg">
 										{post.author.charAt(0)}
 									</div>
-									<h4 className="text-xl font-medium text-[var(--color-text-primary)] mb-2">{post.author}</h4>
-									<p className="text-sm text-[var(--color-text-secondary)] mb-4">Author & Healthcare Expert</p>
-									<p className="text-[var(--color-text-secondary)] text-sm leading-relaxed">
+									<h4 className="text-lg sm:text-xl font-medium text-[var(--color-text-primary)] mb-2">{post.author}</h4>
+									<p className="text-xs sm:text-sm text-[var(--color-text-secondary)] mb-3 sm:mb-4">Author & Healthcare Expert</p>
+									<p className="text-[var(--color-text-secondary)] text-xs sm:text-sm leading-relaxed">
 										Insights and analysis on African healthcare markets, startups, investment, and policy.
 									</p>
                         </div>
                     </div>
 
 							{/* Sponsored Content or Announcements */}
-							<div className="bg-[var(--color-background-surface)] rounded-3xl shadow-2xl overflow-hidden border border-[var(--color-divider-gray)]">
-								<div className="px-8 py-6 border-b border-[var(--color-divider-gray)]">
-									<h3 className="font-medium text-[var(--color-text-primary)] text-lg">
+							<div className="bg-[var(--color-background-surface)] rounded-2xl sm:rounded-3xl shadow-2xl overflow-hidden border border-[var(--color-divider-gray)]">
+								<div className="px-4 sm:px-6 md:px-8 py-4 sm:py-5 md:py-6 border-b border-[var(--color-divider-gray)]">
+									<h3 className="font-medium text-[var(--color-text-primary)] text-base sm:text-lg">
 										{showAds ? 'Sponsored' : 'Announcements'}
 									</h3>
 								</div>
-								<div className="p-8">
+								<div className="p-4 sm:p-6 md:p-8">
 									{showAds ? (
 										<AdSlot placement="blog_sidebar" category="blog_general" />
 									) : (
@@ -522,12 +500,12 @@ const BlogDetailPage: React.FC = () => {
 							</div>
 
 							{/* About Medarion */}
-							<div className="bg-[var(--color-background-surface)] rounded-3xl shadow-2xl p-8 border border-[var(--color-divider-gray)]">
-								<h3 className="font-medium text-[var(--color-text-primary)] text-lg mb-4">About Medarion</h3>
-								<p className="text-[var(--color-text-secondary)] text-sm leading-relaxed mb-4">
+							<div className="bg-[var(--color-background-surface)] rounded-2xl sm:rounded-3xl shadow-2xl p-4 sm:p-6 md:p-8 border border-[var(--color-divider-gray)]">
+								<h3 className="font-medium text-[var(--color-text-primary)] text-base sm:text-lg mb-3 sm:mb-4">About Medarion</h3>
+								<p className="text-[var(--color-text-secondary)] text-xs sm:text-sm leading-relaxed mb-3 sm:mb-4">
 									Insights and analysis on African healthcare markets, startups, investment, and policy.
 								</p>
-								<button className="w-full btn-primary-elevated py-3 px-6 rounded-xl font-medium hover:opacity-90 transition-all duration-200 shadow-lg">
+								<button className="w-full btn-primary-elevated py-2.5 sm:py-3 px-4 sm:px-6 rounded-lg sm:rounded-xl font-medium hover:opacity-90 transition-all duration-200 shadow-lg text-sm sm:text-base">
 									Learn More
 								</button>
 							</div>

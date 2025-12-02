@@ -107,17 +107,14 @@ const SiteHeader: React.FC<SiteHeaderProps> = ({ currentPage }) => {
 		? 'Admin'
 		: ((profile as any)?.account_tier || 'Free') as string;
 
-	// Check if current page has white background in light mode (auth, signup pages)
-	const isWhiteBackgroundPage = currentPage === 'auth' || currentPage === 'signup' || window.location.pathname === '/auth' || window.location.pathname === '/signup';
+	// Check if current page has a hero section (auth page now has hero section)
+	const hasHeroSection = currentPage === 'auth' || currentPage === 'home' || currentPage === 'contact' || currentPage === 'blog' || currentPage === 'blog-detail' || window.location.pathname === '/auth';
 
 	// Compute header style: transparent at top, glassy when scrolled
-	const headerStyle: React.CSSProperties = scrolled || (isWhiteBackgroundPage && theme === 'light')
+	const headerStyle: React.CSSProperties = scrolled
 		? {
-				// When scrolled or on white background pages (light mode only): black background
-				// Dark mode keeps original behavior (only scrolled matters)
-				background: isWhiteBackgroundPage && theme === 'light'
-					? 'rgba(0,0,0,0.95)'
-					: theme === 'dark' 
+				// When scrolled: solid background
+				background: theme === 'dark' 
 						? 'rgba(18, 18, 18, 0.90)'
 						: 'rgba(255,255,255,0.95)',
 				backdropFilter: 'blur(20px)',
@@ -136,11 +133,11 @@ const SiteHeader: React.FC<SiteHeaderProps> = ({ currentPage }) => {
 				transition: 'background 200ms ease, backdrop-filter 200ms ease'
 		  };
 
-	// Section style for rounded containers - black/white based on theme
-	const sectionStyle: React.CSSProperties = scrolled || (isWhiteBackgroundPage && theme === 'light')
+	// Section style for rounded containers - transparent on hero sections, solid when scrolled
+	const sectionStyle: React.CSSProperties = scrolled
 		? theme === 'dark'
 			? {
-					// Dark mode: original behavior - white background when scrolled
+					// Dark mode when scrolled: white background
 					background: 'rgba(255,255,255,0.90)',
 					backdropFilter: 'blur(20px)',
 					WebkitBackdropFilter: 'blur(20px)',
@@ -148,7 +145,7 @@ const SiteHeader: React.FC<SiteHeaderProps> = ({ currentPage }) => {
 					transition: 'background 200ms ease, backdrop-filter 200ms ease'
 			  }
 			: {
-					// Light mode when scrolled or on white background pages: black background with white text
+					// Light mode when scrolled: black background with white text
 					background: 'rgba(0,0,0,0.90)',
 					backdropFilter: 'blur(20px)',
 					WebkitBackdropFilter: 'blur(20px)',
@@ -156,7 +153,7 @@ const SiteHeader: React.FC<SiteHeaderProps> = ({ currentPage }) => {
 					transition: 'background 200ms ease, backdrop-filter 200ms ease'
 			  }
 		: {
-				// At top: transparent glassy effect
+				// At top on hero sections: transparent glassy effect (matches other pages)
 				background: 'rgba(255,255,255,0.10)',
 				backdropFilter: 'blur(10px)',
 				WebkitBackdropFilter: 'blur(10px)',
@@ -187,6 +184,7 @@ const SiteHeader: React.FC<SiteHeaderProps> = ({ currentPage }) => {
 			className="relative z-50"
 			style={{
 				padding: '0',
+				margin: '0',
 				background: 'transparent'
 			}}
 		>
@@ -194,7 +192,7 @@ const SiteHeader: React.FC<SiteHeaderProps> = ({ currentPage }) => {
 			<div className={`page-container flex items-center justify-between gap-2 ${isMobile ? 'hidden' : 'flex'}`} style={{ paddingTop: '8px', paddingBottom: '8px', flexWrap: 'nowrap', minWidth: 0 }}>
 				{/* Section 1: Logo (left) */}
 				<div 
-					className="flex items-center px-4 h-12 rounded-xl transition-all flex-shrink-0"
+					className="flex items-center px-4 h-10 rounded-xl transition-all flex-shrink-0"
 					style={sectionStyle}
 				>
 					<a href="/" className="flex items-center gap-2">
@@ -203,7 +201,7 @@ const SiteHeader: React.FC<SiteHeaderProps> = ({ currentPage }) => {
 							alt="Medarion" 
 							className="h-8 transition-all"
 							style={{
-								filter: (scrolled || (isWhiteBackgroundPage && theme === 'light'))
+							filter: scrolled
 									? (theme === 'dark' ? 'brightness(0)' : 'brightness(0) invert(1)')
 									: 'brightness(0) invert(1)', // White logo when transparent
 							}}
@@ -213,24 +211,12 @@ const SiteHeader: React.FC<SiteHeaderProps> = ({ currentPage }) => {
 
 				{/* Section 2: Navigation (center) - Desktop only */}
 				<nav 
-					className="flex items-center gap-1 px-4 h-12 rounded-xl transition-all flex-shrink-0"
+					className="flex items-center gap-1 px-4 h-10 rounded-xl transition-all flex-shrink-0"
 					style={sectionStyle}
 				>
 					<button
 						className={`px-3 py-1.5 transition-all font-medium text-sm ${
-							(scrolled || (isWhiteBackgroundPage && theme === 'light'))
-								? theme === 'dark' 
-									? 'text-gray-900 hover:opacity-70' 
-									: 'text-white hover:opacity-80' 
-								: 'text-white hover:opacity-80'
-						}`}
-						onClick={() => nav('about')}
-					>
-						About
-					</button>
-					<button
-						className={`px-3 py-1.5 transition-all font-medium text-sm ${
-							(scrolled || (isWhiteBackgroundPage && theme === 'light'))
+							scrolled
 								? theme === 'dark' 
 									? 'text-gray-900 hover:opacity-70' 
 									: 'text-white hover:opacity-80' 
@@ -242,7 +228,7 @@ const SiteHeader: React.FC<SiteHeaderProps> = ({ currentPage }) => {
 					</button>
 					<button
 						className={`px-3 py-1.5 transition-all font-medium text-sm ${
-							(scrolled || (isWhiteBackgroundPage && theme === 'light'))
+							scrolled
 								? theme === 'dark' 
 									? 'text-gray-900 hover:opacity-70' 
 									: 'text-white hover:opacity-80' 
@@ -254,7 +240,7 @@ const SiteHeader: React.FC<SiteHeaderProps> = ({ currentPage }) => {
 					</button>
 					<button
 						className={`px-3 py-1.5 transition-all font-medium text-sm ${
-							(scrolled || (isWhiteBackgroundPage && theme === 'light'))
+							scrolled
 								? theme === 'dark' 
 									? 'text-gray-900 hover:opacity-70' 
 									: 'text-white hover:opacity-80' 
@@ -268,32 +254,35 @@ const SiteHeader: React.FC<SiteHeaderProps> = ({ currentPage }) => {
 
 				{/* Section 3: Actions (right) */}
 				<div 
-					className="flex items-center gap-2 px-4 h-12 rounded-xl transition-all flex-shrink-0"
-					style={sectionStyle}
+					className="flex items-center gap-2 flex-shrink-0"
 				>
-					<button className={`px-3 py-1.5 transition-all font-medium text-sm ${
-						(scrolled || (isWhiteBackgroundPage && theme === 'light'))
-							? theme === 'dark' 
-								? 'text-gray-900 hover:opacity-70' 
-								: 'text-white hover:opacity-80' 
-							: 'text-white hover:opacity-80'
-					}`} onClick={toggleTheme} aria-label="Toggle theme">
+					<button
+						className="flex items-center justify-center w-10 h-10 rounded-xl transition-all"
+					style={sectionStyle}
+						onClick={toggleTheme}
+						aria-label="Toggle theme"
+					>
+						<span style={{ 
+							fontSize: '18px',
+							color: scrolled
+								? (theme === 'dark' ? 'rgb(17, 24, 39)' : 'white')
+								: 'white'
+						}}>
 						{theme === 'dark' ? '☀️' : '🌙'}
+						</span>
 					</button>
-					<button className={`px-4 py-1.5 rounded-lg hover:opacity-90 transition-opacity font-medium text-sm ${
-						(scrolled || (isWhiteBackgroundPage && theme === 'light')) && theme === 'light'
-							? 'bg-white text-black'
-							: 'bg-[var(--color-text-primary)] text-[var(--color-background-default)]'
-					}`} onClick={handleSignInClick}>
+					<button 
+						className={`px-4 h-10 rounded-xl hover:opacity-90 transition-opacity font-medium text-sm flex-shrink-0 flex items-center justify-center text-white`}
+						style={sectionStyle}
+						onClick={handleSignInClick}
+					>
 						{user && profile ? 'Dashboard' : 'Sign in'}
 					</button>
 				</div>
 			</div>
 
 			{/* Mobile Header - Shown on mobile (< 768px) */}
-			<div className={`page-container ${isMobile ? 'flex' : 'hidden'} flex-col gap-2`} style={{ paddingTop: '8px', paddingBottom: '8px' }}>
-				{/* Mobile Header Row 1: Hamburger + Logo + Actions */}
-				<div className="flex items-center justify-between gap-2 w-full" style={{ flexWrap: 'nowrap' }}>
+			<div className={`${isMobile ? 'flex' : 'hidden'} items-center justify-between gap-2 w-full`} style={{ paddingTop: '8px', paddingBottom: '8px', paddingLeft: '12px', paddingRight: '12px', marginTop: '0', marginRight: '0', flexWrap: 'nowrap' }}>
 					{/* Left: Hamburger + Logo */}
 					<div className="flex items-center gap-2 flex-shrink-0">
 						<button 
@@ -304,29 +293,29 @@ const SiteHeader: React.FC<SiteHeaderProps> = ({ currentPage }) => {
 						>
 							<div className="flex flex-col gap-1">
 								<span className="block w-5 h-[2px] bg-current" style={{ 
-									color: (scrolled || (isWhiteBackgroundPage && theme === 'light'))
+								color: scrolled
 										? (theme === 'dark' ? 'rgb(17, 24, 39)' : 'white')
 										: 'white'
 								}}></span>
 								<span className="block w-5 h-[2px] bg-current" style={{ 
-									color: (scrolled || (isWhiteBackgroundPage && theme === 'light'))
+								color: scrolled
 										? (theme === 'dark' ? 'rgb(17, 24, 39)' : 'white')
 										: 'white'
 								}}></span>
 								<span className="block w-5 h-[2px] bg-current" style={{ 
-									color: (scrolled || (isWhiteBackgroundPage && theme === 'light'))
+								color: scrolled
 										? (theme === 'dark' ? 'rgb(17, 24, 39)' : 'white')
 										: 'white'
 								}}></span>
 							</div>
 						</button>
-						<a href="/" className="flex items-center gap-2 flex-shrink-0">
+					<a href="/" className="flex items-center gap-2 flex-shrink-0 px-3 h-10 rounded-xl transition-all" style={sectionStyle}>
 							<img 
 								src="/images/logo-light.png" 
 								alt="Medarion" 
 								className="h-7 transition-all"
 								style={{
-									filter: (scrolled || (isWhiteBackgroundPage && theme === 'light'))
+								filter: scrolled
 										? (theme === 'dark' ? 'brightness(0)' : 'brightness(0) invert(1)')
 										: 'brightness(0) invert(1)', // White logo when transparent
 								}}
@@ -344,7 +333,7 @@ const SiteHeader: React.FC<SiteHeaderProps> = ({ currentPage }) => {
 					>
 							<span style={{ 
 								fontSize: '18px',
-								color: (scrolled || (isWhiteBackgroundPage && theme === 'light'))
+							color: scrolled
 									? (theme === 'dark' ? 'rgb(17, 24, 39)' : 'white')
 									: 'white'
 							}}>
@@ -352,48 +341,15 @@ const SiteHeader: React.FC<SiteHeaderProps> = ({ currentPage }) => {
 							</span>
 						</button>
 						<button 
-							className={`px-3 py-1.5 rounded-lg hover:opacity-90 transition-opacity font-medium text-sm flex-shrink-0 ${
-								(scrolled || (isWhiteBackgroundPage && theme === 'light')) && theme === 'light'
-									? 'bg-white text-black'
-									: 'bg-[var(--color-text-primary)] text-[var(--color-background-default)]'
-							}`}
+						className={`w-10 h-10 rounded-xl hover:opacity-90 transition-opacity font-medium text-xs flex-shrink-0 flex items-center justify-center text-white`}
+						style={sectionStyle}
 							onClick={handleSignInClick}
 						>
-							{user && profile ? 'Dashboard' : 'Sign in'}
+						<span className="truncate px-1">
+							{user && profile ? 'Dash' : 'Sign'}
+						</span>
 					</button>
-					</div>
 				</div>
-
-				{/* Mobile Header Row 2: Breadcrumb Navigation */}
-				{breadcrumbs.length > 1 && (
-					<div className="flex items-center gap-1 overflow-x-auto scrollbar-hide" style={{ fontSize: '12px' }}>
-						{breadcrumbs.map((crumb, index) => (
-							<React.Fragment key={crumb.path}>
-								{index > 0 && (
-									<span style={{ color: (scrolled || (isWhiteBackgroundPage && theme === 'light')) ? (theme === 'dark' ? 'rgb(107, 114, 128)' : 'rgba(255,255,255,0.6)') : 'rgba(255,255,255,0.6)' }} className="mx-1">/</span>
-								)}
-								{index === breadcrumbs.length - 1 ? (
-									<span style={{ 
-										color: (scrolled || (isWhiteBackgroundPage && theme === 'light')) ? (theme === 'dark' ? 'rgb(17, 24, 39)' : 'white') : 'white',
-										fontWeight: 500
-									}} className="truncate">
-										{crumb.label}
-									</span>
-								) : (
-									<a 
-										href={crumb.path}
-										style={{ 
-											color: (scrolled || (isWhiteBackgroundPage && theme === 'light')) ? (theme === 'dark' ? 'rgb(107, 114, 128)' : 'rgba(255,255,255,0.8)') : 'rgba(255,255,255,0.8)',
-										}}
-										className="hover:opacity-80 transition-opacity truncate"
-									>
-										{crumb.label}
-									</a>
-								)}
-							</React.Fragment>
-						))}
-					</div>
-				)}
 			</div>
 			{/* Mobile menu overlay - Cursor.com style */}
 			{open && isMobile && (
@@ -415,17 +371,6 @@ const SiteHeader: React.FC<SiteHeaderProps> = ({ currentPage }) => {
 							}}
 						>
 							<div className="flex flex-col p-2">
-								<button
-									className={`text-left py-3 px-4 rounded-xl transition-colors ${
-										theme === 'dark' 
-											? 'hover:bg-black/5 text-gray-900' 
-											: 'hover:bg-white/10 text-white'
-									} ${isActive('about') ? 'font-medium' : 'font-normal'}`}
-									onClick={() => { nav('about'); closeMenu(); }}
-									style={{ fontSize: '14px' }}
-								>
-									About
-								</button>
 								<button
 									className={`text-left py-3 px-4 rounded-xl transition-colors ${
 										theme === 'dark' 

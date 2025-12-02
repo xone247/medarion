@@ -14,6 +14,21 @@ export function useModules() {
 
   useEffect(() => {
     const fetchModules = async () => {
+      // Check if user is authenticated before making API call
+      const authToken = localStorage.getItem('medarionAuthToken') ||
+                       localStorage.getItem('medarionSessionToken') ||
+                       localStorage.getItem('auth_token') || 
+                       localStorage.getItem('token') || 
+                       localStorage.getItem('authToken');
+      
+      // If no auth token, skip API call and use fallback (for public pages)
+      if (!authToken || authToken === 'test-token') {
+        setModules(AVAILABLE_MODULES);
+        setIsDbEnabled(false);
+        setLoading(false);
+        return;
+      }
+      
       try {
         setLoading(true);
         setError(null);

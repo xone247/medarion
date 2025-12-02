@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { DollarSign, Filter, Search, Calendar, MapPin, Building2, Users, Download, FileText, Eye, Bot, FileDown } from 'lucide-react';
 import MonthlyDealflowChart from '../components/MonthlyDealflowChart';
 import InteractiveMap from '../components/InteractiveMap';
-import VCInvestmentOverTimeChart from '../components/VCInvestmentOverTimeChart';
+import DealsBySectorChart from '../components/DealsBySectorChart';
 import { summarizeDeals } from '../services/ai';
 import { apiService } from '../services/apiService';
 import { badgeClassesFromVar, dealStageToVar } from '../lib/badges';
@@ -37,7 +37,7 @@ const DealsPage = () => {
   const [selectedSector, setSelectedSector] = useState('All');
   const [selectedStage, setSelectedStage] = useState('All');
   const [selectedCountry, setSelectedCountry] = useState('All');
-  const [timeframe, setTimeframe] = useState<'3m'|'6m'|'12m'|'24m'|'all'>('12m');
+  const [timeframe, setTimeframe] = useState<'3m'|'6m'|'12m'|'24m'|'all'>('all');
   const [showExportModal, setShowExportModal] = useState(false);
   const { profile } = useAuth();
   const canExport = !!(profile && (profile.is_admin || (profile as any).account_tier === 'enterprise'));
@@ -84,6 +84,8 @@ const DealsPage = () => {
             company_logo: companyLogoMap.get((deal.company_name || '').toLowerCase().trim()) || null,
             status: deal.status || 'closed',
           }));
+          console.log('[DealsPage] Loaded deals from API:', transformed.length);
+          console.log('[DealsPage] Sample deals:', transformed.slice(0, 5).map(d => ({ name: d.company_name, date: d.date, stage: d.stage })));
           setDeals(transformed);
         } else {
           setDeals([]);
@@ -116,12 +118,12 @@ const DealsPage = () => {
       const sector = sp.get('sector') || 'All';
       const stage = sp.get('stage') || 'All';
       const country = sp.get('country') || 'All';
-      const tf = (sp.get('tf') as any) || '12m';
+      const tf = (sp.get('tf') as any) || 'all';
       setSearchTerm(q);
       setSelectedSector(sector);
       setSelectedStage(stage);
       setSelectedCountry(country);
-      setTimeframe(['3m','6m','12m','24m','all'].includes(tf) ? (tf as any) : '12m');
+      setTimeframe(['3m','6m','12m','24m','all'].includes(tf) ? (tf as any) : 'all');
     } catch {}
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -134,26 +136,42 @@ const DealsPage = () => {
       selectedSector !== 'All' ? sp.set('sector', selectedSector) : sp.delete('sector');
       selectedStage !== 'All' ? sp.set('stage', selectedStage) : sp.delete('stage');
       selectedCountry !== 'All' ? sp.set('country', selectedCountry) : sp.delete('country');
-      timeframe !== '12m' ? sp.set('tf', timeframe) : sp.delete('tf');
+      timeframe !== 'all' ? sp.set('tf', timeframe) : sp.delete('tf');
       const next = `${window.location.pathname}?${sp.toString()}`;
       window.history.replaceState({}, '', next);
     } catch {}
   }, [searchTerm, selectedSector, selectedStage, selectedCountry, timeframe]);
 
   const filteredDeals = useMemo(() => {
-    const monthsBack = timeframe === '3m' ? 3 : timeframe === '6m' ? 6 : timeframe === '12m' ? 12 : timeframe === '24m' ? 24 : 120;
-    const cutoff = new Date(); cutoff.setMonth(cutoff.getMonth() - monthsBack);
-    return deals.filter((deal: Deal) => {
+    let cutoff: Date | null = null;
+    if (timeframe !== 'all') {
+      const monthsBack = timeframe === '3m' ? 3 : timeframe === '6m' ? 6 : timeframe === '12m' ? 12 : timeframe === '24m' ? 24 : 120;
+      cutoff = new Date();
+      cutoff.setMonth(cutoff.getMonth() - monthsBack);
+      cutoff.setHours(0, 0, 0, 0); // Set to start of day for accurate comparison
+    }
+    const filtered = deals.filter((deal: Deal) => {
       const matchesSearch = deal.company_name.toLowerCase().includes(searchTerm.toLowerCase()) || (deal.investors || []).some((inv: string) => inv.toLowerCase().includes(searchTerm.toLowerCase()));
       const matchesSector = selectedSector === 'All' || deal.sector === selectedSector;
       const matchesStage = selectedStage === 'All' || deal.stage === selectedStage;
       const matchesCountry = selectedCountry === 'All' || deal.country === selectedCountry;
-      const matchesTime = timeframe === 'all' || !deal.date ? true : (new Date(deal.date) >= cutoff);
+      let matchesTime = true;
+      if (timeframe !== 'all' && deal.date && cutoff) {
+        const dealDate = new Date(deal.date);
+        dealDate.setHours(0, 0, 0, 0);
+        matchesTime = dealDate >= cutoff;
+      }
       return matchesSearch && matchesSector && matchesStage && matchesCountry && matchesTime;
     });
+    console.log('[DealsPage] Filtered deals:', filtered.length, 'from', deals.length, 'total. Timeframe:', timeframe, cutoff ? 'Cutoff: ' + cutoff.toISOString() : 'No cutoff');
+    return filtered;
   }, [deals, searchTerm, selectedSector, selectedStage, selectedCountry, timeframe]);
 
   const totalValue = useMemo(() => filteredDeals.reduce((sum: number, deal: Deal) => sum + (deal.value_usd || 0), 0), [filteredDeals]);
+
+  const exportExcel = () => {
+    exportToExcel(filteredDeals, 'deals-export', 'Deals');
+  };
 
   const exportCSV = () => {
     try {
@@ -189,7 +207,7 @@ const DealsPage = () => {
     setSelectedSector(v.sector || 'All');
     setSelectedStage(v.stage || 'All');
     setSelectedCountry(v.country || 'All');
-    setTimeframe((v.tf as any) || '12m');
+    setTimeframe((v.tf as any) || 'all');
   };
 
   const deleteView = () => {};
@@ -214,132 +232,197 @@ const DealsPage = () => {
   };
 
   return (
-    <div className="w-full space-y-4">
-      {/* Action Buttons */}
-      <div className="flex flex-wrap gap-2 items-center justify-end">
-        {canAI && <button onClick={runAISummary} className="btn-primary-elevated flex items-center gap-2 px-4 py-2 rounded-lg"><Bot className="h-4 w-4" /><span className="text-sm">AI Summary</span></button>}
+    <div className="w-full space-y-3 sm:space-y-4 md:space-y-6 p-2.5 sm:p-3 md:p-4 lg:p-6">
+      {/* Top Bar: Search and Actions - Mobile Optimized */}
+      <div className="card-glass p-3 sm:p-4 rounded-lg">
+        <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4">
+          {/* Search Bar - Prominent */}
+          <div className="relative flex-1 min-w-0">
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 sm:h-5 sm:w-5 text-slate-400 dark:text-slate-500" />
+            <input 
+              type="text" 
+              placeholder="Search companies or investors..." 
+              value={searchTerm} 
+              onChange={(e) => setSearchTerm(e.target.value)} 
+              className="w-full pl-10 sm:pl-12 pr-3 py-2.5 sm:py-3 text-sm sm:text-base bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-lg text-slate-700 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-cyan-500/30 focus:border-cyan-500/50 transition-all" 
+            />
+          </div>
+          {/* Action Buttons */}
+          <div className="flex flex-wrap items-center gap-1.5 sm:gap-2 justify-end">
+            {canAI && (
+            <button 
+              onClick={runAISummary} 
+              className="btn-primary-elevated flex items-center justify-center gap-1.5 sm:gap-2 px-3 sm:px-3 py-2 sm:py-2.5 rounded-lg text-xs sm:text-sm flex-shrink-0 min-w-[60px] sm:min-w-0 h-[40px] sm:h-auto"
+              title="AI Summary"
+            >
+              <Bot className="h-4 w-4" />
+              <span className="hidden sm:inline">AI Summary</span>
+            </button>
+            )}
             {canExport && (
               <>
-            <button onClick={copyJSON} className="btn-outline px-4 py-2 rounded-lg">Copy</button>
-            <button onClick={exportExcel} className="btn-outline px-4 py-2 rounded-lg flex items-center gap-2"><FileDown className="h-4 w-4"/>Export Excel</button>
-            <button onClick={exportJSON} className="btn-outline px-4 py-2 rounded-lg flex items-center gap-2"><FileDown className="h-4 w-4"/>Export JSON</button>
-            <button onClick={exportCSV} className="btn-outline px-4 py-2 rounded-lg flex items-center gap-2"><FileDown className="h-4 w-4"/>Export CSV</button>
+                <button onClick={exportExcel} className="btn-outline px-3 sm:px-3 py-2 sm:py-2.5 rounded-lg flex items-center justify-center gap-1.5 text-xs sm:text-sm flex-shrink-0 min-w-[60px] sm:min-w-0 h-[40px] sm:h-auto" title="Export Excel">
+                  <FileDown className="h-3.5 w-3.5 sm:h-4 sm:w-4 flex-shrink-0"/>
+                  <span className="hidden sm:inline">Excel</span>
+                  <span className="sm:hidden">XLS</span>
+                </button>
+                <button onClick={exportJSON} className="btn-outline px-3 sm:px-3 py-2 sm:py-2.5 rounded-lg flex items-center justify-center gap-1.5 text-xs sm:text-sm flex-shrink-0 min-w-[60px] sm:min-w-0 h-[40px] sm:h-auto" title="Export JSON">
+                  <FileDown className="h-3.5 w-3.5 sm:h-4 sm:w-4 flex-shrink-0"/>
+                  <span className="hidden sm:inline">JSON</span>
+                  <span className="sm:hidden">JSON</span>
+                </button>
+                <button onClick={exportCSV} className="btn-outline px-3 sm:px-3 py-2 sm:py-2.5 rounded-lg flex items-center justify-center gap-1.5 text-xs sm:text-sm flex-shrink-0 min-w-[60px] sm:min-w-0 h-[40px] sm:h-auto" title="Export CSV">
+                  <FileDown className="h-3.5 w-3.5 sm:h-4 sm:w-4 flex-shrink-0"/>
+                  <span className="hidden sm:inline">CSV</span>
+                  <span className="sm:hidden">CSV</span>
+                </button>
               </>
             )}
+          </div>
+        </div>
       </div>
 
       {aiSummary && (
-        <div className="card-glass p-4 shadow-soft">
-          <div className="flex items-center justify-between">
-            <h3 className="font-medium text-[var(--color-text-primary)]">AI Summary</h3>
-            {aiLoading && <span className="text-xs text-[var(--color-text-secondary)]">Updating…</span>}
+        <div className="card-glass p-3 sm:p-4 shadow-soft rounded-lg">
+          <div className="flex items-center justify-between mb-2">
+            <div className="flex items-center gap-2">
+              <Bot className="h-4 w-4 sm:h-5 sm:w-5 text-cyan-600 dark:text-cyan-400" />
+              <h3 className="text-sm sm:text-base font-medium text-slate-700 dark:text-slate-200">AI Summary</h3>
+            </div>
+            {aiLoading && <span className="text-xs text-slate-500 dark:text-slate-400">Updating…</span>}
           </div>
-          <pre className="mt-2 text-sm whitespace-pre-wrap text-[var(--color-text-primary)]">{aiSummary}</pre>
+          <div className="mt-2 text-xs sm:text-sm whitespace-pre-wrap text-slate-700 dark:text-slate-200 leading-relaxed">{aiSummary}</div>
         </div>
       )}
 
-      {/* Summary Stats - Compact Modern Style */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-        <div className="card-glass p-3 rounded-lg hover:shadow-lg transition-all duration-200 group relative overflow-hidden h-full flex flex-col bg-emerald-50/50 dark:bg-emerald-950/30">
+      {/* Summary Stats - Compact Modern Style (Mobile Optimized) */}
+      <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-3">
+        <div className="card-glass p-2.5 sm:p-3 rounded-lg hover:shadow-lg transition-all duration-200 group relative overflow-hidden h-full flex flex-col bg-emerald-50/50 dark:bg-emerald-950/30">
           <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/10 to-green-500/10 dark:from-emerald-500/15 dark:to-green-500/15 opacity-0 group-hover:opacity-100 transition-opacity"></div>
           <div className="relative flex items-center justify-between flex-1">
             <div className="min-w-0 flex-1">
-              <p className="text-xs font-medium text-slate-500 dark:text-slate-400 mb-1 uppercase tracking-wide">Total Value</p>
-              <p className="text-2xl font-medium text-slate-700 dark:text-slate-200 mb-1">${(totalValue / 1000000).toFixed(1)}M</p>
+              <p className="text-[10px] sm:text-xs font-medium text-slate-500 dark:text-slate-400 mb-0.5 sm:mb-1 uppercase tracking-wide">Total Value</p>
+              <p className="text-xl sm:text-2xl font-medium text-slate-700 dark:text-slate-200 mb-0.5 sm:mb-1">${(totalValue / 1000000).toFixed(1)}M</p>
             </div>
-            <div className="p-2.5 rounded-lg bg-emerald-600 dark:bg-gradient-to-br dark:from-emerald-500 dark:to-green-500 shadow-md group-hover:scale-105 transition-transform duration-200 flex-shrink-0 ml-3">
-              <DollarSign className="h-5 w-5 text-white" />
+            <div className="p-2 sm:p-2.5 rounded-lg bg-emerald-600 dark:bg-gradient-to-br dark:from-emerald-500 dark:to-green-500 shadow-md group-hover:scale-105 transition-transform duration-200 flex-shrink-0 ml-2 sm:ml-3">
+              <DollarSign className="h-4 w-4 sm:h-5 sm:w-5 text-white" />
             </div>
           </div>
         </div>
-        <div className="card-glass p-3 rounded-lg hover:shadow-lg transition-all duration-200 group relative overflow-hidden h-full flex flex-col bg-cyan-50/50 dark:bg-cyan-950/30">
+        <div className="card-glass p-2.5 sm:p-3 rounded-lg hover:shadow-lg transition-all duration-200 group relative overflow-hidden h-full flex flex-col bg-cyan-50/50 dark:bg-cyan-950/30">
           <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/10 to-teal-500/10 dark:from-cyan-500/15 dark:to-teal-500/15 opacity-0 group-hover:opacity-100 transition-opacity"></div>
           <div className="relative flex items-center justify-between flex-1">
             <div className="min-w-0 flex-1">
-              <p className="text-xs font-medium text-slate-500 dark:text-slate-400 mb-1 uppercase tracking-wide">Total Deals</p>
-              <p className="text-2xl font-medium text-slate-700 dark:text-slate-200 mb-1">{filteredDeals.length}</p>
+              <p className="text-[10px] sm:text-xs font-medium text-slate-500 dark:text-slate-400 mb-0.5 sm:mb-1 uppercase tracking-wide">Total Deals</p>
+              <p className="text-xl sm:text-2xl font-medium text-slate-700 dark:text-slate-200 mb-0.5 sm:mb-1">{filteredDeals.length}</p>
             </div>
-            <div className="p-2.5 rounded-lg bg-cyan-600 dark:bg-gradient-to-br dark:from-cyan-500 dark:to-teal-500 shadow-md group-hover:scale-105 transition-transform duration-200 flex-shrink-0 ml-3">
-              <Building2 className="h-5 w-5 text-white" />
+            <div className="p-2 sm:p-2.5 rounded-lg bg-cyan-600 dark:bg-gradient-to-br dark:from-cyan-500 dark:to-teal-500 shadow-md group-hover:scale-105 transition-transform duration-200 flex-shrink-0 ml-2 sm:ml-3">
+              <Building2 className="h-4 w-4 sm:h-5 sm:w-5 text-white" />
             </div>
           </div>
         </div>
-        <div className="card-glass p-3 rounded-lg hover:shadow-lg transition-all duration-200 group relative overflow-hidden h-full flex flex-col bg-indigo-50/50 dark:bg-indigo-950/30">
+        <div className="card-glass p-2.5 sm:p-3 rounded-lg hover:shadow-lg transition-all duration-200 group relative overflow-hidden h-full flex flex-col bg-indigo-50/50 dark:bg-indigo-950/30">
           <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/10 to-purple-500/10 dark:from-indigo-500/15 dark:to-purple-500/15 opacity-0 group-hover:opacity-100 transition-opacity"></div>
           <div className="relative flex items-center justify-between flex-1">
             <div className="min-w-0 flex-1">
-              <p className="text-xs font-medium text-slate-500 dark:text-slate-400 mb-1 uppercase tracking-wide">Avg Deal Size</p>
-              <p className="text-2xl font-medium text-slate-700 dark:text-slate-200 mb-1">${(filteredDeals.length > 0 ? (totalValue / filteredDeals.length / 1000000) : 0).toFixed(1)}M</p>
+              <p className="text-[10px] sm:text-xs font-medium text-slate-500 dark:text-slate-400 mb-0.5 sm:mb-1 uppercase tracking-wide">Avg Deal Size</p>
+              <p className="text-xl sm:text-2xl font-medium text-slate-700 dark:text-slate-200 mb-0.5 sm:mb-1">${(filteredDeals.length > 0 ? (totalValue / filteredDeals.length / 1000000) : 0).toFixed(1)}M</p>
             </div>
-            <div className="p-2.5 rounded-lg bg-indigo-600 dark:bg-gradient-to-br dark:from-indigo-500 dark:to-purple-500 shadow-md group-hover:scale-105 transition-transform duration-200 flex-shrink-0 ml-3">
-              <Users className="h-5 w-5 text-white" />
+            <div className="p-2 sm:p-2.5 rounded-lg bg-indigo-600 dark:bg-gradient-to-br dark:from-indigo-500 dark:to-purple-500 shadow-md group-hover:scale-105 transition-transform duration-200 flex-shrink-0 ml-2 sm:ml-3">
+              <Users className="h-4 w-4 sm:h-5 sm:w-5 text-white" />
             </div>
           </div>
         </div>
-        <div className="card-glass p-3 rounded-lg hover:shadow-lg transition-all duration-200 group relative overflow-hidden h-full flex flex-col bg-amber-50/50 dark:bg-amber-950/30">
+        <div className="card-glass p-2.5 sm:p-3 rounded-lg hover:shadow-lg transition-all duration-200 group relative overflow-hidden h-full flex flex-col bg-amber-50/50 dark:bg-amber-950/30">
           <div className="absolute inset-0 bg-gradient-to-br from-amber-500/10 to-orange-500/10 dark:from-amber-500/15 dark:to-orange-500/15 opacity-0 group-hover:opacity-100 transition-opacity"></div>
           <div className="relative flex items-center justify-between flex-1">
             <div className="min-w-0 flex-1">
-              <p className="text-xs font-medium text-slate-500 dark:text-slate-400 mb-1 uppercase tracking-wide">Countries</p>
-              <p className="text-2xl font-medium text-slate-700 dark:text-slate-200 mb-1">{new Set(filteredDeals.map(d => d.country)).size}</p>
+              <p className="text-[10px] sm:text-xs font-medium text-slate-500 dark:text-slate-400 mb-0.5 sm:mb-1 uppercase tracking-wide">Countries</p>
+              <p className="text-xl sm:text-2xl font-medium text-slate-700 dark:text-slate-200 mb-0.5 sm:mb-1">{new Set(filteredDeals.map(d => d.country)).size}</p>
             </div>
-            <div className="p-2.5 rounded-lg bg-amber-600 dark:bg-gradient-to-br dark:from-amber-500 dark:to-orange-500 shadow-md group-hover:scale-105 transition-transform duration-200 flex-shrink-0 ml-3">
-              <MapPin className="h-5 w-5 text-white" />
+            <div className="p-2 sm:p-2.5 rounded-lg bg-amber-600 dark:bg-gradient-to-br dark:from-amber-500 dark:to-orange-500 shadow-md group-hover:scale-105 transition-transform duration-200 flex-shrink-0 ml-2 sm:ml-3">
+              <MapPin className="h-4 w-4 sm:h-5 sm:w-5 text-white" />
             </div>
           </div>
         </div>
       </div>
 
-      {/* Charts Section with glassmorphism */}
-      <div className="grid-2-col gap-4 sm:gap-6">
-        <MonthlyDealflowChart />
+      {/* Charts Section - Mobile Optimized */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-5 md:gap-6">
+        <MonthlyDealflowChart deals={filteredDeals} />
         
-        <div className="card-glass overflow-hidden shadow-soft">
-          <div className="p-4 border-b border-[var(--color-divider-gray)] flex items-center justify-between">
-            <div>
-              <h3 className="text-lg font-medium text-[var(--color-text-primary)]">African Investment Map</h3>
-              <p className="text-sm text-[var(--color-text-secondary)] mt-1">Deal activity across Africa</p>
+        {/* Map - Hidden on mobile, shown on desktop */}
+        <div className="hidden lg:block card-glass overflow-hidden shadow-soft rounded-lg">
+          <div className="p-4 md:p-5 border-b border-slate-200 dark:border-slate-700 flex flex-row items-center justify-between gap-4">
+            <div className="min-w-0 flex-1">
+              <h3 className="text-lg font-medium text-slate-700 dark:text-slate-200">African Investment Map</h3>
+              <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">Deal activity across Africa</p>
             </div>
-            <div className="flex bg-[var(--color-background-default)] rounded-lg p-1 border border-[var(--color-divider-gray)]">
-              <button onClick={() => setMapDataType('value')} className={`px-3 py-1 text-xs font-medium rounded transition-colors ${mapDataType === 'value' ? 'bg-[var(--color-primary-teal)] text-[var(--color-background-surface)]' : 'text-[var(--color-text-secondary)] hover:bg-[var(--color-background-default)]'}`}>Value</button>
-              <button onClick={() => setMapDataType('count')} className={`px-3 py-1 text-xs font-medium rounded transition-colors ${mapDataType === 'count' ? 'bg-[var(--color-primary-teal)] text-[var(--color-background-surface)]' : 'text-[var(--color-text-secondary)] hover:bg-[var(--color-background-default)]'}`}>Count</button>
+            <div className="flex bg-slate-100 dark:bg-slate-800 rounded-lg p-1 border border-slate-200 dark:border-slate-700 flex-shrink-0">
+              <button 
+                onClick={() => setMapDataType('value')} 
+                className={`px-4 py-2 text-sm font-medium rounded transition-colors ${mapDataType === 'value' ? 'bg-cyan-600 dark:bg-cyan-500 text-white' : 'text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-700'}`}
+              >
+                Value
+              </button>
+              <button 
+                onClick={() => setMapDataType('count')} 
+                className={`px-4 py-2 text-sm font-medium rounded transition-colors ${mapDataType === 'count' ? 'bg-cyan-600 dark:bg-cyan-500 text-white' : 'text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-700'}`}
+              >
+                Count
+              </button>
             </div>
           </div>
-          <div className="h-80">
+          <div className="h-[500px] w-full">
             <InteractiveMap 
               title="" 
               dataType={mapDataType} 
-              height={320}
-              heightSm={240}
+              height={500}
+              heightSm={280}
+              showPopup={true}
+              deals={filteredDeals.map(d => ({ country: d.country, value_usd: d.value_usd, date: d.date }))}
+              itemType="deal"
             />
           </div>
         </div>
       </div>
 
-      {/* VC Investment Over Time */}
-      <VCInvestmentOverTimeChart deals={filteredDeals} />
+      {/* Sector Distribution Chart - Full Width */}
+      <DealsBySectorChart deals={filteredDeals} />
 
-      {/* Filters with glassmorphism */}
-      <div className="card-glass p-4 p-6 shadow-soft">
-        <div className="flex items-center space-x-2 mb-4">
-          <Filter className="h-5 w-5 icon-primary" />
-          <h3 className="text-lg font-medium text-[var(--color-text-primary)]">Filters</h3>
+      {/* Filters - Mobile Optimized */}
+      <div className="card-glass p-4 sm:p-5 md:p-6 shadow-soft rounded-lg">
+        <div className="flex items-center gap-2 mb-4 sm:mb-5">
+          <Filter className="h-4 w-4 sm:h-5 sm:w-5 text-cyan-600 dark:text-cyan-400" />
+          <h3 className="text-base sm:text-lg font-medium text-slate-700 dark:text-slate-200">Filters</h3>
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
-          <div className="relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-[var(--color-text-secondary)]" />
-            <input type="text" placeholder="Search companies or investors..." value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} className="input pl-10" />
-          </div>
-          <select value={selectedSector} onChange={(e) => setSelectedSector(e.target.value)} className="input">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 md:gap-5">
+          <select 
+            value={selectedSector} 
+            onChange={(e) => setSelectedSector(e.target.value)} 
+            className="w-full px-3 py-2 sm:py-2.5 text-sm bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-lg text-slate-700 dark:text-slate-200 focus:outline-none focus:ring-1 focus:ring-cyan-500/30 focus:border-cyan-500/50 transition-all"
+          >
             {sectors.map(sector =>  (<option key={sector} value={sector}>{sector}</option>))}
           </select>
-          <select value={selectedStage} onChange={(e) => setSelectedStage(e.target.value)} className="input">
+          <select 
+            value={selectedStage} 
+            onChange={(e) => setSelectedStage(e.target.value)} 
+            className="w-full px-3 py-2 sm:py-2.5 text-sm bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-lg text-slate-700 dark:text-slate-200 focus:outline-none focus:ring-1 focus:ring-cyan-500/30 focus:border-cyan-500/50 transition-all"
+          >
             {stages.map(stage => (<option key={stage} value={stage}>{stage}</option>))}
           </select>
-          <select value={selectedCountry} onChange={(e) => setSelectedCountry(e.target.value)} className="input">
+          <select 
+            value={selectedCountry} 
+            onChange={(e) => setSelectedCountry(e.target.value)} 
+            className="w-full px-3 py-2 sm:py-2.5 text-sm bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-lg text-slate-700 dark:text-slate-200 focus:outline-none focus:ring-1 focus:ring-cyan-500/30 focus:border-cyan-500/50 transition-all"
+          >
             {countries.map(country => (<option key={country} value={country}>{country}</option>))}
           </select>
-          <select value={timeframe} onChange={(e)=> setTimeframe(e.target.value as any)} className="input">
+          <select 
+            value={timeframe} 
+            onChange={(e)=> setTimeframe(e.target.value as any)} 
+            className="w-full px-3 py-2 sm:py-2.5 text-sm bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-lg text-slate-700 dark:text-slate-200 focus:outline-none focus:ring-1 focus:ring-cyan-500/30 focus:border-cyan-500/50 transition-all"
+          >
             <option value="3m">3m</option>
             <option value="6m">6m</option>
             <option value="12m">12m</option>
@@ -349,56 +432,90 @@ const DealsPage = () => {
         </div>
       </div>
 
-      {/* Deals Table with glassmorphism */}
-      <div className="card-glass overflow-hidden shadow-soft">
-        <div className="p-4 p-6 border-b border-[var(--color-divider-gray)]">
-          <h2 className="text-lg text-xl font-medium text-[var(--color-text-primary)]">Recent Deals</h2>
+      {/* Deals Table - Desktop Table, Mobile Cards */}
+      <div className="card-glass overflow-hidden shadow-soft rounded-lg">
+        <div className="p-4 sm:p-5 md:p-6 border-b border-slate-200 dark:border-slate-700">
+          <h2 className="text-lg sm:text-xl md:text-2xl font-medium text-slate-700 dark:text-slate-200">Recent Deals</h2>
+          <p className="text-sm sm:text-base text-slate-500 dark:text-slate-400 mt-1.5">{filteredDeals.length} deal{filteredDeals.length !== 1 ? 's' : ''} found</p>
         </div>
-        <div className="overflow-x-auto">
+        
+        {/* Desktop Table View */}
+        <div className="hidden md:block overflow-x-auto">
           <table className="w-full">
-            <thead className="bg-[var(--color-background-default)]">
+            <thead className="bg-slate-50 dark:bg-slate-800/50">
               <tr>
-                <th className="px-4 py-3 text-left text-xs font-medium text-[var(--color-text-secondary)] uppercase tracking-wider">Company</th>
-                <th className="px-4 py-3 text-left text-xs font-medium text-[var(--color-text-secondary)] uppercase tracking-wider">Amount</th>
-                <th className="px-4 py-3 text-left text-xs font-medium text-[var(--color-text-secondary)] uppercase tracking-wider">Stage</th>
-                <th className="px-4 py-3 text-left text-xs font-medium text-[var(--color-text-secondary)] uppercase tracking-wider">Sector</th>
-                <th className="px-4 py-3 text-left text-xs font-medium text-[var(--color-text-secondary)] uppercase tracking-wider">Country</th>
-                <th className="px-4 py-3 text-left text-xs font-medium text-[var(--color-text-secondary)] uppercase tracking-wider">Date</th>
-                <th className="px-4 py-3 text-left text-xs font-medium text-[var(--color-text-secondary)] uppercase tracking-wider">Actions</th>
+                <th className="px-3 sm:px-4 py-2.5 sm:py-3 text-left text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">Company</th>
+                <th className="px-3 sm:px-4 py-2.5 sm:py-3 text-left text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">Amount</th>
+                <th className="px-3 sm:px-4 py-2.5 sm:py-3 text-left text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">Stage</th>
+                <th className="px-3 sm:px-4 py-2.5 sm:py-3 text-left text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">Sector</th>
+                <th className="px-3 sm:px-4 py-2.5 sm:py-3 text-left text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">Country</th>
+                <th className="px-3 sm:px-4 py-2.5 sm:py-3 text-left text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider whitespace-nowrap">Date</th>
+                <th className="px-3 sm:px-4 py-2.5 sm:py-3 text-left text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">Actions</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-[var(--color-divider-gray)]">
+            <tbody className="divide-y divide-slate-200 dark:divide-slate-700">
               {filteredDeals.slice().sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()).map((deal) => (
-                <tr key={deal.id} className="hover:bg-[var(--color-background-default)] transition-colors">
-                  <td className="px-4 py-3">
+                <tr key={deal.id} className="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+                  <td className="px-3 sm:px-4 py-2.5 sm:py-3">
                     <div className="flex items-center">
-                      <div className="w-8 h-8 bg-black dark:bg-gray-700 rounded-lg flex items-center justify-center border border-black/20 dark:border-gray-600/30">
+                      <div className="w-8 h-8 bg-slate-700 dark:bg-slate-600 rounded-lg flex items-center justify-center border border-slate-300 dark:border-slate-600 flex-shrink-0">
                         <Building2 className="h-4 w-4 text-white" />
                       </div>
-                      <div className="ml-3">
-                        <button onClick={() => handleOpenCompany(deal.company_name)} className="text-sm font-medium link hover:text-[var(--color-primary-light)]">
+                      <div className="ml-3 min-w-0">
+                        <button onClick={() => handleOpenCompany(deal.company_name)} className="text-sm font-medium text-cyan-600 dark:text-cyan-400 hover:text-cyan-700 dark:hover:text-cyan-300 truncate block">
                           {deal.company_name}
                         </button>
                       </div>
                     </div>
                   </td>
-                  <td className="px-4 py-3"><span className="text-[var(--color-primary-teal)] font-medium">${(deal.value_usd / 1000000).toFixed(1)}M</span></td>
-                  <td className="px-4 py-3">
+                  <td className="px-3 sm:px-4 py-2.5 sm:py-3 whitespace-nowrap"><span className="text-cyan-600 dark:text-cyan-400 font-medium">${(deal.value_usd / 1000000).toFixed(1)}M</span></td>
+                  <td className="px-3 sm:px-4 py-2.5 sm:py-3">
                     <span className={`${badgeClassesFromVar(dealStageToVar(deal.stage))} px-2 py-1 rounded text-xs font-medium`}>{deal.stage}</span>
                   </td>
-                  <td className="px-4 py-3 text-sm text-[var(--color-text-primary)]">{deal.sector}</td>
-                  <td className="px-4 py-3 text-sm text-[var(--color-text-primary)]">{deal.country}</td>
-                  <td className="px-4 py-3 text-sm text-[var(--color-text-primary)]">{new Date(deal.date).toLocaleDateString()}</td>
-                  <td className="px-4 py-3">
-                    <div className="flex space-x-2">
-                      <button onClick={() => handleViewDeal(deal)} className="btn-outline btn-sm"><Eye className="h-3 w-3" /></button>
-                      <button onClick={() => handleSaveDeal(deal.id)} className="btn-outline btn-sm">Save</button>
+                  <td className="px-3 sm:px-4 py-2.5 sm:py-3 text-sm text-slate-700 dark:text-slate-200">{deal.sector}</td>
+                  <td className="px-3 sm:px-4 py-2.5 sm:py-3 text-sm text-slate-700 dark:text-slate-200 whitespace-nowrap">{deal.country}</td>
+                  <td className="px-3 sm:px-4 py-2.5 sm:py-3 text-sm text-slate-700 dark:text-slate-200 whitespace-nowrap min-w-[100px]">{new Date(deal.date).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })}</td>
+                  <td className="px-3 sm:px-4 py-2.5 sm:py-3">
+                    <div className="flex space-x-1.5 sm:space-x-2">
+                      <button onClick={() => handleViewDeal(deal)} className="btn-outline btn-sm p-1.5 sm:p-2" title="View"><Eye className="h-3.5 w-3.5 sm:h-4 sm:w-4" /></button>
+                      <button onClick={() => handleSaveDeal(deal.id)} className="btn-outline btn-sm px-2 sm:px-3 py-1.5 sm:py-2 text-xs">Save</button>
                     </div>
                   </td>
                 </tr>
               ))}
             </tbody>
           </table>
+        </div>
+        
+        {/* Mobile Card View */}
+        <div className="md:hidden divide-y divide-slate-200 dark:divide-slate-700">
+          {filteredDeals.slice().sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()).map((deal) => (
+            <div key={deal.id} className="p-3 sm:p-4 hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+              <div className="flex items-start justify-between mb-2.5 sm:mb-3">
+                <div className="flex items-center flex-1 min-w-0">
+                  <div className="w-10 h-10 sm:w-12 sm:h-12 bg-slate-700 dark:bg-slate-600 rounded-lg flex items-center justify-center border border-slate-300 dark:border-slate-600 flex-shrink-0">
+                    <Building2 className="h-5 w-5 sm:h-6 sm:w-6 text-white" />
+                  </div>
+                  <div className="ml-3 min-w-0 flex-1">
+                    <button onClick={() => handleOpenCompany(deal.company_name)} className="text-sm sm:text-base font-medium text-cyan-600 dark:text-cyan-400 hover:text-cyan-700 dark:hover:text-cyan-300 truncate block">
+                      {deal.company_name}
+                    </button>
+                    <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-1">{deal.sector}</p>
+                  </div>
+                </div>
+                <span className="text-cyan-600 dark:text-cyan-400 font-medium text-sm sm:text-base ml-2 flex-shrink-0">${(deal.value_usd / 1000000).toFixed(1)}M</span>
+              </div>
+              <div className="flex flex-wrap items-center gap-2 text-xs sm:text-sm text-slate-500 dark:text-slate-400 mb-2.5 sm:mb-3">
+                <span className={`${badgeClassesFromVar(dealStageToVar(deal.stage))} px-2 py-1 rounded font-medium`}>{deal.stage}</span>
+                <span className="flex items-center gap-1"><MapPin className="h-3 w-3 flex-shrink-0" /><span className="truncate">{deal.country}</span></span>
+                <span className="flex items-center gap-1"><Calendar className="h-3 w-3 flex-shrink-0" /><span>{new Date(deal.date).toLocaleDateString()}</span></span>
+              </div>
+              <div className="flex gap-2">
+                <button onClick={() => handleViewDeal(deal)} className="btn-outline btn-sm flex-1 flex items-center justify-center gap-1.5"><Eye className="h-3.5 w-3.5" /><span>View</span></button>
+                <button onClick={() => handleSaveDeal(deal.id)} className="btn-outline btn-sm flex-1">Save</button>
+              </div>
+            </div>
+          ))}
         </div>
       </div>
 
@@ -421,13 +538,13 @@ const DealsPage = () => {
 
       {/* Deal Details Modal with glassmorphism */}
       {showDealDetails && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-          <div className="card-glass p-6 max-w-2xl w-full mx-auto max-h-[600px] overflow-y-auto shadow-elevated">
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-3 sm:p-4">
+          <div className="card-glass p-4 sm:p-6 max-w-2xl w-full mx-auto max-h-[90vh] overflow-y-auto shadow-elevated">
             <div className="flex items-center justify-between mb-4">
-              <h3 className="text-xl font-medium text-[var(--color-text-primary)]">{showDealDetails.company_name}</h3>
-              <button onClick={() => setShowDealDetails(null)} className="text-[var(--color-text-secondary)] hover:opacity-80">✕</button>
+              <h3 className="text-lg sm:text-xl font-medium text-[var(--color-text-primary)] pr-2">{showDealDetails.company_name}</h3>
+              <button onClick={() => setShowDealDetails(null)} className="text-[var(--color-text-secondary)] hover:opacity-80 flex-shrink-0">✕</button>
             </div>
-            <div className="grid-2-col gap-4 mb-4">
+            <div className="grid-2-col gap-3 sm:gap-4 mb-4">
               <div><p className="text-sm text-[var(--color-text-secondary)]">Deal Amount</p><p className="text-2xl font-medium text-[var(--color-primary-teal)]">${(showDealDetails.value_usd / 1000000).toFixed(1)}M</p></div>
               <div><p className="text-sm text-[var(--color-text-secondary)]">Deal Type</p><p className="font-medium text-[var(--color-text-primary)]">{showDealDetails.stage}</p></div>
               <div><p className="text-sm text-[var(--color-text-secondary)]">Sector</p><p className="font-medium text-[var(--color-text-primary)]">{showDealDetails.sector}</p></div>

@@ -379,9 +379,6 @@ const PublicMarkets = () => {
       console.error('Error exporting JSON:', error);
     }
   };
-  const copyFinancialsJSON = async () => {
-    try { const data = { filters: { searchTerm, selectedExchange, selectedCurrency, selectedTab }, financials: filteredMetrics, exportedAt: new Date().toISOString() }; const text = JSON.stringify(data, null, 2); if (navigator.clipboard && navigator.clipboard.writeText) { await navigator.clipboard.writeText(text); } else { const ta=document.createElement('textarea'); ta.value=text; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta); } alert('Copied financial metrics JSON to clipboard'); } catch {}
-  };
 
   const saveCurrentView = () => {
     try {
@@ -421,64 +418,90 @@ const PublicMarkets = () => {
   // Share disabled platform-wide for data protection
 
   return (
-    <div className="w-full space-y-3">
-      {/* Top Bar: Filters and Actions - Well Organized */}
-      <div className="card-glass p-3 rounded-lg">
-        <div className="flex flex-col lg:flex-row gap-3 items-start lg:items-center">
+    <div className="w-full space-y-2 sm:space-y-3 md:space-y-4 p-2 sm:p-3 md:p-4">
+      {/* Top Bar: Filters and Actions - Compact Mobile Optimized */}
+      <div className="card-glass p-2.5 sm:p-3 rounded-lg">
+        <div className="flex flex-col lg:flex-row gap-2.5 sm:gap-3 items-stretch lg:items-center">
           {/* Filters Section */}
-          <div className="flex flex-wrap items-center gap-2 flex-1 min-w-0">
-            <div className="relative flex-1 min-w-[200px]">
-              <Search className="absolute left-2.5 top-1/2 transform -translate-y-1/2 h-4 w-4 text-slate-400" />
+          <div className="flex flex-col sm:flex-row gap-2 sm:gap-2.5 flex-1 min-w-0">
+            <div className="relative flex-1 min-w-0">
+              <Search className="absolute left-2.5 sm:left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-slate-400 dark:text-slate-500" />
               <input
                 type="text"
                 placeholder="Search companies or tickers..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-9 pr-3 py-2 text-sm bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-lg text-slate-700 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-cyan-500/30"
+                className="w-full pl-9 sm:pl-10 pr-2.5 sm:pr-3 py-2 sm:py-2.5 text-sm bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-lg text-slate-700 dark:text-slate-200 focus:outline-none focus:ring-1 focus:ring-cyan-500/30 focus:border-cyan-500/50 transition-all"
               />
             </div>
-            <select
-              value={selectedExchange}
-              onChange={(e) => setSelectedExchange(e.target.value)}
-              className="px-3 py-2 text-sm bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-lg text-slate-700 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-cyan-500/30 min-w-[140px]"
-            >
-              {exchanges.map((exchange: string) => (
-                <option key={exchange} value={exchange}>{exchange}</option>
-              ))}
-            </select>
-            {selectedTab === 'currency' && (
+            <div className="flex flex-col sm:flex-row gap-2 flex-shrink-0">
               <select
-                value={selectedCurrency}
-                onChange={(e) => setSelectedCurrency(e.target.value)}
-                className="px-3 py-2 text-sm bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-lg text-slate-700 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-cyan-500/30 min-w-[100px]"
+                value={selectedExchange}
+                onChange={(e) => setSelectedExchange(e.target.value)}
+                className="px-3 py-2 sm:py-2.5 text-sm bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-lg text-slate-700 dark:text-slate-200 focus:outline-none focus:ring-1 focus:ring-cyan-500/30 focus:border-cyan-500/50 min-w-full sm:min-w-[140px]"
               >
-                <option value="USD">USD</option>
-                <option value="EUR">EUR</option>
-                <option value="GBP">GBP</option>
-                <option value="ZAR">ZAR</option>
-                <option value="NGN">NGN</option>
-                <option value="EGP">EGP</option>
-                <option value="KES">KES</option>
-                <option value="GHS">GHS</option>
-                <option value="MAD">MAD</option>
+                {exchanges.map((exchange: string) => (
+                  <option key={exchange} value={exchange}>{exchange}</option>
+                ))}
               </select>
-            )}
+              {selectedTab === 'currency' && (
+                <select
+                  value={selectedCurrency}
+                  onChange={(e) => setSelectedCurrency(e.target.value)}
+                  className="px-3 py-2 sm:py-2.5 text-sm bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-lg text-slate-700 dark:text-slate-200 focus:outline-none focus:ring-1 focus:ring-cyan-500/30 focus:border-cyan-500/50 min-w-full sm:min-w-[100px]"
+                >
+                  <option value="USD">USD</option>
+                  <option value="EUR">EUR</option>
+                  <option value="GBP">GBP</option>
+                  <option value="ZAR">ZAR</option>
+                  <option value="NGN">NGN</option>
+                  <option value="EGP">EGP</option>
+                  <option value="KES">KES</option>
+                  <option value="GHS">GHS</option>
+                  <option value="MAD">MAD</option>
+                </select>
+              )}
+            </div>
           </div>
 
-          {/* Actions Section - Grouped */}
-          <div className="flex flex-wrap items-center gap-2 flex-shrink-0">
+          {/* Actions Section - Compact Mobile Optimized */}
+          <div className="flex flex-wrap items-center gap-2 sm:gap-2.5 pt-2 sm:pt-0 border-t sm:border-t-0 border-slate-200 dark:border-slate-700 lg:border-l lg:border-slate-200 dark:lg:border-slate-700 lg:pl-2.5">
             {canAI && (
-              <button onClick={runAISummary} className="btn-primary-elevated flex items-center gap-2 px-3 py-2 rounded-lg text-sm">
+              <button 
+                onClick={runAISummary} 
+                className="btn-primary-elevated flex items-center justify-center px-3 sm:px-3 py-2 sm:py-2.5 rounded-lg text-xs sm:text-sm flex-shrink-0 min-w-[60px] sm:min-w-0 h-[40px] sm:h-auto"
+                title="AI Summary"
+              >
                 <Bot className="h-4 w-4" />
-                <span>AI Summary</span>
+                <span className="hidden sm:inline ml-1.5">AI Summary</span>
               </button>
             )}
             {canExport && (
-              <div className="flex items-center gap-1.5 border-l border-slate-200 dark:border-slate-700 pl-2.5">
-                <button onClick={copyFinancialsJSON} className="btn-outline px-3 py-2 rounded-lg text-sm" title="Copy JSON">Copy</button>
-                <button onClick={exportFinancialsExcel} className="btn-outline px-3 py-2 rounded-lg flex items-center gap-1.5 text-sm" title="Export Excel"><FileDown className="h-3.5 w-3.5"/>Excel</button>
-                <button onClick={exportFinancialsJSON} className="btn-outline px-3 py-2 rounded-lg flex items-center gap-1.5 text-sm" title="Export JSON"><FileDown className="h-3.5 w-3.5"/>JSON</button>
-                <button onClick={exportFinancialsCSV} className="btn-outline px-3 py-2 rounded-lg flex items-center gap-1.5 text-sm" title="Export CSV"><FileDown className="h-3.5 w-3.5"/>CSV</button>
+              <div className="flex items-center gap-1.5 sm:gap-2 flex-1 sm:flex-initial justify-end sm:justify-start">
+                <button 
+                  onClick={exportFinancialsExcel} 
+                  className="btn-outline px-3 sm:px-3 py-2 sm:py-2.5 rounded-lg flex items-center justify-center gap-1.5 text-xs sm:text-sm flex-1 sm:flex-initial min-w-[60px] sm:min-w-0 h-[40px] sm:h-auto" 
+                  title="Export Excel"
+                >
+                  <FileDown className="h-4 w-4 flex-shrink-0"/>
+                  <span className="hidden sm:inline">Excel</span>
+                </button>
+                <button 
+                  onClick={exportFinancialsJSON} 
+                  className="btn-outline px-3 sm:px-3 py-2 sm:py-2.5 rounded-lg flex items-center justify-center gap-1.5 text-xs sm:text-sm flex-1 sm:flex-initial min-w-[60px] sm:min-w-0 h-[40px] sm:h-auto" 
+                  title="Export JSON"
+                >
+                  <FileDown className="h-4 w-4 flex-shrink-0"/>
+                  <span className="hidden sm:inline">JSON</span>
+                </button>
+                <button 
+                  onClick={exportFinancialsCSV} 
+                  className="btn-outline px-3 sm:px-3 py-2 sm:py-2.5 rounded-lg flex items-center justify-center gap-1.5 text-xs sm:text-sm flex-1 sm:flex-initial min-w-[60px] sm:min-w-0 h-[40px] sm:h-auto" 
+                  title="Export CSV"
+                >
+                  <FileDown className="h-4 w-4 flex-shrink-0"/>
+                  <span className="hidden sm:inline">CSV</span>
+                </button>
               </div>
             )}
           </div>
@@ -486,89 +509,89 @@ const PublicMarkets = () => {
       </div>
 
       {aiSummary && (
-        <div className="card-glass p-4 rounded-lg">
+        <div className="card-glass p-2 sm:p-3 md:p-4 rounded-lg">
           <div className="flex items-center justify-between mb-2">
-            <h3 className="font-medium text-slate-700 dark:text-slate-200">AI Summary</h3>
-            {aiLoading && <span className="text-xs text-slate-500 dark:text-slate-400">Updating…</span>}
+            <h3 className="text-sm sm:text-base font-medium text-slate-700 dark:text-slate-200">AI Summary</h3>
+            {aiLoading && <span className="text-[10px] sm:text-xs text-slate-500 dark:text-slate-400">Updating…</span>}
           </div>
-          <pre className="mt-2 text-sm whitespace-pre-wrap text-slate-600 dark:text-slate-300">{aiSummary}</pre>
+          <pre className="mt-2 text-xs sm:text-sm whitespace-pre-wrap text-slate-600 dark:text-slate-300">{aiSummary}</pre>
         </div>
       )}
 
-      {/* Summary Stats - Compact Modern Style */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
-        <div className="card-glass p-3 rounded-lg hover:shadow-lg transition-all duration-200 group relative overflow-hidden h-full flex flex-col bg-cyan-50/50 dark:bg-cyan-950/30">
+      {/* Summary Stats - Compact Desktop */}
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-3">
+        <div className="card-glass p-2 sm:p-3 rounded-lg hover:shadow-md transition-all duration-200 group relative overflow-hidden h-full flex flex-col bg-cyan-50/50 dark:bg-cyan-950/30">
           <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/10 to-teal-500/10 dark:from-cyan-500/15 dark:to-teal-500/15 opacity-0 group-hover:opacity-100 transition-opacity"></div>
           <div className="relative flex items-center justify-between flex-1">
             <div className="min-w-0 flex-1">
-              <p className="text-xs font-medium text-slate-500 dark:text-slate-400 mb-1 uppercase tracking-wide">Listed Companies</p>
-              <p className="text-2xl font-medium text-slate-700 dark:text-slate-200 mb-1">{stocks.length}</p>
+              <p className="text-[10px] sm:text-xs font-medium text-slate-500 dark:text-slate-400 mb-0.5 uppercase tracking-wide">Listed Companies</p>
+              <p className="text-lg sm:text-xl md:text-2xl font-medium text-slate-700 dark:text-slate-200">{stocks.length}</p>
             </div>
-            <div className="p-2.5 rounded-lg bg-cyan-600 dark:bg-gradient-to-br dark:from-cyan-500 dark:to-teal-500 shadow-md group-hover:scale-105 transition-transform duration-200 flex-shrink-0 ml-3">
-              <Building2 className="h-5 w-5 text-white" />
+            <div className="p-1.5 sm:p-2 rounded-lg bg-cyan-600 dark:bg-gradient-to-br dark:from-cyan-500 dark:to-teal-500 shadow-sm group-hover:scale-105 transition-transform duration-200 flex-shrink-0 ml-1.5 sm:ml-2">
+              <Building2 className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-white" />
             </div>
           </div>
         </div>
-        <div className="card-glass p-3 rounded-lg hover:shadow-lg transition-all duration-200 group relative overflow-hidden h-full flex flex-col bg-emerald-50/50 dark:bg-emerald-950/30">
+        <div className="card-glass p-2 sm:p-3 rounded-lg hover:shadow-md transition-all duration-200 group relative overflow-hidden h-full flex flex-col bg-emerald-50/50 dark:bg-emerald-950/30">
           <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/10 to-green-500/10 dark:from-emerald-500/15 dark:to-green-500/15 opacity-0 group-hover:opacity-100 transition-opacity"></div>
           <div className="relative flex items-center justify-between flex-1">
             <div className="min-w-0 flex-1">
-              <p className="text-xs font-medium text-slate-500 dark:text-slate-400 mb-1 uppercase tracking-wide">African Indices</p>
-              <p className="text-2xl font-medium text-slate-700 dark:text-slate-200 mb-1">{africanIndices.length}</p>
+              <p className="text-[10px] sm:text-xs font-medium text-slate-500 dark:text-slate-400 mb-0.5 uppercase tracking-wide">African Indices</p>
+              <p className="text-lg sm:text-xl md:text-2xl font-medium text-slate-700 dark:text-slate-200">{africanIndices.length}</p>
             </div>
-            <div className="p-2.5 rounded-lg bg-emerald-600 dark:bg-gradient-to-br dark:from-emerald-500 dark:to-green-500 shadow-md group-hover:scale-105 transition-transform duration-200 flex-shrink-0 ml-3">
-              <TrendingUp className="h-5 w-5 text-white" />
+            <div className="p-1.5 sm:p-2 rounded-lg bg-emerald-600 dark:bg-gradient-to-br dark:from-emerald-500 dark:to-green-500 shadow-sm group-hover:scale-105 transition-transform duration-200 flex-shrink-0 ml-1.5 sm:ml-2">
+              <TrendingUp className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-white" />
             </div>
           </div>
         </div>
-        <div className="card-glass p-3 rounded-lg hover:shadow-lg transition-all duration-200 group relative overflow-hidden h-full flex flex-col bg-indigo-50/50 dark:bg-indigo-950/30">
+        <div className="card-glass p-2 sm:p-3 rounded-lg hover:shadow-md transition-all duration-200 group relative overflow-hidden h-full flex flex-col bg-indigo-50/50 dark:bg-indigo-950/30">
           <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/10 to-purple-500/10 dark:from-indigo-500/15 dark:to-purple-500/15 opacity-0 group-hover:opacity-100 transition-opacity"></div>
           <div className="relative flex items-center justify-between flex-1">
             <div className="min-w-0 flex-1">
-              <p className="text-xs font-medium text-slate-500 dark:text-slate-400 mb-1 uppercase tracking-wide">Global Indices</p>
-              <p className="text-2xl font-medium text-slate-700 dark:text-slate-200 mb-1">{globalIndices.length}</p>
+              <p className="text-[10px] sm:text-xs font-medium text-slate-500 dark:text-slate-400 mb-0.5 uppercase tracking-wide">Global Indices</p>
+              <p className="text-lg sm:text-xl md:text-2xl font-medium text-slate-700 dark:text-slate-200">{globalIndices.length}</p>
             </div>
-            <div className="p-2.5 rounded-lg bg-indigo-600 dark:bg-gradient-to-br dark:from-indigo-500 dark:to-purple-500 shadow-md group-hover:scale-105 transition-transform duration-200 flex-shrink-0 ml-3">
-              <Globe className="h-5 w-5 text-white" />
+            <div className="p-1.5 sm:p-2 rounded-lg bg-indigo-600 dark:bg-gradient-to-br dark:from-indigo-500 dark:to-purple-500 shadow-sm group-hover:scale-105 transition-transform duration-200 flex-shrink-0 ml-1.5 sm:ml-2">
+              <Globe className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-white" />
             </div>
           </div>
         </div>
-        <div className="card-glass p-3 rounded-lg hover:shadow-lg transition-all duration-200 group relative overflow-hidden h-full flex flex-col bg-amber-50/50 dark:bg-amber-950/30">
+        <div className="card-glass p-2 sm:p-3 rounded-lg hover:shadow-md transition-all duration-200 group relative overflow-hidden h-full flex flex-col bg-amber-50/50 dark:bg-amber-950/30">
           <div className="absolute inset-0 bg-gradient-to-br from-amber-500/10 to-orange-500/10 dark:from-amber-500/15 dark:to-orange-500/15 opacity-0 group-hover:opacity-100 transition-opacity"></div>
           <div className="relative flex items-center justify-between flex-1">
             <div className="min-w-0 flex-1">
-              <p className="text-xs font-medium text-slate-500 dark:text-slate-400 mb-1 uppercase tracking-wide">Currency</p>
-              <p className="text-2xl font-medium text-slate-700 dark:text-slate-200 mb-1">{selectedCurrency}</p>
+              <p className="text-[10px] sm:text-xs font-medium text-slate-500 dark:text-slate-400 mb-0.5 uppercase tracking-wide">Currency</p>
+              <p className="text-lg sm:text-xl md:text-2xl font-medium text-slate-700 dark:text-slate-200">{selectedCurrency}</p>
             </div>
-            <div className="p-2.5 rounded-lg bg-amber-600 dark:bg-gradient-to-br dark:from-amber-500 dark:to-orange-500 shadow-md group-hover:scale-105 transition-transform duration-200 flex-shrink-0 ml-3">
-              <DollarSign className="h-5 w-5 text-white" />
+            <div className="p-1.5 sm:p-2 rounded-lg bg-amber-600 dark:bg-gradient-to-br dark:from-amber-500 dark:to-orange-500 shadow-sm group-hover:scale-105 transition-transform duration-200 flex-shrink-0 ml-1.5 sm:ml-2">
+              <DollarSign className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-white" />
             </div>
           </div>
         </div>
       </div>
 
-      {/* Navigation Tabs - Compact Style */}
+      {/* Navigation Tabs - Compact Mobile Optimized */}
       <div className="card-glass overflow-hidden rounded-lg">
-        <div className="flex flex-wrap gap-2 p-3 border-b border-slate-200 dark:border-slate-700">
-          <button onClick={() => setSelectedTab('overview')} className={`px-4 py-2 text-sm font-medium rounded-lg transition-all ${selectedTab === 'overview' ? 'bg-cyan-600 dark:bg-cyan-500 text-white shadow-md' : 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-700'}`}>Overview</button>
-          <button onClick={() => setSelectedTab('watchlist')} className={`px-4 py-2 text-sm font-medium rounded-lg transition-all ${selectedTab === 'watchlist' ? 'bg-cyan-600 dark:bg-cyan-500 text-white shadow-md' : 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-700'}`}>Watchlist</button>
-          <button onClick={() => setSelectedTab('financials')} className={`px-4 py-2 text-sm font-medium rounded-lg transition-all ${selectedTab === 'financials' ? 'bg-cyan-600 dark:bg-cyan-500 text-white shadow-md' : 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-700'}`}>Financials</button>
-          <button onClick={() => setSelectedTab('currency')} className={`px-4 py-2 text-sm font-medium rounded-lg transition-all ${selectedTab === 'currency' ? 'bg-cyan-600 dark:bg-cyan-500 text-white shadow-md' : 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-700'}`}>Currency</button>
+        <div className="flex flex-wrap gap-1.5 sm:gap-2 p-2 sm:p-3 border-b border-slate-200 dark:border-slate-700 overflow-x-auto">
+          <button onClick={() => setSelectedTab('overview')} className={`px-3 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm font-medium rounded-lg transition-all whitespace-nowrap ${selectedTab === 'overview' ? 'bg-cyan-600 dark:bg-cyan-500 text-white shadow-md' : 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-700'}`}>Overview</button>
+          <button onClick={() => setSelectedTab('watchlist')} className={`px-3 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm font-medium rounded-lg transition-all whitespace-nowrap ${selectedTab === 'watchlist' ? 'bg-cyan-600 dark:bg-cyan-500 text-white shadow-md' : 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-700'}`}>Watchlist</button>
+          <button onClick={() => setSelectedTab('financials')} className={`px-3 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm font-medium rounded-lg transition-all whitespace-nowrap ${selectedTab === 'financials' ? 'bg-cyan-600 dark:bg-cyan-500 text-white shadow-md' : 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-700'}`}>Financials</button>
+          <button onClick={() => setSelectedTab('currency')} className={`px-3 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm font-medium rounded-lg transition-all whitespace-nowrap ${selectedTab === 'currency' ? 'bg-cyan-600 dark:bg-cyan-500 text-white shadow-md' : 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-700'}`}>Currency</button>
         </div>
 
-        <div className="p-4">
+        <div className="p-2 sm:p-3 md:p-4">
           {/* Market Overview */}
           {selectedTab === 'overview' && (
-            <div className="space-y-3">
+            <div className="space-y-2 sm:space-y-3">
               {/* Charts Grid */}
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-2 sm:gap-3">
                 {/* Index Performance Chart */}
-                <div className="card-glass p-4 rounded-lg">
-                  <h3 className="text-base font-medium text-slate-700 dark:text-slate-200 mb-3 flex items-center gap-2">
-                    <TrendingUp className="h-4 w-4 text-cyan-600 dark:text-cyan-400" />
+                <div className="card-glass p-2 sm:p-3 md:p-4 rounded-lg">
+                  <h3 className="text-sm sm:text-base font-medium text-slate-700 dark:text-slate-200 mb-2 sm:mb-3 flex items-center gap-1.5 sm:gap-2">
+                    <TrendingUp className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-cyan-600 dark:text-cyan-400" />
                     Index Performance
                   </h3>
-                  <div className="h-64">
+                  <div className="h-48 sm:h-56 md:h-64">
                     {indexPerformanceData.length > 0 ? (
                       <ResponsiveContainer width="100%" height="100%">
                         <LineChart data={indexPerformanceData}>
@@ -605,12 +628,12 @@ const PublicMarkets = () => {
                 </div>
 
                 {/* Market Cap Distribution */}
-                <div className="card-glass p-4 rounded-lg">
-                  <h3 className="text-base font-medium text-slate-700 dark:text-slate-200 mb-3 flex items-center gap-2">
-                    <DollarSign className="h-4 w-4 text-cyan-600 dark:text-cyan-400" />
+                <div className="card-glass p-2 sm:p-3 md:p-4 rounded-lg">
+                  <h3 className="text-sm sm:text-base font-medium text-slate-700 dark:text-slate-200 mb-2 sm:mb-3 flex items-center gap-1.5 sm:gap-2">
+                    <DollarSign className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-cyan-600 dark:text-cyan-400" />
                     Market Cap Distribution
                   </h3>
-                  <div className="h-64">
+                  <div className="h-48 sm:h-56 md:h-64">
                     {marketCapByExchange.length > 0 ? (
                       <ResponsiveContainer width="100%" height="100%">
                         <BarChart data={marketCapByExchange}>
@@ -630,12 +653,12 @@ const PublicMarkets = () => {
                 </div>
 
                 {/* Sector Distribution */}
-                <div className="card-glass p-4 rounded-lg">
-                  <h3 className="text-base font-medium text-slate-700 dark:text-slate-200 mb-3 flex items-center gap-2">
-                    <Building2 className="h-4 w-4 text-cyan-600 dark:text-cyan-400" />
+                <div className="card-glass p-2 sm:p-3 md:p-4 rounded-lg">
+                  <h3 className="text-sm sm:text-base font-medium text-slate-700 dark:text-slate-200 mb-2 sm:mb-3 flex items-center gap-1.5 sm:gap-2">
+                    <Building2 className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-cyan-600 dark:text-cyan-400" />
                     Sector Distribution
                   </h3>
-                  <div className="h-64">
+                  <div className="h-48 sm:h-56 md:h-64">
                     {sectorDistribution.length > 0 ? (
                       <ResponsiveContainer width="100%" height="100%">
                         <PieChart>
@@ -671,12 +694,12 @@ const PublicMarkets = () => {
                 </div>
 
                 {/* Top Performers */}
-                <div className="card-glass p-4 rounded-lg">
-                  <h3 className="text-base font-medium text-slate-700 dark:text-slate-200 mb-3 flex items-center gap-2">
-                    <ArrowUp className="h-4 w-4 text-cyan-600 dark:text-cyan-400" />
+                <div className="card-glass p-2 sm:p-3 md:p-4 rounded-lg">
+                  <h3 className="text-sm sm:text-base font-medium text-slate-700 dark:text-slate-200 mb-2 sm:mb-3 flex items-center gap-1.5 sm:gap-2">
+                    <ArrowUp className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-cyan-600 dark:text-cyan-400" />
                     Top Performers (YTD)
                   </h3>
-                  <div className="h-64">
+                  <div className="h-48 sm:h-56 md:h-64">
                     {topPerformers.length > 0 ? (
                       <ResponsiveContainer width="100%" height="100%">
                         <BarChart data={topPerformers} layout="vertical">
@@ -703,29 +726,29 @@ const PublicMarkets = () => {
               </div>
 
               {/* Indices Tables Grid */}
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-2 sm:gap-3">
                 {/* African Healthcare Indices */}
                 <div className="card-glass overflow-hidden rounded-lg">
-                  <div className="p-3 border-b border-slate-200 dark:border-slate-700">
-                    <h3 className="text-base font-medium text-slate-700 dark:text-slate-200">African Healthcare Sector Indices</h3>
+                  <div className="p-2 sm:p-3 border-b border-slate-200 dark:border-slate-700">
+                    <h3 className="text-sm sm:text-base font-medium text-slate-700 dark:text-slate-200">African Healthcare Sector Indices</h3>
                   </div>
                   <div className="overflow-x-auto">
-                    <table className="w-full">
+                    <table className="w-full min-w-[400px]">
                       <thead className="bg-slate-50 dark:bg-slate-800/50">
                         <tr>
-                          <th className="px-4 py-2 text-left text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">Index</th>
-                          <th className="px-4 py-2 text-left text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">Ticker</th>
-                          <th className="px-4 py-2 text-left text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">Value</th>
-                          <th className="px-4 py-2 text-left text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">Change</th>
+                          <th className="px-2 sm:px-3 md:px-4 py-1.5 sm:py-2 text-left text-[10px] sm:text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">Index</th>
+                          <th className="px-2 sm:px-3 md:px-4 py-1.5 sm:py-2 text-left text-[10px] sm:text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">Ticker</th>
+                          <th className="px-2 sm:px-3 md:px-4 py-1.5 sm:py-2 text-left text-[10px] sm:text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">Value</th>
+                          <th className="px-2 sm:px-3 md:px-4 py-1.5 sm:py-2 text-left text-[10px] sm:text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">Change</th>
                         </tr>
                       </thead>
                       <tbody className="divide-y divide-slate-200 dark:divide-slate-700">
                         {africanIndices.map((index: any) => (
                           <tr key={String(index.ticker)} className="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
-                            <td className="px-4 py-2.5 text-sm font-medium text-slate-700 dark:text-slate-200">{index.name}</td>
-                            <td className="px-4 py-2.5 text-sm text-slate-600 dark:text-slate-300">{index.ticker}</td>
-                            <td className="px-4 py-2.5 text-sm text-slate-700 dark:text-slate-200">{index.value}</td>
-                            <td className="px-4 py-2.5"><span className={`inline-flex items-center text-sm font-medium ${index.status === 'up' ? 'text-emerald-600 dark:text-emerald-400' : 'text-red-600 dark:text-red-400'}`}>{index.status === 'up' ? <ArrowUp className="h-3 w-3 mr-1" /> : <ArrowDown className="h-3 w-3 mr-1" />}{index.change} ({index.changeValue})</span></td>
+                            <td className="px-2 sm:px-3 md:px-4 py-2 sm:py-2.5 text-xs sm:text-sm font-medium text-slate-700 dark:text-slate-200">{index.name}</td>
+                            <td className="px-2 sm:px-3 md:px-4 py-2 sm:py-2.5 text-xs sm:text-sm text-slate-600 dark:text-slate-300">{index.ticker}</td>
+                            <td className="px-2 sm:px-3 md:px-4 py-2 sm:py-2.5 text-xs sm:text-sm text-slate-700 dark:text-slate-200">{index.value}</td>
+                            <td className="px-2 sm:px-3 md:px-4 py-2 sm:py-2.5"><span className={`inline-flex items-center text-xs sm:text-sm font-medium ${index.status === 'up' ? 'text-emerald-600 dark:text-emerald-400' : 'text-red-600 dark:text-red-400'}`}>{index.status === 'up' ? <ArrowUp className="h-2.5 w-2.5 sm:h-3 sm:w-3 mr-0.5 sm:mr-1" /> : <ArrowDown className="h-2.5 w-2.5 sm:h-3 sm:w-3 mr-0.5 sm:mr-1" />}{index.change} ({index.changeValue})</span></td>
                           </tr>
                         ))}
                       </tbody>
@@ -735,26 +758,26 @@ const PublicMarkets = () => {
 
                 {/* Global Healthcare Indices */}
                 <div className="card-glass overflow-hidden rounded-lg">
-                  <div className="p-3 border-b border-slate-200 dark:border-slate-700">
-                    <h3 className="text-base font-medium text-slate-700 dark:text-slate-200">Global Healthcare Sector Indices</h3>
+                  <div className="p-2 sm:p-3 border-b border-slate-200 dark:border-slate-700">
+                    <h3 className="text-sm sm:text-base font-medium text-slate-700 dark:text-slate-200">Global Healthcare Sector Indices</h3>
                   </div>
                   <div className="overflow-x-auto">
-                    <table className="w-full">
+                    <table className="w-full min-w-[400px]">
                       <thead className="bg-slate-50 dark:bg-slate-800/50">
                         <tr>
-                          <th className="px-4 py-2 text-left text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">Index</th>
-                          <th className="px-4 py-2 text-left text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">Ticker</th>
-                          <th className="px-4 py-2 text-left text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">Value</th>
-                          <th className="px-4 py-2 text-left text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">Change</th>
+                          <th className="px-2 sm:px-3 md:px-4 py-1.5 sm:py-2 text-left text-[10px] sm:text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">Index</th>
+                          <th className="px-2 sm:px-3 md:px-4 py-1.5 sm:py-2 text-left text-[10px] sm:text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">Ticker</th>
+                          <th className="px-2 sm:px-3 md:px-4 py-1.5 sm:py-2 text-left text-[10px] sm:text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">Value</th>
+                          <th className="px-2 sm:px-3 md:px-4 py-1.5 sm:py-2 text-left text-[10px] sm:text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">Change</th>
                         </tr>
                       </thead>
                       <tbody className="divide-y divide-slate-200 dark:divide-slate-700">
                         {globalIndices.map((index: any) => (
                           <tr key={String(index.ticker)} className="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
-                            <td className="px-4 py-2.5 text-sm font-medium text-slate-700 dark:text-slate-200">{index.name}</td>
-                            <td className="px-4 py-2.5 text-sm text-slate-600 dark:text-slate-300">{index.ticker}</td>
-                            <td className="px-4 py-2.5 text-sm text-slate-700 dark:text-slate-200">{index.value}</td>
-                            <td className="px-4 py-2.5"><span className={`inline-flex items-center text-sm font-medium ${index.status === 'up' ? 'text-emerald-600 dark:text-emerald-400' : 'text-red-600 dark:text-red-400'}`}>{index.status === 'up' ? <ArrowUp className="h-3 w-3 mr-1" /> : <ArrowDown className="h-3 w-3 mr-1" />}{index.change} ({index.changeValue})</span></td>
+                            <td className="px-2 sm:px-3 md:px-4 py-2 sm:py-2.5 text-xs sm:text-sm font-medium text-slate-700 dark:text-slate-200">{index.name}</td>
+                            <td className="px-2 sm:px-3 md:px-4 py-2 sm:py-2.5 text-xs sm:text-sm text-slate-600 dark:text-slate-300">{index.ticker}</td>
+                            <td className="px-2 sm:px-3 md:px-4 py-2 sm:py-2.5 text-xs sm:text-sm text-slate-700 dark:text-slate-200">{index.value}</td>
+                            <td className="px-2 sm:px-3 md:px-4 py-2 sm:py-2.5"><span className={`inline-flex items-center text-xs sm:text-sm font-medium ${index.status === 'up' ? 'text-emerald-600 dark:text-emerald-400' : 'text-red-600 dark:text-red-400'}`}>{index.status === 'up' ? <ArrowUp className="h-2.5 w-2.5 sm:h-3 sm:w-3 mr-0.5 sm:mr-1" /> : <ArrowDown className="h-2.5 w-2.5 sm:h-3 sm:w-3 mr-0.5 sm:mr-1" />}{index.change} ({index.changeValue})</span></td>
                           </tr>
                         ))}
                       </tbody>
@@ -913,41 +936,41 @@ const PublicMarkets = () => {
 
           {/* Currency Exchange */}
           {selectedTab === 'currency' && (
-            <div className="space-y-3">
+            <div className="space-y-2 sm:space-y-3">
               {/* Currency Exchange Rates */}
-              <div className="grid grid-cols-1 lg:grid-cols-3 gap-3">
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-2 sm:gap-3">
                 {/* Rates list */}
-                <div className="card-glass p-3 rounded-lg lg:col-span-2">
-                  <div className="flex items-center justify-between mb-3">
-                    <div className="flex items-center gap-2">
-                      <TrendingUp className="h-4 w-4 text-cyan-600 dark:text-cyan-400" />
-                      <h4 className="font-medium text-slate-700 dark:text-slate-200">Currency Exchange Rates</h4>
+                <div className="card-glass p-2 sm:p-3 rounded-lg lg:col-span-2">
+                  <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-2 sm:mb-3 gap-2">
+                    <div className="flex items-center gap-1.5 sm:gap-2">
+                      <TrendingUp className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-cyan-600 dark:text-cyan-400" />
+                      <h4 className="text-sm sm:text-base font-medium text-slate-700 dark:text-slate-200">Currency Exchange Rates</h4>
                     </div>
-                    <div className="text-xs text-slate-500 dark:text-slate-400">
+                    <div className="text-[10px] sm:text-xs text-slate-500 dark:text-slate-400">
                       {ratesSource ? <span>Source: {ratesSource.toUpperCase()}</span> : null}
-                      {ratesDate ? <span className="ml-2">Updated: {new Date(ratesDate).toLocaleString()}</span> : null}
+                      {ratesDate ? <span className="ml-1 sm:ml-2">Updated: {new Date(ratesDate).toLocaleString()}</span> : null}
                     </div>
                   </div>
                   {ratesLoading && (
-                    <div className="text-sm text-slate-500 dark:text-slate-400">Loading currency rates…</div>
+                    <div className="text-xs sm:text-sm text-slate-500 dark:text-slate-400">Loading currency rates…</div>
                   )}
                   {!ratesLoading && ratesError && (
-                    <div className="text-sm text-red-600 dark:text-red-400">{ratesError}</div>
+                    <div className="text-xs sm:text-sm text-red-600 dark:text-red-400">{ratesError}</div>
                   )}
                   {!ratesLoading && !ratesError && Object.keys(currencyRates).length > 0 && (
                     <div className="overflow-x-auto">
-                      <table className="w-full min-w-[420px]">
+                      <table className="w-full min-w-[300px] sm:min-w-[420px]">
                         <thead className="bg-slate-50 dark:bg-slate-800/50">
                           <tr>
-                            <th className="px-4 py-2 text-left text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">Currency</th>
-                            <th className="px-4 py-2 text-left text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">Rate (1 {selectedCurrency})</th>
+                            <th className="px-2 sm:px-3 md:px-4 py-1.5 sm:py-2 text-left text-[10px] sm:text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">Currency</th>
+                            <th className="px-2 sm:px-3 md:px-4 py-1.5 sm:py-2 text-left text-[10px] sm:text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">Rate (1 {selectedCurrency})</th>
                           </tr>
                         </thead>
                         <tbody className="divide-y divide-slate-200 dark:divide-slate-700">
                           {Object.entries(currencyRates).map(([sym, rate]) => (
                             <tr key={sym} className="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
-                              <td className="px-4 py-2 text-sm text-slate-700 dark:text-slate-200">{sym}</td>
-                              <td className="px-4 py-2 text-sm text-slate-700 dark:text-slate-200">{Number(rate).toFixed(6)}</td>
+                              <td className="px-2 sm:px-3 md:px-4 py-1.5 sm:py-2 text-xs sm:text-sm text-slate-700 dark:text-slate-200">{sym}</td>
+                              <td className="px-2 sm:px-3 md:px-4 py-1.5 sm:py-2 text-xs sm:text-sm text-slate-700 dark:text-slate-200">{Number(rate).toFixed(6)}</td>
                             </tr>
                           ))}
                         </tbody>
@@ -957,18 +980,18 @@ const PublicMarkets = () => {
                 </div>
 
                 {/* Quick converter */}
-                <div className="card-glass p-3 rounded-lg">
-                  <div className="flex items-center gap-2 mb-3">
-                    <DollarSign className="h-4 w-4 text-cyan-600 dark:text-cyan-400" />
-                    <h4 className="font-medium text-slate-700 dark:text-slate-200">Quick Converter</h4>
+                <div className="card-glass p-2 sm:p-3 rounded-lg">
+                  <div className="flex items-center gap-1.5 sm:gap-2 mb-2 sm:mb-3">
+                    <DollarSign className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-cyan-600 dark:text-cyan-400" />
+                    <h4 className="text-sm sm:text-base font-medium text-slate-700 dark:text-slate-200">Quick Converter</h4>
                   </div>
-                  <div className="space-y-3">
+                  <div className="space-y-2 sm:space-y-3">
                     <div className="grid grid-cols-2 gap-2">
                       <div>
-                        <label className="text-xs text-slate-500 dark:text-slate-400 mb-1 block">Amount ({selectedCurrency})</label>
+                        <label className="text-[10px] sm:text-xs text-slate-500 dark:text-slate-400 mb-1 block">Amount ({selectedCurrency})</label>
                         <input
                           type="number"
-                          className="w-full px-3 py-1.5 text-sm bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-lg text-slate-700 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-cyan-500/30"
+                          className="w-full px-2 sm:px-3 py-1.5 text-xs sm:text-sm bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-lg text-slate-700 dark:text-slate-200 focus:outline-none focus:ring-1 focus:ring-cyan-500/30 focus:border-cyan-500/50"
                           value={convertAmount}
                           min={0}
                           step="0.01"
@@ -976,9 +999,9 @@ const PublicMarkets = () => {
                         />
                       </div>
                       <div>
-                        <label className="text-xs text-slate-500 dark:text-slate-400 mb-1 block">To Currency</label>
+                        <label className="text-[10px] sm:text-xs text-slate-500 dark:text-slate-400 mb-1 block">To Currency</label>
                         <select
-                          className="w-full px-3 py-1.5 text-sm bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-lg text-slate-700 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-cyan-500/30"
+                          className="w-full px-2 sm:px-3 py-1.5 text-xs sm:text-sm bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-lg text-slate-700 dark:text-slate-200 focus:outline-none focus:ring-1 focus:ring-cyan-500/30 focus:border-cyan-500/50"
                           value={targetCurrency}
                           onChange={(e) => setTargetCurrency(e.target.value)}
                         >
@@ -988,17 +1011,17 @@ const PublicMarkets = () => {
                         </select>
                       </div>
                     </div>
-                    <div className="text-sm font-medium text-slate-700 dark:text-slate-200 p-2 bg-cyan-50 dark:bg-cyan-950/30 rounded-lg">
+                    <div className="text-xs sm:text-sm font-medium text-slate-700 dark:text-slate-200 p-2 bg-cyan-50 dark:bg-cyan-950/30 rounded-lg">
                       {Object.keys(currencyRates).length > 0 && currencyRates[targetCurrency]
                         ? `${convertAmount} ${selectedCurrency} ≈ ${(convertAmount * Number(currencyRates[targetCurrency])).toFixed(4)} ${targetCurrency}`
                         : 'Select a currency to convert'}
                     </div>
                     <div className="flex items-center gap-2">
-                      <button className="btn-outline px-3 py-1.5 rounded-lg text-xs flex-1" onClick={refreshRatesLive} disabled={ratesLoading}>
+                      <button className="btn-outline px-2 sm:px-3 py-1.5 rounded-lg text-[10px] sm:text-xs flex-1" onClick={refreshRatesLive} disabled={ratesLoading}>
                         {ratesLoading ? 'Refreshing…' : 'Refresh live'}
                       </button>
                     </div>
-                    <div className="text-xs text-slate-500 dark:text-slate-400">
+                    <div className="text-[10px] sm:text-xs text-slate-500 dark:text-slate-400">
                       Rates are indicative and refreshed periodically.
                     </div>
                   </div>
@@ -1006,12 +1029,12 @@ const PublicMarkets = () => {
               </div>
 
               {/* Currency Exchange Note */}
-              <div className="card-glass p-3 rounded-lg">
-                <div className="flex items-center gap-2 mb-2">
-                  <Info className="h-4 w-4 text-cyan-600 dark:text-cyan-400" />
-                  <h4 className="font-medium text-slate-700 dark:text-slate-200">Note</h4>
+              <div className="card-glass p-2 sm:p-3 rounded-lg">
+                <div className="flex items-center gap-1.5 sm:gap-2 mb-1.5 sm:mb-2">
+                  <Info className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-cyan-600 dark:text-cyan-400" />
+                  <h4 className="text-sm sm:text-base font-medium text-slate-700 dark:text-slate-200">Note</h4>
                 </div>
-                <p className="text-sm text-slate-600 dark:text-slate-300">
+                <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300">
                   <strong>Note:</strong> Currency exchange rates are updated daily. Historical data and detailed charts are available in the premium version.
                 </p>
               </div>

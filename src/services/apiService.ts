@@ -35,8 +35,25 @@ class ApiService {
     this.authToken = authToken;
     
     // Debug logging (can be removed in production)
+    // Only log warning if we're on a page that requires authentication
+    // Suppress for public pages like m-index, blog, etc.
     if (!authToken && process.env.NODE_ENV === 'development') {
-      console.warn('[apiService] No auth token found in localStorage');
+      // Check if we're on a public page by checking the current route
+      const isPublicPage = typeof window !== 'undefined' && (
+        window.location.pathname.includes('/m-index') ||
+        window.location.pathname.includes('/blog') ||
+        window.location.pathname.includes('/arion') ||
+        window.location.pathname === '/' ||
+        window.location.pathname.includes('/contact') ||
+        window.location.pathname.includes('/about') ||
+        window.location.pathname.includes('/pricing') ||
+        window.location.pathname.includes('/documentation')
+      );
+      
+      // Only log warning if not on a public page
+      if (!isPublicPage) {
+        console.warn('[apiService] No auth token found in localStorage');
+      }
     }
   }
 
@@ -61,9 +78,24 @@ class ApiService {
     const headers = this.getHeaders();
     
     // Debug logging (can be removed in production)
+    // Suppress logging for public pages
     if (process.env.NODE_ENV === 'development') {
-      console.log('[apiService] Request:', url);
-      console.log('[apiService] Token:', this.authToken ? `${this.authToken.substring(0, 20)}...` : 'none');
+      const isPublicPage = typeof window !== 'undefined' && (
+        window.location.pathname.includes('/m-index') ||
+        window.location.pathname.includes('/blog') ||
+        window.location.pathname.includes('/arion') ||
+        window.location.pathname === '/' ||
+        window.location.pathname.includes('/contact') ||
+        window.location.pathname.includes('/about') ||
+        window.location.pathname.includes('/pricing') ||
+        window.location.pathname.includes('/documentation')
+      );
+      
+      // Only log for authenticated pages or when there's a token
+      if (!isPublicPage || this.authToken) {
+        console.log('[apiService] Request:', url);
+        console.log('[apiService] Token:', this.authToken ? `${this.authToken.substring(0, 20)}...` : 'none');
+      }
     }
 
     try {

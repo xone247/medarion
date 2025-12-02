@@ -9,6 +9,19 @@ import SectorTreemap from '../components/SectorTreemap';
 import { exportToExcel, exportToCSV, exportToJSON } from '../utils/exportUtils';
 
 const StartupAnalyticsPage = () => {
+  const [isSmall, setIsSmall] = useState(false);
+  const [isMedium, setIsMedium] = useState(false);
+
+  useEffect(() => {
+    const onResize = () => {
+      setIsSmall(window.innerWidth < 640);
+      setIsMedium(window.innerWidth < 1024);
+    };
+    onResize();
+    window.addEventListener('resize', onResize);
+    return () => window.removeEventListener('resize', onResize);
+  }, []);
+
   // Engagement mock data (kept as-is)
   const profileViewsData = [
     { month: 'Jul', views: 45 },
@@ -235,15 +248,34 @@ const StartupAnalyticsPage = () => {
         )}
 
         {visibleSections.includes('investorTypePie') && (
-          <div className="card-glass p-4 p-6 shadow-soft">
-            <h3 className="text-base text-lg font-medium text-[var(--color-text-primary)] mb-4">African Investor Type Distribution</h3>
-            <div className="h-64 h-72">
+          <div className="card-glass p-3 sm:p-4 md:p-6 shadow-soft">
+            <h3 className="text-sm sm:text-base md:text-lg font-medium text-[var(--color-text-primary)] mb-3 sm:mb-4">African Investor Type Distribution</h3>
+            <div className="h-64 sm:h-72 md:h-80">
               <ResponsiveContainer width="100%" height="100%">
                 <PieChart>
-                  <Pie data={investorTypeData} cx="50%" cy="50%" outerRadius={80} fill="#8884d8" dataKey="value" label={({ name, percent }: { name: string; percent?: number }) => `${name} ${Number(((percent ?? 0) * 100).toFixed(0))}%`} labelLine={false}>
+                  <Pie 
+                    data={investorTypeData} 
+                    cx="50%" 
+                    cy="50%" 
+                    outerRadius={isSmall ? 60 : isMedium ? 80 : 100} 
+                    innerRadius={isSmall ? 20 : isMedium ? 30 : 40}
+                    fill="#8884d8" 
+                    dataKey="value" 
+                    label={!isSmall ? ({ name, percent }: { name: string; percent?: number }) => `${name} ${Number(((percent ?? 0) * 100).toFixed(0))}%` : false}
+                    labelLine={false}
+                  >
                     {investorTypeData.map((entry, index) => (<Cell key={`cell-${index}`} fill={entry.color} />))}
                   </Pie>
                   <Tooltip content={<CustomTooltip active={false} payload={[]} label={''} />} />
+                  {isSmall && (
+                    <Legend 
+                      layout="horizontal" 
+                      verticalAlign="bottom" 
+                      align="center"
+                      wrapperStyle={{ fontSize: '10px', paddingTop: '10px' }}
+                      iconType="circle"
+                    />
+                  )}
                 </PieChart>
               </ResponsiveContainer>
             </div>

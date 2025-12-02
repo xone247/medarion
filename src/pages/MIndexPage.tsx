@@ -91,7 +91,7 @@ const MIndexPage: React.FC<MIndexPageProps> = ({ onBack }) => {
             <h1 className="page-hero-heading">
               M-Index
             </h1>
-            <p className="text-xl text-white/90 mb-8 max-w-2xl mx-auto drop-shadow-md">
+            <p className="text-base sm:text-lg md:text-xl text-white/90 mb-6 sm:mb-8 max-w-2xl mx-auto drop-shadow-md px-4">
               Master the Terms. Maximize the Impact
             </p>
           </div>
@@ -99,40 +99,64 @@ const MIndexPage: React.FC<MIndexPageProps> = ({ onBack }) => {
       </div>
 
       {/* Interactive Africa Map */}
-      <div className="max-w-7xl mx-auto px-6 py-10">
-        <div className="mb-8">
-          <h2 className="text-3xl font-medium text-[var(--color-text-primary)] mb-3">Interactive Africa Map</h2>
-          <p className="text-[var(--color-text-secondary)]">Click on any country to view detailed information</p>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-6 sm:py-10">
+        <div className="mb-6 sm:mb-8">
+          <h2 className="text-2xl sm:text-3xl font-medium text-[var(--color-text-primary)] mb-2 sm:mb-3">Interactive Africa Map</h2>
+          <p className="text-sm sm:text-base text-[var(--color-text-secondary)]">Click on any country to view detailed information</p>
         </div>
         <AfricaMap height={600} heightSm={400} />
       </div>
 
       {/* Terms Section */}
-      <div className="max-w-7xl mx-auto px-6 py-10">
-        <div className="mb-8 text-center">
-          <h2 className="text-4xl font-medium text-[var(--color-text-primary)] mb-3">Terms</h2>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-6 sm:py-10">
+        <div className="mb-6 sm:mb-8 text-center">
+          <h2 className="text-3xl sm:text-4xl font-medium text-[var(--color-text-primary)] mb-2 sm:mb-3">Terms</h2>
         </div>
 
-        {/* Filter Bar */}
-        <div className="mb-8 bg-[var(--color-background-surface)] border border-[var(--color-divider-gray)] rounded-xl p-6 shadow-sm">
-          <div className="flex flex-wrap gap-2 justify-center">
+        {/* Filter Bar - Streamlined */}
+        <div className="mb-4 sm:mb-6 flex flex-col sm:flex-row items-center justify-between gap-3 sm:gap-4">
+          {/* Mobile Dropdown */}
+          <div className="w-full sm:hidden">
+            <select
+              value={category}
+              onChange={(e) => setCategory(e.target.value)}
+              className="w-full px-4 py-2.5 rounded-lg border border-[var(--color-divider-gray)] bg-[var(--color-background-default)] text-[var(--color-text-primary)] text-sm font-medium focus:ring-2 focus:ring-[var(--color-primary-teal)] focus:border-[var(--color-primary-teal)] transition-all appearance-none cursor-pointer"
+              style={{
+                backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23666' d='M6 9L1 4h10z'/%3E%3C/svg%3E")`,
+                backgroundRepeat: 'no-repeat',
+                backgroundPosition: 'right 12px center',
+                paddingRight: '40px'
+              }}
+            >
+              {categories.map((c) => (
+                <option key={c} value={c}>
+                  {c}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          {/* Desktop Category Buttons - Compact */}
+          <div className="hidden sm:flex flex-wrap gap-2 items-center">
             {categories.map(c => (
               <button
                 key={c}
                 onClick={() => setCategory(c)}
-                className={`px-4 py-2 rounded-lg border transition-all ${
+                className={`px-3 py-1.5 text-sm rounded-md font-medium transition-all duration-200 ${
                   category === c
-                    ? 'bg-[var(--color-primary-teal)] text-white border-[var(--color-primary-teal)] shadow-md'
-                    : 'border-[var(--color-divider-gray)] text-[var(--color-text-primary)] hover:bg-[var(--color-background-surface)] hover:border-[var(--color-primary-teal)]/50'
+                    ? 'bg-[var(--color-primary-teal)] text-white shadow-sm'
+                    : 'bg-[var(--color-background-surface)] text-[var(--color-text-secondary)] hover:bg-[var(--color-background-surface)] hover:text-[var(--color-text-primary)] border border-[var(--color-divider-gray)]'
                 }`}
               >
                 {c}
               </button>
             ))}
           </div>
+
+          {/* Results Count - Subtle */}
           {filtered.length > 0 && (
-            <div className="mt-4 text-sm text-[var(--color-text-secondary)] text-center">
-              Showing {filtered.length} of {items.length} terms
+            <div className="text-xs text-[var(--color-text-secondary)] whitespace-nowrap">
+              {filtered.length} of {items.length} terms
             </div>
           )}
         </div>
@@ -140,29 +164,29 @@ const MIndexPage: React.FC<MIndexPageProps> = ({ onBack }) => {
         {/* Key Terms Grid */}
         {filtered.length > 0 ? (
           <>
-            <div className="grid grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
               {filtered.map((i, idx) => (
                 <div
                   key={`${i.term}-${idx}`}
-                  className="bg-[var(--color-background-surface)] border border-[var(--color-divider-gray)] rounded-xl p-6 shadow-sm hover:shadow-lg transition-all duration-300 hover:border-[var(--color-primary-teal)]/50 group"
+                  className="bg-[var(--color-background-surface)] border border-[var(--color-divider-gray)] rounded-xl p-4 sm:p-6 shadow-sm hover:shadow-lg transition-all duration-300 hover:border-[var(--color-primary-teal)]/50 group"
                 >
-                  <div className="flex items-start justify-between mb-3">
+                  <div className="flex items-start justify-between mb-2 sm:mb-3">
                     <div className="text-xs font-medium text-[var(--color-primary-teal)] uppercase tracking-wide px-2 py-1 bg-[var(--color-primary-teal)]/10 rounded">
                       {i.category}
                     </div>
                   </div>
-                  <h3 className="text-xl font-medium text-[var(--color-text-primary)] mb-3 group-hover:text-[var(--color-primary-teal)] transition-colors">
+                  <h3 className="text-lg sm:text-xl font-medium text-[var(--color-text-primary)] mb-2 sm:mb-3 group-hover:text-[var(--color-primary-teal)] transition-colors">
                     {i.term}
                   </h3>
-                  <p className="text-sm text-[var(--color-text-secondary)] leading-relaxed line-clamp-4">
+                  <p className="text-sm text-[var(--color-text-secondary)] leading-relaxed">
                     {i.def}
                   </p>
                 </div>
               ))}
             </div>
-            <div className="mt-12 text-center">
-              <div className="inline-flex items-center gap-2 px-6 py-3 bg-[var(--color-background-surface)] border border-[var(--color-divider-gray)] rounded-lg">
-                <p className="text-sm text-[var(--color-text-secondary)]">
+            <div className="mt-8 sm:mt-12 text-center">
+              <div className="inline-flex items-center gap-2 px-4 sm:px-6 py-2 sm:py-3 bg-[var(--color-background-surface)] border border-[var(--color-divider-gray)] rounded-lg">
+                <p className="text-xs sm:text-sm text-[var(--color-text-secondary)]">
                   Can't find a term?{' '}
                   <a className="text-[var(--color-primary-teal)] hover:underline font-medium" href="/contact">
                     Contact us
@@ -173,12 +197,12 @@ const MIndexPage: React.FC<MIndexPageProps> = ({ onBack }) => {
             </div>
           </>
         ) : (
-          <div className="text-center py-20">
-            <div className="text-4xl mb-4">🔍</div>
-            <h3 className="text-xl font-medium text-[var(--color-text-primary)] mb-2">
+          <div className="text-center py-12 sm:py-20">
+            <div className="text-3xl sm:text-4xl mb-3 sm:mb-4">🔍</div>
+            <h3 className="text-lg sm:text-xl font-medium text-[var(--color-text-primary)] mb-2">
               No key terms found
             </h3>
-            <p className="text-[var(--color-text-secondary)] mb-4">
+            <p className="text-sm sm:text-base text-[var(--color-text-secondary)] mb-4">
               Try adjusting your filter
             </p>
             {category !== 'All' && (
@@ -186,7 +210,7 @@ const MIndexPage: React.FC<MIndexPageProps> = ({ onBack }) => {
                 onClick={() => {
                   setCategory('All');
                 }}
-                className="px-4 py-2 bg-[var(--color-primary-teal)] text-white rounded-lg hover:opacity-90 transition-opacity"
+                className="px-4 py-2 text-sm sm:text-base bg-[var(--color-primary-teal)] text-white rounded-lg hover:opacity-90 transition-opacity"
               >
                 Clear Filter
               </button>
